@@ -1,0 +1,6 @@
+@AcademiCar.Server_HostAddress = http://localhost:5117
+
+GET {{AcademiCar.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

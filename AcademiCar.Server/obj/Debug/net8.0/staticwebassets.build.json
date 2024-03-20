@@ -1,0 +1,23 @@
+{
+  "Version": 1,
+  "Hash": "5CRmtGdw4VOCVU0UNd8/tC5PhgvAQYoHVpWdNwI5FS8=",
+  "Source": "AcademiCar.Server",
+  "BasePath": "_content/AcademiCar.Server",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [
+    {
+      "Identity": "C:\\p\\fh\\AcademiCar\\academicar.client\\academicar.client.esproj",
+      "Version": 2,
+      "Source": "academicar.client",
+      "GetPublishAssetsTargets": "GetCurrentProjectPublishStaticWebAssetItems",
+      "AdditionalPublishProperties": "",
+      "AdditionalPublishPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier;SelfContained",
+      "GetBuildAssetsTargets": "GetCurrentProjectBuildStaticWebAssetItems",
+      "AdditionalBuildProperties": "",
+      "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier;SelfContained"
+    }
+  ],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
