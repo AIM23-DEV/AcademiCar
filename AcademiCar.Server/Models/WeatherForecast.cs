@@ -1,4 +1,4 @@
-namespace AcademiCar.Server
+namespace AcademiCar.Server.Models
 {
     public class WeatherForecast
     {
