@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 import './App.css';
 
 interface Forecast {
@@ -8,41 +8,57 @@ interface Forecast {
     summary: string;
 }
 
+interface TestTableEntry {
+    Id: number;
+    name: string;
+}
+
 function App() {
     const [forecasts, setForecasts] = useState<Forecast[]>();
+    const [testTableEntry, setTestTableEntry] = useState<TestTableEntry | null>(null);
 
     useEffect(() => {
         populateWeatherData();
+        fetchTestTableEntryById(1);
     }, []);
 
     const contents = forecasts === undefined
-        ? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationreact">https://aka.ms/jspsintegrationreact</a> for more details.</em></p>
+        ? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a
+            href="https://aka.ms/jspsintegrationreact">https://aka.ms/jspsintegrationreact</a> for more details.</em>
+        </p>
         : <table className="table table-striped" aria-labelledby="tabelLabel">
             <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Temp. (C)</th>
-                    <th>Temp. (F)</th>
-                    <th>Summary</th>
-                </tr>
+            <tr>
+                <th>Date</th>
+                <th>Temp. (C)</th>
+                <th>Temp. (F)</th>
+                <th>Summary</th>
+            </tr>
             </thead>
             <tbody>
-                {forecasts.map(forecast =>
-                    <tr key={forecast.date}>
-                        <td>{forecast.date}</td>
-                        <td>{forecast.temperatureC}</td>
-                        <td>{forecast.temperatureF}</td>
-                        <td>{forecast.summary}</td>
-                    </tr>
-                )}
+            {forecasts.map(forecast =>
+                <tr key={forecast.date}>
+                    <td>{forecast.date}</td>
+                    <td>{forecast.temperatureC}</td>
+                    <td>{forecast.temperatureF}</td>
+                    <td>{forecast.summary}</td>
+                </tr>
+            )}
             </tbody>
         </table>;
-
+    console.log("hehe:", testTableEntry?.name);
     return (
+        
         <div>
-            <h1 id="tabelLabel">Weather forecast</h1>
+            <h1 id="tabelLabel">Wieser und Hubert unterwegs</h1>
             <p>This component demonstrates fetching data from the server.</p>
             {contents}
+            {testTableEntry !== null && (
+                <div>
+                    <h2>TestTable Entry Details</h2>
+                    <p>Name: {testTableEntry.name}</p>
+                </div>
+            )}
         </div>
     );
 
@@ -50,6 +66,20 @@ function App() {
         const response = await fetch('weatherforecast');
         const data = await response.json();
         setForecasts(data);
+    }
+
+    async function fetchTestTableEntryById(id: number) {
+        try {
+            const response = await fetch(`weatherforecast/TestTableEntries/${id}`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch');
+            }
+            const data = await response.json();
+            setTestTableEntry(data);
+        } catch (error) {
+            console.error(error);
+            setTestTableEntry(null);
+        }
     }
 }
 

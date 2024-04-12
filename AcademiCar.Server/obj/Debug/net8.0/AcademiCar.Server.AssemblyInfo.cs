@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AcademiCar.Server")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+da37839ce1262fde273b5a047514a82680b22efa")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+75273f608e84568a3df6ff66854306562111b18f")]
 [assembly: System.Reflection.AssemblyProductAttribute("AcademiCar.Server")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AcademiCar.Server")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

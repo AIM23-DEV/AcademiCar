@@ -1,6 +1,6 @@
-namespace AcademiCar.Server
+namespace AcademiCar.Server.DAL.Entities
 {
-    public class WeatherForecast
+    public class WeatherForecast : Entity
     {
         public DateOnly Date { get; set; }
 
