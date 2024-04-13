@@ -1,5 +1,5 @@
-using AcademiCar.Server.Data;
-using AcademiCar.Server.Models;
+using AcademiCar.Server.DAL;
+using AcademiCar.Server.DAL.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AcademiCar.Server.Controllers
@@ -14,9 +14,9 @@ namespace AcademiCar.Server.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
-        private readonly AppDbContext _context;
+        private readonly PostgresDbContext _context;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger, AppDbContext context)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, PostgresDbContext context)
         {
             _logger = logger;
             _context = context;

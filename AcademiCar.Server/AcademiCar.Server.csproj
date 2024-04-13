@@ -32,7 +32,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
+    <Folder Include="Services\ServiceImpl\" />
+	<Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>
