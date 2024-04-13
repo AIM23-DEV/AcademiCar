@@ -228,6 +228,7 @@ _pkginfo.txt
 *.appx
 *.appxbundle
 *.appxupload
+.idea/
 
 # Visual Studio cache files
 # files ending in .cache can be ignored
@@ -482,3 +483,7 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# Build Folders
+bin/
+obj/

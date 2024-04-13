@@ -1,2 +1,0 @@
-C:\p\fh\AcademiCar\AcademiCar\academicar.client\obj\Debug\academicar.client.esproj.CoreCompileInputs.cache
-C:\p\fh\AcademiCar\academicar.client\obj\Debug\academicar.client.esproj.CoreCompileInputs.cache
