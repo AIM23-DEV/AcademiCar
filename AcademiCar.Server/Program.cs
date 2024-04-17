@@ -20,6 +20,8 @@ if (!builder.Environment.IsDevelopment())
         var secretValue = builder.Configuration[secret];
         builder.Configuration[secret] = secretValue;
     }
+    builder.Services.AddDbContext<PostgresDbContext>(options =>
+        options.UseNpgsql($"Host={builder.Configuration["DBHOST"]};Database={builder.Configuration["DBNAME"]};Username={builder.Configuration["DBUSER"]};Password={builder.Configuration["DBPASSWORD"]}"));
 }
 else
 {
