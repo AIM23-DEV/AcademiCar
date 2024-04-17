@@ -11,7 +11,7 @@ builder.Services.AddSwaggerGen();
 
 if (!builder.Environment.IsDevelopment())
 {
-    var vaultUri = $"https://{builder.Configuration["KeyVaultName"]}.vault.azure.net/";
+    var vaultUri = $"https://keyvaultacademicar.vault.azure.net/";
     builder.Configuration.AddAzureKeyVault(new Uri(vaultUri), new DefaultAzureCredential());
     
     var secrets = new[] { "DBPASSWORD", "DBUSER" };
