@@ -14,7 +14,7 @@ if (!builder.Environment.IsDevelopment())
     var vaultUri = $"https://keyvaultacademicar.vault.azure.net/";
     builder.Configuration.AddAzureKeyVault(new Uri(vaultUri), new DefaultAzureCredential());
     
-    var secrets = new[] { "DBPASSWORD", "DBUSER" };
+    var secrets = new[] { "DBHOST", "DBPASSWORD", "DBUSER" };
     foreach (var secret in secrets)
     {
         var secretValue = builder.Configuration[secret];
