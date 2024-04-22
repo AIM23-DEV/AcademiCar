@@ -9,5 +9,6 @@ namespace AcademiCar.Server
 
         public UserService UserService { get; set; }
         public VehicleService VehicleService { get; set; }
+        public TripService TripService { get; set; }
     }
 }
