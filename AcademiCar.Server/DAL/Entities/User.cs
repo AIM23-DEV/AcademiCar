@@ -12,7 +12,8 @@ namespace AcademiCar.Server.DAL.Entities
         public Blob Picture { get; set; }
 
         [ForeignKey("FK_Stats")]
-        [JsonIgnore][JsonProperty(Required = Required.Default)] public Stats Stats { get; set; }
+        [JsonProperty(Required = Required.Default)]
+        [JsonIgnore] public Stats Stats { get; set; }
         public int FK_Stats { get; set; }
 
         public List<FavoriteUser> Favorits { get; set; }
