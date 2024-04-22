@@ -1,6 +1,6 @@
-using AcademiCar.Server.DAL;
 using Microsoft.EntityFrameworkCore;
 using Azure.Identity;
+using AcademiCar.Server.DAL.UnitOfWork;
 
 var builder = WebApplication.CreateBuilder(args);
 

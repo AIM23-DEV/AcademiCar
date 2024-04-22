@@ -1,4 +1,5 @@
 ﻿using AcademiCar.Server.DAL.Entities;
+using AcademiCar.Server.DAL.UnitOfWork;
 using System.Linq.Expressions;
 
 namespace AcademiCar.Server.DAL.Repositories

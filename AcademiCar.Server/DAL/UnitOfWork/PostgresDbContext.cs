@@ -1,11 +1,11 @@
 ﻿using AcademiCar.Server.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace AcademiCar.Server.DAL
+namespace AcademiCar.Server.DAL.UnitOfWork
 {
     public class PostgresDbContext : DbContext
     {
-        public PostgresDbContext(DbContextOptions<PostgresDbContext> options) : base(options) {}
+        public PostgresDbContext(DbContextOptions<PostgresDbContext> options) : base(options) { }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
