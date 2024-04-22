@@ -22,7 +22,7 @@ namespace AcademiCar.Server.DAL.Repositories
         public Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> filterExpression)
             => Task.FromResult(FilterBy(filterExpression).First());
         public async Task<TEntity> FindByIdAsync(int id)
-            => await FindAsync(e => e.Id == id);
+            => await FindAsync(e => e.ID == id);
 
         public async Task InsertAsync(TEntity entity)
         {
@@ -45,6 +45,6 @@ namespace AcademiCar.Server.DAL.Repositories
             await db.SaveChangesAsync();
         }
         public async Task DeleteByIdAsync(int id)
-            => await DeleteAsync(e => e.Id == id);
+            => await DeleteAsync(e => e.ID == id);
     }
 }
