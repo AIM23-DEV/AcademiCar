@@ -8,5 +8,6 @@ namespace AcademiCar.Server
         public IUnitOfWork UnitOfWork { get; set; }
 
         public UserService UserService { get; set; }
+        public VehicleService VehicleService { get; set; }
     }
 }
