@@ -26,7 +26,7 @@ function App() {
         ? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a
             href="https://aka.ms/jspsintegrationreact">https://aka.ms/jspsintegrationreact</a> for more details.</em>
         </p>
-        : <table className="table table-striped" aria-labelledby="tabelLabel">
+        : <table className="mt-8" aria-labelledby="tabelLabel">
             <thead>
             <tr>
                 <th>Date</th>
@@ -49,8 +49,8 @@ function App() {
     console.log("hehe:", testTableEntry?.name);
     return (
         
-        <div>
-            <h1 id="tabelLabel">Wieser und Hubert unterwegs</h1>
+        <div className="flex flex-col items-center justify-center">
+            <h1 id="tabelLabel" className="text-2xl font-bold">Wieser und Hubert unterwegs</h1>
             <p>This component demonstrates fetching data from the server.</p>
             {contents}
             {testTableEntry !== null && (
