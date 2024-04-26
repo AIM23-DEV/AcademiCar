@@ -9,7 +9,7 @@ namespace AcademiCar.Server.DAL.Entities
         public string Email { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public Blob Picture { get; set; }
+        public byte[] Picture { get; set; }
 
         [ForeignKey("FK_Stats")]
         [JsonProperty(Required = Required.Default)]
