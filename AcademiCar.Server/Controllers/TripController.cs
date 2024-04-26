@@ -6,21 +6,21 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AcademiCar.Server.Controllers
 {
-    public class VehicleController : BaseController<Vehicle>
+    public class TripController : BaseController<Trip>
     {
         private IGlobalService _globalService;
 
-        public VehicleController(IGlobalService globals, IHttpContextAccessor accessor)
-            : base(globals.VehicleService, accessor)
+        public TripController(IGlobalService globals, IHttpContextAccessor accessor)
+            : base(globals.TripService, accessor)
         {
             _globalService = globals;
         }
 
 
-        [HttpPost("Add")]
+        [HttpPost("Create")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResultResponseModel))]
-        public async Task<ActionResult<ActionResultResponseModel>> AddVehicle([Required][FromBody] Vehicle vehicle)
-            => await _globalService.VehicleService.Create(vehicle);
+        public async Task<ActionResult<ActionResultResponseModel>> CreateTrip([Required][FromBody] Trip trip)
+            => await _globalService.TripService.Create(trip);
     }
 }
