@@ -1,5 +1,6 @@
 ﻿using AcademiCar.Server.DAL.Entities;
 using AcademiCar.Server.DAL.Repositories;
+using AcademiCar.Server.DAL.UnitOfWork;
 using AcademiCar.Server.Services.Response;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Services.ModelState;
@@ -8,13 +9,17 @@ namespace AcademiCar.Server.Services
 {
     public abstract class Service<TEntity> : IService<TEntity> where TEntity : Entity
     {
+        protected IUnitOfWork unitOfWork;
         protected IPostgresRepository<TEntity> repository;
+        protected IGlobalService globalService;
         protected IModelStateWrapper validationDictionary;
         protected ModelStateDictionary modelStateDictionary;
 
-        public Service(IPostgresRepository<TEntity> postgresRepository)
+        public Service(IUnitOfWork uow, IPostgresRepository<TEntity> repo, IGlobalService globals)
         {
-            repository = postgresRepository;
+            unitOfWork = uow;
+            repository = repo;
+            globalService = globals;
         }
 
 

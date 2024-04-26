@@ -1,9 +1,14 @@
-﻿using AcademiCar.Server.DAL;
+﻿using AcademiCar.Server.DAL.UnitOfWork;
+using AcademiCar.Server.Services.ServiceImpl;
 
 namespace AcademiCar.Server
 {
-    public class IGlobalService
+    public interface IGlobalService
     {
-        // TODO - add services here, for usage in controllers
+        public IUnitOfWork UnitOfWork { get; set; }
+
+        public UserService UserService { get; set; }
+        public VehicleService VehicleService { get; set; }
+        public TripService TripService { get; set; }
     }
 }
