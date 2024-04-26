@@ -2,6 +2,7 @@
 using AcademiCar.Server.DAL.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AcademiCar.Server.Migrations
 {
     [DbContext(typeof(PostgresDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240426092502_CST-134-addvehicle")]
+    partial class CST134addvehicle
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

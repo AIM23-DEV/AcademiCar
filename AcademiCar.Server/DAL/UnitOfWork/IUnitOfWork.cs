@@ -11,6 +11,10 @@ namespace AcademiCar.Server.DAL.UnitOfWork
         IStatsRepository Stats { get; }
         IRatingRepository Ratings { get; }
         IPreferencesRepository Preferences { get; }
+        IVehicleRepository Vehicles { get; }
+        ITripRepository Trips { get; }
+        ITripRequestRepository TripRequests { get; }
+        IAddressRepository Addresses { get; }
 
         Task<int> SaveChangesAsync();
     }

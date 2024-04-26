@@ -1,4 +1,5 @@
 ﻿using AcademiCar.Server.DAL.Entities;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 
 namespace AcademiCar.Server.DAL.UnitOfWork
@@ -20,6 +21,7 @@ namespace AcademiCar.Server.DAL.UnitOfWork
                 .IsRequired();
             modelBuilder.Entity<Preferences>().ToTable("Preferences", schema: "academicar");
             modelBuilder.Entity<Rating>().ToTable("Rating", schema: "academicar");
+            modelBuilder.Entity<Vehicle>().ToTable("Vehicle", schema:"academicar");
         }
 
 
@@ -32,6 +34,7 @@ namespace AcademiCar.Server.DAL.UnitOfWork
         public DbSet<User> Users { get; set; }
         public DbSet<FavoriteUser> FavoriteUsers { get; set; }
         public DbSet<Preferences> Preferences { get; set; }
+        public DbSet<Vehicle> Vehicles { get; set; }
         #endregion
     }
 }

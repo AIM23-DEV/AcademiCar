@@ -15,6 +15,10 @@ namespace AcademiCar.Server.DAL.UnitOfWork
         public IStatsRepository Stats => new StatsRepository(Context);
         public IRatingRepository Ratings => new RatingRepository(Context);
         public IPreferencesRepository Preferences => new PreferencesRepository(Context);
+        public IVehicleRepository Vehicles => new VehicleRepository(Context);
+        public ITripRepository Trips => new TripRepository(Context);
+        public ITripRequestRepository TripRequests => new TripRequestRepository(Context);
+        public IAddressRepository Addresses => new AddressRepository(Context);
 
         public async Task<int> SaveChangesAsync() => await Context.SaveChangesAsync();
     }
