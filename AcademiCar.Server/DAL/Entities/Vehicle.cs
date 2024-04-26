@@ -9,7 +9,7 @@ namespace AcademiCar.Server.DAL.Entities
         public string Type { get; set; }
         public int Seats { get; set; }
         public string Color { get; set; }
-        public Blob Picture { get; set; }
+        public byte[] Picture { get; set; }
         public string Features { get; set; }
         public bool IsElectric { get; set; }
 

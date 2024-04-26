@@ -168,6 +168,46 @@ namespace AcademiCar.Server.Migrations
                     b.ToTable("User", "academicar");
                 });
 
+            modelBuilder.Entity("AcademiCar.Server.DAL.Entities.Vehicle", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ID"));
+
+                    b.Property<string>("Color")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("FK_User")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Features")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsElectric")
+                        .HasColumnType("boolean");
+
+                    b.Property<byte[]>("Picture")
+                        .IsRequired()
+                        .HasColumnType("bytea");
+
+                    b.Property<int>("Seats")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("FK_User");
+
+                    b.ToTable("Vehicle", "academicar");
+                });
+
             modelBuilder.Entity("AcademiCar.Server.DAL.Entities.FavoriteUser", b =>
                 {
                     b.HasOne("AcademiCar.Server.DAL.Entities.User", "User")
@@ -218,6 +258,17 @@ namespace AcademiCar.Server.Migrations
                         .IsRequired();
 
                     b.Navigation("Stats");
+                });
+
+            modelBuilder.Entity("AcademiCar.Server.DAL.Entities.Vehicle", b =>
+                {
+                    b.HasOne("AcademiCar.Server.DAL.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("FK_User")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("AcademiCar.Server.DAL.Entities.User", b =>
