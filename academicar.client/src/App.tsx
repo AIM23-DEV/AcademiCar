@@ -28,7 +28,7 @@ function App() {
         </p>
         : <table className="mt-8" aria-labelledby="tabelLabel">
             <thead>
-            <tr>
+            <tr className="text-secondary-600">
                 <th>Date</th>
                 <th>Temp. (C)</th>
                 <th>Temp. (F)</th>
@@ -49,8 +49,8 @@ function App() {
     console.log("hehe:", testTableEntry?.name);
     return (
         
-        <div className="flex flex-col items-center justify-center">
-            <h1 id="tabelLabel" className="text-2xl font-bold">Wieser und Hubert unterwegs</h1>
+        <div className="flex flex-col items-center justify-center pt-16">
+            <h1 id="tabelLabel" className="text-2xl font-bold text-primary-600 font-title">Wieser und Hubert unterwegs</h1>
             <p>This component demonstrates fetching data from the server.</p>
             {contents}
             {testTableEntry !== null && (
