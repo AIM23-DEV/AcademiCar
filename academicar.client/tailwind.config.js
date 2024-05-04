@@ -51,6 +51,11 @@ export default {
             }
         },
     },
+    safelist: [
+        'text-right',
+        'text-center',
+        'text-left',
+    ],
     plugins: [
         require('@tailwindcss/forms'),
         require('@tailwindcss/aspect-ratio'),

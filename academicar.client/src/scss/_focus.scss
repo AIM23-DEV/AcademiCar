@@ -1,12 +1,14 @@
-﻿.focusable-always:hover,
-.focusable-always:focus {
-  @apply focusable-hover focusable
-}
+﻿@layer components {
+  .focusable-always:hover,
+  .focusable-always:focus {
+    @apply focusable-hover focusable;
+  }
 
-.focusable-hover:hover {
-  @apply outline-none ring-4 ring-accent-500 transition-shadow
-}
+  .focusable-hover:hover {
+    @apply outline-none ring ring-primary-500 transition-shadow ring-offset-[3px];
+  }
 
-.focusable:focus {
-  @apply outline-none ring-4 ring-accent-500 transition-shadow
+  .focusable:focus {
+    @apply outline-none ring ring-primary-500 transition-shadow ring-offset-[3px];
+  }
 }

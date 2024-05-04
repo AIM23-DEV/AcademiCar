@@ -47,9 +47,9 @@ function App() {
         </table>;
     console.log("hehe:", testTableEntry?.name);
     return (
-        
+
         <div className="flex flex-col items-center justify-center pt-16">
-            <h1 id="tabelLabel" className="text-2xl font-bold text-primary-600 font-title">Wieser und Hubert unterwegs</h1>
+            <h1 id="tabelLabel" className="headline-2 text-primary-600">Wieser und Hubert unterwegs</h1>
             <p>This component demonstrates fetching data from the server.</p>
             {contents}
             {testTableEntry !== null && (
