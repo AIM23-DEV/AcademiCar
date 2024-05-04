@@ -1,4 +1,6 @@
 import {useEffect, useState} from 'react';
+import {BottomNavigationBar} from "./components/BottomNavigationBar.tsx";
+import {Button} from "./components/Buttons.tsx";
 
 interface Forecast {
     date: string;
@@ -13,6 +15,7 @@ interface TestTableEntry {
 }
 
 function App() {
+    const [title, setTitle] = useState("AcademiCar");
     const [forecasts, setForecasts] = useState<Forecast[]>();
     const [testTableEntry, setTestTableEntry] = useState<TestTableEntry | null>(null);
 
@@ -20,6 +23,10 @@ function App() {
         populateWeatherData();
         fetchTestTableEntryById(1);
     }, []);
+
+    useEffect(() => {
+        setTitle(title);
+    }, [title]);
 
     const contents = forecasts === undefined
         ? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a
@@ -48,8 +55,9 @@ function App() {
     console.log("hehe:", testTableEntry?.name);
     return (
 
-        <div className="flex flex-col items-center justify-center pt-16">
+        <div className="relative min-h-screen flex flex-col items-center justify-center pt-16 bg-gray-100">
             <h1 id="tabelLabel" className="headline-2 text-primary-600">Wieser und Hubert unterwegs</h1>
+            <Button text="Das ist ein Primary Button" className="my-8" />
             <p>This component demonstrates fetching data from the server.</p>
             {contents}
             {testTableEntry !== null && (
@@ -58,6 +66,8 @@ function App() {
                     <p>Name: {testTableEntry.name}</p>
                 </div>
             )}
+            
+            <BottomNavigationBar selected="search"/>
         </div>
     );
 
