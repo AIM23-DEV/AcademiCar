@@ -1,0 +1,7 @@
+@layer components {
+  
+  // Input
+  .form-field{
+    @apply p-3 focusable transition-all body-1 bg-white hover:bg-gray-100 ring-[1.5px] ring-gray-300 shadow-sm hover:shadow-none rounded-xl focus:ring-offset-0 focus:border-none disabled:opacity-60 disabled:shadow-none disabled:cursor-not-allowed
+  }
+}

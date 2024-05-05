@@ -3,6 +3,8 @@
 @use 'scss/_scrollbars.scss';
 @use 'scss/_typography.scss';
 @use 'scss/_components.scss';
+@use 'scss/components/_buttons.scss';
+@use 'scss/components/_formfields.scss';
 
 /**
  * This injects Tailwind's base styles, which is a combination of
