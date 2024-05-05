@@ -57,16 +57,18 @@ function App() {
     return (
         <div className="relative min-h-screen flex flex-col items-center mx-auto bg-gray-100 max-w-5xl">
             <TitleBar text="AcademiCar" hasBackAction/>
-            <h1 id="tabelLabel" className="headline-2 text-primary-600 mt-6">Wieser und Hubert unterwegs</h1>
-            <Button text="Das ist ein Primary Button" className="my-8" onClick={() => alert("Test")}/>
-            <p>This component demonstrates fetching data from the server.</p>
-            {contents}
-            {testTableEntry !== null && (
-                <div>
-                    <h2>TestTable Entry Details</h2>
-                    <p>Name: {testTableEntry.name}</p>
-                </div>
-            )}
+
+            <div className="w-full flex flex-col items-center p-6 space-y-8">
+                <Button text="Das ist ein Primary Button" className="" onClick={() => alert("Test")}/>
+                <p>This component demonstrates fetching data from the server.</p>
+                {contents}
+                {testTableEntry !== null && (
+                    <div>
+                        <h2>TestTable Entry Details</h2>
+                        <p>Name: {testTableEntry.name}</p>
+                    </div>
+                )}
+            </div>
 
             <BottomNavigationBar selected="search"/>
         </div>
