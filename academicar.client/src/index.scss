@@ -2,9 +2,10 @@
 @use 'scss/_focus.scss';
 @use 'scss/_scrollbars.scss';
 @use 'scss/_typography.scss';
-@use 'scss/_components.scss';
 @use 'scss/components/_buttons.scss';
+@use 'scss/components/_divider.scss';
 @use 'scss/components/_formfields.scss';
+@use 'scss/components/_icons.scss';
 
 /**
  * This injects Tailwind's base styles, which is a combination of
