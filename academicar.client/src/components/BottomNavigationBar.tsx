@@ -6,11 +6,14 @@ interface BottomNavigationBarProps {
     className?: string
 }
 
+// Todo proper routes
 export const BottomNavigationBar = (props: BottomNavigationBarProps) => {
     return (
         <nav id="bottom-navigation-bar"
              className={"fixed bottom-0 inset-x-0 h-16" + (props.className ? (' ' + props.className) : '')}>
-            <ul className="bg-white shadow-[0_3px_10px_rgb(0,0,0,0.2)] w-full h-full mx-auto max-w-xl flex flex-row items-center justify-between px-5">
+
+            <ul className="bg-white shadow-[0_3px_10px_rgb(0,0,0,0.2)] w-full h-full mx-auto max-w-2xl flex flex-row items-center justify-between px-5 sm:rounded-t-xl">
+
                 <BottomNavigationBarItem link="#search" active={props.selected == 'search'}
                                          icon={<BiSearch className="icon-lg"/>}/>
 
@@ -25,7 +28,9 @@ export const BottomNavigationBar = (props: BottomNavigationBarProps) => {
 
                 <BottomNavigationBarItem link="#profile" active={props.selected == 'profile'}
                                          icon={<BiUser className="icon-lg"/>}/>
+                
             </ul>
+
         </nav>
     );
 }

@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 import {BottomNavigationBar} from "./components/BottomNavigationBar.tsx";
 import {Button} from "./components/Buttons.tsx";
+import {TitleBar} from "./components/TitleBar.tsx";
 
 interface Forecast {
     date: string;
@@ -54,10 +55,10 @@ function App() {
         </table>;
     console.log("hehe:", testTableEntry?.name);
     return (
-
-        <div className="relative min-h-screen flex flex-col items-center justify-center pt-16 bg-gray-100">
-            <h1 id="tabelLabel" className="headline-2 text-primary-600">Wieser und Hubert unterwegs</h1>
-            <Button text="Das ist ein Primary Button" className="my-8" />
+        <div className="relative min-h-screen flex flex-col items-center mx-auto bg-gray-100 max-w-5xl">
+            <TitleBar text="AcademiCar" hasBackAction/>
+            <h1 id="tabelLabel" className="headline-2 text-primary-600 mt-6">Wieser und Hubert unterwegs</h1>
+            <Button text="Das ist ein Primary Button" className="my-8" onClick={() => alert("Test")}/>
             <p>This component demonstrates fetching data from the server.</p>
             {contents}
             {testTableEntry !== null && (
@@ -66,7 +67,7 @@ function App() {
                     <p>Name: {testTableEntry.name}</p>
                 </div>
             )}
-            
+
             <BottomNavigationBar selected="search"/>
         </div>
     );
