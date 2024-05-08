@@ -64,6 +64,44 @@ export const TextButton = (props: ButtonProps) => {
     );
 }
 
+interface TextLinkProps {
+    variant?: 'primary' | 'secondary' | 'accent' | 'outline' // Todo warning
+    fullWidth?: boolean
+    text?: string
+    textAlign?: 'center' | 'left' | 'right'
+    textFullWidth?: boolean
+    trailing?: ReactNode
+    leading?: ReactNode
+    type?: 'button' | 'submit' | 'reset'
+    disabled?: boolean
+    link?: string
+    className?: string
+}
+
+export const TextLink = (props: TextLinkProps) => {
+    return (
+        <a
+            href={props.link}
+            className={'btn-text btn-text-' + (props.variant ? props.variant : 'secondary') +
+                (props.fullWidth ? ' w-full' : ' w-fit') +
+                (props.disabled ? ' opacity-60 cursor-not-allowed' : '') +
+                (props.className ? ' ' + props.className : '')}>
+
+            {props.leading ? <span>{props.leading}</span> : ''}
+
+            {props.text ?
+                <span
+                    className={(props.textAlign ? 'text-' + props.textAlign : 'text-center') +
+                        (props.textFullWidth ? ' flex-1' : '')}>
+                    
+                    {props.text}
+                </span> : ''}
+
+            {props.trailing ? <span>{props.trailing}</span> : ''}
+        </a>
+    );
+}
+
 interface IconButtonProps {
     variant?: 'primary' | 'secondary' | 'accent' | 'outline'
     fullWidth?: boolean

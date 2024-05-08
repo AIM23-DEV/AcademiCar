@@ -10,7 +10,7 @@
   }
 
   .btn-text {
-    @apply focusable transition-all flex flex-row items-center justify-center subtitle space-x-2 rounded-md disabled:opacity-60 disabled:cursor-not-allowed;
+    @apply focusable transition-all flex flex-row items-center justify-center subtitle space-x-2 rounded-md disabled:opacity-60 disabled:cursor-not-allowed focus:ring-offset-0;
   }
 
   // Filled buttons

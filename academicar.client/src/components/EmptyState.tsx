@@ -13,7 +13,7 @@ interface EmptyStateProps {
 export const EmptyState = (props: EmptyStateProps) => {
     return (
         <div
-            className={'inline-flex flex-col items-center justify-center text-center w-full' + (props.asCard ? ' bg-white rounded-xl px-4 py-6 shadow-sm' : '') + ((props.className ? (' ' + props.className) : ''))}>
+            className={'items-center justify-center text-center' + (props.asCard ? ' card' : '') + ((props.className ? (' ' + props.className) : ''))}>
 
             <div
                 className={'flex items-center justify-center rounded-full text-gray-400'}>
