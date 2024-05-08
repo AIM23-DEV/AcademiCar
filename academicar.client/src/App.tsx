@@ -2,6 +2,7 @@ import {useEffect, useState} from 'react';
 import {BottomNavigationBar} from "./components/BottomNavigationBar.tsx";
 import {Button} from "./components/Buttons.tsx";
 import {TitleBar} from "./components/TitleBar.tsx";
+import {ConfirmationModal} from "./components/Modal.tsx";
 
 interface Forecast {
     date: string;
@@ -19,6 +20,7 @@ function App() {
     const [title, setTitle] = useState("AcademiCar");
     const [forecasts, setForecasts] = useState<Forecast[]>();
     const [testTableEntry, setTestTableEntry] = useState<TestTableEntry | null>(null);
+    const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
         populateWeatherData();
@@ -55,11 +57,12 @@ function App() {
         </table>;
     console.log("hehe:", testTableEntry?.name);
     return (
-        <div className="relative min-h-screen flex flex-col items-center mx-auto bg-gray-100 max-w-5xl selection:bg-primary-600 selection:text-white">
+        <div
+            className="relative min-h-screen flex flex-col items-center mx-auto bg-gray-100 max-w-5xl selection:bg-primary-600 selection:text-white">
             <TitleBar text="AcademiCar" hasBackAction/>
 
             <div className="w-full flex flex-col items-center p-6 space-y-8">
-                <Button text="Das ist ein Primary Button" className="" onClick={() => alert("Test")}/>
+                <Button text="Das ist ein Primary Button" className="" onClick={() => setShowModal(true)}/>
                 <p>This component demonstrates fetching data from the server.</p>
                 {contents}
                 {testTableEntry !== null && (
@@ -71,6 +74,10 @@ function App() {
             </div>
 
             <BottomNavigationBar selected="search"/>
+
+            <ConfirmationModal open={showModal} setOpen={setShowModal}
+                               onConfirm={() => alert("Confirmed")}
+                               subtitle="Das ist ein Bestätigungs-Modal. Hier kann man einige Einstellungen mitgeben!"/>
         </div>
     );
 
