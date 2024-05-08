@@ -45,7 +45,7 @@ export const BottomNavigationBarItem = (props: BottomNavigationBarItemProps) => 
     return (
         <li className="h-full relative w-10">
             <a href={props.link}
-               className={"h-full flex items-center justify-center" +
+               className={"h-full w-full flex items-center justify-center" +
                    (props.active ? ' text-primary-600' : '')}>
                 {props.icon}
             </a>
