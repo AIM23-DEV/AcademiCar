@@ -3,7 +3,8 @@ import {ReactNode} from "react";
 interface InputProps {
     label?: string
     id?: string
-    type?: string
+    type?: 'text' | 'email' | 'number' | 'search' | 'date' | 'datetime-local' |
+        'password' | 'color' | 'hidden' | 'tel' | 'time'
     fullWidth?: boolean
     placeholder?: string
     required?: boolean
@@ -15,23 +16,23 @@ interface InputProps {
 export const Input = (props: InputProps) => {
     return (
         <div className={props.fullWidth ? ' w-full' : ' w-fit'}>
-            <div className={"flex flex-col" + (props.className &&  ' ' + props.className)}>
+            <div className={"flex flex-col" + (props.className ? (' ' + props.className) : '')}>
                 {props.label ? (
                     <label htmlFor={props.id && props.id} className="form-label">
                         {props.label}
                     </label>
-                ) : null }
-                <div className={'relative' }>
+                ) : null}
+                <div className={'relative'}>
                     {props.leading ? (
                         <div className="form-icon start-0 ps-3">
                             <span>{props.leading}</span>
                         </div>
                     ) : null}
-    
+
                     <input
                         type={props.type ? props.type : 'text'}
                         id={props.id && props.id}
-                        className={"form-field" + (props.fullWidth ? ' w-full ' : ' w-fit ') + (props.leading ? ' pl-10' : '') + (props.trailing ? ' pr-10' : '')}
+                        className={"form-field" + (props.fullWidth ? ' w-full ' : ' w-fit') + (props.leading ? ' pl-10' : '') + (props.trailing ? ' pr-10' : '')}
                         placeholder={props.placeholder && props.placeholder}
                         required={props.required && props.required}
                     />
@@ -46,7 +47,7 @@ export const Input = (props: InputProps) => {
     )
 }
 
-interface SelectProps{
+interface SelectProps {
     label?: string
     id?: string
     fullWidth?: boolean
@@ -58,13 +59,13 @@ interface SelectProps{
 export const Select = (props: SelectProps) => {
     return (
         <div className={props.fullWidth ? ' w-full' : ' w-fit'}>
-            <div className={"flex flex-col" + (props.className &&  ' ' + props.className)}>
+            <div className={"flex flex-col" + (props.className && ' ' + props.className)}>
                 {props.label ? (
                     <label htmlFor={props.id && props.id} className="form-label">
                         {props.label}
                     </label>
                 ) : null}
-                
+
                 <select id={props.id && props.id}
                         className="form-field pr-10">
                     {props.options && Object.entries(props.options).map(([key, value], i) =>

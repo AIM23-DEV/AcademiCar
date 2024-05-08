@@ -55,7 +55,7 @@ function App() {
         </table>;
     console.log("hehe:", testTableEntry?.name);
     return (
-        <div className="relative min-h-screen flex flex-col items-center mx-auto bg-gray-100 max-w-5xl">
+        <div className="relative min-h-screen flex flex-col items-center mx-auto bg-gray-100 max-w-5xl selection:bg-primary-600 selection:text-white">
             <TitleBar text="AcademiCar" hasBackAction/>
 
             <div className="w-full flex flex-col items-center p-6 space-y-8">
