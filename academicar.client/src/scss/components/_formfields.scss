@@ -2,7 +2,7 @@
 
   // Input
   .form-field {
-    @apply p-3 focusable transition-all body-1 bg-white ring-[1.5px] border-none ring-gray-300 shadow-sm hover:shadow-none rounded-xl focus:ring-offset-0 invalid:ring-[1.5px] invalid:focus:ring disabled:opacity-60 disabled:opacity-60 disabled:shadow-none disabled:cursor-not-allowed
+    @apply p-3 focusable transition-all body-1 bg-white ring-[1.5px] border-none ring-gray-300 shadow-sm hover:shadow-none rounded-xl focus:ring-offset-0 invalid:ring-[1.5px] invalid:focus:ring disabled:opacity-60 disabled:shadow-none disabled:cursor-not-allowed
   }
 
   .form-icon {
@@ -10,6 +10,6 @@
   }
 
   .form-label {
-    @apply subtitle px-1 mb-1
+    @apply subtitle px-1 mb-1;
   }
 }

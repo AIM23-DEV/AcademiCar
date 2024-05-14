@@ -1,4 +1,5 @@
 import {ReactNode} from "react";
+import { Switch, Checkbox } from '@headlessui/react'
 
 interface InputProps {
     label?: string
@@ -77,6 +78,55 @@ export const Select = (props: SelectProps) => {
                     )}
                 </select>
             </div>
+        </div>
+    )
+}
+
+interface ToggleProps {
+    label?: string
+    disabled?: boolean
+    className?: string
+}
+
+export const Toggle = (props: ToggleProps) => {
+    return (
+        <div className={(props.label && 'flex flex-row justify-between rounded-lg m-0 w-full') + " focus:ring-1 focus:ring-primary-600 " + (props.className && ' ' + props.className)}>
+            {props.label ? (
+                <span>{props.label}</span>
+            ) : null }
+            <Switch
+                disabled={props.disabled}
+                className="focusable group flex h-6 w-11 items-center rounded-full bg-gray-300 transition data-[checked]:bg-primary-600 
+                disabled:opacity-60 disabled:shadow-none shadow-base"
+            >
+                <span className="size-5 translate-x-1 rounded-full bg-white shadow-sm transition group-data-[checked]:translate-x-5"/>
+            </Switch>
+        </div>
+    )
+}
+
+interface CheckmarkProps {
+    label?: string
+    id?: string
+    disabled?: boolean
+    className?: string
+}
+
+export const Checkmark = (props: CheckmarkProps) => {
+    return (
+        <div className="flex items-center gap-3">
+            <Checkbox
+                disabled={props.disabled && props.disabled}
+                className="focusable focus:ring-offset-0 group block size-4 rounded border bg-white data-[checked]:bg-primary-600"
+            >
+                <svg className="stroke-gray-400 stroke-1 opacity-0 group-data-[checked]:opacity-100" viewBox="0 0 14 14"
+                     fill="none">
+                    <path d="M3 8L6 11L11 3.5" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+            </Checkbox>
+            {props.label ? (
+                <span>{props.label}</span>
+            ) : null }
         </div>
     )
 }
