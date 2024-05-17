@@ -55,6 +55,8 @@ export default {
         'text-right',
         'text-center',
         'text-left',
+        'grid-cols-1',
+        'grid-cols-2'
     ],
     plugins: [
         require('@tailwindcss/forms'),

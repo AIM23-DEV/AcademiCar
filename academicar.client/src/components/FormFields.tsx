@@ -1,5 +1,6 @@
 import {ReactNode} from "react";
-import { Switch, Checkbox } from '@headlessui/react'
+import {Switch, Checkbox, RadioGroup, Field, Radio, Label} from '@headlessui/react'
+import {Divider} from "./Divider.tsx";
 
 interface InputProps {
     label?: string
@@ -90,16 +91,18 @@ interface ToggleProps {
 
 export const Toggle = (props: ToggleProps) => {
     return (
-        <div className={(props.label && 'flex flex-row justify-between rounded-lg m-0 w-full') + " focus:ring-1 focus:ring-primary-600 " + (props.className && ' ' + props.className)}>
+        <div
+            className={(props.label && 'flex flex-row justify-between rounded-lg m-0 w-full') + " focus:ring-1 focus:ring-primary-600 " + (props.className && ' ' + props.className)}>
             {props.label ? (
                 <span>{props.label}</span>
-            ) : null }
+            ) : null}
             <Switch
                 disabled={props.disabled}
                 className="focusable group flex h-6 w-11 items-center rounded-full bg-gray-300 transition data-[checked]:bg-primary-600 
                 disabled:opacity-60 disabled:shadow-none shadow-base"
             >
-                <span className="size-5 translate-x-1 rounded-full bg-white shadow-sm transition group-data-[checked]:translate-x-5"/>
+                <span
+                    className="size-5 translate-x-1 rounded-full bg-white shadow-sm transition group-data-[checked]:translate-x-5"/>
             </Switch>
         </div>
     )
@@ -114,19 +117,61 @@ interface CheckmarkProps {
 
 export const Checkmark = (props: CheckmarkProps) => {
     return (
-        <div className="flex items-center gap-3">
+        <Field className={"flex items-center gap-3 body-2" + props.className ? ' ' + props.className : ''}>
             <Checkbox
                 disabled={props.disabled && props.disabled}
                 className="focusable focus:ring-offset-0 group block size-4 rounded border bg-white data-[checked]:bg-primary-600"
             >
-                <svg className="stroke-gray-400 stroke-1 opacity-0 group-data-[checked]:opacity-100" viewBox="0 0 14 14"
+                <svg className="stroke-gray-100 stroke-1 opacity-0 group-data-[checked]:opacity-100" viewBox="0 0 14 14"
                      fill="none">
                     <path d="M3 8L6 11L11 3.5" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
             </Checkbox>
+
             {props.label ? (
-                <span>{props.label}</span>
-            ) : null }
-        </div>
+                <Label>{props.label}</Label>
+            ) : null}
+
+        </Field>
     )
 }
+
+interface RadioItemProps {
+    value: any
+    label: string | ReactNode
+    disabled?: boolean
+}
+
+interface RadioCollectionProps {
+    id?: string
+    value: any
+    setValue: (value: any) => void
+    items: Array<RadioItemProps>
+    columns?: 1 | 2
+    useDivider?: boolean
+    className?: string
+}
+
+export const RadioCollection = (props: RadioCollectionProps) => {
+    return (
+        <RadioGroup value={props.value} onChange={props.setValue}
+                    className={'w-full grid gap-3 body-2 grid-cols-' + (props.columns ?? 1) + (props.className ? ' ' + props.className : '')}>
+            {props.items.map((item, index) =>
+                <>
+                    <Field key={item.value} disabled={item.disabled} className="flex items-center gap-2">
+                        <Radio
+                            value={item.value}
+                            className="focusable focus:ring-offset-1 group flex size-5 items-center justify-center rounded-full border bg-white data-[checked]:bg-primary-500 data-[disabled]:bg-white data-[disabled]:opacity-60 data-[disabled]:cursor-not-allowed"
+                        >
+                            <span className="invisible size-2 rounded-full bg-white group-data-[checked]:visible"/>
+                        </Radio>
+                        <Label
+                            className="data-[disabled]:opacity-60 data-[disabled]:cursor-not-allowed">{item.label}</Label>
+                    </Field>
+
+                    {props.useDivider && index != props.items.length - 1 && (props.columns ?? 1) == 1 ? <Divider/> : ''}
+                </>
+            )}
+        </RadioGroup>
+    );
+};
