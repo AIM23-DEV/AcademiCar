@@ -2,17 +2,22 @@
 - [x] [Button](#button)
 - [x] [TextButton](#textbutton)
 - [x] [IconButton](#iconbutton)
-- [] CardInnerLabel
-- [] CardOuterLabel
+- [x] [Card](#card)
+- [x] [LinkCard](#linkcard)
 - [x] [BottomNavigationBar](#bottomnavigationbar)
 - [x] [Input](#input)
 - [x] [Dropdown](#dropdown)
+- [x] [Toggle](#toggle)
+- [x] [Checkmark](#checkmark)
+- [x] [Radio](#radio)
 - [x] [Divider](#divider)
 - [x] [TitleBar](#titlebar)
 - [x] [Toast](#toast)
-- [] Toggle
-- [] Checkbox
-- [] Radio
+- [x] [Stepper](#stepper)
+- [x] [EmptyState](#empty-state)
+- [x] [Tabs](#tabs)
+- [x] [Pagination](#pagination)
+- [x] [Slider](#slider)
 
 ---
 
@@ -219,6 +224,114 @@ Anwendung
 />
 ```
 
+## Card
+Parameter
+```js
+// Beschreibt den Wert, der das Label mit dem Feld verknüpft
+id: string
+
+// Beschreibt den Titel der Karte
+label: string | ReactNode
+
+// Beschreibt die Position des Labels
+// Das Label kann innerhalb oder außerhalb der Karte positioniert werden
+labelPosition: 'outside' | 'inside'
+
+// Beschreibt den Link einer zusätzlichen Aktion außerhalb der Karte
+outsideLink: string
+
+// Beschreibt den Text des Links
+// Hinter dem Text versteckt sich der tatsächliche Link
+outsideLinkText: string
+
+// Beschreibt die Abstände der Karte
+// Use sm only if the card does not use the full screen width. Only use sm with inside label
+padding: 'base' | 'sm' 
+
+// Beschreibt weiteren Inhalt des Empty States
+// Kann jede Art von HTML Elementen enthalten
+children: ReactNode
+
+// Beschreibt zusätzliche Styles oder Overwrites von bestehenden Klassen
+className: string
+```
+
+Import
+```js
+import {Card} from "./components/Cards.tsx";
+```
+
+Anwendung
+```js
+<Card
+  id="eine-id"
+  label="Ein Label"
+  labelPosition="outside"
+  outsideLink="https://google.com"
+  outsideLinkText="Outside Link"
+  padding="base"
+  className="mt-8"
+>
+  <p>Hier könnte jede Art von HTML stehen</p>
+</Card>
+```
+
+## LinkCard
+Parameter
+```js
+// Beschreibt den Wert, der das Label mit dem Feld verknüpft
+id: string
+
+// Beschreibt den Titel der Karte
+label: string | ReactNode
+
+// Beschreibt die Position des Labels
+// Das Label kann innerhalb oder außerhalb der Karte positioniert werden
+labelPosition: 'outside' | 'inside'
+
+// Beschreibt den Link einer zusätzlichen Aktion außerhalb der Karte
+outsideLink: string
+
+// Beschreibt den Text des Links
+// Hinter dem Text versteckt sich der tatsächliche Link
+outsideLinkText: string
+
+// Beschreibt die Abstände der Karte
+// Use sm only if the card does not use the full screen width. Only use sm with inside label
+padding: 'base' | 'sm'
+
+// Beschreibt den Link, der beim Klick auf die gesamte Karte ausgeführt wird
+link: string
+
+// Beschreibt weiteren Inhalt des Empty States
+// Kann jede Art von HTML Elementen enthalten
+children: ReactNode
+
+// Beschreibt zusätzliche Styles oder Overwrites von bestehenden Klassen
+className: string
+```
+
+Import
+```js
+import {Card, LinkCard} from "./components/Cards.tsx";
+```
+
+Anwendung
+```js
+<LinkCard
+  id="eine-id"
+  label="Ein Label"
+  labelPosition="outside"
+  outsideLink="https://google.com"
+  outsideLinkText="Outside Link"
+  padding="base"
+  link="https://maps.google.com"
+  className="mt-8"
+>
+  <p>Hier könnte jede Art von HTML stehen</p>
+</LinkCard>
+```
+
 ## BottomNavigationBar
 Parameter
 ```js
@@ -330,6 +443,125 @@ Anwendung
 />
 ```
 
+## Toggle
+Parameter
+```js
+// Beschreibt den Text neben dem Feld, der Text soll das Feld beschreiben
+label: string
+
+// Beschreibt, ob der Button disabled ist
+disabled: boolean
+
+// Beschreibt zusätzliche Styles oder Overwrites von bestehenden Klassen
+className: string
+```
+
+Import
+```js
+import {Input, Select, Toggle} from "./components/FormFields.tsx"
+```
+
+Anwendung
+```js
+<Toggle
+  label="Ein Label"
+  disabled={false}
+  className="mt-8"
+/>
+```
+
+## Checkmark
+Parameter
+```js
+// Beschreibt den Text neben dem Feld, der Text soll das Feld beschreiben
+label: string
+
+// Beschreibt den Wert, der das Label mit dem Feld verknüpft
+id: string
+
+// Beschreibt, ob der Button disabled ist
+disabled: boolean
+
+// Beschreibt zusätzliche Styles oder Overwrites von bestehenden Klassen
+className: string
+```
+
+Import
+```js
+import {Input, Select, Toggle, Checkmark} from "./components/FormFields.tsx"
+```
+        
+Anwendung
+```js
+<Checkmark
+  label="Ein Label"
+  id="eine-id"
+  disabled={false}
+  className="mt-8"
+/>
+```
+
+## Radio
+Parameter
+```js
+// Beschreibt die ID bzw. den Namen der gesamten Radio Gruppe
+id: string
+
+// Beschreibt den State der Komponente
+value: any
+
+// Setzt den aktuellen State
+setValue: (value: any) => void
+
+// Beschreibt die einzelnen Einträge
+// Die Einträge sind vom Typ RadioItemProps
+items: Array<RadioItemProps>
+        
+// Beschreibt, ob die Einträge ein- oder zweispaltig angezeigt werden 
+columns: 1 | 2
+
+// Beschreibt, ob ein Divider zwischen den einzelnen Einträgen angezeigt wird
+// Der Divider ist nur bei einer Spalte möglich
+useDivider: boolean
+
+// Beschreibt zusätzliche Styles oder Overwrites von bestehenden Klassen
+className: string
+```
+
+RadioItemProps Parameter
+```js
+// Beschreibt den Wert, der hinter einem Radio Eintrag liegt
+value: any
+
+// Beschreibt den Titel eines Radio Wertes
+label: string | ReactNode
+
+// Beschreibt, ob der Radio Eintrag aktiv ist
+disabled: boolean
+```
+
+Import
+```js
+import {Input, Select, Toggle, Checkmark, RadioCollection} from "./components/FormFields.tsx"
+```
+
+Anwendung
+```js
+<RadioCollection value={radioValue} setValue={setSetRadioValue} items={[
+    {
+        value: 1,
+        label:
+            <div className="flex flex-row space-x-3">
+                <span>Radio 1</span>
+                <BiLeaf className="icon"/>
+            </div>
+    },
+    {value: 2, label: "Radio 2"},
+    {value: 3, label: "Radio 3", disabled: true},
+    {value: 4, label: "Radio 4"},
+]} useDivider columns={1}/>
+```
+
 ## Divider
 Parameter
 ```js
@@ -409,5 +641,211 @@ Anwendung
 <Toast
     variant="success"
     message="Eine erfolgreiche Nachricht"
+/>
+```
+
+## Stepper
+Parameter
+```js
+// Beschreibt die Anzahl der möglichen Schritte
+steps: number
+
+// Beschreibt die aktuelle Position innerhalb der Prozessschritte
+current: number
+
+// Beschreibt zusätzliche Styles oder Overwrites von bestehenden Klassen
+className: string
+```
+
+Import
+```js
+import {Stepper} from "./components/Stepper.tsx";
+```
+
+Anwendung
+```js
+<Stepper
+  steps={4}
+  current={2}
+  className="mt-8"
+/>
+```
+
+## Empty State
+Parameter
+```js
+// Beschreibt das Icon des Empty State
+icon: ReactNode
+
+// Beschreibt den Titel des Empty State
+title: string | ReactNode
+
+// Beschreibt den Untertitel des Empty States
+subtitle: string | ReactNode
+
+// Beschreibt weiteren Inhalt des Empty States
+// Kann jede Art von HTML Elementen enthalten
+children: ReactNode
+
+// Beschreibt, ob der State als Karte ausgegeben wird
+asCard: boolean
+
+// Beschreibt zusätzliche Styles oder Overwrites von bestehenden Klassen
+className: string
+```
+
+Import
+```js
+import {EmptyState} from "./components/EmptyState.tsx";
+```
+
+Anwendung
+```js
+<EmptyState
+  icon={<BiSearch className="icon-lg"/>}
+  title="Der Titel"
+  subtitle="Der Subtitel"
+  asCard={true}
+  className="mt-8"
+>
+  <p>Hier könnte jede Art von HTML stehen</p>
+</EmptyState>
+```
+
+## Tabs
+Parameter
+```js
+// Beschreibt die einzelnen Tabs
+// Die Einträge sind vom Typ Tabinfo
+items: Array<TabInfo>
+        
+// Beschreibt den Index bzw. Tabeintrag, der beim Pageload angezeigt wird
+// Index startet bei 0
+current: number
+
+// Beschreibt zusätzliche Styles oder Overwrites von bestehenden Klassen
+className: string
+
+// Beschreibt weiteren Inhalt des Empty States
+// Kann jede Art von HTML Elementen enthalten
+children: ReactNode
+```
+
+TabInfo Parameter
+```js
+// Beschreibt den Namen eines Tabs
+name: string
+
+// Beschreibt das Icon eines Tabs
+icon: ReactNode
+
+// Beschreibt die Zahl, die bei einem Tab angezeigt wird
+// Diese Zahl soll zum Beispiel Notifications symbolisieren
+count: number
+```
+
+Import
+```js
+import {Tabs} from "./components/Tabs.tsx";
+```
+
+Anwendung
+```js
+<Tabs
+  items={[
+    {name: "Tab 1", count: 2, icon: <BiLeaf className="icon-md" />},
+    {name: "Tab 2", icon: <BiCar className="icon-md" />},
+    {name: "Tab 3"},
+  ]}
+  current={2}
+  className="mt-8"
+>
+  <p>Hier könnte jede Art von HTML stehen</p>
+</Tabs>
+```
+
+## Pagination
+Parameter
+```js
+// Beschreibt die aktuelle Seite bzw. die Seite auf der gestartet wird
+page: number
+
+// Beschreibt die Gesamtanzahl der vorhandenen Seiten
+totalPages: number
+
+// Beschreibt, ob die Seiten angezeigt werden
+// Alternativ gibt es nur die Buttons für die Navigation
+showPages: boolean
+
+// Beschreibt zusätzliche Styles oder Overwrites von bestehenden Klassen
+className: string
+```
+
+Import
+```js
+import {Pagination} from "./components/Pagination.tsx";
+```
+
+Anwendung
+```js
+<Pagination
+  page={1}
+  totalPages={10}
+  showPages={true}
+  className="mt-8"
+/>
+```
+
+## Slider
+Parameter
+```js
+// Beschreibt den State des Sliders
+value: number | number[]
+
+// Setzt den State des Sliders
+setValue: ((value: number | number[]) => void)
+
+// Beschreibt den geringsten Wert des Sliders
+min: number
+
+// Beschreibt den höchsten Wert des Sliders
+max: number
+
+// Beschreibt, wie groß die Schritte des Sliders sind
+step: number
+
+// Beschreibt, ob Abschnittspunkte angezeigt werden
+dots: boolean
+
+// Beschreibt, ob 
+range: boolean
+
+// Beschreibt, ob der Button disabled ist
+disabled: boolean
+
+// Beschreibt zusätzliche Styles oder Overwrites von bestehenden Klassen
+className: string
+```
+
+Import
+```js
+import {Slider} from "./components/Slider.tsx";
+```
+
+Anwendung
+```js
+// State für einen Slider
+const [slider, setSlider] = useState<number | number[]>(70);
+
+// State für einen Slider mit Range
+const [slider, setSlider] = useState<number | number[]>([70, 120]);
+
+<Slider
+  value={slider}
+  setValue={setSlider}
+  min={50}
+  max={200}
+  step={10}
+  dots
 />
 ```
