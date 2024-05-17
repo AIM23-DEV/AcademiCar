@@ -10,7 +10,7 @@ interface BottomNavigationBarProps {
 export const BottomNavigationBar = (props: BottomNavigationBarProps) => {
     return (
         <nav id="bottom-navigation-bar"
-             className={"fixed bottom-0 inset-x-0 h-16" + (props.className ? (' ' + props.className) : '')}>
+             className={"fixed bottom-0 inset-x-0 h-16 z-20" + (props.className ? (' ' + props.className) : '')}>
 
             <ul className="bg-white shadow-[0_3px_10px_rgb(0,0,0,0.2)] w-full h-full mx-auto max-w-2xl flex flex-row items-center justify-between px-5 sm:rounded-t-xl">
 

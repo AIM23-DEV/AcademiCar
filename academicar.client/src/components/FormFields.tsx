@@ -118,7 +118,7 @@ interface CheckmarkProps {
 export const Checkmark = (props: CheckmarkProps) => {
     return (
         <Field className={"flex items-center gap-3 body-2" + props.className ? ' ' + props.className : ''}>
-            <Checkbox
+            <Checkbox id={props.id} name={props.id}
                 disabled={props.disabled && props.disabled}
                 className="focusable focus:ring-offset-0 group block size-4 rounded border bg-white data-[checked]:bg-primary-600"
             >
@@ -154,7 +154,7 @@ interface RadioCollectionProps {
 
 export const RadioCollection = (props: RadioCollectionProps) => {
     return (
-        <RadioGroup value={props.value} onChange={props.setValue}
+        <RadioGroup id={props.id} name={props.id} value={props.value} onChange={props.setValue}
                     className={'w-full grid gap-3 body-2 grid-cols-' + (props.columns ?? 1) + (props.className ? ' ' + props.className : '')}>
             {props.items.map((item, index) =>
                 <>
