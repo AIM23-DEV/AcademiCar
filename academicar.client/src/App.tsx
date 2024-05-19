@@ -1,5 +1,8 @@
 import {useEffect, useState} from 'react';
-import './App.css';
+import {BottomNavigationBar} from "./components/BottomNavigationBar.tsx";
+import {Button} from "./components/Buttons.tsx";
+import {TitleBar} from "./components/TitleBar.tsx";
+import {ConfirmationModal} from "./components/Modal.tsx";
 
 interface Forecast {
     date: string;
@@ -14,13 +17,19 @@ interface TestTableEntry {
 }
 
 function App() {
+    const [title, setTitle] = useState("AcademiCar");
     const [forecasts, setForecasts] = useState<Forecast[]>();
     const [testTableEntry, setTestTableEntry] = useState<TestTableEntry | null>(null);
+    const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
         populateWeatherData();
         fetchTestTableEntryById(1);
     }, []);
+
+    useEffect(() => {
+        setTitle(title);
+    }, [title]);
 
     const contents = forecasts === undefined
         ? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a
@@ -28,7 +37,7 @@ function App() {
         </p>
         : <table className="mt-8" aria-labelledby="tabelLabel">
             <thead>
-            <tr>
+            <tr className="text-secondary-600">
                 <th>Date</th>
                 <th>Temp. (C)</th>
                 <th>Temp. (F)</th>
@@ -48,17 +57,27 @@ function App() {
         </table>;
     console.log("hehe:", testTableEntry?.name);
     return (
-        
-        <div className="flex flex-col items-center justify-center">
-            <h1 id="tabelLabel" className="text-2xl font-bold">Wieser und Hubert unterwegs</h1>
-            <p>This component demonstrates fetching data from the server.</p>
-            {contents}
-            {testTableEntry !== null && (
-                <div>
-                    <h2>TestTable Entry Details</h2>
-                    <p>Name: {testTableEntry.name}</p>
-                </div>
-            )}
+        <div
+            className="relative min-h-screen flex flex-col items-center mx-auto bg-gray-100 max-w-5xl selection:bg-primary-600 selection:text-white">
+            <TitleBar text="AcademiCar" hasBackAction/>
+
+            <div className="w-full flex flex-col items-center p-6 space-y-8">
+                <Button text="Das ist ein Primary Button" className="" onClick={() => setShowModal(true)}/>
+                <p>This component demonstrates fetching data from the server.</p>
+                {contents}
+                {testTableEntry !== null && (
+                    <div>
+                        <h2>TestTable Entry Details</h2>
+                        <p>Name: {testTableEntry.name}</p>
+                    </div>
+                )}
+            </div>
+
+            <BottomNavigationBar selected="search"/>
+
+            <ConfirmationModal open={showModal} setOpen={setShowModal}
+                               onConfirm={() => alert("Confirmed")}
+                               subtitle="Das ist ein Bestätigungs-Modal. Hier kann man einige Einstellungen mitgeben!"/>
         </div>
     );
 
