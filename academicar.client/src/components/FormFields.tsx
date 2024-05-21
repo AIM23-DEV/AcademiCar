@@ -13,6 +13,8 @@ interface InputProps {
     leading?: ReactNode
     trailing?: ReactNode
     className?: string
+    value?: string | number | readonly string[] | undefined
+    onChange?: React.ChangeEventHandler<HTMLInputElement> | undefined
 }
 
 export const Input = (props: InputProps) => {
@@ -37,6 +39,8 @@ export const Input = (props: InputProps) => {
                         className={"form-field" + (props.fullWidth ? ' w-full ' : ' w-fit') + (props.leading ? ' pl-10' : '') + (props.trailing ? ' pr-10' : '')}
                         placeholder={props.placeholder && props.placeholder}
                         required={props.required && props.required}
+                        value={props.value}
+                        onChange={props.onChange}
                     />
                     {props.trailing ? (
                         <div className="form-icon end-0 pe-3">
