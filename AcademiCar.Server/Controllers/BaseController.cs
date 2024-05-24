@@ -1,19 +1,18 @@
-﻿using AcademiCar.Server.DAL.Entities;
-using AcademiCar.Server.Services;
+﻿using AcademiCar.Server.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using AcademiCar.Server.DAL.Entities;
 
 namespace AcademiCar.Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class BaseController<T> : ControllerBase where T : Entity
+    public class BaseController<T> : ControllerBase where T : class, IEntity
     {
-        protected Service<T> _service = null;
-        protected ClaimsPrincipal _claimsPrincipal = null;
-        protected string _userEmail = null;
-
+        protected readonly Service<T> _service;
+        protected readonly ClaimsPrincipal _claimsPrincipal;
+        protected readonly string _userEmail;
 
         public BaseController(Service<T> service, IHttpContextAccessor accessor)
         {
@@ -23,15 +22,11 @@ namespace AcademiCar.Server.Controllers
             Task modelState = _service.SetModelState(ModelState);
             modelState.Wait();
 
-
-            var identity = (ClaimsPrincipal)accessor.HttpContext.User.Identity;
-            
-            IEnumerable<Claim> claims = identity.Claims;
-
-            var email = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
-            if (email != null)
+            var claims = _claimsPrincipal.Claims;
+            var emailClaim = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
+            if (emailClaim != null)
             {
-                _userEmail = email.Value;
+                _userEmail = emailClaim.Value;
 
                 /* TODO - Load user for authentication purposes?
                 Task user = _service.Load(_userEmail);
@@ -39,7 +34,6 @@ namespace AcademiCar.Server.Controllers
                 */
             }
         }
-
 
         #region Endpoints
 
