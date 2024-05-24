@@ -1,19 +1,19 @@
-import { useEffect, useState } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { BottomNavigationBar } from "./components/BottomNavigationBar.tsx";
-import { Button } from "./components/Buttons.tsx";
-import { ConfirmationModal } from "./components/Modal.tsx";
-import { TitleBar } from "./components/TitleBar.tsx";
-import { TripDetailPage } from './pages/search/TripDetailPage.tsx';
-import { HomePage } from './pages/HomePage.tsx';
-import { Layout } from './pages/Layout.tsx';
-import { AuthenticationPage } from './pages/auth/AuthenticationPage.tsx';
-import { NoPage } from './pages/NoPage.tsx';
-import { TripSearchPage } from './pages/search/TripSearchPage.tsx';
-import { TripsPage } from './pages/trips/TripsPage.tsx';
-import { TripCreatePage } from './pages/create/TripCreatePage.tsx';
-import { ChatPage } from './pages/chat/ChatPage.tsx';
-import { ProfilePage } from './pages/profile/ProfilePage.tsx';
+import {useEffect, useState} from 'react';
+import {Route, Routes} from 'react-router-dom';
+import {BottomNavigationBar} from "./components/BottomNavigationBar.tsx";
+import {Button} from "./components/Buttons.tsx";
+import {ConfirmationModal} from "./components/Modal.tsx";
+import {TitleBar} from "./components/TitleBar.tsx";
+import {TripDetailPage} from './pages/search/TripDetailPage.tsx';
+import {HomePage} from './pages/HomePage.tsx';
+import {Layout} from './pages/Layout.tsx';
+import {AuthenticationPage} from './pages/auth/AuthenticationPage.tsx';
+import {NoPage} from './pages/NoPage.tsx';
+import {TripSearchPage} from './pages/search/TripSearchPage.tsx';
+import {TripsPage} from './pages/trips/TripsPage.tsx';
+import {TripCreatePage} from './pages/create/TripCreatePage.tsx';
+import {ChatPage} from './pages/chat/ChatPage.tsx';
+import {ProfilePage} from './pages/profile/ProfilePage.tsx';
 
 interface Forecast {
     date: string;
@@ -70,22 +70,20 @@ function App() {
     console.log("hehe:", testTableEntry?.name);
     return (
         <div>
-            <BrowserRouter>
-                <Routes>
-                    <Route path="/login" element={<AuthenticationPage />} />
+            <Routes>
+                <Route path="/login" element={<AuthenticationPage/>}/>
 
-                    <Route path="/" element={<Layout />}>
-                        <Route index element={<HomePage />} />
-                        <Route path="search" element={<TripSearchPage />} />
-                        <Route path="trips" element={<TripsPage />} />
-                        <Route path="create" element={<TripCreatePage />} />
-                        <Route path="chat" element={<ChatPage />} />
-                        <Route path="profile" element={<ProfilePage />} />
-                        <Route path="detail/trip/:id" element={<TripDetailPage />} />
-                        <Route path="*" element={<NoPage />} />
-                    </Route>
-                </Routes>
-            </BrowserRouter>
+                <Route path="/" element={<Layout/>}>
+                    <Route index element={<HomePage/>}/>
+                    <Route path="search" element={<TripSearchPage/>}/>
+                    <Route path="trips" element={<TripsPage/>}/>
+                    <Route path="create" element={<TripCreatePage/>}/>
+                    <Route path="chat" element={<ChatPage/>}/>
+                    <Route path="profile" element={<ProfilePage/>}/>
+                    <Route path="detail/trip/:id" element={<TripDetailPage/>}/>
+                    <Route path="*" element={<NoPage/>}/>
+                </Route>
+            </Routes>
 
             # TODO Testing stuff, remove later
             <div
