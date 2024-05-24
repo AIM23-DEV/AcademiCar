@@ -20,7 +20,7 @@ export const SearchHistory = () => {
             <ul>
                 {pastTrips.map((trip, index) => (
                     <li key={index}>
-                        <Link to={`/detail/trip/${index}`}>{trip}</Link>
+                        <Link to={`/detail/trip/${index}`}>{trip.toString()}</Link> //.toString added only for now
                     </li>
                 ))}
             </ul>

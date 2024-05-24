@@ -38,7 +38,7 @@ export const BottomNavigationBar = (props: BottomNavigationBarProps) => {
 
 interface BottomNavigationBarItemProps {
     active?: boolean
-    link?: string
+    link: string
     icon: ReactNode
 }
 
