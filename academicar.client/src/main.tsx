@@ -4,9 +4,12 @@ import App from './App.tsx'
 import './index.scss'
 import '@fontsource-variable/outfit';
 import '@fontsource-variable/noto-sans';
+import {BrowserRouter} from "react-router-dom";
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+    <React.StrictMode>
+        <BrowserRouter>
+            <App/>
+        </BrowserRouter>
+    </React.StrictMode>,
 )
