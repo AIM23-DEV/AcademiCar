@@ -1,5 +1,5 @@
 import {Button} from "../../components/Buttons";
-import SetPageTitle from "../../hooks/SetPageTitle.tsx";
+import SetPageTitle from "../../hooks/set_page_title.tsx";
 import {TitleBar} from "../../components/TitleBar.tsx";
 import {useNavigate} from 'react-router-dom';
 

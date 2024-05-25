@@ -1,5 +1,5 @@
 import { TitleBar } from "../../components/TitleBar";
-import SetPageTitle from "../../hooks/SetPageTitle.tsx";
+import SetPageTitle from "../../hooks/set_page_title.tsx";
 import {BottomNavigationBar} from "../../components/BottomNavigationBar.tsx";
 
 // TODO add content components and follow up pages

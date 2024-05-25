@@ -1,6 +1,6 @@
 import {useParams} from 'react-router-dom';
 import {TitleBar} from "../../components/TitleBar";
-import SetPageTitle from "../../hooks/SetPageTitle.tsx";
+import SetPageTitle from "../../hooks/set_page_title.tsx";
 import {BottomNavigationBar} from "../../components/BottomNavigationBar.tsx";
 
 export const ShowTripPage = () => {

@@ -33,7 +33,7 @@ spezielle Komponenten welche z. B. nur in der Suche gebraucht werden sollten jew
 
 ## /hooks
 
-Hier befinden sich zusätzlich benötigte React-hooks.
+Hier befinden sich zusätzlich benötigte React-hooks. Hier gibt es Probleme mit Files in CamelCase, diese sollten also in snake_case benannt werden. 
 
 ## /pages
 

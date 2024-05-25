@@ -3,7 +3,7 @@ import {BottomNavigationBar} from "../components/BottomNavigationBar.tsx";
 import {Button} from "../components/Buttons.tsx";
 import {ConfirmationModal} from "../components/Modal.tsx";
 import {useState} from "react";
-import SetPageTitle from "../hooks/SetPageTitle.tsx";
+import SetPageTitle from "../hooks/set_page_title.tsx";
 
 // Todo delete this page once it is obsolete!
 // This is just an example page. The search page should be loaded as a default once implemented.
