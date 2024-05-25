@@ -11,7 +11,7 @@ interface TitleBarProps {
 export const TitleBar = (props: TitleBarProps) => {
     return (
         <div
-            className={'w-full flex flex-row items-end h-20 px-6 text-gray-950' + (props.className ? (' ' + props.className) : '')}>
+            className={'w-full flex flex-row items-end h-20 text-gray-950' + (props.className ? (' ' + props.className) : '')}>
 
             <div className="w-full flex flex-row items-center space-x-4 pb-1.5">
 

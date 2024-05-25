@@ -21,7 +21,7 @@ export const BottomNavigationBar = (props: BottomNavigationBarProps) => {
                 <BottomNavigationBarItem link="/trips" active={props.selected == 'trips'}
                                          icon={<BiCar className="icon-lg"/>}/>
 
-                <BottomNavigationBarItem link="/create" active={props.selected == 'create'}
+                <BottomNavigationBarItem link="/trips/create" active={props.selected == 'create'}
                                          icon={<BiPlus className="icon-lg"/>}/>
 
                 <BottomNavigationBarItem link="/chat" active={props.selected == 'chat'}
