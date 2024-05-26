@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import {Card} from "../../../components/Cards.tsx";
 
 interface Trip {
     // TODO implement Trip type globally...
@@ -15,8 +16,8 @@ export const SearchHistory = () => {
     const pastTrips: Trip[] = GetTripHistory();
 
     return (
-        <div>
-            <h1>Letzte Suchanfragen</h1>
+        <Card label="Letzte Suchanfragen" className="mt-8">
+            <h1>Todo</h1>
             <ul>
                 {pastTrips.map((trip, index) => (
                     <li key={index}>
@@ -24,6 +25,6 @@ export const SearchHistory = () => {
                     </li>
                 ))}
             </ul>
-        </div>
+        </Card>
     );
 };
