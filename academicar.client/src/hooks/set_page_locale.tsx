@@ -1,36 +1,23 @@
 import i18next from "i18next";
 import common_de from "../translations/de/common.json";
 import common_en from "../translations/en/common.json";
-import { useEffect, useState } from 'react';
 
 export default () => {
-    const [language, setLanguage] = useState('');
-
-
-    useEffect(() => {
-        const fetchLanguage = async () => {
-            // Simulate an asynchronous operation
-            const userLanguage = navigator.language || navigator.language;
-            // Simulate a delay (e.g., network request)
-            await new Promise(resolve => setTimeout(resolve, 0));
-            setLanguage(userLanguage);
-        };
-
-        fetchLanguage();
-    }, []);
-
-    if (!localStorage.getItem("locale")) {
-        localStorage.setItem("locale", language)
+    let browserLocale:string;
+    if (!localStorage.getItem('locale')) {
+        localStorage.setItem('locale', navigator.language)
+        browserLocale = navigator.language
+    }
+    else {
+        browserLocale = localStorage.getItem('locale') ?? 'en'
     }
 
-    let abc = localStorage.getItem('locale') ?? 'en'
-
     i18next.init({
-        interpolation: { escapeValue: false },  // React already does escaping
-        lng: abc,                              // language to use
+        interpolation: { escapeValue: false },
+        lng: browserLocale,
         resources: {
             en: {
-                common: common_en               // 'common' is our custom namespace
+                common: common_en
             },
             de: {
                 common: common_de
@@ -38,4 +25,3 @@ export default () => {
         },
     });
 }
-
