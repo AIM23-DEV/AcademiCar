@@ -1,0 +1,6 @@
+﻿@layer components {
+
+  .divider {
+    @apply flex-1 h-[1.5px] bg-gray-300 rounded-full
+  }
+}

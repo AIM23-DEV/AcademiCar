@@ -1,5 +1,5 @@
-using AcademiCar.Server.DAL;
 using AcademiCar.Server.DAL.Entities;
+using AcademiCar.Server.DAL.UnitOfWork;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AcademiCar.Server.Controllers

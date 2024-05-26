@@ -1,0 +1,28 @@
+@layer components {
+
+  // Base
+  .toast {
+    @apply w-full p-4 flex items-start justify-between rounded-xl body-1 space-x-2;
+  }
+
+  // Variants
+  .toast-success {
+    @apply bg-primary-600 text-gray-50 shadow-lg shadow-primary-900/10;
+  }
+
+  .toast-error {
+    @apply bg-accent-600 text-gray-50 shadow-lg shadow-accent-900/10;
+  }
+
+  .toast-warning {
+    @apply bg-orange-600 text-gray-50 shadow-lg shadow-orange-900/10;
+  }
+
+  .toast-info {
+    @apply bg-secondary-600 text-gray-50 shadow-lg shadow-secondary-900/10;
+  }
+
+  .toast-hint {
+    @apply bg-primary-200 text-primary-900 shadow-none;
+  }
+}
