@@ -18,3 +18,20 @@ services:
         - "8978:8978"
     volumes:
       - ./cloudbeaver_workspace:/workspace
+  web:
+    image: academicar.server
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=AcademiCar;Username=postgres;Password=1234
+      - ASPNETCORE_HTTPS_PORT=443
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - AZURE_CLIENT_ID=c1f49a67-0608-4c14-8c1b-c0423a5e7f78
+      - AZURE_TENANT_ID=4caa5dc8-1da7-4c89-8c89-dc816e05f20b
+      - AZURE_CLIENT_SECRET=<your-client-secret>
+    depends_on:
+      - postgres
+    ports:
+      - 8050:80
+      - 443:443
+    build:
+      context: ..
+      dockerfile: AcademiCar.Server/Dockerfile

@@ -1,5 +1,4 @@
 ﻿import { ReactNode } from "react";
-import { Link } from "react-router-dom";
 import {BiSearch, BiCar, BiPlus, BiChat, BiUser} from "react-icons/bi";
 
 interface BottomNavigationBarProps {
@@ -45,9 +44,7 @@ interface BottomNavigationBarItemProps {
 export const BottomNavigationBarItem = (props: BottomNavigationBarItemProps) => {
     return (
         <li className="h-full relative w-10">
-            <Link to={props.link} className={"h-full w-full flex items-center justify-center" + (props.active ? ' text-primary-600' : '')}>
-                {props.icon}
-            </Link>
+            
 
             {props.active &&
                 <div className="absolute top-0 w-full flex flex-row items-start justify-center">
