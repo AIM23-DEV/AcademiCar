@@ -1,0 +1,10 @@
+{
+  "title": "ein titel auf de",
+  "language-selector": {
+    "label": "Wähle deine Sprache aus",
+    "languages": {
+      "de": "Deutsch",
+      "en": "Englisch"
+    }
+  }
+}
