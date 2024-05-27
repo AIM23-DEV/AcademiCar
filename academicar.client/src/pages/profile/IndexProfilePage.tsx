@@ -4,14 +4,13 @@ import {BottomNavigationBar} from "../../components/BottomNavigationBar.tsx";
 import {TextButton} from "../../components/Buttons.tsx";
 import {useNavigate} from "react-router-dom";
 import {BiLogOut} from "react-icons/bi";
-import {useTranslation} from "react-i18next";
 import {LanguageSelector} from "../../components/LanguageSelector";
+
 
 // TODO add content components and follow up pages
 export const IndexProfilePage = () => {
     const pageTitle = "Mein Account";
     SetPageTitle(pageTitle);
-    const {t} = useTranslation("common");
 
     const navigate = useNavigate();
 
@@ -20,10 +19,6 @@ export const IndexProfilePage = () => {
             <TitleBar text={pageTitle}/>
 
             <LanguageSelector/>
-
-            <div className="App">
-                <h1>{t('title')}</h1>
-            </div>
 
             <div className="w-full flex flex-col items-center">
                 <TextButton

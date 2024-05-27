@@ -1,6 +1,8 @@
 import i18next from "i18next";
 import common_de from "../translations/de/common.json";
 import common_en from "../translations/en/common.json";
+import profile_de from "../translations/de/profile.json";
+import profile_en from "../translations/en/profile.json";
 
 export default () => {
     let browserLocale:string;
@@ -17,10 +19,13 @@ export default () => {
         lng: browserLocale,
         resources: {
             en: {
-                common: common_en
+                common: common_en,
+                profile: profile_en
+                
             },
             de: {
-                common: common_de
+                common: common_de,
+                profile: profile_de
             },
         },
     });
