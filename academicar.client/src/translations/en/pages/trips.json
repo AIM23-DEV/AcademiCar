@@ -1,0 +1,11 @@
+{
+  "IndexTripsPage": {
+    "title": "Current trips"
+  },
+  "CreateTripPage": {
+    "title": "Create a new trip"
+  },
+  "ShowTripPage": {
+    "title": "Trip {{id}} details"
+  }
+}

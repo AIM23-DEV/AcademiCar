@@ -1,10 +1,12 @@
 import {TitleBar} from "../../components/TitleBar";
 import SetPageTitle from "../../hooks/set_page_title.tsx";
 import {BottomNavigationBar} from "../../components/BottomNavigationBar.tsx";
+import {useTranslation} from "react-i18next";
 
 // TODO add list of trips for the current user
 export const IndexTripsPage = () => {
-    const pageTitle = "Aktuelle Fahrten";
+    const [t] = useTranslation(["common", "pages/trips"]);
+    const pageTitle = t("pages/trips:IndexTripsPage.title");
     SetPageTitle(pageTitle);
 
     return (

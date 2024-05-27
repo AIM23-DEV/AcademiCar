@@ -1,16 +1,8 @@
 {
-  "title": "AcademiCar",
-  
-  "buttons": {
-    "search": "Suchen"
-  },
-  
-  "language-selector": {
-    "label": "Wähle deine Sprache aus",
-    "languages": {
-      "de": "Deutsch",
-      "en": "Englisch"
-    }
+  "app_title": "AcademiCar",
+  "actions": {
+    "search": "Suchen",
+    "logout": "Abmelden"
   },
   "example": "Ein Beispiel mit {{variable}}"
 }

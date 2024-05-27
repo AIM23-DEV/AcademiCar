@@ -1,10 +1,12 @@
-import { TitleBar } from "../../components/TitleBar";
+import {TitleBar} from "../../components/TitleBar";
 import SetPageTitle from "../../hooks/set_page_title.tsx";
 import {BottomNavigationBar} from "../../components/BottomNavigationBar.tsx";
+import {useTranslation} from "react-i18next";
 
 // TODO add content components and follow up pages
 export const IndexChatsPage = () => {
-    const pageTitle = "Nachrichten";
+    const [t] = useTranslation(["common", "pages/chat"]);
+    const pageTitle = t("pages/chat:IndexChatsPage.title");
     SetPageTitle(pageTitle);
 
     return (

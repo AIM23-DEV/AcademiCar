@@ -3,9 +3,11 @@ import SetPageTitle from "../../hooks/set_page_title.tsx";
 import {BottomNavigationBar} from "../../components/BottomNavigationBar.tsx";
 import {SearchForm} from "./partials/SearchForm.tsx";
 import {SearchHistory} from "./partials/SearchHistory.tsx";
+import {useTranslation} from "react-i18next";
 
 export const SearchTripsPage = () => {
-    const pageTitle = "Mitfahrgelegenheit finden";
+    const [t] = useTranslation(['common', 'pages/search']);
+    const pageTitle = t("pages/search:SearchTripsPage.title");
     SetPageTitle(pageTitle);
 
     return (

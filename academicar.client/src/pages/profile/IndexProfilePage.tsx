@@ -5,24 +5,25 @@ import {TextButton} from "../../components/Buttons.tsx";
 import {useNavigate} from "react-router-dom";
 import {BiLogOut} from "react-icons/bi";
 import {LanguageSelector} from "../../components/LanguageSelector";
-
+import {useTranslation} from "react-i18next";
 
 // TODO add content components and follow up pages
 export const IndexProfilePage = () => {
-    const pageTitle = "Mein Account";
-    SetPageTitle(pageTitle);
-
+    const [t] = useTranslation(['common', 'pages/profile']);
     const navigate = useNavigate();
+
+    const pageTitle = t("pages/profile:IndexProfilePage.title");
+    SetPageTitle(pageTitle);
 
     return (
         <>
             <TitleBar text={pageTitle}/>
 
-            <LanguageSelector/>
+            <div className="w-full flex flex-col items-center py-6">
+                <LanguageSelector/>
 
-            <div className="w-full flex flex-col items-center">
                 <TextButton
-                    text="Logout"
+                    text={t("common:actions.logout")}
                     type="button"
                     fullWidth
                     textAlign="center"
