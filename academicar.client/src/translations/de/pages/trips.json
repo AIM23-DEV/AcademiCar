@@ -1,0 +1,11 @@
+{
+  "IndexTripsPage": {
+    "title": "Aktuelle Fahrten"
+  },
+  "CreateTripPage": {
+    "title": "Neue Fahrt erstellen"
+  },
+  "ShowTripPage": {
+    "title": "Details zu Fahrt {id}"
+  }
+}

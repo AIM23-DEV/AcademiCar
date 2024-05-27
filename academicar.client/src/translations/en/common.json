@@ -1,0 +1,8 @@
+{
+  "app_title": "AcademiCar",
+  "actions": {
+    "search": "Search",
+    "logout": "Logout"
+  },
+  "example": "An example with {{variable}}"
+}

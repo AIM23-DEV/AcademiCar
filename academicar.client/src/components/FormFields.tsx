@@ -1,4 +1,4 @@
-import {ReactNode} from "react";
+import {ChangeEventHandler, ReactNode} from "react";
 import {Switch, Checkbox, RadioGroup, Field, Radio, Label} from '@headlessui/react'
 import {Divider} from "./Divider.tsx";
 
@@ -57,28 +57,27 @@ interface SelectProps {
     id?: string
     fullWidth?: boolean
     required?: boolean
+    value?: string | number | readonly string[]
     options?: object
+    onChange?: ChangeEventHandler<HTMLSelectElement>
     className?: string
 }
 
 export const Select = (props: SelectProps) => {
     return (
         <div
-            className={"flex flex-col" + (props.fullWidth ? ' w-full' : ' w-fit') + (props.className && ' ' + props.className)}>
+            className={"flex flex-col" + (props.fullWidth ? ' w-full' : ' w-fit') + (props.className ? ' ' + props.className : '')}>
             {props.label ? (
                 <label htmlFor={props.id && props.id} className="form-label">
                     {props.label}
                 </label>
             ) : null}
 
-            <select id={props.id && props.id}
-                    className="form-field pr-10">
-                {props.options && Object.entries(props.options).map(([key, value], i) =>
-                    (i == 0) ? (
-                        <option value={key}>{value}</option>
-                    ) : (
-                        <option value={key}>{value}</option>
-                    )
+            <select id={props.id && props.id} required={props.required}
+                    className="form-field pr-10" onChange={props.onChange} value={props.value}>
+                {!props.required ? <option value={undefined}>Wähle eine Option...</option> : ''}
+                {props.options && Object.entries(props.options).map(([key, value]) =>
+                    <option key={key} value={key}>{value}</option>
                 )}
             </select>
         </div>

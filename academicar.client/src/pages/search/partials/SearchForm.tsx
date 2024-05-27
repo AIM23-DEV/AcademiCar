@@ -2,8 +2,10 @@ import {useState} from "react";
 import {Input} from "../../../components/FormFields.tsx";
 import {Button} from "../../../components/Buttons.tsx";
 import {Card} from "../../../components/Cards.tsx";
+import {useTranslation} from "react-i18next";
 
 export const SearchForm = () => {
+    const [t] = useTranslation(['common', 'pages/search']);
     const [startPoint, setStartPoint] = useState('');
     const [destination, setDestination] = useState('');
     const [date, setDate] = useState('');
@@ -52,7 +54,7 @@ export const SearchForm = () => {
                 <Button
                     variant="primary"
                     fullWidth
-                    text="Suchen"
+                    text={t("common:actions.search")}
                     textAlign="center"
                     onClick={handleSearch}
                     className="col-span-full"
