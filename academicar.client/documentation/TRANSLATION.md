@@ -12,19 +12,29 @@ Hier gibt es alle Infos zur Anwendung und Erstellung von Übersetzungsfiles.
 src
 └───translations
     ├───de
-    │   ├───auth.json
-    │   ├───chat.json
+    │   ├───components
+    │   │   └───language-selector.json
+    │   ├───pages
+    │   │   ├───auth.json
+    │   │   ├───chat.json
+    │   │   ├───profile.json
+    │   │   ├───search.json
+    │   │   └───trips.json
     │   ├───common.json
-    │   ├───profile.json
-    │   ├───search.json
-    │   └───trips.json
+    │   ├───inputs.json
+    │   └───validation.json
     └───en
-        ├───auth.json
-        ├───chat.json
+        ├───components
+        │   └───language-selector.json
+        ├───pages
+        │   ├───auth.json
+        │   ├───chat.json
+        │   ├───profile.json
+        │   ├───search.json
+        │   └───trips.json
         ├───common.json
-        ├───profile.json
-        ├───search.json
-        └───trips.json
+        ├───inputs.json
+        └───validation.json
 ```
 
 ## JSON Struktur
@@ -99,3 +109,40 @@ const {t} = useTranslation('common');
 ```
 
 ## Hinzufügen einer neuen Übersetzungsdatei
+Übersetzungsdateien erstellen
+- Eine neue .json Datei anlegen
+  - Jeweils im Ordner src/translations/de UND src/translations/en
+- Datei in den jeweils passenden Unterordner einfügen
+  - Übersetzungen für Seiten in - /pages
+  - Übersetzungen für Komponenten - in /components
+  - Allgemeine Übersetzungen - direkt in das Verzeichnis
+
+Import
+- Datei: react_i18next.tsx
+```js
+import newfile_de from "../translations/de/newfile.json";
+import newfile_en from "../translations/en/newfile.json";
+```
+
+Initialisieren
+- Datei: react_i18next.tsx
+```js
+await i18next.init({
+    interpolation: {escapeValue: false},
+    lng: locale,
+    debug: false,
+    resources: {
+        en: {
+            "newfile": newfile_en,
+            ...
+        },
+        de: {
+            "newfile": newfile_de,
+            ...
+        },
+    }
+})
+```
+
+Fertig
+- Die Übersetzungen aus der neuen Datei können nun wie zuvor beschrieben verwendet werden
