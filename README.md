@@ -17,4 +17,4 @@
 
 ## Link
 https://academicar.net/
-academicar-dev.azurewebsites.net
+https://academicar-dev.azurewebsites.net
