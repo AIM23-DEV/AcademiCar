@@ -15,15 +15,18 @@ RUN dotnet dev-certs https
 RUN dotnet dev-certs https --trust
 
 # Frontend build stage
-FROM node:20 AS frontend-build
+FROM node:20.14.0 AS frontend-build
 WORKDIR /src
 COPY ["AcademiCar.Server/certs/academicar.client.pem", "/root/.aspnet/https/academicar.client.pem"]
 COPY ["AcademiCar.Server/certs/academicar.client.key", "/root/.aspnet/https/academicar.client.key"]
 COPY academicar.client/package*.json academicar.client/
 WORKDIR /src/academicar.client
-RUN npm install
+RUN rm -rf node_modules
+RUN rm -rf package-lock.json
+RUN npm i
 COPY ../academicar.client/ .
 RUN npm run build
+
 
 # Backend build stage
 FROM with-node AS build
