@@ -10,6 +10,11 @@ services:
       - POSTGRES_PASSWORD=1234
       - POSTGRES_USER=postgres
       - POSTGRES_DB=AcademiCar 
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   cloudbeaver:
     container_name: dbeaver
     image: dbeaver/cloudbeaver:24.0.5
@@ -22,16 +27,30 @@ services:
     image: academicar.server
     environment:
       - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=AcademiCar;Username=postgres;Password=1234
-      - ASPNETCORE_HTTPS_PORT=443
-      - ASPNETCORE_URLS=https://+:443;http://+:80
       - AZURE_CLIENT_ID=c1f49a67-0608-4c14-8c1b-c0423a5e7f78
       - AZURE_TENANT_ID=4caa5dc8-1da7-4c89-8c89-dc816e05f20b
-      - AZURE_CLIENT_SECRET=<your-client-secret>
+      - ASPNETCORE_ENVIRONMENT=Development
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     ports:
       - 8050:80
       - 443:443
     build:
       context: ..
       dockerfile: AcademiCar.Server/Dockerfile
+  vite:
+    build:
+      context: ..
+      dockerfile: AcademiCar.Server/Dockerfile
+      target: frontend-build
+    image: academicar.vite
+    ports:
+      - "5173:5173"
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./academicar.client:/src/academicar.client
+    command: [ "npm", "run", "dev" ]
+    depends_on:
+      - web

@@ -7,11 +7,12 @@ EXPOSE 8081
 
 # SDK image with Node.js for building
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS with-node
-RUN apt-get update
-RUN apt-get install curl
+RUN apt-get update && apt-get install -y curl apt-transport-https lsb-release gnupg
 RUN curl -sL https://deb.nodesource.com/setup_20.x | bash
 RUN apt-get -y install nodejs
 RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+RUN dotnet dev-certs https
+RUN dotnet dev-certs https --trust
 
 # Frontend build stage
 FROM node:20 AS frontend-build
