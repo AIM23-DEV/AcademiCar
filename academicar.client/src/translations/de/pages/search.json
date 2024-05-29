@@ -1,5 +1,8 @@
 {
   "SearchTripsPage": {
     "title": "Mitfahrgelegenheit finden"
+  },
+  "SearchResultsPage": {
+    "title": "Suchergebnisse"
   }
 }

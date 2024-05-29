@@ -1,5 +1,8 @@
 {
   "SearchTripsPage": {
     "title": "Find a ride"
+  },
+  "SearchResultsPage": {
+    "title": "Search results"
   }
 }
