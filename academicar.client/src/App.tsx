@@ -10,6 +10,20 @@ const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     return user ? <>{children}</> : <Navigate to="/" />;
 };
 
+const AdminPrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    const { user } = useAuth();
+
+    if (!user) {
+        return <Navigate to="/admin-login" />;
+    }
+
+   /* if (!user.Roles || !user.Roles.includes('admin')) {
+        return <Navigate to="/admin-login" />;
+    }*/
+
+    return <>{children}</>;
+};
+
 const App: React.FC = () => {
     return (
         <AuthProvider>
@@ -28,9 +42,9 @@ const App: React.FC = () => {
                     <Route
                         path="/admin/dashboard"
                         element={
-                            <PrivateRoute>
+                            <AdminPrivateRoute>
                                 <Dashboard />
-                            </PrivateRoute>
+                            </AdminPrivateRoute>
                         }
                     />
                 </Routes>

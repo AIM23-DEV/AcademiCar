@@ -55,7 +55,13 @@ builder.Services.AddAuthentication(options =>
         options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
         options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme; // Use Cookie as the default challenge scheme for now
     })
-    .AddCookie();
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/api/user/adminlogin";
+        options.LogoutPath = "/api/user/logout";  
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    });
 
 // Conditional SAML2 Setup
 var enableSaml2 = builder.Configuration.GetValue<bool>("EnableSaml2");

@@ -4,6 +4,7 @@ import App from './App.tsx'
 import './index.scss'
 import '@fontsource-variable/outfit';
 import '@fontsource-variable/noto-sans';
+import './axiosConfig';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

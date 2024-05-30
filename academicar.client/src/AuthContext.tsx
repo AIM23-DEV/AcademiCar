@@ -1,4 +1,4 @@
-﻿import {createContext, ReactElement, ReactNode, useContext, useEffect, useState} from 'react';
+﻿import { createContext, ReactElement, ReactNode, useEffect, useContext, useState } from 'react';
 import axios from 'axios';
 
 interface AuthContextProps {
@@ -11,7 +11,9 @@ interface AuthContextProps {
 
 interface User {
     name: string;
-    roles: string[];
+    //roles: string[];
+    userName: string
+    firstName: string;
     [key: string]: any;
 }
 
@@ -43,9 +45,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }): ReactElemen
 
     const adminLogin = async (username: string, password: string) => {
         try {
-            await axios.post('/admin/login', { username, password });
-            setUser({ name: username, roles: ['admin'] });
-        } catch (error) {
+            const response = await axios.post('/api/User/AdminLogin', { username, password });
+            setUser(response.data); // Ensure this sets UserName and FirstName
+        } catch (error) { 
             throw new Error('Admin login failed');
         }
     };

@@ -43,11 +43,11 @@ namespace AcademiCar.Server.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<List<T>> GetAll() => await _service.Get();
 
-        [HttpGet("{id}")]
+        /*[HttpGet("{id}")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<T> Get(int id) => await _service.Get(id);
+        public async Task<T> Get(int id) => await _service.Get(id);*/
 
         #endregion
     }
