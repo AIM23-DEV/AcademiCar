@@ -1,4 +1,4 @@
-import {ReactNode} from "react";
+import {ChangeEventHandler, ReactNode} from "react";
 import {Switch, Checkbox, RadioGroup, Field, Radio, Label} from '@headlessui/react'
 import {Divider} from "./Divider.tsx";
 
@@ -13,37 +13,40 @@ interface InputProps {
     leading?: ReactNode
     trailing?: ReactNode
     className?: string
+    value?: string | number | readonly string[] | undefined
+    onChange?: React.ChangeEventHandler<HTMLInputElement> | undefined
 }
 
 export const Input = (props: InputProps) => {
     return (
-        <div className={props.fullWidth ? ' w-full' : ' w-fit'}>
-            <div className={"flex flex-col" + (props.className ? (' ' + props.className) : '')}>
-                {props.label ? (
-                    <label htmlFor={props.id && props.id} className="form-label">
-                        {props.label}
-                    </label>
+        <div
+            className={"flex flex-col" + (props.fullWidth ? ' w-full' : ' w-fit') + (props.className ? (' ' + props.className) : '')}>
+            {props.label ? (
+                <label htmlFor={props.id && props.id} className="form-label">
+                    {props.label}
+                </label>
+            ) : null}
+            <div className={'relative'}>
+                {props.leading ? (
+                    <div className="form-icon start-0 ps-3">
+                        <span>{props.leading}</span>
+                    </div>
                 ) : null}
-                <div className={'relative'}>
-                    {props.leading ? (
-                        <div className="form-icon start-0 ps-3">
-                            <span>{props.leading}</span>
-                        </div>
-                    ) : null}
 
-                    <input
-                        type={props.type ? props.type : 'text'}
-                        id={props.id && props.id}
-                        className={"form-field" + (props.fullWidth ? ' w-full ' : ' w-fit') + (props.leading ? ' pl-10' : '') + (props.trailing ? ' pr-10' : '')}
-                        placeholder={props.placeholder && props.placeholder}
-                        required={props.required && props.required}
-                    />
-                    {props.trailing ? (
-                        <div className="form-icon end-0 pe-3">
-                            <span>{props.trailing}</span>
-                        </div>
-                    ) : null}
-                </div>
+                <input
+                    type={props.type ? props.type : 'text'}
+                    id={props.id && props.id}
+                    className={"form-field" + (props.fullWidth ? ' w-full ' : ' w-fit') + (props.leading ? ' pl-10' : '') + (props.trailing ? ' pr-10' : '')}
+                    placeholder={props.placeholder && props.placeholder}
+                    required={props.required && props.required}
+                    value={props.value}
+                    onChange={props.onChange}
+                />
+                {props.trailing ? (
+                    <div className="form-icon end-0 pe-3">
+                        <span>{props.trailing}</span>
+                    </div>
+                ) : null}
             </div>
         </div>
     )
@@ -54,31 +57,29 @@ interface SelectProps {
     id?: string
     fullWidth?: boolean
     required?: boolean
+    value?: string | number | readonly string[]
     options?: object
+    onChange?: ChangeEventHandler<HTMLSelectElement>
     className?: string
 }
 
 export const Select = (props: SelectProps) => {
     return (
-        <div className={props.fullWidth ? ' w-full' : ' w-fit'}>
-            <div className={"flex flex-col" + (props.className && ' ' + props.className)}>
-                {props.label ? (
-                    <label htmlFor={props.id && props.id} className="form-label">
-                        {props.label}
-                    </label>
-                ) : null}
+        <div
+            className={"flex flex-col" + (props.fullWidth ? ' w-full' : ' w-fit') + (props.className ? ' ' + props.className : '')}>
+            {props.label ? (
+                <label htmlFor={props.id && props.id} className="form-label">
+                    {props.label}
+                </label>
+            ) : null}
 
-                <select id={props.id && props.id}
-                        className="form-field pr-10">
-                    {props.options && Object.entries(props.options).map(([key, value], i) =>
-                        (i == 0) ? (
-                            <option value={key}>{value}</option>
-                        ) : (
-                            <option value={key}>{value}</option>
-                        )
-                    )}
-                </select>
-            </div>
+            <select id={props.id && props.id} required={props.required}
+                    className="form-field pr-10" onChange={props.onChange} value={props.value}>
+                {!props.required ? <option value={undefined}>Wähle eine Option...</option> : ''}
+                {props.options && Object.entries(props.options).map(([key, value]) =>
+                    <option key={key} value={key}>{value}</option>
+                )}
+            </select>
         </div>
     )
 }
@@ -119,8 +120,8 @@ export const Checkmark = (props: CheckmarkProps) => {
     return (
         <Field className={"flex items-center gap-3 body-2" + props.className ? ' ' + props.className : ''}>
             <Checkbox id={props.id} name={props.id}
-                disabled={props.disabled && props.disabled}
-                className="focusable focus:ring-offset-0 group block size-4 rounded border bg-white data-[checked]:bg-primary-600"
+                      disabled={props.disabled && props.disabled}
+                      className="focusable focus:ring-offset-0 group block size-4 rounded border bg-white data-[checked]:bg-primary-600"
             >
                 <svg className="stroke-gray-100 stroke-1 opacity-0 group-data-[checked]:opacity-100" viewBox="0 0 14 14"
                      fill="none">

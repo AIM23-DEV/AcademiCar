@@ -5,9 +5,14 @@ import './index.scss'
 import '@fontsource-variable/outfit';
 import '@fontsource-variable/noto-sans';
 import './axiosConfig';
+import {BrowserRouter} from "react-router-dom";
+import {InitLocalization} from "./hooks/react_i18next.tsx";
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-)
+InitLocalization().then(() =>
+    ReactDOM.createRoot(document.getElementById('root')!).render(
+        <React.StrictMode>
+            <BrowserRouter>
+                <App/>
+            </BrowserRouter>
+        </React.StrictMode>,
+    ));
