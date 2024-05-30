@@ -8,202 +8,243 @@ import {GoPlus} from "react-icons/go";
 import {LinkCard} from "../../components/Cards.tsx";
 import {BiMap, BiRadioCircleMarked, BiSolidStar, BiUserCircle} from "react-icons/bi";
 import {Divider} from "../../components/Divider.tsx";
+import React from "react";
 
 // TODO add list of trips for the current user
+
+interface Stop {
+    location: string;
+    time: string;
+    freeSeats: number;
+}
+
+interface RouteProps {
+    startPoint: Stop;
+    endPoint: Stop;
+    stops: Stop[];
+}
+const Route: React.FC<RouteProps> = ({ startPoint, endPoint, stops }) => {
+    return (
+        <div className="flex gap-4">
+            <div className="flex flex-col items-center">
+                <span><BiRadioCircleMarked className="icon-md text-primary-600" /></span>
+                {stops.map((_, index) => (
+                    <React.Fragment key={index}>
+                        <span className="h-full border-gray-400 border-r-2 border-dashed"></span>
+                        <span><BiMap className="icon text-primary-600" /></span>
+                    </React.Fragment>
+                ))}
+                <span className="h-full border-gray-400 border-r-2 border-dashed"></span>
+                <span><BiMap className="icon text-primary-600" /></span>
+            </div>
+            <div className="w-full flex flex-col gap-4">
+                <div className="flex flex-row justify-between items-center">
+                    <div>
+                        <div className="text-gray-400 text-xs">Startpunkt</div>
+                        <div className="body-1">{startPoint.location}</div>
+                    </div>
+                    <div className="body-2 text-sm">{startPoint.time}</div>
+                </div>
+                <div className="flex flex-row items-center gap-2">
+                    <span className="flex">
+                        {Array.from({ length: 4 - startPoint.freeSeats }).map((_, index) => (
+                            <BiUserCircle key={index} className="icon text-primary-600" />
+                        ))}
+                    </span>
+                    <span className="text-gray-400 text-xs">freie Plätze</span>
+                </div>
+                {stops.map((stop, index) => (
+                    <React.Fragment key={index}>
+                        <div className="flex flex-row justify-between items-center">
+                            <div>
+                                <div className="text-gray-400 text-xs">Zwischenstopp</div>
+                                <div className="body-1">{stop.location}</div>
+                            </div>
+                            <div className="body-2 text-sm">{stop.time}</div>
+                        </div>
+                        <div className="flex flex-row items-center gap-2">
+                            <span className="flex">
+                                {Array.from({ length: 4 - stop.freeSeats }).map((_, idx) => (
+                                    <BiUserCircle key={idx} className="icon text-primary-600" />
+                                ))}
+                            </span>
+                            <span className="text-gray-400 text-xs">freie Plätze</span>
+                        </div>
+                    </React.Fragment>
+                ))}
+                <div className="flex flex-row justify-between items-center">
+                    <div>
+                        <div className="text-gray-400 text-xs">Ziel</div>
+                        <div className="body-1">{endPoint.location}</div>
+                    </div>
+                    <div className="body-2 text-sm">{endPoint.time}</div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
 export const IndexTripsPage = () => {
     const [t] = useTranslation(["common", "pages/trips"]);
     const navigate = useNavigate();
     const pageTitle = t("pages/trips:IndexTripsPage.title");
     SetPageTitle(pageTitle);
 
+    // Example trips data
+    const myTrips = [
+        {
+            startPoint: { location: "Graz Hauptbahnhof", time: "13:00 Uhr", freeSeats: 2 },
+            endPoint: { location: "Wien Flughafen", time: "15:30 Uhr", freeSeats: 2 },
+            stops: [
+                { location: "Linz Hauptbahnhof", time: "14:00 Uhr", freeSeats: 1 },
+                { location: "St. Pölten Hauptbahnhof", time: "14:45 Uhr", freeSeats: 3 }
+            ],
+            price: "€ 12,80",
+            driver: {
+                name: "John Doe",
+                rating: 4.0,
+                avatar: "/../src/assets/react.svg"
+            }
+        },
+        {
+            startPoint: { location: "Salzburg Hauptbahnhof", time: "10:00 Uhr", freeSeats: 1 },
+            endPoint: { location: "Innsbruck Hauptbahnhof", time: "12:30 Uhr", freeSeats: 1 },
+            stops: [
+                { location: "Wörgl Hauptbahnhof", time: "11:00 Uhr", freeSeats: 0 },
+                { location: "Jenbach Bahnhof", time: "11:45 Uhr", freeSeats: 2 }
+            ],
+            price: "€ 15,00",
+            driver: {
+                name: "Jane Smith",
+                rating: 4.5,
+                avatar: "/../src/assets/react.svg"
+            }
+        }
+    ];
+
+    const passengerTrips = [
+        {
+            startPoint: { location: "Graz Hauptbahnhof", time: "13:00 Uhr", freeSeats: 2 },
+            endPoint: { location: "Wien Flughafen", time: "15:30 Uhr", freeSeats: 2 },
+            stops: [
+                { location: "Linz Hauptbahnhof", time: "14:00 Uhr", freeSeats: 1 },
+                { location: "St. Pölten Hauptbahnhof", time: "14:45 Uhr", freeSeats: 3 }
+            ],
+            price: "€ 12,80",
+            driver: {
+                name: "John Doe",
+                rating: 4.0,
+                avatar: "/../src/assets/react.svg"
+            }
+        },
+        {
+            startPoint: { location: "Salzburg Hauptbahnhof", time: "10:00 Uhr", freeSeats: 1 },
+            endPoint: { location: "Innsbruck Hauptbahnhof", time: "12:30 Uhr", freeSeats: 1 },
+            stops: [
+                { location: "Wörgl Hauptbahnhof", time: "11:00 Uhr", freeSeats: 0 },
+                { location: "Jenbach Bahnhof", time: "11:45 Uhr", freeSeats: 2 }
+            ],
+            price: "€ 15,00",
+            driver: {
+                name: "Jane Smith",
+                rating: 4.5,
+                avatar: "/../src/assets/react.svg"
+            }
+        }
+    ];
+
     return (
         <>
-            <TitleBar text={pageTitle}/>
-
+            <TitleBar text={pageTitle} />
             <div className="w-full flex flex-col items-center">
-                <LinkCard 
-                    label="Meine Fahrten" 
-                    className="mt-6"
-                    outsideLinkText="Archiv"
-                    outsideLink="/trips/history/driver">
-                    <div>
-                        <div className="flex justify-between items-center">
-                            <div className="flex flex-row gap-4">
-                                <div className="flex justify-center">
-                                    <img
-                                        src="/../src/assets/react.svg"
-                                        alt="avatar"
-                                        className="border-gray-600 rounded-full"
-                                    />
-                                </div>
-                                <div>
-                                    <div>John Doe</div>
-                                    <div className="flex items-center">
-                                        <span><BiSolidStar className="icon text-yellow-400"/></span>
-                                        <span><BiSolidStar className="icon text-yellow-400"/></span>
-                                        <span><BiSolidStar className="icon text-yellow-400"/></span>
-                                        <span><BiSolidStar className="icon text-yellow-400"/></span>
-                                        <span><BiSolidStar className="icon text-gray-300"/></span>
-                                        <span className="ml-2">(4,0)</span>
+                {myTrips.map((trip, index) => (
+                    <LinkCard
+                        key={index}
+                        label={index === 0 ? "Meine Fahrten" : ""}
+                        className="mt-6"
+                        outsideLinkText={index === 0 ? "Archiv" : ""}
+                        outsideLink={index === 0 ? "/trips/history/driver" : ""}>
+                        <div>
+                            <div className="flex justify-between items-center">
+                                <div className="flex flex-row gap-4">
+                                    <div className="flex justify-center">
+                                        <img
+                                            src={trip.driver.avatar}
+                                            alt="avatar"
+                                            className="border-gray-600 rounded-full"
+                                        />
+                                    </div>
+                                    <div>
+                                        <div>{trip.driver.name}</div>
+                                        <div className="flex items-center">
+                                            {Array.from({ length: Math.floor(trip.driver.rating) }).map((_, idx) => (
+                                                <BiSolidStar key={idx} className="icon text-yellow-400" />
+                                            ))}
+                                            {Array.from({ length: 5 - Math.floor(trip.driver.rating) }).map((_, idx) => (
+                                                <BiSolidStar key={idx} className="icon text-gray-300" />
+                                            ))}
+                                            <span className="ml-2">({trip.driver.rating.toFixed(1)})</span>
+                                        </div>
                                     </div>
                                 </div>
+                                <div className="subtitle">{trip.price}</div>
                             </div>
-                            <div className="subtitle">€ 12,80</div>
-                        </div>
 
-                        <Divider/>
+                            <Divider />
 
-                        <div className="flex gap-4">
-                            <div className="flex flex-col items-center">
-                                <span><BiRadioCircleMarked className="icon-md text-primary-600"/></span>
-                                <span className="h-full border-gray-400 border-r-2 border-dashed"></span>
-                                <span><BiMap className="icon text-primary-600"/></span>
-                                <span className="h-full border-gray-400 border-r-2 border-dashed"></span>
-                                <span><BiMap className="icon text-primary-600"/></span>
-                            </div>
-                            <div className="w-full flex flex-col gap-4">
-                                <div className="flex flex-row justify-between items-center">
-                                    <div>
-                                        <div className="text-gray-400 text-xs">Startpunkt</div>
-                                        <div className="body-1">Graz Hauptbahnhof</div>
-                                    </div>
-                                    <div className="body-2 text-sm">13:00 Uhr</div>
-                                </div>
-                                <div className="flex flex-row items-center gap-2">
-                                    <span className="flex">
-                                        <BiUserCircle className="icon text-primary-600"/>
-                                        <BiUserCircle className="icon text-primary-600"/>
-                                        <BiUserCircle className="icon text-primary-600"/>
-                                        <BiUserCircle className="icon text-primary-600"/>
-                                    </span>
-                                    <span className="text-gray-400 text-xs">freie Plätze</span>
-                                </div>
-                                <div className="flex flex-row justify-between items-center">
-                                    <div>
-                                        <div className="text-gray-400 text-xs">Startpunkt</div>
-                                        <div className="body-1">Graz Hauptbahnhof</div>
-                                    </div>
-                                    <div className="body-2 text-sm">13:00 Uhr</div>
-                                </div>
-                                <div className="flex flex-row items-center gap-2">
-                                    <span className="flex">
-                                        <BiUserCircle className="icon text-primary-600"/>
-                                        <BiUserCircle className="icon text-primary-600"/>
-                                        <BiUserCircle className="icon text-primary-600"/>
-                                        <BiUserCircle className="icon text-primary-600"/>
-                                    </span>
-                                    <span className="text-gray-400 text-xs">freie Plätze</span>
-                                </div>
-                                <div className="flex flex-row justify-between items-center">
-                                    <div>
-                                        <div className="text-gray-400 text-xs">Ziel</div>
-                                        <div className="body-1">Wien Flughafen</div>
-                                    </div>
-                                    <div className="body-2 text-sm">15:30 Uhr</div>
-                                </div>
-                            </div>
+                            <Route startPoint={trip.startPoint} endPoint={trip.endPoint} stops={trip.stops} />
                         </div>
-                    </div>
-                </LinkCard>
-                <LinkCard
-                    label="Passagier"
-                    className="mt-6 mb-24"
-                    outsideLinkText="Archiv"
-                    outsideLink="/trips/history/passenger">
-                    <div>
-                        <div className="flex justify-between items-center">
-                            <div className="flex flex-row gap-4">
-                                <div className="flex justify-center">
-                                    <img
-                                        src="/../src/assets/react.svg"
-                                        alt="avatar"
-                                        className="border-gray-600 rounded-full"
-                                    />
-                                </div>
-                                <div>
-                                    <div>John Doe</div>
-                                    <div className="flex items-center">
-                                        <span><BiSolidStar className="icon text-yellow-400"/></span>
-                                        <span><BiSolidStar className="icon text-yellow-400"/></span>
-                                        <span><BiSolidStar className="icon text-yellow-400"/></span>
-                                        <span><BiSolidStar className="icon text-yellow-400"/></span>
-                                        <span><BiSolidStar className="icon text-gray-300"/></span>
-                                        <span className="ml-2">(4,0)</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="subtitle">€ 12,80</div>
-                        </div>
+                    </LinkCard>
+                ))}
 
-                        <Divider/>
+                {passengerTrips.map((trip, index) => (
+                    <LinkCard
+                        key={index}
+                        label={index === 0 ? "Passagier" : ""}
+                        className={`mt-6 ${index === passengerTrips.length - 1 ? "mb-24" : ""}`}
+                        outsideLinkText={index === 0 ? "Archiv" : ""}
+                        outsideLink={index === 0 ? "/trips/history/passenger" : ""}>
+                        <div>
+                            <div className="flex justify-between items-center">
+                                <div className="flex flex-row gap-4">
+                                    <div className="flex justify-center">
+                                        <img
+                                            src={trip.driver.avatar}
+                                            alt="avatar"
+                                            className="border-gray-600 rounded-full"
+                                        />
+                                    </div>
+                                    <div>
+                                        <div>{trip.driver.name}</div>
+                                        <div className="flex items-center">
+                                            {Array.from({ length: Math.floor(trip.driver.rating) }).map((_, idx) => (
+                                                <BiSolidStar key={idx} className="icon text-yellow-400" />
+                                            ))}
+                                            {Array.from({ length: 5 - Math.floor(trip.driver.rating) }).map((_, idx) => (
+                                                <BiSolidStar key={idx} className="icon text-gray-300" />
+                                            ))}
+                                            <span className="ml-2">({trip.driver.rating.toFixed(1)})</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="subtitle">{trip.price}</div>
+                            </div>
 
-                        <div className="flex gap-4">
-                            <div className="flex flex-col items-center">
-                                <span><BiRadioCircleMarked className="icon-md text-primary-600"/></span>
-                                <span className="h-full border-gray-400 border-r-2 border-dashed"></span>
-                                <span><BiMap className="icon text-primary-600"/></span>
-                                <span className="h-full border-gray-400 border-r-2 border-dashed"></span>
-                                <span><BiMap className="icon text-primary-600"/></span>
-                            </div>
-                            <div className="w-full flex flex-col gap-4">
-                                <div className="flex flex-row justify-between items-center">
-                                    <div>
-                                        <div className="text-gray-400 text-xs">Startpunkt</div>
-                                        <div className="body-1">Graz Hauptbahnhof</div>
-                                    </div>
-                                    <div className="body-2 text-sm">13:00 Uhr</div>
-                                </div>
-                                <div className="flex flex-row items-center gap-2">
-                                    <span className="flex">
-                                        <BiUserCircle className="icon text-primary-600"/>
-                                        <BiUserCircle className="icon text-primary-600"/>
-                                        <BiUserCircle className="icon text-primary-600"/>
-                                        <BiUserCircle className="icon text-primary-600"/>
-                                    </span>
-                                    <span className="text-gray-400 text-xs">freie Plätze</span>
-                                </div>
-                                <div className="flex flex-row justify-between items-center">
-                                    <div>
-                                        <div className="text-gray-400 text-xs">Startpunkt</div>
-                                        <div className="body-1">Graz Hauptbahnhof</div>
-                                    </div>
-                                    <div className="body-2 text-sm">13:00 Uhr</div>
-                                </div>
-                                <div className="flex flex-row items-center gap-2">
-                                    <span className="flex">
-                                        <BiUserCircle className="icon text-primary-600"/>
-                                        <BiUserCircle className="icon text-primary-600"/>
-                                        <BiUserCircle className="icon text-primary-600"/>
-                                        <BiUserCircle className="icon text-primary-600"/>
-                                    </span>
-                                    <span className="text-gray-400 text-xs">freie Plätze</span>
-                                </div>
-                                <div className="flex flex-row justify-between items-center">
-                                    <div>
-                                        <div className="text-gray-400 text-xs">Ziel</div>
-                                        <div className="body-1">Wien Flughafen</div>
-                                    </div>
-                                    <div className="body-2 text-sm">15:30 Uhr</div>
-                                </div>
-                            </div>
+                            <Divider />
+
+                            <Route startPoint={trip.startPoint} endPoint={trip.endPoint} stops={trip.stops} />
                         </div>
-                    </div>
-                </LinkCard>
+                    </LinkCard>
+                ))}
                 <IconButton
                     variant="primary"
-                    icon={<GoPlus className="icon"/>}
+                    icon={<GoPlus className="icon" />}
                     type="button"
                     className="fixed bottom-20 right-4"
                     onClick={() => navigate("/trips/create")}>
                 </IconButton>
             </div>
-
-            
-            
-            
-        
-
-    <BottomNavigationBar selected="trips"/>
-</>
+            <BottomNavigationBar selected="trips" />
+        </>
     );
 };
