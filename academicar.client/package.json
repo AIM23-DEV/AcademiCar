@@ -12,7 +12,7 @@
   "dependencies": {
     "@fontsource-variable/noto-sans": "^5.0.5",
     "@fontsource-variable/outfit": "^5.0.13",
-    "@headlessui/react": "^2.0.3"
+    "@headlessui/react": "^2.0.3",
     "@types/react-router-dom": "^5.3.3",
     "axios": "^1.7.2",
     "i18next": "^23.11.5",
