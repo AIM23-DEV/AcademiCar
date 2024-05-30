@@ -22,9 +22,15 @@ const BUTTONS = [
     { textKey: "settings", icon: IoSettingsOutline, path: "/auth/login" },
 ];
 
+interface IndexProfilePageProps {
+    avatarUrl?: string;
+    userName?: string;
+}
 
 // TODO add content components and follow up pages
-export const IndexProfilePage = () => {
+export const IndexProfilePage: React.FC<IndexProfilePageProps> = ({avatarUrl = "/../src/assets/react.svg",
+userName = "Maximilian Bauer"
+}) => {
     const [t] = useTranslation(['common', 'pages/profile']);
     const navigate = useNavigate();
 
@@ -40,14 +46,14 @@ export const IndexProfilePage = () => {
 
                 <div className="mt-6">
                     <img
-                        src="/../src/assets/react.svg"
+                        src={avatarUrl}
                         alt="avatar"
                         className="border-gray-600 rounded-full"
                     />
                 </div>
 
 
-                <h1 className="headline-2">Maximilian Bauer</h1>
+                <h1 className="headline-2">{userName}</h1>
 
                 <Divider className="mt-2"/>
 
