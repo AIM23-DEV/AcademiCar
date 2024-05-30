@@ -3,9 +3,33 @@
     "title": "Find a ride"
   },
   "SearchResultsPage": {
-    "title": "Search results"
+    "title": "Search results",
+    "start": "Startpoint",
+    "end": "Endpoint",
+    "feeSpots": "Free spots"
+  },
+  "SearchResultsFrom": {
+    "filter": "Filter",
+    "sort": {
+      "title": "Sort",
+      "price": "Lowest price",
+      "fast": "Fastest ride",
+      "best": "Best rating",
+      "stops": "Fewest stops"
+    }
   },
   "SearchFilterPage": {
-    "title": "Filter results"
+    "title": "Filter results",
+    "price": "Price",
+    "stops": "Stopovers",
+    "stopsPossible": "Stopovers possible",
+    "stopsImpossible": "No stopovers",
+    "rating": "Rating",
+    "storage": "Storage",
+    "handLuggage": "Hand luggage",
+    "preferences": "Preferences",
+    "musicTaste": "Music taste",
+    "notSpecified": "Not specified",
+    "resetFilter": "Reset filter"
   }
 }

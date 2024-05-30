@@ -25,7 +25,7 @@ export const SearchFilterPage = () => {
 
             <div className="w-full">
                 <div>
-                    <div className="form-label">Preis</div>
+                    <div className="form-label">{t('pages/search:SearchFilterPage.price')}</div>
                     <div className="grid grid-cols-3 justify-center items-center">
                         <Input
                             trailing={<BiEuro className="icon-md text-gray-500" />}
@@ -52,14 +52,14 @@ export const SearchFilterPage = () => {
                 <Divider className="my-8" />
                 
                 <div>
-                    <div className="form-label">Zwischenstopps</div>
+                    <div className="form-label">{t('pages/search:SearchFilterPage.stops')}</div>
                     <RadioCollection 
                         columns={2}
                         value={stops} 
                         setValue={setStops} 
                         items={[
-                            {value: 1, label: "Zwischenstopp möglich"},
-                            {value: 2, label: "Keine Zwischenstopps"}
+                            {value: 1, label: t('pages/search:SearchFilterPage.stopsPossible')},
+                            {value: 2, label: t('pages/search:SearchFilterPage.stopsImpossible')}
                         ]}
                     />
                 </div>
@@ -67,7 +67,7 @@ export const SearchFilterPage = () => {
                 <Divider className="my-8" />
                 
                 <div>
-                    <div className="form-label">Bewertung</div>
+                    <div className="form-label">{t('pages/search:SearchFilterPage.rating')}</div>
                     <div className="flex justify-between">
                         <Checkmark className="flex items-center gap-1" 
                                    label={<span className="flex items-center">1<BiSolidStar className="icon text-yellow-400"/></span>}
@@ -91,10 +91,10 @@ export const SearchFilterPage = () => {
                 
                 <div>
                     <Select
-                        label="Stauraum"
+                        label={t('pages/search:SearchFilterPage.storage')}
                         fullWidth={true}
                         options={{
-                            1: "1 Handgepäcksstück"
+                            1: "1 " + t('pages/search:SearchFilterPage.handLuggage')
                         }}
                     />
                 </div>
@@ -103,10 +103,10 @@ export const SearchFilterPage = () => {
                 
                 <div>
                     <Select
-                        label="Präferenzen"
+                        label={t('pages/search:SearchFilterPage.preferences')}
                         fullWidth={true}
                         options={{
-                            1: "Keine Angabe"
+                            1: t('pages/search:SearchFilterPage.notSpecified')
                         }}
                     />
                 </div>
@@ -115,10 +115,10 @@ export const SearchFilterPage = () => {
                 
                 <div>
                     <Select
-                        label="Musikgeschmack"
+                        label={t('pages/search:SearchFilterPage.musicTaste')}
                         fullWidth={true}
                         options={{
-                            1: "Keine Angabe"
+                            1: t('pages/search:SearchFilterPage.notSpecified')
                         }}
                     />
                 </div>
@@ -127,7 +127,7 @@ export const SearchFilterPage = () => {
                     <TextLink
                         variant="accent"
                         leading={<BiTrash className="icon-md"/>}
-                        text="Filter zurücksetzen"
+                        text={t('pages/search:SearchFilterPage.resetFilter')}
                     />
                 </div>
             </div>

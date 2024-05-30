@@ -1,14 +1,14 @@
 import {useState} from "react";
 import {Input, RadioCollection} from "../../../components/FormFields.tsx";
 import {Card} from "../../../components/Cards.tsx";
-//import {useTranslation} from "react-i18next";
+import {useTranslation} from "react-i18next";
 import {Divider} from "../../../components/Divider.tsx";
 import {TextLink} from "../../../components/Buttons.tsx";
 import { BiFilter, BiSortAlt2 } from "react-icons/bi";
 import { Menu, MenuButton, MenuItems } from '@headlessui/react'
 
 export const SearchResultForm = () => {
-    //const [t] = useTranslation(['common', 'pages/search']);
+    const [t] = useTranslation(['common', 'pages/search']);
     const [startPoint, setStartPoint] = useState('');
     const [destination, setDestination] = useState('');
     const [date, setDate] = useState('');
@@ -53,7 +53,7 @@ export const SearchResultForm = () => {
                 <div className="grid grid-cols-2 justify-center items-center">
                     <TextLink
                         leading={<BiFilter className="icon"/>}
-                        text="Filter"
+                        text={t('pages/search:SearchResultsPage.filter')}
                         className="w-full"
                     />
 
@@ -61,7 +61,7 @@ export const SearchResultForm = () => {
                         <MenuButton className="text-secondary-600">
                             <TextLink
                                 leading={<BiSortAlt2 className="icon"/>}
-                                text="Sortieren"
+                                text={t('pages/search:SearchResultsPage.sort.title')}
                                 className="w-full"
                             />
                         </MenuButton>
@@ -70,10 +70,10 @@ export const SearchResultForm = () => {
                                 value={radioValue}
                                 setValue={setRadioValue}
                                 items={[
-                                    {value: 1, label: "Niedrigster Preis"},
-                                    {value: 2, label: "Schnellste Fahrt"},
-                                    {value: 3, label: "Beste Bewertung"},
-                                    {value: 4, label: "Wenigste Stopps"}
+                                    {value: 1, label: t('pages/search:SearchResultsPage.sort.price')},
+                                    {value: 2, label: t('pages/search:SearchResultsPage.sort.fast')},
+                                    {value: 3, label: t('pages/search:SearchResultsPage.sort.best')},
+                                    {value: 4, label: t('pages/search:SearchResultsPage.sort.stopps')}
                                 ]}
                             />
                         </MenuItems>
