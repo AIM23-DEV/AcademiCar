@@ -76,10 +76,9 @@ export const IndexProfilePage = () => {
                     variant="accent"
                     onClick={() => navigate("/auth/login")}
                     leading={<BiLogOut className="icon-md"/>}
-                    className="mt-6"
+                    className="mt-6 mb-16"
                 />
             </div>
-
 
             <BottomNavigationBar selected="profile"/>
         </>
