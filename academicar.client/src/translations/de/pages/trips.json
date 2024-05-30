@@ -5,6 +5,12 @@
   "CreateTripPage": {
     "title": "Neue Fahrt erstellen"
   },
+  "DriverTripHistoryPage": {
+    "title": "Fahrtenarchiv (Fahrer)"
+  },  
+  "PassengerTripHistoryPage": {
+  "title": "Passagierarchiv"
+  },
   "ShowTripPage": {
     "title": "Details zu Fahrt {id}"
   }

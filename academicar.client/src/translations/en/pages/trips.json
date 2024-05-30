@@ -5,6 +5,12 @@
   "CreateTripPage": {
     "title": "Create a new trip"
   },
+  "DriverTripHistoryPage": {
+    "title": "Driver Trip History"
+  },
+  "PassengerTripHistoryPage": {
+    "title": "Passenger Trip History"
+  },
   "ShowTripPage": {
     "title": "Trip {{id}} details"
   }
