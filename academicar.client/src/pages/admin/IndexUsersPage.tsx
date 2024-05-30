@@ -1,13 +1,14 @@
 import {TitleBar} from "../../components/TitleBar.tsx";
 import {BottomNavigationBar} from "../../components/BottomNavigationBar.tsx";
-import {Button, TextButton} from "../../components/Buttons.tsx";
+import {Button} from "../../components/Buttons.tsx";
 import {ConfirmationModal} from "../../components/Modal.tsx";
 import {useState} from "react";
 import SetPageTitle from "../../hooks/set_page_title.tsx";
 import {useTranslation} from "react-i18next";
-import {useNavigate} from "react-router-dom";
-import {BiLogOut} from "react-icons/bi";
+import {BiChevronRight, BiJoystick} from "react-icons/bi";
 import {Card} from "../../components/Cards.tsx";
+import {Divider} from "../../components/Divider.tsx";
+
 
 
 // Todo delete this page once it is obsolete!
@@ -19,9 +20,7 @@ export const IndexUsersPage = () => {
     // This is how to define the page title and TitleBar text with translations. Do it on every page!
     const pageTitle = t('pages/admin:IndexUsersPage.title');
     SetPageTitle(pageTitle);
-
-    // This is how to import the navigator with which you can navigate between pages.
-    const navigate = useNavigate();
+    
     // This is how to work with a component that needs a state
     const [showModal, setShowModal] = useState(false);
 
@@ -31,33 +30,124 @@ export const IndexUsersPage = () => {
         <>
             {/* Always put the TitleBar first! */}
             {/* Manually include the TitleBar and set its props based on your needs. */}
-            <TitleBar text={pageTitle} hasBackAction/>
-
-            {/* Your custom content can be put in here. */}
+            <TitleBar text={"Account"} hasBackAction/>
+            
             <div className="w-full flex flex-col items-center">
-
-                {/* This is an example button that toggles the state of a modal. */}
-                {/* This is also an example for using a variable inside of a translation. */}
-                <Button text={t("common:example", {variable: "Modal"})} className="my-8"
-                        onClick={() => setShowModal(true)}/>
-
-                {/* When working with multiple translation imports always specify the namespace. */}
-                <TextButton
-                    text={t("common:actions.logout")}
-                    type="button"
+                <Button
+                    variant="outline"
                     fullWidth
-                    textAlign="center"
-                    variant="primary"
-                    onClick={() => navigate("/auth/login")}
-                    leading={<BiLogOut className="icon-md"/>}
+                    text="Suchen"
+                    textAlign="left"
+                    textFullWidth
+                    leading={<BiJoystick className="icon"/>}
+                    type="button"
+                    disabled
+                    className="mt-1"
+                    onClick={() => {
+                        alert("Test");
+                    }}
                 />
-                
-                
-                <Card label="Personen"
-                
+
+                <Button
+                    variant="outline"
+                    fullWidth
+                    text="Sortieren"
+                    textAlign="left"
+                    textFullWidth
+                    leading={<BiJoystick className="icon"/>}
+                    type="button"
+                    disabled
+                    className="mt-1"
+                    onClick={() => {
+                        alert("Test");
+                    }}
+                />
+
+                <Card
+                    id="1"
+                    label="Personen"
+                    labelPosition="outside"
+                    padding="base"
+                    className="mt-1"
                 >
-                    
-                    
+                    <p>
+
+                        <Button
+                            variant="outline"
+                            fullWidth
+                            text="Sofie Buchhalter"
+                            textAlign="left"
+                            textFullWidth
+                            leading={<BiJoystick className="icon"/>}
+                            trailing={<BiChevronRight className="icon"/>}
+                            type="button"
+                            disabled
+                            className="mt-1"
+                            onClick={() => {
+                                alert("Test");
+                            }}
+                        />
+
+                        <Divider
+                            className="my-1"
+                        />
+                        <Button
+                            variant="outline"
+                            fullWidth
+                            text="Samanta Kinsley"
+                            textAlign="left"
+                            textFullWidth
+                            leading={<BiJoystick className="icon"/>}
+                            trailing={<BiChevronRight className="icon"/>}
+                            type="button"
+                            disabled
+                            className="mt-1"
+                            onClick={() => {
+                                alert("Test");
+                            }}
+                        />
+
+                        <Divider
+                            className="my-1"
+                        />
+
+                        <Button
+                            variant="outline"
+                            fullWidth
+                            text="Max Kruse"
+                            textAlign="left"
+                            textFullWidth
+                            leading={<BiJoystick className="icon"/>}
+                            trailing={<BiChevronRight className="icon"/>}
+                            type="button"
+                            disabled
+                            className="mt-1"
+                            onClick={() => {
+                                alert("Test");
+                            }}
+                        />
+
+                        <Divider
+                            className="my-1"
+                        />
+
+                        <Button
+                            variant="outline"
+                            fullWidth
+                            text="Jane Doe"
+                            textAlign="left"
+                            textFullWidth
+                            leading={<BiJoystick className="icon"/>}
+                            trailing={<BiChevronRight className="icon"/>}
+                            type="button"
+                            disabled
+                            className="mt-1"
+                            onClick={() => {
+                                alert("Test");
+                            }}
+                        />
+                        
+                    </p>
                 </Card>
             </div>
 
