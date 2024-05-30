@@ -1,5 +1,51 @@
 {
   "IndexChatsPage": {
-    "title": "Nachrichten"
+    "title": "Nachrichten",
+    "label_requests": "Offene Anfragen",
+    "label_chats": "Chats & Fahrten",
+    "label_results": "Ergebnisse",
+    "modal_title_no_results": "Keine Ergebnisse",
+    "modal_info_no_results": "Es konnten keine Chats zu deiner Suche gefunden werden.",
+    "modal_title_no_chats": "Keine Nachrichten",
+    "modal_info_no_chats": "Anfragen oder Chats zu Fahrten erscheinen hier."
+  },
+  
+  "TripChatPage": {
+    "title": "{{driver_name}}'s Fahrt",
+    "placeholder_message": "Nachricht...",
+    "info_not_member": "Du kannst keine Nachricht senden, weil du kein Teil dieser Fahrt mehr bist."
+  },
+  
+  "TripChatDetailPage": {
+    "title": "{{driver_name}}'s Fahrt",
+    "button_to_trip": "Zur Fahrt >",
+    "label_members": "Personen",
+    "label_actions": "Aktionen",
+    "action_leave_trip": "Fahrt verlassen",
+    "action_report_chat": "Chat melden",
+    "action_delete_chat": "Chat löschen",
+    "indicator_driver": "Fährt",
+    "indicator_you": "(Du)",
+    "info_trip_over": "Die Fahrt wurde bereits beendet.",
+    "info_not_member": "Du bist kein Teil dieser Fahrt mehr!",
+    "action_remove_from_trip": "Aus der Fahrt entfernen",
+    "action_see_profile": "Profil ansehen",
+    "action_contact": "Kontaktieren",
+    "action_close": "Schließen"
+  },
+  
+  "PersonalChatPage": {
+    "placeholder_message": "Nachricht...",
+    "label_join_request": "Anfrage zur Mitfahrt",
+    "link_trip": "Fahrt >",
+    "button_deny": "Ablehnen",
+    "button_accept": "Annehmen"
+  },
+  
+  "PersonalChatDetailPage": {
+    "button_to_profile": "Zum Profil >",
+    "label_actions": "Aktionen",
+    "action_report_user": "Person melden",
+    "action_delete_chat": "Chat löschen"
   }
 }
