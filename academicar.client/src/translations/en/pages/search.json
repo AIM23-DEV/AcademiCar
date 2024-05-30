@@ -4,5 +4,8 @@
   },
   "SearchResultsPage": {
     "title": "Search results"
+  },
+  "SearchFilterPage": {
+    "title": "Filter results"
   }
 }
