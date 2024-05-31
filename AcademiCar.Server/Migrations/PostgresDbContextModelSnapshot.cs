@@ -154,23 +154,6 @@ namespace AcademiCar.Server.Migrations
                     b.ToTable("Stats", "academicar");
                 });
 
-            modelBuilder.Entity("AcademiCar.Server.DAL.Entities.TestTable", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Test_table", "test_schema");
-                });
-
             modelBuilder.Entity("AcademiCar.Server.DAL.Entities.Trip", b =>
                 {
                     b.Property<int>("ID")

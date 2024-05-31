@@ -19,7 +19,7 @@ public class VehicleController : BaseController<Vehicle>
     }
 
     
-    [HttpGet("Vehicles/{id}", Name = "GetVehiclebyId")]
+    [HttpGet("{id}", Name = "GetVehiclebyId")]
     public async Task<ActionResult<Vehicle>> GetTestByIdAsync(int id)
     {
         var entry = await _context.Vehicles.FindAsync(id);

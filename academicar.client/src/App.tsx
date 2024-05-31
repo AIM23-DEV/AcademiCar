@@ -1,12 +1,10 @@
 import React from 'react';
-import { Route, Routes, Navigate } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { I18nextProvider } from "react-i18next";
 import i18next from "i18next";
 
-import { AuthProvider, useAuth } from './AuthContext';
-import HomePage from './HomePage';
-import Dashboard from './Dashboard';
-import AdminLogin from './AdminLogin';
+import { AuthProvider  } from './AuthContext';
+import {HomePage} from './pages/HomePage';
 
 import AuthenticationRoutes from "./routes/AuthenticationRoutes.tsx";
 import SearchRoutes from "./routes/SearchRoutes.tsx";
@@ -16,25 +14,6 @@ import ProfileRoutes from "./routes/ProfileRoutes.tsx";
 import AdditionalRoutes from "./routes/AdditionalRoutes.tsx";
 import AdminRoutes from "./routes/AdminRoutes.tsx";
 
-const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const { user } = useAuth();
-    return user ? <>{children}</> : <Navigate to="/" />;
-};
-
-const AdminPrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const { user } = useAuth();
-
-    if (!user) {
-        return <Navigate to="/admin-login" />;
-    }
-
-    /* if (!user.Roles || !user.Roles.includes('admin')) {
-        return <Navigate to="/admin-login" />;
-    }*/
-
-    return <>{children}</>;
-};
-
 const App: React.FC = () => {
     return (
         <AuthProvider>
@@ -42,24 +21,7 @@ const App: React.FC = () => {
                     <Routes>
                         {/* Todo remove when obsolete */}
                         <Route index element={<HomePage />} />
-                        <Route
-                            path="/dashboard"
-                            element={
-                                <PrivateRoute>
-                                    <Dashboard />
-                                </PrivateRoute>
-                            }
-                        />
-                        <Route path="/admin-login" element={<AdminLogin />} />
-                        <Route
-                            path="/admin/dashboard"
-                            element={
-                                <AdminPrivateRoute>
-                                    <Dashboard />
-                                </AdminPrivateRoute>
-                            }
-                        />
-
+                        
                         {/* Routes are saved in separate files. */}
                         {AuthenticationRoutes}
                         {SearchRoutes}

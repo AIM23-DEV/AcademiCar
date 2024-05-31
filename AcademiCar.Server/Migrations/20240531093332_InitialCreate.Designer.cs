@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AcademiCar.Server.Migrations
 {
     [DbContext(typeof(PostgresDbContext))]
-    [Migration("20240526164106_InitialCreate")]
+    [Migration("20240531093332_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -155,23 +155,6 @@ namespace AcademiCar.Server.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Stats", "academicar");
-                });
-
-            modelBuilder.Entity("AcademiCar.Server.DAL.Entities.TestTable", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Test_table", "test_schema");
                 });
 
             modelBuilder.Entity("AcademiCar.Server.DAL.Entities.Trip", b =>

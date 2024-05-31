@@ -27,7 +27,6 @@ namespace AcademiCar.Server.DAL.UnitOfWork
                       .OnDelete(DeleteBehavior.Restrict);
             });
             
-            modelBuilder.Entity<TestTable>().ToTable("Test_table", schema: "test_schema");
             modelBuilder.Entity<Stats>().ToTable("Stats", schema: "academicar");
             modelBuilder.Entity<FavoriteUser>().ToTable("FavoriteUser", schema: "academicar");
             modelBuilder.Entity<Preferences>().ToTable("Preferences", schema: "academicar");
@@ -40,7 +39,6 @@ namespace AcademiCar.Server.DAL.UnitOfWork
         }
 
         // Your DbSets
-        public DbSet<TestTable> TestTableEntries { get; set; }
         public DbSet<Stats> Stats { get; set; }
         public DbSet<FavoriteUser> FavoriteUsers { get; set; }
         public DbSet<Preferences> Preferences { get; set; }

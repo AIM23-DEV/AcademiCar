@@ -15,9 +15,6 @@ namespace AcademiCar.Server.Migrations
             migrationBuilder.EnsureSchema(
                 name: "academicar");
 
-            migrationBuilder.EnsureSchema(
-                name: "test_schema");
-
             migrationBuilder.CreateTable(
                 name: "Address",
                 schema: "academicar",
@@ -66,20 +63,6 @@ namespace AcademiCar.Server.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Stats", x => x.ID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Test_table",
-                schema: "test_schema",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    name = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Test_table", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -604,10 +587,6 @@ namespace AcademiCar.Server.Migrations
             migrationBuilder.DropTable(
                 name: "Rating",
                 schema: "academicar");
-
-            migrationBuilder.DropTable(
-                name: "Test_table",
-                schema: "test_schema");
 
             migrationBuilder.DropTable(
                 name: "TripRequest",
