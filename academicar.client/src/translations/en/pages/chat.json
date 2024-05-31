@@ -1,5 +1,15 @@
 {
   "IndexChatsPage": {
     "title": "Chats"
+  },
+  "EmptyChat": {
+    "searchResult": {
+      "title": "No results",
+      "subtitle": "No chats could be found for your search."
+    },
+    "chatResult": {
+      "title":"No messages",
+      "subtitle": "Requests or chats about rides appear here."
+    }
   }
 }
