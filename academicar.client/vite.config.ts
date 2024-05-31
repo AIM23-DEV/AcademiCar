@@ -40,11 +40,6 @@ export default defineConfig({
                 target,
                 changeOrigin: true,
                 secure: false
-            },
-            '/weatherforecast': {
-                target,
-                changeOrigin: true,
-                secure: false
             }
         },
         port: 5173,
