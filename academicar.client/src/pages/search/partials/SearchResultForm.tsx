@@ -53,7 +53,7 @@ export const SearchResultForm = () => {
                 <div className="grid grid-cols-2 justify-center items-center">
                     <TextLink
                         leading={<BiFilter className="icon"/>}
-                        text={t('pages/search:SearchResultsPage.filter')}
+                        text={t('pages/search:SearchResultsForm.filter')}
                         className="w-full"
                     />
 
@@ -61,7 +61,7 @@ export const SearchResultForm = () => {
                         <MenuButton className="text-secondary-600">
                             <TextLink
                                 leading={<BiSortAlt2 className="icon"/>}
-                                text={t('pages/search:SearchResultsPage.sort.title')}
+                                text={t('pages/search:SearchResultsForm.sort.title')}
                                 className="w-full"
                             />
                         </MenuButton>
@@ -70,10 +70,10 @@ export const SearchResultForm = () => {
                                 value={radioValue}
                                 setValue={setRadioValue}
                                 items={[
-                                    {value: 1, label: t('pages/search:SearchResultsPage.sort.price')},
-                                    {value: 2, label: t('pages/search:SearchResultsPage.sort.fast')},
-                                    {value: 3, label: t('pages/search:SearchResultsPage.sort.best')},
-                                    {value: 4, label: t('pages/search:SearchResultsPage.sort.stopps')}
+                                    {value: 1, label: t('pages/search:SearchResultsForm.sort.price')},
+                                    {value: 2, label: t('pages/search:SearchResultsForm.sort.fast')},
+                                    {value: 3, label: t('pages/search:SearchResultsForm.sort.best')},
+                                    {value: 4, label: t('pages/search:SearchResultsForm.sort.stopps')}
                                 ]}
                             />
                         </MenuItems>
