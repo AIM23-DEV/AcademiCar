@@ -1,8 +1,7 @@
 import {TitleBar} from "../../components/TitleBar";
 import SetPageTitle from "../../hooks/set_page_title.tsx";
-import {BottomNavigationBar} from "../../components/BottomNavigationBar.tsx";
 import {useTranslation} from "react-i18next";
-import {MessagesList} from "./partials/MessagesList.tsx";
+import {ChatMessagesList} from "./partials/ChatMessagesList.tsx";
 import {SendMessageForm} from "./partials/SendMessageForm.tsx";
 
 const DUMMY_DATA = [
@@ -18,21 +17,24 @@ const DUMMY_DATA = [
     }
 ]
 
-
 export const TripChatPage = () => {
     const [t] = useTranslation(["common", "pages/chat"]);
     const pageTitle = t("pages/chat:TripChatPage.title");
+    const messageFormPlaceholderText = t("pages/chat:TripChatPage.placeholder_message");
+    const messageFormInfoNotMember = t("pages/chat:TripChatPage.info_not_member");
     SetPageTitle(pageTitle);
     
     return (
         <>
-            <TitleBar text={pageTitle}/>
+            <TitleBar text={pageTitle} hasBackAction={true} />
 
-            <MessagesList messages={DUMMY_DATA} />
+            <ChatMessagesList messages={DUMMY_DATA} />
 
-            <SendMessageForm />
-
-            <BottomNavigationBar selected="chat"/>
+            <SendMessageForm
+                isMember={true}
+                placeholderText={messageFormPlaceholderText}
+                infoNotMember={messageFormInfoNotMember}
+            />
         </>
     );
 }

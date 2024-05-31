@@ -2,7 +2,7 @@ interface MessageListProps {
     messages: {id: string, senderId: string, text: string}[]
 }
 
-export const MessagesList = (props: MessageListProps) => {
+export const ChatMessagesList = (props: MessageListProps) => {
     return (
         <ul className="message-list">
             {props.messages.map((message) => {

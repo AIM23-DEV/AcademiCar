@@ -1,21 +1,33 @@
 import {useTranslation} from "react-i18next";
-import SetPageTitle from "../../hooks/set_page_title.tsx";
+import {SendMessageForm} from "./partials/SendMessageForm.tsx";
+import {JoinRequestCard} from "./partials/JoinRequestCard.tsx";
 import {TitleBar} from "../../components/TitleBar.tsx";
-import {BottomNavigationBar} from "../../components/BottomNavigationBar.tsx";
 
 export const PersonalChatPage = () => {
     const [t] = useTranslation(["common", "pages/chat"]);
-    const pageTitle = t("pages/chat:PersonalChatPage.title");
-    SetPageTitle(pageTitle);
+    const messageFormPlaceholderText = t("pages/chat:PersonalChatPage.placeholder_message");
+    const joinRequestLabelText = t("pages/chat:PersonalChatPage.label_join_request");
+    const joinRequestLinkText = t("pages/chat:PersonalChatPage.link_trip");
+    const joinRequestDenyText = t("pages/chat:PersonalChatPage.button_deny");
+    const joinRequestAcceptText = t("pages/chat:PersonalChatPage.button_accept");
 
     return (
         <>
-            <TitleBar text={pageTitle} />
-
+            <TitleBar hasBackAction={true} />
+            
             <div className="w-full flex flex-col items-center">
-            </div>
+                <JoinRequestCard
+                    labelText={joinRequestLabelText}
+                    linkText={joinRequestLinkText}
+                    denyButtonText={joinRequestDenyText}
+                    acceptButtonText={joinRequestAcceptText}
+                />
 
-            <BottomNavigationBar selected="chat"/>
+                <SendMessageForm
+                    isMember={true}
+                    placeholderText={messageFormPlaceholderText}
+                />
+            </div>
         </>
     );
 };
