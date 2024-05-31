@@ -7,35 +7,36 @@ import {Divider} from "../../components/Divider.tsx";
 import {Checkmark, Input, RadioCollection, Select} from "../../components/FormFields.tsx";
 import { BiEuro, BiSolidStar, BiTrash } from "react-icons/bi";
 import {Slider} from "../../components/Slider.tsx";
-import {TextLink} from "../../components/Buttons.tsx";
+import {TextButton} from "../../components/Buttons.tsx";
 
 export const SearchFilterPage = () => {
     const [t] = useTranslation();
     
-    const [priceFrom, setPriceFrom] = useState();
     const [slider, setSlider] = useState<number | number[]>([0, 100]);
     const [stops, setStops] = useState();
     
     const pageTitle = t("pages/search:SearchFilterPage.title");
     SetPageTitle(pageTitle);
-
+    
     return(
         <>
             <TitleBar hasBackAction={true} text={pageTitle}/>
 
-            <div className="w-full">
+            <div className="w-full pb-24">
                 <div>
                     <div className="form-label">{t('pages/search:SearchFilterPage.price')}</div>
                     <div className="grid grid-cols-3 justify-center items-center">
                         <Input
                             trailing={<BiEuro className="icon-md text-gray-500" />}
-                            value={priceFrom}
+                            // @ts-ignore
+                            value={slider[0]}
                             fullWidth={true}
                         />
                         <span className="text-center">bis</span>
                         <Input
                             trailing={<BiEuro className="icon-md text-gray-500" />}
-                            value={priceFrom}
+                            // @ts-ignore
+                            value={slider[1]}
                             fullWidth={true}
                         />
                     </div>
@@ -123,9 +124,12 @@ export const SearchFilterPage = () => {
                     />
                 </div>
                 
-                <div className="w-full flex justify-center mt-8">
-                    <TextLink
+                <div className="w-full flex justify-center mt-8">                    
+                    <TextButton
                         variant="accent"
+                        onClick={() => {
+                            setSlider([0, 100])
+                        }}
                         leading={<BiTrash className="icon-md"/>}
                         text={t('pages/search:SearchFilterPage.resetFilter')}
                     />
