@@ -11,5 +11,16 @@
     "actions": "Actionen",
     "blockaccount": "Konto sperren",
     "deleteaccount": "Konto löschen"
+  },
+
+  "ShowUserPage":  {
+    "title": "Konto",
+    "ratings": "Bewertungen",
+    "adress": "Adresse",
+    "phonenumber": "Telefonnumer",
+    "email": "E-Mail",
+    "actions": "Actionen",
+    "blockaccount": "Konto sperren",
+    "deleteaccount": "Konto löschen"
   }
 }

@@ -11,5 +11,16 @@
     "actions": "Actions",
     "blockaccount": "Block Account",
     "deleteaccount": "Delete Account"
+  },
+
+  "ShowUserPage":  {
+    "title": "Accounts",
+    "ratings": "Ratings",
+    "adress": "Adress",
+    "phonenumber": "Phone number",
+    "email": "E-Mail",
+    "actions": "Actions",
+    "blockaccount": "Block Account",
+    "deleteaccount": "Delete Account"
   }
 }

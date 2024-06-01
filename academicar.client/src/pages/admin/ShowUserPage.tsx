@@ -19,14 +19,14 @@ export const ShowUserPage = () => {
     const [t] = useTranslation(['common', 'pages/admin/user']);
 
     // Tranlations
-    const pageTitle = t('pages/admin/ShowUserPage.title');
-    const ratings = t('pages/admin/ShowUserPage.ratings');
-    const adress = t('pages/admin/ShowUserPage.adress');
-    const phonenumber = t('pages/admin/ShowUserPage.phonenumber');
-    const email = t('pages/admin/ShowUserPage.email');
-    const actions = t('pages/admin/ShowUserPage.actions');
-    const blockaccount = t('pages/admin/ShowUserPage.blockaccount');
-    const deleteaccount = t('pages/admin/ShowUserPage.deleteaccount');
+    const pageTitle = t('pages/admin:ShowUserPage.title');
+    const ratings = t('pages/admin:ShowUserPage.ratings');
+    const adress = t('pages/admin:ShowUserPage.adress');
+    const phonenumber = t('pages/admin:ShowUserPage.phonenumber');
+    const email = t('pages/admin:ShowUserPage.email');
+    const actions = t('pages/admin:ShowUserPage.actions');
+    const blockaccount = t('pages/admin:ShowUserPage.blockaccount');
+    const deleteaccount = t('pages/admin:ShowUserPage.deleteaccount');
     SetPageTitle(pageTitle);
 
     // Example-User data
@@ -83,40 +83,36 @@ export const ShowUserPage = () => {
                                     <span className="ml-2">({USERDATA.rating})</span>
                                 </div>
                                 <div className="mt-2">
-                                    <span>Bewertungen: {USERDATA.reviews}</span>
+                                    <span>{ratings}: {USERDATA.reviews}</span>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <div className="user-details-section">
-                        <h3>Adresse</h3>
+                        <h3>{adress}</h3>
+                        
                         <Input
-                            label="Adresse"
                             id="address"
                             type="text"
-                            fullWidth={true}
                             placeholder="Adresse"
                             required={true}
                             value={USERDATA.address}
                             readOnly
                         />
+                        
                         <div className="address-info">
                             <Input
-                                label="Postleitzahl"
                                 id="postal-code"
                                 type="text"
-                                fullWidth={false}
                                 placeholder="Postleitzahl"
                                 required={true}
                                 value={USERDATA.postalCode}
                                 readOnly
                             />
                             <Input
-                                label="Stadt"
                                 id="city"
                                 type="text"
-                                fullWidth={false}
                                 placeholder="Stadt"
                                 required={true}
                                 value={USERDATA.city}
@@ -124,14 +120,13 @@ export const ShowUserPage = () => {
                             />
                         </div>
                     </div>
+                    
                     <Divider className="my-2" />
                     <div className="user-details-section">
-                        <h3>Telefonnummer</h3>
+                        <h3>{phonenumber}</h3>
                         <Input
-                            label="Telefonnummer"
                             id="phone"
                             type="text"
-                            fullWidth={true}
                             placeholder="Telefonnummer"
                             required={true}
                             value={USERDATA.phone}
@@ -140,12 +135,10 @@ export const ShowUserPage = () => {
                     </div>
                     <Divider className="my-2" />
                     <div className="user-details-section">
-                        <h3>E-Mail</h3>
+                        <h3>{email}</h3>
                         <Input
-                            label="E-Mail"
                             id="email"
                             type="text"
-                            fullWidth={true}
                             placeholder="E-Mail"
                             required={true}
                             value={USERDATA.email}
@@ -168,7 +161,7 @@ export const ShowUserPage = () => {
                     <p>
 
                         <TextButton
-                            text={t("common:actions.blockaccount")} //TODO Translation
+                            text={blockaccount} 
                             type="button"
                             fullWidth
                             textAlign="center"
@@ -178,7 +171,7 @@ export const ShowUserPage = () => {
                         />
 
                         <TextButton
-                            text={t("common:actions.deleteaccount")} //TODO Translation
+                            text={deleteaccount} 
                             type="button"
                             fullWidth
                             textAlign="center"
