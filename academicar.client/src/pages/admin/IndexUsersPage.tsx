@@ -5,158 +5,107 @@ import {ConfirmationModal} from "../../components/Modal.tsx";
 import {useState} from "react";
 import SetPageTitle from "../../hooks/set_page_title.tsx";
 import {useTranslation} from "react-i18next";
-import {BiChevronRight, BiJoystick} from "react-icons/bi";
+import {BiChevronRight, BiSortAlt2} from "react-icons/bi";
 import {Card} from "../../components/Cards.tsx";
+import {IoSearch} from "react-icons/io5";
+import {RxAvatar} from "react-icons/rx";
 import {Divider} from "../../components/Divider.tsx";
+import {useNavigate} from "react-router-dom";
 
-
-
-// Todo delete this page once it is obsolete!
-// This is just an example page. The search page should be loaded as a default once implemented.
 export const IndexUsersPage = () => {
     // This is how to import the translation function for multiple namespaces.
     const [t] = useTranslation(['common', 'pages/admin']);
-
-    // This is how to define the page title and TitleBar text with translations. Do it on every page!
+    
+    //Translations
     const pageTitle = t('pages/admin:IndexUsersPage.title');
+    const search = t('pages/admin:IndexUsersPage.search');
+    const sort = t('pages/admin:IndexUsersPage.sort');
+    const persons = t('pages/admin:IndexUsersPage.persons');
     SetPageTitle(pageTitle);
+    
+    //Accounts
+    const USER = [
+        { id: 1, name: 'Sofie Buchhalter', imgSrc: 'path/to/image1.jpg', path: "/admin/users/1" },
+        { id: 2, name: 'Samantha Kinsley', imgSrc: 'path/to/image2.jpg', path: "/admin/users/1"},
+        { id: 3, name: 'Max Kruse', imgSrc: 'path/to/image3.jpg', path: "/admin/users/1"},
+        { id: 4, name: 'Jane Doe', imgSrc: 'path/to/image4.jpg', path: "/admin/users/1"},
+        { id: 5, name: 'Bernd Kern', imgSrc: 'path/to/image5.jpg', path: "/admin/users/1"},
+    ];
+
+    const navigate = useNavigate();
     
     // This is how to work with a component that needs a state
     const [showModal, setShowModal] = useState(false);
 
     return (
-        // If you do not need a parent tag you can use this empty tag.
-        // This will put all children directly in the parent tag.
         <>
-            {/* Always put the TitleBar first! */}
-            {/* Manually include the TitleBar and set its props based on your needs. */}
             <TitleBar text={"Account"} hasBackAction/>
-            
+
+            <div aria-label="SuchenSortieren" className="w-full grid grid-cols-12 gap-x-32">
+                <Button
+                    variant="outline"
+                    fullWidth={false}
+                    text={search}
+                    textAlign="center"
+                    textFullWidth
+                    leading={<IoSearch className="icon"/>}
+                    type="button"
+                    className="mt-1"
+                    onClick={() => {
+                        alert("Test");
+                    }}
+                />
+
+                <Button
+                    variant="outline"
+                    fullWidth={false}
+                    text={sort}
+                    textAlign="center"
+                    textFullWidth
+                    leading={<BiSortAlt2 className="icon"/>}
+                    type="button"
+                    className="mt-1"
+                    onClick={() => {
+                        alert("Test");
+                    }}
+                />
+            </div>
+
             <div className="w-full flex flex-col items-center">
-                <Button
-                    variant="outline"
-                    fullWidth
-                    text="Suchen"
-                    textAlign="left"
-                    textFullWidth
-                    leading={<BiJoystick className="icon"/>}
-                    type="button"
-                    disabled
-                    className="mt-1"
-                    onClick={() => {
-                        alert("Test");
-                    }}
-                />
-
-                <Button
-                    variant="outline"
-                    fullWidth
-                    text="Sortieren"
-                    textAlign="left"
-                    textFullWidth
-                    leading={<BiJoystick className="icon"/>}
-                    type="button"
-                    disabled
-                    className="mt-1"
-                    onClick={() => {
-                        alert("Test");
-                    }}
-                />
-
                 <Card
                     id="1"
-                    label="Personen"
+                    label={persons}
                     labelPosition="outside"
                     padding="base"
                     className="mt-1"
                 >
-                    <p>
-
-                        <Button
-                            variant="outline"
-                            fullWidth
-                            text="Sofie Buchhalter"
-                            textAlign="left"
-                            textFullWidth
-                            leading={<BiJoystick className="icon"/>}
-                            trailing={<BiChevronRight className="icon"/>}
-                            type="button"
-                            disabled
-                            className="mt-1"
-                            onClick={() => {
-                                alert("Test");
-                            }}
-                        />
-
-                        <Divider
-                            className="my-1"
-                        />
-                        <Button
-                            variant="outline"
-                            fullWidth
-                            text="Samanta Kinsley"
-                            textAlign="left"
-                            textFullWidth
-                            leading={<BiJoystick className="icon"/>}
-                            trailing={<BiChevronRight className="icon"/>}
-                            type="button"
-                            disabled
-                            className="mt-1"
-                            onClick={() => {
-                                alert("Test");
-                            }}
-                        />
-
-                        <Divider
-                            className="my-1"
-                        />
-
-                        <Button
-                            variant="outline"
-                            fullWidth
-                            text="Max Kruse"
-                            textAlign="left"
-                            textFullWidth
-                            leading={<BiJoystick className="icon"/>}
-                            trailing={<BiChevronRight className="icon"/>}
-                            type="button"
-                            disabled
-                            className="mt-1"
-                            onClick={() => {
-                                alert("Test");
-                            }}
-                        />
-
-                        <Divider
-                            className="my-1"
-                        />
-
-                        <Button
-                            variant="outline"
-                            fullWidth
-                            text="Jane Doe"
-                            textAlign="left"
-                            textFullWidth
-                            leading={<BiJoystick className="icon"/>}
-                            trailing={<BiChevronRight className="icon"/>}
-                            type="button"
-                            disabled
-                            className="mt-1"
-                            onClick={() => {
-                                alert("Test");
-                            }}
-                        />
-                        
-                    </p>
+                    {USER.map((USER) => (
+                        <div key={USER.id}>
+                            <Button
+                                variant="outline"
+                                fullWidth
+                                text={USER.name}
+                                textAlign="left"
+                                textFullWidth
+                                leading={<RxAvatar className="icon-md" />}
+                                trailing={<BiChevronRight className="icon" />}
+                                type="button"
+                                disabled={false}
+                                className="mt-1"
+                                onClick={() => navigate(USER.path)}
+                            />
+                            
+                            {<Divider className="my-2" />}
+                            
+                        </div>
+                    ))}
                 </Card>
             </div>
-
             
-
-            {/* Manually include the BottomNavigation bar and set its props based on your needs. */}
-            <BottomNavigationBar/>
-
-            {/* Put absolutely positioned elements like modals here. */}
+            <BottomNavigationBar
+                selected={"profile"}
+            />
+            
             <ConfirmationModal open={showModal} setOpen={setShowModal}
                                subtitle="Das ist ein Bestätigungs-Modal. Hier kann man einige Einstellungen mitgeben!"
                                onConfirm={() => alert("Confirmed")}/>

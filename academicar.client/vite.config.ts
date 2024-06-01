@@ -7,10 +7,12 @@ import path from 'path';
 import child_process from 'child_process';
 import { env } from 'process';
 
-const baseFolder =
+/*const baseFolder =
     env.APPDATA !== undefined && env.APPDATA !== ''
         ? `${env.APPDATA}/ASP.NET/https`
-        : `${env.HOME}/.aspnet/https`;
+        : `${env.HOME}/.aspnet/https`;*/
+
+const baseFolder = `${env.HOME}/.aspnet/https`;
 
 const certificateName = "academicar.client";
 const certFilePath = path.join(baseFolder, `${certificateName}.pem`);
@@ -55,3 +57,4 @@ export default defineConfig({
         }
     }
 })
+

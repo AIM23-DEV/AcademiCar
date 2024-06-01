@@ -1,5 +1,15 @@
 {
   "IndexUsersPage":  {
-    "title": "Konto"
+    "title": "Konto",
+    "search": "Suchen",
+    "sort":   "Sortieren",
+    "persons": "Personen",
+    "ratings": "Bewertungen",
+    "adress": "Adresse",
+    "phonenumber": "Telefonnumer",
+    "email": "E-Mail",
+    "actions": "Actionen",
+    "blockaccount": "Konto sperren",
+    "deleteaccount": "Konto löschen"
   }
 }

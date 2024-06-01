@@ -1,5 +1,15 @@
 {
   "IndexUsersPage":  {
-    "title": "Accounts"
+    "title": "Accounts",
+    "search": "Search",
+    "sort":   "Sort",
+    "persons": "Persons",
+    "ratings": "Ratings",
+    "adress": "Adress",
+    "phonenumber": "Phone number",
+    "email": "E-Mail",
+    "actions": "Actions",
+    "blockaccount": "Block Account",
+    "deleteaccount": "Delete Account"
   }
 }
