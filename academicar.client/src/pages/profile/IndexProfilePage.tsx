@@ -1,11 +1,12 @@
 import {TitleBar} from "../../components/TitleBar";
 import SetPageTitle from "../../hooks/set_page_title.tsx";
 import {BottomNavigationBar} from "../../components/BottomNavigationBar.tsx";
-import {TextButton} from "../../components/Buttons.tsx";
+import {Button, TextButton} from "../../components/Buttons.tsx";
 import {useNavigate} from "react-router-dom";
 import {BiLogOut} from "react-icons/bi";
 import {LanguageSelector} from "../../components/LanguageSelector";
 import {useTranslation} from "react-i18next";
+import {BiCar, BiChevronRight} from "react-icons/bi";
 
 // TODO add content components and follow up pages
 export const IndexProfilePage = () => {
@@ -21,6 +22,19 @@ export const IndexProfilePage = () => {
 
             <div className="w-full flex flex-col items-center py-6">
                 <LanguageSelector/>
+                
+                <Button
+                    text={t("pages/profile:IndexProfilePage.cars")}
+                    type="button"
+                    fullWidth
+                    textFullWidth
+                    textAlign="left"
+                    onClick={() => navigate("cars/")}
+                    className="mt-6"
+                    variant="outline"
+                    leading={<BiCar className="icon-md text-primary-600"/>}
+                    trailing={<BiChevronRight className="icon-md"/>}
+                />
 
                 <TextButton
                     text={t("common:actions.logout")}
