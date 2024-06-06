@@ -3,5 +3,30 @@
     "title": "My Account",
     "links": {
     }
+  },
+  "EditProfilePage": {
+    "title": "Edit My Profile",
+    "first_name": "Firstname",
+    "last_name": "Lastname",
+    "address": "Address",
+    "phone_number": "Phone number",
+    "email": "E-Mail Address",
+    "birthdate": "Birth date",
+    "gender_male": "Male",
+    "gender_female": "Female",
+    "gender_diverse": "Divers",
+    "nationality": "Nationality",
+    "languages": "Languages",
+    "study_program": "Study program",
+    "drivers_license_since": "Drivers license since",
+    "save_changes": "Save Changes"
+  },
+  "PersonalDataFaceSheet": {
+    "title": "Mein Steckbrief",
+    "personal_data_fact_sheet": "Fact Sheet",
+    "music_taste": "Music Taste",
+    "interests": "Interests",
+    "communication": "Communications",
+    "save_changes": "Save Changes"
   }
 }

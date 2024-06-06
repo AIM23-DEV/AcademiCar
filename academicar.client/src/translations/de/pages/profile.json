@@ -3,5 +3,31 @@
     "title": "Mein Account",
     "links": {
     }
+  },
+  "EditProfilePage": {
+    "title": "Mein Profil bearbeiten",
+    "first_name": "Vorname",
+    "last_name": "Nachname",
+    "address": "Adresse",
+    "phone_number": "Telefonnummer",
+    "email": "E-Mail Adresse",
+    "birthdate": "Geburtstag",
+    "gender_male": "Männlich",
+    "gender_female": "Weiblich",
+    "gender_diverse": "Divers",
+    "nationality": "Nationalität",
+    "languages": "Sprachen",
+    "study_program": "Studienrichtung",
+    "drivers_license_since": "Führerschein seit",
+    "save_changes": "Änderungen Speichern"
+  },
+  "PersonalDataFaceSheet": {
+    "title": "Mein Steckbrief",
+    "personal_data_fact_sheet": "Steckbrief",
+    "music_taste": "Musikgeschmack",
+    "interests": "Interessen",
+    "communication": "Kommunikativ",
+    "save_changes": "Änderungen Speichern"
   }
+  
 }
