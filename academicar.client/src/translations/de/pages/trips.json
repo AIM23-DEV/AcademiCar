@@ -19,6 +19,6 @@
     "inactiveTrips": "Vergangene Fahrten"
   },
   "ShowTripPage": {
-    "title": "Details zu Fahrt {id}"
+    "title": "Details zu Fahrt {{id}}"
   }
 }

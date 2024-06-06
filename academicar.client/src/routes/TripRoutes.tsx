@@ -1,6 +1,6 @@
 ﻿import {Outlet, Route} from 'react-router-dom';
 import {IndexTripsPage} from "../pages/trips/IndexTripsPage.tsx";
-import {ShowTripPage} from "../pages/search/ShowTripPage.tsx";
+import {ShowTripPage} from "../pages/trips/ShowTripPage.tsx";
 import {DriverTripHistoryPage} from "../pages/trips/DriverTripHistoryPage.tsx";
 import {PassengerTripHistoryPage} from "../pages/trips/PassengerTripHistoryPage.tsx";
 import {CreateTripPage1} from "../pages/create/CreateTripPage1.tsx";

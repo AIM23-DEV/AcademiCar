@@ -110,7 +110,7 @@ export const Toggle = (props: ToggleProps) => {
 }
 
 interface CheckmarkProps {
-    label?: string
+    label?: string | ReactNode
     id?: string
     disabled?: boolean
     className?: string
