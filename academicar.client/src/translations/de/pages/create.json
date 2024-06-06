@@ -3,13 +3,14 @@
     "create_title": "Neue Reise erstellen",
     "pagination_step": "Step {{currentStep}}/{{totalSteps}}",
     "button_next": "Weiter",
-    "button_previous": "Zurück"
+    "button_previous": "Zurück",
+    "button_create": "Erstellen"
   },
   
   "CreateTripPage1": {
     "label_path": "Reiseweg",
-    "label_input_start": "Von",
-    "label_input_destination": "Nach",
+    "label_input_from": "Von",
+    "label_input_to": "Nach",
     "label_stops_list": "Zwischenstop",
     "action_add_stop": "Stop hinzufügen",
     "label_input_stop": "Halt {{stopNr}}",
@@ -24,7 +25,7 @@
     "label_input_time": "Uhrzeit",
     "label_stop_reached_time": "Ankunft",
     "label_stop_continued_time": "Abfahrt",
-    "label_destination_time": "Geplante Ankunft"
+    "label_arrival_time": "Geplante Ankunft"
   },
   
   "CreateTripPage3": {
@@ -41,17 +42,18 @@
   },
   
   "CreateTripPage4": {
-    "label_prices": "Preise",
+    "label_pricing": "Preise",
     "radio_no_cost": "Keine Mitfahrkosten",
     "radio_fixed_cost": "Fixpreis",
     "label_recommended_price": "Empfohlener Preis",
-    "label_mileage": "Kilometergeld"
+    "label_kilometre_allowance": "Kilometergeld"
   },
   
   "UpdateTripPage": {
-    "button_to_profile": "Zum Profil >",
-    "label_actions": "Aktionen",
-    "action_report_user": "Person melden",
-    "action_delete_chat": "Chat löschen"
+    "tab_route": "Route",
+    "tab_time": "Zeit",
+    "tab_vehicle": "Fahrzeug",
+    "tab_pricing": "Preis",
+    "button_update": "Speichern"
   }
 }
