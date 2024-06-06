@@ -10,7 +10,7 @@ namespace AcademiCar.Server.DAL.Entities
         [ForeignKey("FK_Driver")]
         [JsonProperty(Required = Required.Default)]
         [JsonIgnore] public User Driver { get; set; }
-        public int FK_Driver { get; set; }
+        public string FK_Driver { get; set; }
 
         [ForeignKey("FK_Vehicle")]
         [JsonProperty(Required = Required.Default)]

@@ -10,7 +10,7 @@ import {BiLogOut} from "react-icons/bi";
 
 // Todo delete this page once it is obsolete!
 // This is just an example page. The search page should be loaded as a default once implemented.
-export const HomePage = () => {
+export const    HomePage = () => {
     // This is how to import the translation function for multiple namespaces.
     const [t] = useTranslation(['common', 'pages/profile']);
 

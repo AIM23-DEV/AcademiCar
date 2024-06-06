@@ -7,7 +7,7 @@ using Services.ModelState;
 
 namespace AcademiCar.Server.Services
 {
-    public abstract class Service<TEntity> : IService<TEntity> where TEntity : Entity
+    public abstract class Service<TEntity> : IService<TEntity> where TEntity : IEntity
     {
         protected IUnitOfWork unitOfWork;
         protected IPostgresRepository<TEntity> repository;

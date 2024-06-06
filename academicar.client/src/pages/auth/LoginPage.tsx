@@ -3,6 +3,7 @@ import SetPageTitle from "../../hooks/set_page_title.tsx";
 import {TitleBar} from "../../components/TitleBar.tsx";
 import {useNavigate} from 'react-router-dom';
 import {useTranslation} from "react-i18next";
+import {useAuth} from "../../AuthContext.tsx";
 
 export const LoginPage = () => {
     const [t] = useTranslation(["common", "pages/auth"]);
@@ -10,10 +11,13 @@ export const LoginPage = () => {
     SetPageTitle(pageTitle);
 
     const navigate = useNavigate();
-    const handleLogin = () => {
-        // TODO forward to eduID
-        navigate("/");
+    const handleAdminLogin = () => {
+        // admin or demo login
+        navigate("/admin/login");
     };
+
+    const { selectIdP } = useAuth();
+    
 
     return (
         <>
@@ -28,7 +32,16 @@ export const LoginPage = () => {
                     textAlign="center"
                     variant="outline"
                     fullWidth={true}
-                    onClick={handleLogin}
+                    onClick={selectIdP}
+                />
+
+                <Button
+                    text={t("pages/auth:LoginPage.buttons.admin_login")}
+                    type="submit"
+                    textAlign="center"
+                    variant="outline"
+                    fullWidth={true}
+                    onClick={handleAdminLogin}
                 />
 
             </div>
