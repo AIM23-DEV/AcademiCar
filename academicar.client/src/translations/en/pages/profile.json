@@ -1,7 +1,13 @@
 {
   "IndexProfilePage": {
     "title": "My Account",
-    "cars": "My Cars",
+    "personalData": "Personal Data",
+    "profile": "Profile",
+    "vehicles": "Vehicles",
+    "balance": "Balance",
+    "statistics": "Statistics",
+    "rewards": "Rewards",
+    "settings": "Settings",
     "links": {
     }
   },
