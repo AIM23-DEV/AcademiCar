@@ -47,5 +47,16 @@
     "label_actions": "Actions",
     "action_report_user": "Report Person",
     "action_delete_chat": "Delete Chat"
+  },
+  
+  "EmptyChat": {
+    "searchResult": {
+      "title": "No results",
+      "subtitle": "No chats could be found for your search."
+    },
+    "chatResult": {
+      "title":"No messages",
+      "subtitle": "Requests or chats about rides appear here."
+    }
   }
 }
