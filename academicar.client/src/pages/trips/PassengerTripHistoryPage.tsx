@@ -21,6 +21,8 @@ interface RouteProps {
     stops: Stop[];
 }
 const Route: React.FC<RouteProps> = ({ startPoint, endPoint, stops }) => {
+    const [t] = useTranslation();
+
     return (
         <div className="flex gap-4">
             <div className="flex flex-col items-center">
@@ -37,44 +39,50 @@ const Route: React.FC<RouteProps> = ({ startPoint, endPoint, stops }) => {
             <div className="w-full flex flex-col gap-4">
                 <div className="flex flex-row justify-between items-center">
                     <div>
-                        <div className="text-gray-400 text-xs">Startpunkt</div>
+                        <div className="text-gray-400 text-xs">{t('common:trip.start')}</div>
                         <div className="body-1">{startPoint.location}</div>
                     </div>
-                    <div className="body-2 text-sm">{startPoint.time}</div>
+                    <div className="body-2 text-sm">{startPoint.time} {t('common:time.time')}</div>
                 </div>
                 <div className="flex flex-row items-center gap-2">
                     <span className="flex">
                         {Array.from({ length: 4 - startPoint.freeSeats }).map((_, index) => (
+                            <BiUserCircle key={index} className="icon text-gray-400" />
+                        ))}
+                        {Array.from({ length: startPoint.freeSeats }).map((_, index) => (
                             <BiUserCircle key={index} className="icon text-primary-600" />
                         ))}
                     </span>
-                    <span className="text-gray-400 text-xs">freie Plätze</span>
+                    <span className="text-gray-400 text-xs">{startPoint.freeSeats} {t('common:trip.freeSpots')}</span>
                 </div>
                 {stops.map((stop, index) => (
                     <React.Fragment key={index}>
                         <div className="flex flex-row justify-between items-center">
                             <div>
-                                <div className="text-gray-400 text-xs">Zwischenstopp</div>
+                                <div className="text-gray-400 text-xs">{t('common:trip.stop')}</div>
                                 <div className="body-1">{stop.location}</div>
                             </div>
-                            <div className="body-2 text-sm">{stop.time}</div>
+                            <div className="body-2 text-sm">{stop.time} {t('common:time.time')}</div>
                         </div>
                         <div className="flex flex-row items-center gap-2">
                             <span className="flex">
-                                {Array.from({ length: 4 - stop.freeSeats }).map((_, idx) => (
-                                    <BiUserCircle key={idx} className="icon text-primary-600" />
+                                {Array.from({ length: 4 - stop.freeSeats }).map((_, index) => (
+                                    <BiUserCircle key={index} className="icon text-gray-400" />
+                                ))}
+                                {Array.from({ length: stop.freeSeats }).map((_, index) => (
+                                    <BiUserCircle key={index} className="icon text-primary-600" />
                                 ))}
                             </span>
-                            <span className="text-gray-400 text-xs">freie Plätze</span>
+                            <span className="text-gray-400 text-xs">{stop.freeSeats} {t('common:trip.freeSpots')}</span>
                         </div>
                     </React.Fragment>
                 ))}
                 <div className="flex flex-row justify-between items-center">
                     <div>
-                        <div className="text-gray-400 text-xs">Ziel</div>
+                        <div className="text-gray-400 text-xs">{t('common:trip.destination')}</div>
                         <div className="body-1">{endPoint.location}</div>
                     </div>
-                    <div className="body-2 text-sm">{endPoint.time}</div>
+                    <div className="body-2 text-sm">{endPoint.time} {t('common:time.time')}</div>
                 </div>
             </div>
         </div>
@@ -89,11 +97,11 @@ export const PassengerTripHistoryPage = () => {
     // Example trips data
     const myTrips = [
         {
-            startPoint: { location: "Graz Hauptbahnhof", time: "13:00 Uhr", freeSeats: 2 },
-            endPoint: { location: "Wien Flughafen", time: "15:30 Uhr", freeSeats: 2 },
+            startPoint: { location: "Graz Hauptbahnhof", time: "13:00", freeSeats: 2 },
+            endPoint: { location: "Wien Flughafen", time: "15:30", freeSeats: 2 },
             stops: [
-                { location: "Linz Hauptbahnhof", time: "14:00 Uhr", freeSeats: 1 },
-                { location: "St. Pölten Hauptbahnhof", time: "14:45 Uhr", freeSeats: 3 }
+                { location: "Linz Hauptbahnhof", time: "14:00", freeSeats: 1 },
+                { location: "St. Pölten Hauptbahnhof", time: "14:45", freeSeats: 3 }
             ],
             price: "€ 12,80",
             driver: {
@@ -103,11 +111,11 @@ export const PassengerTripHistoryPage = () => {
             }
         },
         {
-            startPoint: { location: "Salzburg Hauptbahnhof", time: "10:00 Uhr", freeSeats: 1 },
-            endPoint: { location: "Innsbruck Hauptbahnhof", time: "12:30 Uhr", freeSeats: 1 },
+            startPoint: { location: "Salzburg Hauptbahnhof", time: "10:00", freeSeats: 1 },
+            endPoint: { location: "Innsbruck Hauptbahnhof", time: "12:30", freeSeats: 1 },
             stops: [
-                { location: "Wörgl Hauptbahnhof", time: "11:00 Uhr", freeSeats: 0 },
-                { location: "Jenbach Bahnhof", time: "11:45 Uhr", freeSeats: 2 }
+                { location: "Wörgl Hauptbahnhof", time: "11:00", freeSeats: 0 },
+                { location: "Jenbach Bahnhof", time: "11:45", freeSeats: 2 }
             ],
             price: "€ 15,00",
             driver: {
@@ -120,11 +128,11 @@ export const PassengerTripHistoryPage = () => {
 
     const passengerTrips = [
         {
-            startPoint: { location: "Graz Hauptbahnhof", time: "13:00 Uhr", freeSeats: 2 },
-            endPoint: { location: "Wien Flughafen", time: "15:30 Uhr", freeSeats: 2 },
+            startPoint: { location: "Graz Hauptbahnhof", time: "13:00", freeSeats: 2 },
+            endPoint: { location: "Wien Flughafen", time: "15:30", freeSeats: 2 },
             stops: [
-                { location: "Linz Hauptbahnhof", time: "14:00 Uhr", freeSeats: 1 },
-                { location: "St. Pölten Hauptbahnhof", time: "14:45 Uhr", freeSeats: 3 }
+                { location: "Linz Hauptbahnhof", time: "14:00", freeSeats: 1 },
+                { location: "St. Pölten Hauptbahnhof", time: "14:45", freeSeats: 3 }
             ],
             price: "€ 12,80",
             driver: {
@@ -134,11 +142,11 @@ export const PassengerTripHistoryPage = () => {
             }
         },
         {
-            startPoint: { location: "Salzburg Hauptbahnhof", time: "10:00 Uhr", freeSeats: 1 },
-            endPoint: { location: "Innsbruck Hauptbahnhof", time: "12:30 Uhr", freeSeats: 1 },
+            startPoint: { location: "Salzburg Hauptbahnhof", time: "10:00", freeSeats: 1 },
+            endPoint: { location: "Innsbruck Hauptbahnhof", time: "12:30", freeSeats: 1 },
             stops: [
-                { location: "Wörgl Hauptbahnhof", time: "11:00 Uhr", freeSeats: 0 },
-                { location: "Jenbach Bahnhof", time: "11:45 Uhr", freeSeats: 2 }
+                { location: "Wörgl Hauptbahnhof", time: "11:00", freeSeats: 0 },
+                { location: "Jenbach Bahnhof", time: "11:45", freeSeats: 2 }
             ],
             price: "€ 15,00",
             driver: {
@@ -156,7 +164,7 @@ export const PassengerTripHistoryPage = () => {
                 {myTrips.map((trip, index) => (
                     <LinkCard
                         key={index}
-                        label={index === 0 ? "Aktuelle Fahrten" : ""}
+                        label={index === 0 ? t("pages/trips:PassengerTripHistoryPage.activeTrips") : ""}
                         className="mt-6">
                         <div>
                             <div className="flex justify-between items-center">
@@ -194,7 +202,7 @@ export const PassengerTripHistoryPage = () => {
                 {passengerTrips.map((trip, index) => (
                     <LinkCard
                         key={index}
-                        label={index === 0 ? "Vergangene Fahrten" : ""}
+                        label={index === 0 ? t("pages/trips:PassengerTripHistoryPage.inactiveTrips") : ""}
                         className={`mt-6 ${index === passengerTrips.length - 1 ? "mb-24" : ""}`}>
                         <div>
                             <div className="flex justify-between items-center">
