@@ -1,21 +1,18 @@
 {
   "Common": {
-    "create_title": "Neue Reise erstellen",
-    "pagination_step": "Step {{currentStep}}/{{totalSteps}}",
-    "button_next": "Weiter",
-    "button_previous": "Zurück",
-    "button_create": "Erstellen"
+    "title_create": "Neue Reise erstellen"
   },
   
   "CreateTripPage1": {
-    "label_path": "Reiseweg",
+    "label_route": "Reiseweg",
     "label_input_from": "Von",
+    "placeholder_input_from": "Startpunkt",
     "label_input_to": "Nach",
+    "placeholder_input_to": "Ziel",
     "label_stops_list": "Zwischenstop",
     "action_add_stop": "Stop hinzufügen",
     "label_input_stop": "Halt {{stopNr}}",
     "label_input_stay": "Aufenthalt",
-    "label_input_stay_unit": "min",
     "toggle_enable_stops": "Zwischenstopps sind möglich"
   },
   

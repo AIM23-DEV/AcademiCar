@@ -1,21 +1,18 @@
 {
   "Common": {
-    "create_title": "Create new trip",
-    "pagination_step": "Step {{currentStep}}/{{totalSteps}}",
-    "button_next": "Next",
-    "button_previous": "Previous",
-    "button_create": "Create"
+    "title_create": "Create new trip"
   },
   
   "CreateTripPage1": {
-    "label_path": "Trip",
+    "label_route": "Trip",
     "label_input_from": "From",
+    "placeholder_input_from": "Departure location",
     "label_input_to": "To",
+    "placeholder_input_to": "Destination",
     "label_stops_list": "Stopover",
     "action_add_stop": "Add stop",
     "label_input_stop": "Stop {{stopNr}}",
     "label_input_stay": "Stay",
-    "label_input_stay_unit": "min",
     "toggle_enable_stops": "Enable stopovers"
   },
   

@@ -3,10 +3,10 @@ import SetPageTitle from "../../hooks/set_page_title.tsx";
 import {BottomNavigationBar} from "../../components/BottomNavigationBar.tsx";
 import {useTranslation} from "react-i18next";
 import {Pagination} from "../../components/Pagination.tsx";
-import {TripRouteCreationForm} from "./partials/TripRouteCreationForm.tsx";
+import {TripTimeCreationForm} from "./partials/TripTimeCreationForm.tsx";
 
-export const CreateTripPage1 = () => {
-    const [t] = useTranslation(["common", "pages/create"]);
+export const CreateTripPage2 = () => {
+    const [t] = useTranslation(["pages/create"]);
     const pageTitle = t("pages/create:Common.title_create");
     SetPageTitle(pageTitle);
 
@@ -14,9 +14,9 @@ export const CreateTripPage1 = () => {
         <>
             <TitleBar text={pageTitle} hasBackAction={true} />
 
-            <TripRouteCreationForm />
+            <TripTimeCreationForm />
             
-            <Pagination page={1} totalPages={4} />
+            <Pagination page={2} totalPages={4} />
             
             <BottomNavigationBar selected="create"/>
         </>
