@@ -17,7 +17,7 @@
     "economy": "Spritverbrauch auf 100km",
     "plate": "Kennzeichen",
     "cartype": "Fahrzeugart",
-    "cartypeSelection": "Wähle die Art des Fahrzeuges aus",
+    "cartype_selection": "Wähle die Art des Fahrzeuges aus",
     "color": "Farbe des Fahrzeugs",
     "color_selection": "Wähle die Farbe des Fahrzeuges aus",
     "fuel": "Treibstoff",
