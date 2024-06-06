@@ -1,5 +1,10 @@
 {
   "SearchTripsPage": {
     "title": "Mitfahrgelegenheit finden"
+  },
+  "Ratings": {
+    "title": "Fahrer Bewertungen",
+    "back": "Zurück",
+    "reviews": "Bewertungen"
   }
 }

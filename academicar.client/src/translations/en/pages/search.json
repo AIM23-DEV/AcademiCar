@@ -1,5 +1,10 @@
 {
   "SearchTripsPage": {
     "title": "Find a ride"
+  },
+  "Ratings": {
+    "title": "Driver Reviews",
+    "back": "Return",
+    "reviews": "Reviews"
   }
 }
