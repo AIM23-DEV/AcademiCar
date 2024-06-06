@@ -2,6 +2,37 @@
   "SearchTripsPage": {
     "title": "Mitfahrgelegenheit finden"
   },
+
+  "SearchResultsPage": {
+    "title": "Suchergebnisse",
+    "start": "Startpunkt",
+    "end": "Ziel",
+    "freeSpots": "Freie Plätze"
+  },
+  "SearchResultsForm": {
+    "filter": "Filter",
+    "sort": {
+      "title": "Sortieren",
+      "price": "Niedrigster Preis",
+      "fast": "Schnellste Fahrt",
+      "best": "Beste Bewertung",
+      "stops": "Wenigste Stopps"
+    }
+  },
+  "SearchFilterPage": {
+    "title": "Ergebnisse filtern",
+    "price": "Preis",
+    "stops": "Zwischenstopps",
+    "stopsPossible": "Zwischenstopp möglich",
+    "stopsImpossible": "Keine Zwischenstopps",
+    "rating": "Bewertung",
+    "storage": "Stauraum",
+    "handLuggage": "Handgepäcksstück",
+    "preferences": "Präferenzen",
+    "musicTaste": "Musikgeschmack",
+    "notSpecified": "keine Angabe",
+    "resetFilter": "Filter zurücksetzen"
+
   "Ratings": {
     "title": "Fahrer Bewertungen",
     "back": "Zurück",

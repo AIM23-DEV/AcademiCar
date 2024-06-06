@@ -21,6 +21,7 @@ interface SliderProps {
 export const Slider = (props: SliderProps) => {
     return (
         <RcSlider defaultValue={props.value}
+                  value={props.value}
                   onChange={props.setValue}
                   min={props.min ?? 0}
                   max={props.max ?? 100}
