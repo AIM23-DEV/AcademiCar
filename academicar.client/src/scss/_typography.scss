@@ -1,0 +1,33 @@
+﻿@layer components {
+  .headline-1 {
+    @apply text-3xl font-medium font-title tracking-wide leading-loose text-gray-950;
+  }
+
+  .headline-2 {
+    @apply text-[1.625rem] font-medium font-title tracking-wide leading-normal text-gray-950;
+  }
+
+  .headline-3 {
+    @apply text-2xl font-light font-title tracking-wide leading-relaxed text-gray-950;
+  }
+
+  .headline-4 {
+    @apply text-xl font-semibold font-title tracking-wide leading-relaxed text-gray-950;
+  }
+
+  .subtitle {
+    @apply text-lg font-medium font-title leading-normal text-gray-950;
+  }
+
+  .body-1 {
+    @apply text-base font-normal text-gray-950;
+  }
+
+  .body-2 {
+    @apply text-sm font-normal tracking-tight text-gray-950
+  }
+
+  .caption {
+    @apply text-xs font-normal tracking-tighter text-gray-950
+  }
+}

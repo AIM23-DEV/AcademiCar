@@ -14,3 +14,7 @@
  - publish server
  - ???
  - profit
+
+## Link
+https://academicar.net/
+https://academicar-dev.azurewebsites.net
