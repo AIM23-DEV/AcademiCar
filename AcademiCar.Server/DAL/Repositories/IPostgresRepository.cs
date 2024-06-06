@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace AcademiCar.Server.DAL.Repositories
 {
-    public interface IPostgresRepository<TEntity> where TEntity : Entity
+    public interface IPostgresRepository<TEntity> where TEntity : IEntity
     {
         IEnumerable<TEntity> FilterBy(
             Expression<Func<TEntity, bool>> filterExpression);

@@ -10,5 +10,45 @@
     "settings": "Einstellungen",
     "links": {
     }
+  },
+  "ShowCarsPage": {
+    "title": "Meine Fahrzeuge",
+    "newcar": "Neues Fahrzeug"
+  },
+  "CarPage": {
+    "title": "Fahrzeug erstellen",
+    "brand_placeholder": "Fahrzeug",
+    "brand": "Fahrzeugmarke und Modell",
+    "economy_placeholder": "Spritverbrauch l / km",
+    "economy": "Spritverbrauch auf 100km",
+    "plate": "Kennzeichen",
+    "cartype": "Fahrzeugart",
+    "cartype_selection": "Wähle die Art des Fahrzeuges aus",
+    "color": "Farbe des Fahrzeugs",
+    "color_selection": "Wähle die Farbe des Fahrzeuges aus",
+    "fuel": "Treibstoff",
+    "fuel_selection": "Wähle den Treibstoff des Fahrzeuges aus",
+    "seats": "Sitzplätze",
+    "seats_selection": "Wähle die Anzahl der Sitzplätze aus",
+    "car_details": "Fahrzeugdetails",
+    "ac": "Klima",
+    "seat_heating": "Sitzheizung",
+    "LED": "LED-Scheinwerfer",
+    "ski_bag": "Skisack",
+    "inspection": "Pickerl",
+    "leather": "Leder",
+    "automatic": "Automatik",
+    "cruise_control": "Tempomat",
+    "storage": "Stauraum",
+    "bike_rack": "Fahrradträger",
+    "suitcase": "Koffer",
+    "hand_luggage": "Handgepäck",
+    "ski": "Ski",
+    "roof_mounting": "Montage am Dach",
+    "plants": "Pflanzen",
+    "animals": "Tiere",
+    "other": "Sonstige",
+    "createcar": "Fahrzeug erstellen",
+    "updatecar": "Änderungen speichern"
   }
 }

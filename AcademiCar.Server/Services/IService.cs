@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace AcademiCar.Server.Services
 {
-    public interface IService<TEntity> where TEntity : Entity
+    public interface IService<TEntity> where TEntity : IEntity
     {
         public abstract Task<ActionResultResponseModel> Create(TEntity entry);
         public abstract Task<ActionResultResponseModel> Update(TEntity entry);

@@ -43,6 +43,19 @@ userName = "Maximilian Bauer"
 
             <div className="w-full flex flex-col items-center py-6">
                 <LanguageSelector/>
+                
+                <Button
+                    text={t("pages/profile:IndexProfilePage.cars")}
+                    type="button"
+                    fullWidth
+                    textFullWidth
+                    textAlign="left"
+                    onClick={() => navigate("cars/")}
+                    className="mt-6"
+                    variant="outline"
+                    leading={<BiCar className="icon-md text-primary-600"/>}
+                    trailing={<BiChevronRight className="icon-md"/>}
+                />
 
                 <div className="mt-6">
                     <img

@@ -8,8 +8,47 @@
     "statistics": "Statistics",
     "rewards": "Rewards",
     "settings": "Settings",
-
     "links": {
     }
+  },
+  "ShowCarsPage": {
+    "title": "My cars",
+    "newcar": "Add new car"
+  },
+  "CarPage": {
+    "title": "Create Car",
+    "brand_placeholder": "Vehicle",
+    "brand": "Brand and Model",
+    "economy_placeholder": "Fuel consumption l / km",
+    "economy": "Fuel consumption per 100km",
+    "plate": "License plate",
+    "cartype": "Vehicle type",
+    "cartype_selection": "Choose the type of your vehicle",
+    "color": "Vehicle color",
+    "color_selection": "Choose the color of your vehicle",
+    "fuel": "Fuel type",
+    "fuel_selection": "Choose the fuel of your vehicle",
+    "seats": "Number of Seats",
+    "seats_selection": "Choose the amount of seats in your vehicle",
+    "car_details": "Car details",
+    "ac": "A/C",
+    "seat_heating": "Seat Heating",
+    "LED": "LED headlights",
+    "ski_bag": "Ski bag",
+    "inspection": "Vehicle inspection",
+    "leather": "Leather",
+    "automatic": "Automatic",
+    "cruise_control": "Cruise control",
+    "storage": "Storage space",
+    "bike_rack": "Bike rack",
+    "suitcase": "Suitcase",
+    "hand_luggage": "Hand luggage",
+    "ski": "Ski",
+    "roof_mounting": "Mounting on the roof",
+    "plants": "Plants",
+    "animals": "Animals",
+    "other": "Other",
+    "createcar": "Create car",
+    "updatecar": "Save changes"
   }
 }
