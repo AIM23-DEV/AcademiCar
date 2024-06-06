@@ -1,15 +1,37 @@
 {
   "IndexTripsPage": {
-    "title": "Aktuelle Fahrten"
+    "title": "Aktuelle Fahrten",
+    "myTrips": "Meine Fahrten",
+    "passenger": "Passagier",
+    "startPoint": "Startpunkt",
+    "layover": "Zwischenstopp",
+    "goal": "Ziel",
+    "time": "Uhr",
+    "freeSpots": "freie Plätze",
+    "archive": "Archiv"
   },
   "CreateTripPage": {
     "title": "Neue Fahrt erstellen"
   },
   "DriverTripHistoryPage": {
-    "title": "Fahrtenarchiv (Fahrer)"
+    "title": "Fahrtenarchiv (Fahrer)",
+    "activeTrips": "Aktuelle Fahrten",
+    "inactiveTrips": "Vergangene Fahrten",
+    "startPoint": "Startpunkt",
+    "layover": "Zwischenstopp",
+    "goal": "Ziel",
+    "time": "Uhr",
+    "freeSpots": "freie Plätze"
   },  
   "PassengerTripHistoryPage": {
-  "title": "Passagierarchiv"
+    "title": "Passagierarchiv",
+    "activeTrips": "Aktuelle Fahrten",
+    "inactiveTrips": "Vergangene Fahrten",
+    "startPoint": "Startpunkt",
+    "layover": "Zwischenstopp",
+    "goal": "Ziel",
+    "time": "Uhr",
+    "freeSpots": "freie Plätze"
   },
   "ShowTripPage": {
     "title": "Details zu Fahrt {id}"

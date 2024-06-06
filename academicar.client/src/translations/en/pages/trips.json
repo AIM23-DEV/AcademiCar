@@ -1,6 +1,14 @@
 {
   "IndexTripsPage": {
-    "title": "Current trips"
+    "title": "Current trips",
+    "myTrips": "My Trips",
+    "passenger": "Passenger",
+    "startPoint": "Starting point",
+    "layover": "Layover",
+    "goal": "Finish",
+    "time": "o' clock",
+    "freeSpots": "free spots",
+    "archive": "Archive"
   },
   "CreateTripPage": {
     "title": "Create a new trip"
