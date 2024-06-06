@@ -7,10 +7,16 @@ import {TextLink} from "../../../components/Buttons.tsx";
 import { BiFilter, BiSortAlt2 } from "react-icons/bi";
 import { Menu, MenuButton, MenuItems } from '@headlessui/react'
 
+/*const SEARCHDATA = {
+    startPoint: "Graz Hauptbahnhof",
+    endPoint: "Wien Flughafen",
+    date: "2024-05-16",
+    time: "7:38",
+}*/
+
 export const SearchResultForm = () => {
     const [t] = useTranslation();
     const [startPoint, setStartPoint] = useState('');
-    const [destination, setDestination] = useState('');
     const [date, setDate] = useState('');
     const [time, setTime] = useState('');
     const [radioValue, setRadioValue] = useState();
@@ -23,10 +29,9 @@ export const SearchResultForm = () => {
                         type="text"
                         fullWidth
                         placeholder="Strecke"
-                        value={[startPoint, destination]}
+                        value={startPoint}
                         onChange={(e) => {
                             setStartPoint(e.target.value)
-                            setDestination(e.target.value)
                         }}
                         className="col-span-full"
                     />

@@ -6,7 +6,6 @@ import {BottomNavigationBar} from "../../components/BottomNavigationBar.tsx";
 import {LinkCard} from "../../components/Cards.tsx";
 import {Divider} from "../../components/Divider.tsx";
 import { BiRadioCircleMarked, BiMap, BiUserCircle, BiSolidStar } from "react-icons/bi";
-import {Button} from "../../components/Buttons.tsx";
 
 const DATA = [
     {
@@ -48,19 +47,14 @@ export const SearchResultsPage = () => {
                 <SearchResultForm/>
                 
                 <div className="w-full mt-6 flex flex-col gap-5">
-                    {DATA.map((item, index) =>
+                    {DATA.map((item) =>
                         <LinkCard>
-                            {index != 0 ? (
-                                <Divider/>
-                            ) : (
-                                <></>
-                            )}
                             <div>
                                 <div className="flex justify-between items-center">
                                     <div className="flex flex-row gap-4">
                                         <div className="flex justify-center">
                                             <img
-                                                src="/../src/assets/react.svg"
+                                                src={item.driver.avatar}
                                                 alt="avatar"
                                                 className="border-gray-600 rounded-full"
                                             />
@@ -172,7 +166,7 @@ export const SearchResultsPage = () => {
                         </LinkCard>
                     )}
 
-                    <LinkCard>
+                    {/*<LinkCard>
                         <div>
                             <div className="flex justify-between items-center">
                                 <div className="flex flex-row gap-4">
@@ -234,7 +228,7 @@ export const SearchResultsPage = () => {
                                 </div>
                             </div>
                         </div>
-                    </LinkCard>
+                    </LinkCard>*/}
                     
                 </div>
             </div>
