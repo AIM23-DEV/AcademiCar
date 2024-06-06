@@ -1,0 +1,26 @@
+{
+  "IndexUsersPage":  {
+    "title": "Konto",
+    "search": "Suchen",
+    "sort":   "Sortieren",
+    "persons": "Personen",
+    "ratings": "Bewertungen",
+    "adress": "Adresse",
+    "phonenumber": "Telefonnumer",
+    "email": "E-Mail",
+    "actions": "Actionen",
+    "blockaccount": "Konto sperren",
+    "deleteaccount": "Konto löschen"
+  },
+
+  "ShowUserPage":  {
+    "title": "Konto",
+    "ratings": "Bewertungen",
+    "adress": "Adresse",
+    "phonenumber": "Telefonnumer",
+    "email": "E-Mail",
+    "actions": "Actionen",
+    "blockaccount": "Konto sperren",
+    "deleteaccount": "Konto löschen"
+  }
+}
