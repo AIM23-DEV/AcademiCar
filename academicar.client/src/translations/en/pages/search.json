@@ -6,7 +6,7 @@
     "title": "Search results",
     "start": "Startpoint",
     "end": "Endpoint",
-    "feeSpots": "Free spots"
+    "freeSpots": "Free spots"
   },
   "SearchResultsForm": {
     "filter": "Filter",

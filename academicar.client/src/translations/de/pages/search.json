@@ -6,7 +6,7 @@
     "title": "Suchergebnisse",
     "start": "Startpunkt",
     "end": "Ziel",
-    "feeSpots": "Freie Plätze"
+    "freeSpots": "Freie Plätze"
   },
   "SearchResultsForm": {
     "filter": "Filter",

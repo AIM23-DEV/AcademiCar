@@ -8,7 +8,7 @@ import { BiFilter, BiSortAlt2 } from "react-icons/bi";
 import { Menu, MenuButton, MenuItems } from '@headlessui/react'
 
 export const SearchResultForm = () => {
-    const [t] = useTranslation(['common', 'pages/search']);
+    const [t] = useTranslation();
     const [startPoint, setStartPoint] = useState('');
     const [destination, setDestination] = useState('');
     const [date, setDate] = useState('');
@@ -52,6 +52,7 @@ export const SearchResultForm = () => {
                 
                 <div className="grid grid-cols-2 justify-center items-center">
                     <TextLink
+                        link="/search/filter"
                         leading={<BiFilter className="icon"/>}
                         text={t('pages/search:SearchResultsForm.filter')}
                         className="w-full"
