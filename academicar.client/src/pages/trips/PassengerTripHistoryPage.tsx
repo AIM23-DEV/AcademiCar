@@ -1,12 +1,10 @@
 import {TitleBar} from "../../components/TitleBar";
 import SetPageTitle from "../../hooks/set_page_title.tsx";
 import {BottomNavigationBar} from "../../components/BottomNavigationBar.tsx";
-import {IconButton} from "../../components/Buttons.tsx";
-import {useNavigate} from "react-router-dom";
-import {LinkCard} from "../../components/Cards.tsx";
-import {BiMap, BiPlus, BiRadioCircleMarked, BiSolidStar, BiUserCircle} from "react-icons/bi";
-import {Divider} from "../../components/Divider.tsx";
 import {useTranslation} from "react-i18next";
+import {LinkCard} from "../../components/Cards.tsx";
+import {BiMap, BiRadioCircleMarked, BiSolidStar, BiUserCircle} from "react-icons/bi";
+import {Divider} from "../../components/Divider.tsx";
 import React from "react";
 
 // TODO add list of trips for the current user
@@ -68,10 +66,9 @@ const Route: React.FC<RouteProps> = ({ startPoint, endPoint, stops }) => {
                         </div>
                         <div className="flex flex-row items-center gap-2">
                             <span className="flex">
-                                 {Array.from({ length: 4 - stop.freeSeats }).map((_, index) => (
-                                     <BiUserCircle key={index} className="icon text-gray-400" />
-                                 ))}
-
+                                {Array.from({ length: 4 - stop.freeSeats }).map((_, index) => (
+                                    <BiUserCircle key={index} className="icon text-gray-400" />
+                                ))}
                                 {Array.from({ length: stop.freeSeats }).map((_, index) => (
                                     <BiUserCircle key={index} className="icon text-primary-600" />
                                 ))}
@@ -92,10 +89,9 @@ const Route: React.FC<RouteProps> = ({ startPoint, endPoint, stops }) => {
     );
 };
 
-export const IndexTripsPage = () => {
+export const PassengerTripHistoryPage = () => {
     const [t] = useTranslation(["common", "pages/trips"]);
-    const navigate = useNavigate();
-    const pageTitle = t("pages/trips:IndexTripsPage.title");
+    const pageTitle = t("pages/trips:PassengerTripHistoryPage.title");
     SetPageTitle(pageTitle);
 
     // Example trips data
@@ -109,7 +105,7 @@ export const IndexTripsPage = () => {
             ],
             price: "€ 12,80",
             driver: {
-                name: "Du (Driver)",
+                name: "John Doe",
                 rating: 4.0,
                 avatar: "/../src/assets/react.svg"
             }
@@ -123,7 +119,7 @@ export const IndexTripsPage = () => {
             ],
             price: "€ 15,00",
             driver: {
-                name: "Du (Driver)",
+                name: "Jane Smith",
                 rating: 4.5,
                 avatar: "/../src/assets/react.svg"
             }
@@ -163,15 +159,13 @@ export const IndexTripsPage = () => {
 
     return (
         <>
-            <TitleBar text={pageTitle}/>
-            <div className="w-full flex flex-col items-center pb-24">
+            <TitleBar text={pageTitle} hasBackAction/>
+            <div className="w-full flex flex-col items-center">
                 {myTrips.map((trip, index) => (
                     <LinkCard
                         key={index}
-                        label={index === 0 ? t('pages/trips:IndexTripsPage.myTrips') : ""}
-                        className="mt-6"
-                        outsideLinkText={index === 0 ? t('pages/trips:IndexTripsPage.archive') : ""}
-                        outsideLink={index === 0 ? "/trips/history/driver" : ""}>
+                        label={index === 0 ? t("pages/trips:PassengerTripHistoryPage.activeTrips") : ""}
+                        className="mt-6">
                         <div>
                             <div className="flex justify-between items-center">
                                 <div className="flex flex-row gap-4">
@@ -185,11 +179,11 @@ export const IndexTripsPage = () => {
                                     <div>
                                         <div>{trip.driver.name}</div>
                                         <div className="flex items-center">
-                                            {Array.from({length: Math.floor(trip.driver.rating)}).map((_, idx) => (
-                                                <BiSolidStar key={idx} className="icon text-yellow-400"/>
+                                            {Array.from({ length: Math.floor(trip.driver.rating) }).map((_, idx) => (
+                                                <BiSolidStar key={idx} className="icon text-yellow-400" />
                                             ))}
-                                            {Array.from({length: 5 - Math.floor(trip.driver.rating)}).map((_, idx) => (
-                                                <BiSolidStar key={idx} className="icon text-gray-300"/>
+                                            {Array.from({ length: 5 - Math.floor(trip.driver.rating) }).map((_, idx) => (
+                                                <BiSolidStar key={idx} className="icon text-gray-300" />
                                             ))}
                                             <span className="ml-2">({trip.driver.rating.toFixed(1)})</span>
                                         </div>
@@ -198,9 +192,9 @@ export const IndexTripsPage = () => {
                                 <div className="subtitle">{trip.price}</div>
                             </div>
 
-                            <Divider/>
+                            <Divider />
 
-                            <Route startPoint={trip.startPoint} endPoint={trip.endPoint} stops={trip.stops}/>
+                            <Route startPoint={trip.startPoint} endPoint={trip.endPoint} stops={trip.stops} />
                         </div>
                     </LinkCard>
                 ))}
@@ -208,10 +202,8 @@ export const IndexTripsPage = () => {
                 {passengerTrips.map((trip, index) => (
                     <LinkCard
                         key={index}
-                        label={index === 0 ? t('pages/trips:IndexTripsPage.passenger') : ""}
-                        className={`mt-6 ${index === passengerTrips.length - 1 ? "mb-24" : ""}`}
-                        outsideLinkText={index === 0 ? t('pages/trips:IndexTripsPage.archive') : ""}
-                        outsideLink={index === 0 ? "/trips/history/passenger" : ""}>
+                        label={index === 0 ? t("pages/trips:PassengerTripHistoryPage.inactiveTrips") : ""}
+                        className={`mt-6 ${index === passengerTrips.length - 1 ? "mb-24" : ""}`}>
                         <div>
                             <div className="flex justify-between items-center">
                                 <div className="flex flex-row gap-4">
@@ -225,11 +217,11 @@ export const IndexTripsPage = () => {
                                     <div>
                                         <div>{trip.driver.name}</div>
                                         <div className="flex items-center">
-                                            {Array.from({length: Math.floor(trip.driver.rating)}).map((_, idx) => (
-                                                <BiSolidStar key={idx} className="icon text-yellow-400"/>
+                                            {Array.from({ length: Math.floor(trip.driver.rating) }).map((_, idx) => (
+                                                <BiSolidStar key={idx} className="icon text-yellow-400" />
                                             ))}
-                                            {Array.from({length: 5 - Math.floor(trip.driver.rating)}).map((_, idx) => (
-                                                <BiSolidStar key={idx} className="icon text-gray-300"/>
+                                            {Array.from({ length: 5 - Math.floor(trip.driver.rating) }).map((_, idx) => (
+                                                <BiSolidStar key={idx} className="icon text-gray-300" />
                                             ))}
                                             <span className="ml-2">({trip.driver.rating.toFixed(1)})</span>
                                         </div>
@@ -238,18 +230,14 @@ export const IndexTripsPage = () => {
                                 <div className="subtitle">{trip.price}</div>
                             </div>
 
-                            <Divider/>
+                            <Divider />
 
-                            <Route startPoint={trip.startPoint} endPoint={trip.endPoint} stops={trip.stops}/>
+                            <Route startPoint={trip.startPoint} endPoint={trip.endPoint} stops={trip.stops} />
                         </div>
                     </LinkCard>
                 ))}
             </div>
-
-            <div className="fixed bottom-20 flex flex-row items-center justify-end w-full z-50 max-w-5xl px-6">
-                <IconButton variant="primary" icon={<BiPlus className="icon-md"/>} type="button" className="mr-4" onClick={() => navigate("/trips/create")}/>
-            </div>
-            <BottomNavigationBar selected="trips"/>
+            <BottomNavigationBar selected="trips" />
         </>
     );
 };
