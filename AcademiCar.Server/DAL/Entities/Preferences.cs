@@ -5,9 +5,11 @@ namespace AcademiCar.Server.DAL.Entities
 {
     public class Preferences : Entity
     {
-        [ForeignKey("FK_User")]
+        [ForeignKey("User")]
         [JsonProperty(Required = Required.Default)]
-        [JsonIgnore] public User User { get; set; }
-        public int FK_User { get; set; }
+        public string FK_User { get; set; } 
+
+        [JsonIgnore]
+        public User User { get; set; }
     }
 }

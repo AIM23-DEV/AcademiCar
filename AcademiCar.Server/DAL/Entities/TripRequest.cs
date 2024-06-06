@@ -13,7 +13,7 @@ namespace AcademiCar.Server.DAL.Entities
         [ForeignKey("FK_PotentialPassenger")]
         [JsonProperty(Required = Required.Default)]
         [JsonIgnore] public User PotentialPassenger { get; set; }
-        public int FK_PotentialPassenger { get; set; }
+        public string FK_PotentialPassenger { get; set; }
 
         public string Comment { get; set; }
         public string Status { get; set; }
