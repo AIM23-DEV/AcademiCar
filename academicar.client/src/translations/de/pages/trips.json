@@ -6,6 +6,6 @@
     "title": "Neue Fahrt erstellen"
   },
   "ShowTripPage": {
-    "title": "Details zu Fahrt {id}"
+    "title": "Details zu Fahrt {{id}}"
   }
 }
