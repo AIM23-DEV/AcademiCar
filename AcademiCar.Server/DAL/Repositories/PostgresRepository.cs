@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace AcademiCar.Server.DAL.Repositories
 {
-    public class PostgresRepository<TEntity> : IPostgresRepository<TEntity> where TEntity : Entity
+    public class PostgresRepository<TEntity> : IPostgresRepository<TEntity> where TEntity : class, IEntity
     {
         protected readonly PostgresDbContext db;
 

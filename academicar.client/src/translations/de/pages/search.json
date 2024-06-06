@@ -2,6 +2,7 @@
   "SearchTripsPage": {
     "title": "Mitfahrgelegenheit finden"
   },
+
   "SearchResultsPage": {
     "title": "Suchergebnisse",
     "start": "Startpunkt",
@@ -31,5 +32,10 @@
     "musicTaste": "Musikgeschmack",
     "notSpecified": "keine Angabe",
     "resetFilter": "Filter zurücksetzen"
+
+  "Ratings": {
+    "title": "Fahrer Bewertungen",
+    "back": "Zurück",
+    "reviews": "Bewertungen"
   }
 }
