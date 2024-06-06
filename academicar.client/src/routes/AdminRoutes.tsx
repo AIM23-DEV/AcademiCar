@@ -1,5 +1,5 @@
 ﻿import React from 'react';
-import { Navigate, Outlet, Route } from 'react-router-dom';
+import { Outlet, Route } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
 import Dashboard from "../pages/auth/Dashboard";
 import AdminLogin from "../pages/auth/AdminLogin.tsx";
@@ -12,7 +12,7 @@ const AdminPrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }
     const { user } = useAuth();
 
     if (!user) {
-        return <Navigate to="/admin-login" />;
+        return <Route path="login" element={<AdminLogin />} />;
     }
 
     /*if (!user.roles || !user.roles.includes('admin')) {

@@ -15,8 +15,7 @@ const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => 
 const AuthenticationRoutes = (
     <Route path="/auth" element={<Outlet />}>
         <Route path="login" element={<LoginPage />} />
-        <Route
-            path="dashboard"
+        <Route path="dashboard"
             element={
                 <PrivateRoute>
                     <Dashboard />

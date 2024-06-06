@@ -7,7 +7,6 @@ import SetPageTitle from "../hooks/set_page_title.tsx";
 import {useTranslation} from "react-i18next";
 import {useNavigate} from "react-router-dom";
 import {BiLogOut} from "react-icons/bi";
-import {useAuth} from "../AuthContext.tsx";
 
 // Todo delete this page once it is obsolete!
 // This is just an example page. The search page should be loaded as a default once implemented.
@@ -23,8 +22,6 @@ export const    HomePage = () => {
     const navigate = useNavigate();
     // This is how to work with a component that needs a state
     const [showModal, setShowModal] = useState(false);
-
-    const { selectIdP } = useAuth();
 
     return (
         // If you do not need a parent tag you can use this empty tag.
@@ -61,13 +58,6 @@ export const    HomePage = () => {
             <ConfirmationModal open={showModal} setOpen={setShowModal}
                                subtitle="Das ist ein Bestätigungs-Modal. Hier kann man einige Einstellungen mitgeben!"
                                onConfirm={() => alert("Confirmed")}/>
-
-
-            <div className="w-full flex flex-col items-center p-6 space-y-8">
-                <Button text="Select Identity Provider" className="" onClick={selectIdP} />
-                <Button text="Admin Login" className="" onClick={() => navigate('/admin/login')}/>
-            </div>
-            
         </>
     );
 };
