@@ -65,6 +65,7 @@ builder.Services.AddAuthentication(options =>
 
 // Conditional SAML2 Setup
 var enableSaml2 = builder.Configuration.GetValue<bool>("EnableSaml2");
+var useSingleIdP = builder.Configuration.GetValue<bool>("UseSingleIdP");
 
 if (enableSaml2)
 {
@@ -74,43 +75,64 @@ if (enableSaml2)
             options.SPOptions.EntityId = new EntityId("https://academicar-dev.azurewebsites.net/Saml2");
             options.SPOptions.ReturnUrl = new Uri("https://academicar-dev.azurewebsites.net/Saml2/Acs");
 
-            // Load IdPs from metadata URL
-            var metadataUrl = "https://eduid.at/md/aconet-registered.xml";
-            var httpClient = new HttpClient();
-            var metadataXml = httpClient.GetStringAsync(metadataUrl).Result;
-
-            var metadataDoc = XDocument.Parse(metadataXml);
-            var ns = metadataDoc.Root.Name.Namespace;
-
-            foreach (var entity in metadataDoc.Descendants(ns + "EntityDescriptor"))
+            if (useSingleIdP)
             {
-                var idpDescriptor = entity.Descendants(ns + "IDPSSODescriptor").FirstOrDefault();
-                if (idpDescriptor != null)
+                // Single IdP configuration
+                var entityId = builder.Configuration["Saml2:SingleIdP:EntityId"];
+                var ssoUrl = builder.Configuration["Saml2:SingleIdP:SingleSignOnServiceUrl"];
+                var certificate = builder.Configuration["Saml2:SingleIdP:SigningCertificate"];
+
+                var idp = new IdentityProvider(new EntityId(entityId), options.SPOptions)
                 {
-                    var entityId = entity.Attribute("entityID")?.Value;
-                    var ssoService = idpDescriptor.Descendants(ns + "SingleSignOnService").FirstOrDefault();
-                    var ssoUrl = ssoService?.Attribute("Location")?.Value;
+                    LoadMetadata = false,
+                    SingleSignOnServiceUrl = new Uri(ssoUrl)
+                };
 
-                    if (!string.IsNullOrEmpty(entityId) && !string.IsNullOrEmpty(ssoUrl))
+                var key = new X509Certificate2(Convert.FromBase64String(certificate));
+                idp.SigningKeys.AddConfiguredKey(key);
+
+                options.IdentityProviders.Add(idp);
+            }
+            else
+            {
+                // Multiple IdPs configuration
+                var metadataUrl = "https://eduid.at/md/aconet-registered.xml";
+                var httpClient = new HttpClient();
+                var metadataXml = httpClient.GetStringAsync(metadataUrl).Result;
+
+                var metadataDoc = XDocument.Parse(metadataXml);
+                var ns = metadataDoc.Root.Name.Namespace;
+
+                foreach (var entity in metadataDoc.Descendants(ns + "EntityDescriptor"))
+                {
+                    var idpDescriptor = entity.Descendants(ns + "IDPSSODescriptor").FirstOrDefault();
+                    if (idpDescriptor != null)
                     {
-                        var idp = new IdentityProvider(new EntityId(entityId), options.SPOptions)
-                        {
-                            LoadMetadata = false,
-                            SingleSignOnServiceUrl = new Uri(ssoUrl)
-                        };
+                        var entityId = entity.Attribute("entityID")?.Value;
+                        var ssoService = idpDescriptor.Descendants(ns + "SingleSignOnService").FirstOrDefault();
+                        var ssoUrl = ssoService?.Attribute("Location")?.Value;
 
-                        var keys = idpDescriptor.Descendants(ns + "KeyDescriptor")
-                                                .Where(k => k.Attribute("use")?.Value == "signing" || k.Attribute("use") == null)
-                                                .Select(k => k.Descendants(ns + "X509Certificate").FirstOrDefault()?.Value)
-                                                .Where(c => !string.IsNullOrEmpty(c))
-                                                .Select(c => new X509Certificate2(Convert.FromBase64String(c)));
-
-                        foreach (var key in keys)
+                        if (!string.IsNullOrEmpty(entityId) && !string.IsNullOrEmpty(ssoUrl))
                         {
-                            idp.SigningKeys.AddConfiguredKey(key);
+                            var idp = new IdentityProvider(new EntityId(entityId), options.SPOptions)
+                            {
+                                LoadMetadata = false,
+                                SingleSignOnServiceUrl = new Uri(ssoUrl)
+                            };
+
+                            var keys = idpDescriptor.Descendants(ns + "KeyDescriptor")
+                                                    .Where(k => k.Attribute("use")?.Value == "signing" || k.Attribute("use") == null)
+                                                    .Select(k => k.Descendants(ns + "X509Certificate").FirstOrDefault()?.Value)
+                                                    .Where(c => !string.IsNullOrEmpty(c))
+                                                    .Select(c => new X509Certificate2(Convert.FromBase64String(c)));
+
+                            foreach (var key in keys)
+                            {
+                                idp.SigningKeys.AddConfiguredKey(key);
+                            }
+
+                            options.IdentityProviders.Add(idp);
                         }
-
-                        options.IdentityProviders.Add(idp);
                     }
                 }
             }
