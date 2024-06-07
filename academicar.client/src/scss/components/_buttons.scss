@@ -1,0 +1,45 @@
+@layer components {
+  
+  // Base
+  .btn {
+    @apply py-3.5 px-3 focusable transition-all flex flex-row items-center justify-center subtitle space-x-2 rounded-xl disabled:opacity-60 disabled:shadow-none disabled:cursor-not-allowed;
+  }
+
+  .btn-icon {
+    @apply p-3 focusable transition-all flex flex-row items-center justify-center subtitle space-x-2 rounded-xl disabled:opacity-60 disabled:shadow-none disabled:cursor-not-allowed;
+  }
+
+  .btn-text {
+    @apply focusable transition-all flex flex-row items-center justify-center subtitle space-x-2 rounded-md disabled:opacity-60 disabled:cursor-not-allowed focus:ring-offset-0;
+  }
+
+  // Filled buttons
+  .btn-primary {
+    @apply bg-primary-600 hover:bg-primary-700 text-gray-50 shadow-md hover:shadow shadow-primary-900/30 disabled:hover:bg-primary-600;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary-600 hover:bg-secondary-700 text-gray-50 shadow-md hover:shadow shadow-secondary-900/30 disabled:hover:bg-secondary-600;
+  }
+
+  .btn-accent {
+    @apply bg-accent-600 hover:bg-accent-700 text-gray-50 shadow-md hover:shadow shadow-accent-900/30 disabled:hover:bg-accent-600;
+  }
+
+  .btn-outline {
+    @apply p-3 bg-white hover:bg-gray-100 ring-[1.5px] ring-gray-300 shadow-sm hover:shadow-none disabled:hover:bg-white focus:ring-offset-0;
+  }
+
+  // Text buttons
+  .btn-text-primary {
+    @apply text-primary-600 hover:text-primary-700
+  }
+
+  .btn-text-secondary {
+    @apply text-secondary-600 hover:text-secondary-700
+  }
+
+  .btn-text-accent {
+    @apply text-accent-600 hover:text-accent-700
+  }
+}

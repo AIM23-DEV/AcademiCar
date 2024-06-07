@@ -1,0 +1,23 @@
+﻿// Do not put into a layer!
+.rc-slider {
+
+  &-rail {
+    @apply bg-gray-300
+  }
+
+  &-track {
+    @apply bg-primary-600
+  }
+
+  &-handle {
+    @apply bg-primary-600 border-0 opacity-100 focusable focus:ring-offset-2 z-10
+  }
+
+  &-dot-active {
+    @apply bg-primary-600 border-0
+  }
+}
+
+.rc-slider-handle-dragging.rc-slider-handle-dragging.rc-slider-handle-dragging {
+  @apply border-primary-500 ring-2 ring-primary-500
+}

@@ -1,0 +1,62 @@
+{
+  "IndexChatsPage": {
+    "title": "Chats",
+    "label_requests": "Open Requests",
+    "label_chats": "Chats & Trips",
+    "label_results": "Results",
+    "modal_title_no_results": "No Results",
+    "modal_info_no_results": "Your search did not find any chats.",
+    "modal_title_no_chats": "No Chats",
+    "modal_info_no_chats": "Requests or chats for your trips appear here."
+  },
+
+  "TripChatPage": {
+    "title": "{{driver_name}}'s Trip",
+    "placeholder_message": "Message...",
+    "info_not_member": "You cannot send any more messages because you are no longer a member of this trip."
+  },
+
+  "TripChatDetailPage": {
+    "title": "{{driver_name}}'s Trip",
+    "button_to_trip": "To Trip >",
+    "label_members": "Members",
+    "label_actions": "Actions",
+    "action_leave_trip": "Leave Trip",
+    "action_report_chat": "Report Chat",
+    "action_delete_chat": "Delete Chat",
+    "indicator_driver": "Driver",
+    "indicator_you": "(You)",
+    "info_trip_over": "The trip is already over.",
+    "info_not_member": "You are not a member of this trip.",
+    "action_remove_from_trip": "Remove from trip",
+    "action_see_profile": "See Profile",
+    "action_contact": "Contact",
+    "action_close": "Close"
+  },
+
+  "PersonalChatPage": {
+    "placeholder_message": "Message...",
+    "label_join_request": "Join Request",
+    "link_trip": "Trip >",
+    "button_deny": "Deny",
+    "button_accept": "Accept"
+  },
+
+  "PersonalChatDetailPage": {
+    "button_to_profile": "To Profile >",
+    "label_actions": "Actions",
+    "action_report_user": "Report Person",
+    "action_delete_chat": "Delete Chat"
+  },
+  
+  "EmptyChat": {
+    "searchResult": {
+      "title": "No results",
+      "subtitle": "No chats could be found for your search."
+    },
+    "chatResult": {
+      "title":"No messages",
+      "subtitle": "Requests or chats about rides appear here."
+    }
+  }
+}

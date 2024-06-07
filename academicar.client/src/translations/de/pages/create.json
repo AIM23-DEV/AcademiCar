@@ -1,0 +1,56 @@
+{
+  "Common": {
+    "title_create": "Neue Reise erstellen"
+  },
+  
+  "CreateTripPage1": {
+    "label_route": "Reiseweg",
+    "label_input_from": "Von",
+    "placeholder_input_from": "Startpunkt",
+    "label_input_to": "Nach",
+    "placeholder_input_to": "Ziel",
+    "label_stops_list": "Zwischenstop",
+    "action_add_stop": "Stop hinzufügen",
+    "label_input_stop": "Halt {{stopNr}}",
+    "label_input_stay": "Aufenthalt",
+    "toggle_enable_stops": "Zwischenstopps sind möglich"
+  },
+  
+  "CreateTripPage2": {
+    "label_start_time": "Abfahrt",
+    "label_input_date": "Datum",
+    "label_input_time": "Uhrzeit",
+    "label_stop_reached_time": "Ankunft",
+    "label_stop_continued_time": "Abfahrt",
+    "label_arrival_time": "Geplante Ankunft"
+  },
+  
+  "CreateTripPage3": {
+    "label_vehicle": "Fahrzeug",
+    "link_create_vehicle": "Neues Fahrzeug",
+    "label_seats": "Sitzplätze",
+    "label_extras": "Weitere Möglichkeiten",
+    "extra_unit": "Stück",
+    "extra_small_luggage": "Gepäckmitnahme",
+    "extra_suitcase": "Koffermitnahme",
+    "extra_bicycle": "Fahrradmitnahme",
+    "extra_ski": "Skimitnahme",
+    "extra_misc": "Sonstige Gegenstände"
+  },
+  
+  "CreateTripPage4": {
+    "label_pricing": "Preise",
+    "radio_no_cost": "Keine Mitfahrkosten",
+    "radio_fixed_cost": "Fixpreis",
+    "label_recommended_price": "Empfohlener Preis",
+    "label_kilometre_allowance": "Kilometergeld"
+  },
+  
+  "UpdateTripPage": {
+    "tab_route": "Route",
+    "tab_time": "Zeit",
+    "tab_vehicle": "Fahrzeug",
+    "tab_pricing": "Preis",
+    "button_update": "Speichern"
+  }
+}

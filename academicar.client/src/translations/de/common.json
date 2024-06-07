@@ -1,0 +1,27 @@
+{
+  "app_title": "AcademiCar",
+  "actions": {
+    "search": "Suchen",
+    "logout": "Abmelden"
+  },
+  "trip": {
+    "start": "Startpunkt",
+    "destination": "Ziel",
+    "stop": "Zwischenstopp",
+    "freeSpots": "freie Plätze",
+    "layover": "Aufenthalt"
+  },
+  "time": {
+    "time": "Uhr",
+    "hour": "Stunde",
+    "hours": "Stunden",
+    "hoursShort": "h",
+    "minute": "Minute",
+    "minutes": "Minuten",
+    "minuteShort": "min",
+    "second": "Sekunde",
+    "seconds": "Sekunden",
+    "secondsShort": "sek"
+  },
+  "example": "Ein Beispiel mit {{variable}}"
+}

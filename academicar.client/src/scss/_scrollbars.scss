@@ -1,0 +1,50 @@
+﻿@layer components {
+  // Common classes
+  .scrollbar-lg::-webkit-scrollbar,
+  .scrollbar::-webkit-scrollbar {
+    @apply w-4 h-4;
+  }
+
+  .scrollbar-lg::-webkit-scrollbar-track,
+  .scrollbar::-webkit-scrollbar-track {
+    border-radius: 8px;
+  }
+
+  // Large scrollbar
+  .scrollbar-lg::-webkit-scrollbar-thumb {
+    border: 4px solid transparent;
+    background-clip: content-box;
+    @apply h-14 rounded-full bg-gray-700;
+  }
+
+  .scrollbar-lg::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-900;
+  }
+
+  // Default scrollbar
+  .scrollbar::-webkit-scrollbar-thumb {
+    border: 6px solid transparent;
+    background-clip: content-box;
+    @apply h-14 rounded-full bg-gray-500;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    border: 5px solid transparent;
+    @apply bg-gray-700;
+  }
+
+  // Hide the scrollbar
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  // Show the scrollbar on hover
+  .scrollbar-hover::-webkit-scrollbar-thumb {
+    @apply hidden group-hover:block;
+  }
+}
