@@ -1,25 +1,32 @@
 ﻿using AcademiCar.Server.DAL.Entities;
+using AcademiCar.Server.DAL.UnitOfWork;
 using AcademiCar.Server.Tests.BaseClasses;
 using NUnit.Framework;
 
 namespace AcademiCar.Server.Tests.DAL
 {
+    [TestFixture]
     public class PostgresRepositoryTest : BaseUnitTest
     {
         const string TEST_EMAIL = "postgre@repo.test";
+        const string FIRST_NAME = "testFirstName";
+        const string LAST_NAME = "testLastName";
+        const int STATS_ID = 1;
 
 
         public override async Task Setup()
         {
             await base.Setup();
 
-            await _unitOfWork.Users.InsertAsync(new User() { Email = TEST_EMAIL });
+            await _unitOfWork.Stats.InsertAsync(new Stats() { ID = 1});
+            await _unitOfWork.Users.InsertAsync(new User() { FirstName = FIRST_NAME, LastName = LAST_NAME, FK_Stats = STATS_ID, Email = TEST_EMAIL });
         }
         public override async Task TearDown()
         {
             await base.TearDown();
 
             await _unitOfWork.Users.DeleteAsync(u => u.Email == TEST_EMAIL);
+            await _unitOfWork.Stats.DeleteAsync(u => u.ID == STATS_ID);
         }
 
 
@@ -109,4 +116,6 @@ namespace AcademiCar.Server.Tests.DAL
         private int _GetCurrentUserCount()
             => _unitOfWork.Users.FilterBy(u => u.Email.Contains("@crud.test")).Count();
     }
+    
+
 }

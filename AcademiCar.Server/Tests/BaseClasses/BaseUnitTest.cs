@@ -1,4 +1,5 @@
 ﻿using AcademiCar.Server.DAL.UnitOfWork;
+using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 
 namespace AcademiCar.Server.Tests.BaseClasses
@@ -25,12 +26,17 @@ namespace AcademiCar.Server.Tests.BaseClasses
         [TearDown]
         public virtual async Task TearDown()
         {
-            _serviceProvider.Dispose();
+           _serviceProvider.Dispose();
         }
 
 
         protected virtual void _CollectServices()
         {
+            var builder = WebApplication.CreateBuilder();
+            
+            _services.AddDbContext<PostgresDbContext>(options =>
+                options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+            
             _services.AddSingleton<IUnitOfWork, UnitOfWork>();
         }
     }
