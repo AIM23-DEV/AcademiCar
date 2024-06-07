@@ -5,7 +5,7 @@ import {useState} from "react";
 import SetPageTitle from "../../hooks/set_page_title.tsx";
 import {useTranslation} from "react-i18next";
 import {useNavigate} from "react-router-dom";
-import {BiCar, BiLogOut, BiSolidStar} from "react-icons/bi";
+import {BiSolidStar} from "react-icons/bi";
 import {TextButton} from "../../components/Buttons.tsx";
 import {Input} from "@headlessui/react";
 import {Divider} from "../../components/Divider.tsx";
@@ -153,7 +153,7 @@ export const ShowUserPage = () => {
 
                 <Card
                     id="lbl_1"
-                    label="Aktionen" //TODO actions
+                    label={actions} //TODO actions
                     labelPosition="outside"
                     padding="base"
                     className="mt-8"
