@@ -12,6 +12,7 @@ export interface DriverData {
     rating: number;
     attributes: string[];
     reviews: Review[];
+    image: string;
 }
 
 export const getDriverData = async (driverId: string | undefined): Promise<DriverData | null> => {
@@ -25,13 +26,14 @@ export const getDriverData = async (driverId: string | undefined): Promise<Drive
                 { reviewer: 'Johan Marc', rating: 5, comment: 'Hat alles geklappt.' },
                 { reviewer: 'Mary James', rating: 4, comment: 'Sind leider 30 min zu spät angekommen.' },
             ],
+            image: '/path/to/jon-doe-image.png',
         },
         // Add more mock drivers as needed
     };
 
     return new Promise((resolve) => {
         setTimeout(() => {
-            resolve(mockData[driverId] || null);
+            resolve(driverId ? mockData[driverId] || null : null);
         }, 500);
     });
 };
