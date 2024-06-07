@@ -51,7 +51,7 @@ namespace AcademiCar.Server.Tests.DAL
                 User testUser = await _GetUserByEmail(TEST_EMAIL);
                 if (testUser.Email != TEST_EMAIL) throw new Exception("FindAsync Error!");
 
-                User idTestUser = await _unitOfWork.Users.FindByIdAsync(testUser.ID);
+                User idTestUser = await _unitOfWork.Users.FindByIdAsync(((IEntity)testUser).ID);
                 if (idTestUser.Email != TEST_EMAIL) throw new Exception("FindById Error!");
 
                 return true;
@@ -84,14 +84,14 @@ namespace AcademiCar.Server.Tests.DAL
                 insertedUser.Email = "update@crud.test";
                 await _unitOfWork.Users.UpdateAsync(insertedUser);
                 User updatedUser = await _GetUserByEmail("update@crud.test");
-                if (updatedUser.ID != insertedUser.ID)
+                if (((IEntity)updatedUser).ID != ((IEntity)insertedUser).ID)
                     throw new Exception("UpdateAsync Error!");
 
                 await _unitOfWork.Users.DeleteAsync(u => u.Email == "delete@crud.test");
                 if (!(_GetCurrentUserCount() == initialUserCount + 1))
                     throw new Exception("DeleteAsync Error!");
 
-                await _unitOfWork.Users.DeleteByIdAsync(insertedUser.ID);
+                await _unitOfWork.Users.DeleteByIdAsync(((IEntity)insertedUser).ID);
                 if (!(_GetCurrentUserCount() == initialUserCount))
                     throw new Exception("DeleteById Error!");
 
