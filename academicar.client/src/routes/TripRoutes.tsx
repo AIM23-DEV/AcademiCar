@@ -8,6 +8,8 @@ import {CreateTripPage2} from "../pages/create/CreateTripPage2.tsx";
 import {CreateTripPage3} from "../pages/create/CreateTripPage3.tsx";
 import {CreateTripPage4} from "../pages/create/CreateTripPage4.tsx";
 import {UpdateTripPage} from "../pages/create/UpdateTripPage.tsx";
+import {DriverDetailsPage} from "../pages/trips/DriverDetailsPage.tsx";
+import {PassengerDetailsPage} from "../pages/trips/PassengerDetailsPage.tsx";
 
 // All routes are prefixed with /trips.
 export default <Route key="/trips" path="/trips" element={<Outlet/>}>
@@ -22,4 +24,6 @@ export default <Route key="/trips" path="/trips" element={<Outlet/>}>
     <Route key="history/driver" path="history/driver" element={<DriverTripHistoryPage/>}/>,
     <Route key="history/passenger" path="history/passenger" element={<PassengerTripHistoryPage/>}/>,
     
+    <Route key="details/driver" path="details/driver" element={<DriverDetailsPage/>}/>,
+    <Route key="details/passenger" path="details/passenger" element={<PassengerDetailsPage/>}/>,
 </Route>;
