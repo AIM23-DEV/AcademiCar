@@ -1,11 +1,7 @@
 import {ChangeEvent, useState} from "react";
 import {Button} from "../../../components/Buttons.tsx";
 import {Card} from "../../../components/Cards.tsx";
-import {useTranslation} from "react-i18next";
 import axios, {AxiosResponse} from "axios";
-import {BlockBlobClient} from "@azure/storage-blob";
-import {convertFileToArrayBuffer} from "../../../lib/covert-file-to-arraybuffer.ts";
-
 
 // Used only for local development
 const API_SERVER = import.meta.env.VITE_API_SERVER as string;
@@ -20,22 +16,18 @@ const request = axios.create({
 type SasResponse = {
     url: string;
 };
-type ListResponse = {
-    list: string[];
-};
 export const ImageUploadForm = () => {
-    const [t] = useTranslation(['common', 'pages/profile']);
-    
-    const containerName = `upload`;
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [sasTokenUrl, setSasTokenUrl] = useState<string>('');
     const [uploadStatus, setUploadStatus] = useState<string>('');
-    const [list, setList] = useState<string[]>([]);
+    const [list] = useState<string[]>([]);
 
+    /*
     const uploadProfileImage = async () => {
         try{
             //  const promises = [];
-            if (sasTokenUrl === ''){/*return;*/
+            if (sasTokenUrl === ''){
+                // return;
                 console.log("set SAS token ");
                 setSasTokenUrl("https://academicar.blob.core.windows.net/?sv=2022-11-02&ss=bfqt&srt=o&sp=rwdlacupiytfx&se=2024-06-09T21:23:51Z&st=2024-06-09T13:23:51Z&spr=https&sig=GCh56CQUO%2FwS%2BSzRVBzHiEZBjrqgZMqjJrnT1CjVe3I%3D")
             } 
@@ -76,9 +68,11 @@ export const ImageUploadForm = () => {
             }
         }
     };
+    */
+    
     const handleFileSasToken = () => {
-     //   const permission = 'w'; //write
-      //  const timerange = 5; //minutes
+        //   const permission = 'w'; //write
+        //   const timerange = 5; //minutes
 
         if (!selectedFile) return;
 
@@ -128,25 +122,24 @@ export const ImageUploadForm = () => {
     return (
         <Card label="Suche" className="mt-6">
             <form aria-label="Suche" className="w-full grid grid-cols-12 gap-4">
-                <input type="file" className={"col-span-full"} onChange={handleFileSelection}/>
-
+                <input type="file" className={"col-span-full"} onChange={handleFileSelection} />
 
                 <Button
                     variant={"secondary"}
                     text={"Get SAS Token"}
                     className={"col-span-full"}
-                    onClick={handleFileSasToken}>
+                    onClick={handleFileSasToken}
+                />
 
-                </Button>
                 {sasTokenUrl && (
                     <div className="body-2">SAS-Token URL: {sasTokenUrl}</div>
                 )}
+                
                 <Button
                     variant={"primary"}
                     text={"Upload Image"}
                     type={"submit"}
                     className={"col-span-full"}
-                    onClick={uploadProfileImage}
                 />
 
                 {uploadStatus && (
@@ -158,25 +151,24 @@ export const ImageUploadForm = () => {
                 {list.map((item) => (
                     
                     <Card>
-                {item.endsWith('.jpg') ||
-                    item.endsWith('.png') ||
-                    item.endsWith('.jpeg') ||
-                    item.endsWith('.gif') ? (
-                    <img
-                        src={item}
-                        alt="Profile Avatar"
-                        className="rounded-full w-32 h-32"
-                    />
-                ) : (
-                    <div className="body-1" >
-                        {item}
-                    </div>
-                )}
+                        {item.endsWith('.jpg') ||
+                        item.endsWith('.png') ||
+                        item.endsWith('.jpeg') ||
+                        item.endsWith('.gif') ? (
+                            <img
+                                src={item}
+                                alt="Profile Avatar"
+                                className="rounded-full w-32 h-32"
+                            />
+                        ) : (
+                            <div className="body-1" >
+                                {item}
+                            </div>
+                        )}
                     </Card>
                    
-                    ))}
+                ))}
             </form>
         </Card>
-    )
-        ;
+    );
 };
