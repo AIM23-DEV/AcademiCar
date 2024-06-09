@@ -11,7 +11,6 @@ import {
     BiBuildingHouse,
     BiCar,
     BiCheckCircle,
-    BiChevronRight,
     BiIdCard,
     BiMessageRoundedDots,
     BiMusic,
@@ -24,7 +23,6 @@ import {
 import {Divider} from "../../components/Divider";
 import {Card} from "../../components/Cards.tsx";
 import {ActiveTripsCard} from "./partials/ActiveTripsCard.tsx";
-import React from "react";
 
 // TODO add content components and follow up pages
 export const DriverDetailsPage = () => {
