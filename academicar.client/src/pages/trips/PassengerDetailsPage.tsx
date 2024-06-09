@@ -33,7 +33,7 @@ export const PassengerDetailsPage = () => {
                     <img
                         src={passenger.avatar}
                         alt="avatar"
-                        className="border-gray-600 rounded-full"
+                        className="rounded-full w-32 h-32"
                     />
                 </div>
                 <h1 className="headline-2">{passenger.name}</h1>

@@ -6,11 +6,25 @@ import {TextLink} from "../../components/Buttons";
 import {useTranslation} from "react-i18next";
 
 import {
-    BiBlock, BiBook, BiBuildingHouse, BiCar, BiCheckCircle, BiIdCard, BiMessageRoundedDots, BiMusic, BiParty, BiSolidStar, BiUserCircle, BiWorld
+    BiBlock,
+    BiBook,
+    BiBuildingHouse,
+    BiCar,
+    BiCheckCircle,
+    BiChevronRight,
+    BiIdCard,
+    BiMessageRoundedDots,
+    BiMusic,
+    BiParty,
+    BiSolidStar,
+    BiUserCircle,
+    BiWorld
 } from "react-icons/bi";
 
 import {Divider} from "../../components/Divider";
 import {Card} from "../../components/Cards.tsx";
+import {ActiveTripsCard} from "./partials/ActiveTripsCard.tsx";
+import React from "react";
 
 // TODO add content components and follow up pages
 export const DriverDetailsPage = () => {
@@ -32,7 +46,7 @@ export const DriverDetailsPage = () => {
                     <img
                         src={driver.avatar}
                         alt="avatar"
-                        className="border-gray-600 rounded-full"
+                        className="rounded-full w-32 h-32"
                     />
                 </div>
                 <h1 className="headline-2">{driver.name}</h1>
@@ -144,7 +158,8 @@ export const DriverDetailsPage = () => {
                 </Card>
 
                 <Card className={"mt-6"} label={t("pages/trips:DriverDetailsPage.activeTrips")} labelPosition={"outside"}>
-                   
+                   <ActiveTripsCard/>
+                    
                 </Card>
 
 
