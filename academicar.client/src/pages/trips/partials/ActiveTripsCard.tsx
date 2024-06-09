@@ -1,15 +1,9 @@
 import React from "react";
-import {Divider} from "../../../components/Divider.tsx";
 import {BiCalendar, BiChevronRight, BiRightArrowAlt, BiTime} from "react-icons/bi";
 import { TextLink} from "../../../components/Buttons.tsx";
-import {useTranslation} from "react-i18next";
-
-
 
 // TODO re-layout
 export const ActiveTripsCard = () => {
-    const [t] = useTranslation(['common', 'pages/trips']);
-
     const trips =[{
             date: "03.01.2024",
             startPoint : {location: "Graz Hauptbahnhof", time: "13:00 Uhr", freeSeats: 2},
