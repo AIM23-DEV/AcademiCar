@@ -221,7 +221,7 @@ const Req: React.FC<RequestProps> = ({requests}) => {
     );
 };
 
-const Pas: React.FC<PassengerProps> = ({passengers}) => {
+export const Pas: React.FC<PassengerProps> = ({passengers}) => {
     return (
         <div className="w-full">
             {passengers.map((passenger, index) => (

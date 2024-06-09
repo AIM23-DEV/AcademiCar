@@ -20,5 +20,31 @@
   },
   "ShowTripPage": {
     "title": "Details zu Fahrt {{id}}"
+  },
+  "DriverDetailsPage": {
+    "ratings": "Bewertungen",
+    "studies": "Studium",
+    "interests": "Interessen",
+    "music": "Musikgeschmack",
+    "preferences": "Präferenzen",
+    "background": "Hintergrund",
+    "vehicles": "Fahrzeuge",
+    "activeTrips": "Aktuelle Fahrten",
+    "memberStatus": "Mitgliedsstatus"
+  },
+  "PassengerDetailsPage": {
+    "ratings": "Bewertungen",
+    "requests": "Anfragen",
+    "studies": "Studium",
+    "interests": "Interessen",
+    "music": "Musikgeschmack",
+    "preferences": "Präferenzen",
+    "background": "Hintergrund",
+    "memberStatus": "Mitgliedsstatus"
+  },
+  "RequestCard": {
+    "requested": "Angefragt:",
+    "cancel": "Absagen",
+    "accept": "Annehmen"
   }
 }
