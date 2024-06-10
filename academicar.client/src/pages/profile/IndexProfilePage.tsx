@@ -13,9 +13,9 @@ import {IoSettingsOutline} from "react-icons/io5";
 import {Divider} from "../../components/Divider";
 
 const BUTTONS = [
-    { textKey: "personalData", icon: BiUser, path: "/auth/login" },
-    { textKey: "profile", icon: BsPencilSquare, path: "/trips" },
-    { textKey: "vehicles", icon: BiCar, path: "/auth/login" },
+    { textKey: "personalData", icon: BiUser, path: "edit" },
+    { textKey: "profile", icon: BsPencilSquare, path: "facesheet" },
+    { textKey: "vehicles", icon: BiCar, path: "cars" },
     { textKey: "balance", icon: TbCurrencyEuro, path: "/auth/login" },
     { textKey: "statistics", icon: BiStats, path: "/auth/login" },
     { textKey: "rewards", icon: CiTrophy, path: "/auth/login" },
@@ -35,6 +35,7 @@ userName = "Maximilian Bauer"
     const navigate = useNavigate();
 
     const pageTitle = t("pages/profile:IndexProfilePage.title");
+    
     SetPageTitle(pageTitle);
 
     return (
@@ -43,19 +44,6 @@ userName = "Maximilian Bauer"
 
             <div className="w-full flex flex-col items-center py-6">
                 <LanguageSelector/>
-                
-                <Button
-                    text={t("pages/profile:IndexProfilePage.cars")}
-                    type="button"
-                    fullWidth
-                    textFullWidth
-                    textAlign="left"
-                    onClick={() => navigate("cars/")}
-                    className="mt-6"
-                    variant="outline"
-                    leading={<BiCar className="icon-md text-primary-600"/>}
-                    trailing={<BiChevronRight className="icon-md"/>}
-                />
 
                 <div className="mt-6">
                     <img
