@@ -75,5 +75,9 @@
     "interests": "Interests",
     "communication": "Communications",
     "save_changes": "Save Changes"
+  },
+  "SettingsPage": {
+    "title": "Settings",
+    "agbs": "Terms and conditions"
   }
 }

@@ -75,5 +75,9 @@
     "interests": "Interessen",
     "communication": "Kommunikativ",
     "save_changes": "Änderungen Speichern"
+  },
+  "SettingsPage": {
+    "title": "Einstellungen",
+    "agbs": "AGBs und Datenschutz"
   }
 }
