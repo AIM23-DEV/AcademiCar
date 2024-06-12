@@ -1,43 +1,18 @@
 ﻿using AcademiCar.Server.DAL.Entities;
-using AcademiCar.Server.DAL.UnitOfWork;
 using AcademiCar.Server.Tests.BaseClasses;
 using NUnit.Framework;
 
 namespace AcademiCar.Server.Tests.DAL
 {
-    [TestFixture]
     public class PostgresRepositoryTest : BaseUnitTest
     {
-        const string TEST_EMAIL = "postgre@repo.test";
-        const string FIRST_NAME = "testFirstName";
-        const string LAST_NAME = "testLastName";
-        const int STATS_ID = 1;
-
-
-        public override async Task Setup()
-        {
-            await base.Setup();
-
-            await _unitOfWork.Stats.InsertAsync(new Stats() { ID = 1});
-            await _unitOfWork.Users.InsertAsync(new User() { FirstName = FIRST_NAME, LastName = LAST_NAME, FK_Stats = STATS_ID, Email = TEST_EMAIL });
-        }
-        public override async Task TearDown()
-        {
-            await base.TearDown();
-
-            await _unitOfWork.Users.DeleteAsync(u => u.Email == TEST_EMAIL);
-            await _unitOfWork.Stats.DeleteAsync(u => u.ID == STATS_ID);
-        }
-
-
         [Test]
         [TestCase(ExpectedResult = true)]
         public bool TestFilterBy()
         {
             try
             {
-                if (!_unitOfWork.Users.FilterBy(u => u.Email == TEST_EMAIL).Any()
-                || !_unitOfWork.Users.FilterBy(u => u.Email == TEST_EMAIL, a => (object)a).Any())
+                if (!_unitOfWork.Vehicles.FilterBy(v => v.Type == "TestType").Any())
                     throw new Exception("FilterBy Error!");
 
                 return true;
@@ -55,11 +30,14 @@ namespace AcademiCar.Server.Tests.DAL
         {
             try
             {
-                User testUser = await _GetUserByEmail(TEST_EMAIL);
-                if (testUser.Email != TEST_EMAIL) throw new Exception("FindAsync Error!");
+                Vehicle testVehicle = await _GetVehicleByType("TestType");
+                if (testVehicle.Type != "TestType")
+                    throw new Exception("FindAsync Error!");
 
-                User idTestUser = await _unitOfWork.Users.FindByIdAsync(((IEntity)testUser).ID);
-                if (idTestUser.Email != TEST_EMAIL) throw new Exception("FindById Error!");
+                int testId = ((IEntity)testVehicle).ID;
+                Vehicle compareVehicle = await _unitOfWork.Vehicles.FindByIdAsync(testId);
+                if (compareVehicle.ID != -999)
+                    throw new Exception("FindById Error!");
 
                 return true;
             }
@@ -76,30 +54,46 @@ namespace AcademiCar.Server.Tests.DAL
         {
             try
             {
-                int initialUserCount = _GetCurrentUserCount();
+                int initialVehicleCount = _GetCurrentVehicleCount();
 
-                await _unitOfWork.Users.InsertAsync(new User() { Email = "insert@crud.test" });
-                await _unitOfWork.Users.InsertAsync(new User() { Email = "delete@crud.test" });
+                await _unitOfWork.Vehicles.InsertAsync(new Vehicle()
+                {
+                    Type = "InsertTestType",
+                    ID = -998,
+                    Color = "Yellow",
+                    Picture = new byte[] {},
+                    Features = "TestFeature",
+                    FK_User = "-999",
+                });
+                await _unitOfWork.Vehicles.InsertAsync(new Vehicle()
+                {
+                    Type = "DeleteTestType",
+                    ID = -997,
+                    Color = "Yellow",
+                    Picture = new byte[] {},
+                    Features = "TestFeature",
+                    FK_User = "-999",
+                });
                 
-                if (!(_GetCurrentUserCount() == initialUserCount + 2))
+                if (!(_GetCurrentVehicleCount() == initialVehicleCount + 2))
                     throw new Exception("InsertAsync Error!");
 
-                User insertedUser = await _GetUserByEmail("insert@crud.test");
-                if (insertedUser.Email != "insert@crud.test")
+                Vehicle insertedVehicle = await _GetVehicleByType("InsertTestType");
+                if (insertedVehicle.Type != "InsertTestType")
                     throw new Exception("FindAsync Error!");
 
-                insertedUser.Email = "update@crud.test";
-                await _unitOfWork.Users.UpdateAsync(insertedUser);
-                User updatedUser = await _GetUserByEmail("update@crud.test");
-                if (((IEntity)updatedUser).ID != ((IEntity)insertedUser).ID)
+                insertedVehicle.Type = "UpdateTestType";
+                await _unitOfWork.Vehicles.UpdateAsync(insertedVehicle);
+                Vehicle updatedVehicle = await _GetVehicleByType("UpdateTestType");
+                if (((IEntity)updatedVehicle).ID != ((IEntity)insertedVehicle).ID)
                     throw new Exception("UpdateAsync Error!");
 
-                await _unitOfWork.Users.DeleteAsync(u => u.Email == "delete@crud.test");
-                if (!(_GetCurrentUserCount() == initialUserCount + 1))
+                await _unitOfWork.Vehicles.DeleteAsync(v => v.Type == "DeleteTestType");
+                if (!(_GetCurrentVehicleCount() == initialVehicleCount + 1))
                     throw new Exception("DeleteAsync Error!");
 
-                await _unitOfWork.Users.DeleteByIdAsync(((IEntity)insertedUser).ID);
-                if (!(_GetCurrentUserCount() == initialUserCount))
+                await _unitOfWork.Vehicles.DeleteByIdAsync(insertedVehicle.ID);
+                if (!(_GetCurrentVehicleCount() == initialVehicleCount))
                     throw new Exception("DeleteById Error!");
 
                 return true;
@@ -111,10 +105,10 @@ namespace AcademiCar.Server.Tests.DAL
             }
         }
 
-        private async Task<User> _GetUserByEmail(string email)
-            => await _unitOfWork.Users.FindAsync(u => u.Email == email);
-        private int _GetCurrentUserCount()
-            => _unitOfWork.Users.FilterBy(u => u.Email.Contains("@crud.test")).Count();
+        private async Task<Vehicle> _GetVehicleByType(string type)
+            => await _unitOfWork.Vehicles.FindAsync(v => v.Type == type);
+        private int _GetCurrentVehicleCount()
+            => _unitOfWork.Vehicles.FilterBy(v => true).Count();
     }
     
 

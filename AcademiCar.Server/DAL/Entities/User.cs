@@ -4,11 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AcademiCar.Server.DAL.Entities
 {
-    public class User : IdentityUser, IEntity
+    public class User : IdentityUser
     {
-        [NotMapped]
-        int IEntity.ID { get; set; }
-
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public byte[]? Picture { get; set; }

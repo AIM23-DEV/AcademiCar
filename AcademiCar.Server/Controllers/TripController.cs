@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using AcademiCar.Server.Services.Response;
 
 namespace AcademiCar.Server.Controllers;
 
@@ -18,7 +19,7 @@ public class TripController : BaseController<Trip>
 
     [HttpPost("Create")]
     [Authorize]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserController.ActionResultResponseModel))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResultResponseModel))]
     public async Task<Services.Response.ActionResultResponseModel> CreateTrip([Required][FromBody] Trip trip)
         => await _globalService.TripService.Create(trip);
 }
