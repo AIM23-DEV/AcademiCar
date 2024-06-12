@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using AcademiCar.Server.DAL.BaseInterfaces;
 using AcademiCar.Server.DAL.Entities;
 
 namespace AcademiCar.Server.Controllers

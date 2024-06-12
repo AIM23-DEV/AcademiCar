@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using AcademiCar.Server.DAL.BaseInterfaces;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using AcademiCar.Server.DAL.Entities;
 
@@ -12,18 +13,12 @@ namespace AcademiCar.Server.DAL.UnitOfWork
         {
             base.OnModelCreating(modelBuilder); // Ensure Identity tables are created
 
-            // Configure the User entity to map the IEntity.ID property
-            modelBuilder.Entity<User>(entity =>
-            {
-                entity.Ignore(e => ((IEntity)e).ID);
-            });
-
             // Configure the FavoriteUser entity
             modelBuilder.Entity<FavoriteUser>(entity =>
             {
                 entity.HasOne(fu => fu.FavUser)
                       .WithMany()
-                      .HasForeignKey(fu => fu.FavUserId)
+                      .HasForeignKey(fu => fu.FK_FavUserId)
                       .OnDelete(DeleteBehavior.Restrict);
             });
             
