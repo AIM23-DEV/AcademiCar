@@ -75,5 +75,29 @@
     "interests": "Interessen",
     "communication": "Kommunikativ",
     "save_changes": "Änderungen Speichern"
+  },
+  "SettingsPage": {
+    "title": "Einstellungen",
+    "agbs": "AGBs und Datenschutz"
+  },
+  "RewardsPage": {
+    "title": "Meine Belohnungen",
+    "parking": {
+      "title": "Parkplätze",
+      "text": "Es steht dir <span class=\"text-primary-600\">{{amount}}</span> Tage ein Parkplatz an deiner Ausbildungsstätte zu."
+    },
+    "discount": "Rabatt",
+    "discounts": "Rabatte",
+    "booking": "Buchen"
+  },
+  "StatsPage": {
+    "title": "Meine Statistiken",
+    "ratings": "Bewertungen",
+    "km_full": "Gefahrende Kilometer",
+    "drive_count": "Anzahl der Fahrten",
+    "km_driver": "Kilometer (Fahrer)",
+    "km_passenger": "Kilometer (Mitfahrende:r)",
+    "co2_savings": "CO2 Ersparnis",
+    "trees": "Bäume"
   }
 }
