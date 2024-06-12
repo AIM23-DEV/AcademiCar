@@ -7,7 +7,7 @@ import {useNavigate} from "react-router-dom";
 import SetPageTitle from "../../hooks/set_page_title.tsx";
 import React from "react";
 
-const SettingsPage: React.FC = () => {
+export const SettingsPage: React.FC = () => {
     const [t] = useTranslation(['common', 'pages/profile']);
 
     const navigate = useNavigate();
