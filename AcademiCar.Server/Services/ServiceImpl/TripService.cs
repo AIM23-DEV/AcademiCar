@@ -1,4 +1,5 @@
-﻿using AcademiCar.Server.DAL.Entities;
+﻿using AcademiCar.Server.DAL.BaseInterfaces;
+using AcademiCar.Server.DAL.Entities;
 using AcademiCar.Server.DAL.Repositories;
 using AcademiCar.Server.DAL.UnitOfWork;
 
