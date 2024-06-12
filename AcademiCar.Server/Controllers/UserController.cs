@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using AcademiCar.Server.DAL.UnitOfWork;
+using AcademiCar.Server.Services.Response;
 
 namespace AcademiCar.Server.Controllers
 {
@@ -75,11 +76,11 @@ namespace AcademiCar.Server.Controllers
 
             if (result.Succeeded)
             {
-                return Ok(new ActionResultResponseModel { Success = true, Message = "User registered successfully" });
+                return Ok(new ActionResultResponseModel { IsSuccess = true, Message = "User registered successfully" });
             }
 
             return BadRequest(new ActionResultResponseModel
-                { Success = false, Message = string.Join(", ", result.Errors.Select(e => e.Description)) });
+                { IsSuccess = false, Message = string.Join(", ", result.Errors.Select(e => e.Description)) });
         }
 
         [HttpPost("SamlLogin")]
@@ -104,13 +105,13 @@ namespace AcademiCar.Server.Controllers
                 if (!result.Succeeded)
                 {
                     return BadRequest(new ActionResultResponseModel
-                        { Success = false, Message = string.Join(", ", result.Errors.Select(e => e.Description)) });
+                        { IsSuccess = false, Message = string.Join(", ", result.Errors.Select(e => e.Description)) });
                 }
             }
 
             await _signInManager.SignInAsync(user, isPersistent: false);
 
-            return Ok(new ActionResultResponseModel { Success = true, Message = "SAML user logged in successfully" });
+            return Ok(new ActionResultResponseModel { IsSuccess = true, Message = "SAML user logged in successfully" });
         }
 
         [HttpPost("AdminLogin")]
@@ -176,13 +177,6 @@ namespace AcademiCar.Server.Controllers
             [Required]
             [DataType(DataType.Password)]
             public string Password { get; set; }
-        }
-
-
-        public class ActionResultResponseModel
-        {
-            public bool Success { get; set; }
-            public string Message { get; set; }
         }
     }
 }

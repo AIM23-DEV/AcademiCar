@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace AcademiCar.Server.DAL.Repositories
 {
-    public class PostgresRepository<TEntity> : IPostgresRepository<TEntity> where TEntity : class, IEntity
+    public class PostgresRepository<TEntity> : IPostgresRepository<TEntity> where TEntity : Entity
     {
         protected readonly PostgresDbContext db;
 
@@ -17,13 +17,15 @@ namespace AcademiCar.Server.DAL.Repositories
 
         public IEnumerable<TEntity> FilterBy(Expression<Func<TEntity, bool>> filterExpression)
             => db.Set<TEntity>().Where(filterExpression);
-        public IEnumerable<TProjected> FilterBy<TProjected>(Expression<Func<TEntity, bool>> filterExpression, Expression<Func<TEntity, TProjected>> projectionExpression)
-            => db.Set<TEntity>().Where(filterExpression).Select(projectionExpression);
 
-        public Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> filterExpression)
-            => Task.FromResult(FilterBy(filterExpression).First());
-        public async Task<TEntity> FindByIdAsync(int id)
+        public async Task<TEntity?> FindByIdAsync(int id)
             => await FindAsync(e => e.ID == id);
+        public async Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> filterExpression)
+        {
+            IEnumerable<TEntity> filtered = FilterBy(filterExpression);
+            if (filtered.Any()) return filtered.First();
+            return null;
+        }
 
         public async Task InsertAsync(TEntity entity)
         {
@@ -39,7 +41,7 @@ namespace AcademiCar.Server.DAL.Repositories
 
         public async Task DeleteAsync(Expression<Func<TEntity, bool>> filterExpression)
         {
-            TEntity entityToRemove = await FindAsync(filterExpression);
+            TEntity? entityToRemove = await FindAsync(filterExpression);
             if (entityToRemove == null) return;
 
             db.Set<TEntity>().Remove(entityToRemove);
