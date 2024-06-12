@@ -75,5 +75,15 @@
     "interests": "Interests",
     "communication": "Communications",
     "save_changes": "Save Changes"
+  },
+  "RewardsPage": {
+    "title": "My rewards",
+    "parking": {
+      "title": "Car parks",
+      "text": "You are entitled to <span class=\"text-primary-600\">{{amount}}</span> days a parking space at your training centre."
+    },
+    "discount": "Discount",
+    "discounts": "Discounts",
+    "booking": "Booking"
   }
 }
