@@ -76,6 +76,16 @@
     "communication": "Kommunikativ",
     "save_changes": "Änderungen Speichern"
   },
+  "RewardsPage": {
+    "title": "Meine Belohnungen",
+    "parking": {
+      "title": "Parkplätze",
+      "text": "Es steht dir <span class=\"text-primary-600\">{{amount}}</span> Tage ein Parkplatz an deiner Ausbildungsstätte zu."
+    },
+    "discount": "Rabatt",
+    "discounts": "Rabatte",
+    "booking": "Buchen"
+  },
   "StatsPage": {
     "title": "Meine Statistiken",
     "ratings": "Bewertungen",
