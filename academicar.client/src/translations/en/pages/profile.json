@@ -76,6 +76,10 @@
     "communication": "Communications",
     "save_changes": "Save Changes"
   },
+  "SettingsPage": {
+    "title": "Settings",
+    "agbs": "Terms and conditions"
+  },
   "RewardsPage": {
     "title": "My rewards",
     "parking": {
