@@ -79,5 +79,25 @@
   "SettingsPage": {
     "title": "Settings",
     "agbs": "Terms and conditions"
+  },
+  "RewardsPage": {
+    "title": "My rewards",
+    "parking": {
+      "title": "Car parks",
+      "text": "You are entitled to <span class=\"text-primary-600\">{{amount}}</span> days a parking space at your training centre."
+    },
+    "discount": "Discount",
+    "discounts": "Discounts",
+    "booking": "Booking"
+  },
+  "StatsPage": {
+    "title": "My statistics",
+    "ratings": "Ratings",
+    "km_full": "Kilometres travelled",
+    "drive_count": "Number of journeys",
+    "km_driver": "Kilometres (driver)",
+    "km_passenger": "Kilometres (passenger)",
+    "co2_savings": "CO2 savings",
+    "trees": "Trees"
   }
 }
