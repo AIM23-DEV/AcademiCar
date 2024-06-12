@@ -85,5 +85,15 @@
     "discount": "Discount",
     "discounts": "Discounts",
     "booking": "Booking"
+  },
+  "StatsPage": {
+    "title": "My statistics",
+    "ratings": "Ratings",
+    "km_full": "Kilometres travelled",
+    "drive_count": "Number of journeys",
+    "km_driver": "Kilometres (driver)",
+    "km_passenger": "Kilometres (passenger)",
+    "co2_savings": "CO2 savings",
+    "trees": "Trees"
   }
 }

@@ -85,5 +85,15 @@
     "discount": "Rabatt",
     "discounts": "Rabatte",
     "booking": "Buchen"
+  },
+  "StatsPage": {
+    "title": "Meine Statistiken",
+    "ratings": "Bewertungen",
+    "km_full": "Gefahrende Kilometer",
+    "drive_count": "Anzahl der Fahrten",
+    "km_driver": "Kilometer (Fahrer)",
+    "km_passenger": "Kilometer (Mitfahrende:r)",
+    "co2_savings": "CO2 Ersparnis",
+    "trees": "Bäume"
   }
 }
