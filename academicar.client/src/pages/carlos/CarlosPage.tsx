@@ -1,12 +1,6 @@
 import { useEffect, useState } from 'react';
 import {Divider} from "../../components/Divider.tsx";
 
-interface ICarlos {
-    id: number;
-    message: string;
-    image: any;
-}
-
 export const CarlosPage = () => {
     const [carlos, setCarlos] = useState<ICarlos>();
 
