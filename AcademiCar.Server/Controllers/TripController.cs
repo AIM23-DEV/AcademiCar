@@ -6,12 +6,13 @@ using AcademiCar.Server.Services.Response;
 
 namespace AcademiCar.Server.Controllers;
 
-public class TripController : BaseController<Trip>
+[ApiController]
+[Route("api/trip")]
+public class TripController : ControllerBase
 {
-    private IGlobalService _globalService;
+    private readonly IGlobalService _globalService;
 
-    public TripController(IGlobalService globals, IHttpContextAccessor accessor)
-        : base(globals.TripService, accessor)
+    public TripController(IGlobalService globals)
     {
         _globalService = globals;
     }

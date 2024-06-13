@@ -6,12 +6,12 @@ import Ratings from "../pages/search/Ratings.tsx";
 import DriverList from "../pages/search/DriverList.tsx";
 
 // All routes are prefixed with /search.
-export default <Route key="/search" path="/search" element={<Outlet/>}>
+export default <Route key="searchRoute" path="/search" element={<Outlet/>}>
 
-    <Route key="" path="" element={<SearchTripsPage/>}/>,
-    <Route key="result" path="result" element={<SearchResultsPage/>}/>,
-    <Route key="filter" path="filter" element={<SearchFilterPage/>}/>,
-    <Route key="" path="ratings/:driverId" element={<Ratings/>}/>,
-    <Route key="" path="driverlist" element={<DriverList/>}/>,
+    <Route key="searchMainRoute" path="" element={<SearchTripsPage/>} />,
+    <Route key="searchResultRoute" path="result" element={<SearchResultsPage/>} />,
+    <Route key="searchFilterRoute" path="filter" element={<SearchFilterPage/>} />,
+    <Route key="searchRatingsRoute" path="ratings/:driverId" element={<Ratings/>} />,
+    <Route key="searchDriverRoute" path="driverlist" element={<DriverList/>} />,
 
 </Route>;

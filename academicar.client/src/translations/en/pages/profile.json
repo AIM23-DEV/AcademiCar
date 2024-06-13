@@ -99,5 +99,16 @@
     "km_passenger": "Kilometres (passenger)",
     "co2_savings": "CO2 savings",
     "trees": "Trees"
+  },
+  "BalancePage": {
+    "title": "My Balance",
+    "balance": "AkademiCar-Balance",
+    "recharge": "Recharge",
+    "activities": "Latest activities",
+    "history": "Archive"
+  },
+  "BalanceHistoryPage": {
+    "title": "My Balance",
+    "delete": "Delete all activities"
   }
 }

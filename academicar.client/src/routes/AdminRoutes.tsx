@@ -24,12 +24,13 @@ const AdminPrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }
     return <>{children}</>;
 };
 
+// All routes are prefixed with /admin.
 const AdminRoutes = (
-    <Route path="/admin" element={<AdminPrivateRoute><Outlet /></AdminPrivateRoute>}>
-        <Route path="dashboard" element={<Dashboard />} />
-        <Route path="login" element={<AdminLogin />} />
-        <Route key="users" path="users" element={<IndexUsersPage/>} />,
-        <Route key="users/:id" path="users/:id" element={<ShowUserPage/>} />,
+    <Route key="adminRoute" path="/admin" element={<AdminPrivateRoute><Outlet /></AdminPrivateRoute>}>
+        <Route key="adminDashboardRoute" path="dashboard" element={<Dashboard />} />
+        <Route key="adminLoginRoute" path="login" element={<AdminLogin />} />
+        <Route key="adminUsersRoute" path="users" element={<IndexUsersPage/>} />,
+        <Route key="adminShowUserRoute" path="users/:id" element={<ShowUserPage/>} />,
     </Route>
 );
 

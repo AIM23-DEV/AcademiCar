@@ -99,5 +99,16 @@
     "km_passenger": "Kilometer (Mitfahrende:r)",
     "co2_savings": "CO2 Ersparnis",
     "trees": "Bäume"
+  },
+  "BalancePage": {
+    "title": "Mein Guthaben",
+    "balance": "AkademiCar-Guthaben",
+    "recharge": "Aufladen",
+    "activities": "Letzte Aktivitäten",
+    "history": "Archiv"
+  },
+  "BalanceHistoryPage": {
+    "title": "Mein Guthaben",
+    "delete": "Alle Aktivitäten löschen"
   }
 }
