@@ -106,5 +106,9 @@
     "recharge": "Aufladen",
     "activities": "Letzte Aktivitäten",
     "history": "Archiv"
+  },
+  "BalanceHistoryPage": {
+    "title": "Mein Guthaben",
+    "delete": "Alle Aktivitäten löschen"
   }
 }
