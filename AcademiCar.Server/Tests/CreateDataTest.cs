@@ -555,19 +555,19 @@ public class CreateDataTest : BaseUnitTest
         
         Preferences testPrefPassenger1 = new()
         {
-            ID = -999,
+            ID = -998,
             FK_User = "-998"
         };
         
         Preferences testPrefPassenger2 = new()
         {
-            ID = -999,
+            ID = -997,
             FK_User = "-997"
         };
         
         Preferences testPrefDriver = new()
         {
-            ID = -999,
+            ID = -996,
             FK_User = "-996"
         };
 
