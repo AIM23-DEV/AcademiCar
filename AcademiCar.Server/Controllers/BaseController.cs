@@ -1,9 +1,7 @@
 ﻿using AcademiCar.Server.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using AcademiCar.Server.DAL.BaseInterfaces;
-using AcademiCar.Server.DAL.Entities;
 
 namespace AcademiCar.Server.Controllers
 {
@@ -18,13 +16,13 @@ namespace AcademiCar.Server.Controllers
         public BaseController(Service<T> service, IHttpContextAccessor accessor)
         {
             _service = service;
-            _claimsPrincipal = accessor.HttpContext.User;
+            _claimsPrincipal = accessor.HttpContext?.User;
 
             Task modelState = _service.SetModelState(ModelState);
             modelState.Wait();
 
-            var claims = _claimsPrincipal.Claims;
-            var emailClaim = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
+            IEnumerable<Claim> claims = _claimsPrincipal?.Claims;
+            Claim? emailClaim = claims?.FirstOrDefault(c => c.Type == ClaimTypes.Email);
             if (emailClaim != null)
             {
                 _userEmail = emailClaim.Value;
@@ -39,16 +37,10 @@ namespace AcademiCar.Server.Controllers
         #region Endpoints
 
         [HttpGet("All")]
-        [Authorize]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<List<T>> GetAll() => await _service.Get();
+        public async Task<List<T?>> GetAll() => await _service.Get();
 
-        /*[HttpGet("{id}")]
-        [Authorize]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<T> Get(int id) => await _service.Get(id);*/
+        [HttpGet("{id}")]
+        public async Task<T?> Get(int id) => await _service.Get(id);
 
         #endregion
     }
