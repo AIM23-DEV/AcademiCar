@@ -4,7 +4,6 @@ import {BottomNavigationBar} from "../../components/BottomNavigationBar";
 import {Button, TextButton} from "../../components/Buttons";
 import {useNavigate} from "react-router-dom";
 import {BiCar, BiChevronRight, BiLogOut, BiStats, BiUser} from "react-icons/bi";
-import {LanguageSelector} from "../../components/LanguageSelector";
 import {useTranslation} from "react-i18next";
 import {BsPencilSquare} from "react-icons/bs";
 import {TbCurrencyEuro} from "react-icons/tb";
@@ -16,10 +15,10 @@ const BUTTONS = [
     { textKey: "personalData", icon: BiUser, path: "edit" },
     { textKey: "profile", icon: BsPencilSquare, path: "facesheet" },
     { textKey: "vehicles", icon: BiCar, path: "cars" },
-    { textKey: "balance", icon: TbCurrencyEuro, path: "/auth/login" },
-    { textKey: "statistics", icon: BiStats, path: "/profile/stats" },
-    { textKey: "rewards", icon: CiTrophy, path: "/profile/rewards" },
-    { textKey: "settings", icon: IoSettingsOutline, path: "/profile/settings" },
+    { textKey: "balance", icon: TbCurrencyEuro, path: "balance" },
+    { textKey: "statistics", icon: BiStats, path: "stats" },
+    { textKey: "rewards", icon: CiTrophy, path: "rewards" },
+    { textKey: "settings", icon: IoSettingsOutline, path: "settings" },
 ];
 
 interface IndexProfilePageProps {
@@ -41,9 +40,6 @@ userName = "Maximilian Bauer"
     return (
         <>
             <TitleBar text={pageTitle}/>
-
-            <div className="w-full flex flex-col items-center py-6">
-                <LanguageSelector/>
 
                 <div className="mt-6">
                     <img
@@ -84,7 +80,6 @@ userName = "Maximilian Bauer"
                     leading={<BiLogOut className="icon-md"/>}
                     className="mt-6 mb-16"
                 />
-            </div>
 
             <BottomNavigationBar selected="profile"/>
         </>
