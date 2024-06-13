@@ -5,12 +5,11 @@ namespace AcademiCar.Server.Controllers;
 
 [ApiController]
 [Route("api/carlos")]
-public class CarlosController : BaseController<Carlos>
+public class CarlosController : ControllerBase
 {
-    private IGlobalService _globalService;
+    private readonly IGlobalService _globalService;
     
-    public CarlosController(IGlobalService globals, IHttpContextAccessor accessor)
-        : base(globals.CarlosService, accessor)
+    public CarlosController(IGlobalService globals)
     {
         _globalService = globals;
     }

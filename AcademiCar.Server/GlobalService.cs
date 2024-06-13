@@ -17,6 +17,7 @@ namespace AcademiCar.Server
         {
             UnitOfWork = uow;
 
+            CarlosService = new CarlosService(UnitOfWork.Carlos);
             UserService = new UserService(UnitOfWork.Users);
             VehicleService = new VehicleService(UnitOfWork.Vehicles);
             TripService = new TripService(UnitOfWork.Trips);
