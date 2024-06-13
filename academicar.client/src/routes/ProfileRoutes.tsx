@@ -10,6 +10,7 @@ import {RewardsPage} from "../pages/profile/RewardsPage.tsx";
 import {StatsPage} from "../pages/profile/StatsPage.tsx";
 import {BalancePage} from "../pages/profile/BalancePage.tsx";
 import {BalanceHistoryPage} from "../pages/profile/BalanceHistoryPage.tsx";
+import {BalanceRechargePage} from "../pages/profile/BalanceRechargePage.tsx";
 
 // All routes are prefixed with /profile.
 export default <Route key="/profile" path="/profile" element={<Outlet/>}>
@@ -25,5 +26,5 @@ export default <Route key="/profile" path="/profile" element={<Outlet/>}>
     <Route path="stats" element={<StatsPage/>} />
     <Route path="balance" element={<BalancePage/>} />
     <Route path="balance/history" element={<BalanceHistoryPage/>} />
-
+    <Route path="balance/recharge" element={<BalanceRechargePage/>} />
 </Route>;
