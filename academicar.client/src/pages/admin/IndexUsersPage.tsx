@@ -36,7 +36,7 @@ export const IndexUsersPage = () => {
         {id: 3, name: 'Max Kruse', imgSrc: 'path/to/image3.jpg', rating: 4.2, path: "/admin/users/3"},
         {id: 4, name: 'Jane Doe', imgSrc: 'path/to/image4.jpg', rating: 3.9, path: "/admin/users/4"},
         {id: 5, name: 'Bernd Kern', imgSrc: 'path/to/image5.jpg', rating: 4.7, path: "/admin/users/5"},
-    ];
+    ]; 
 
     const navigate = useNavigate();
 
@@ -70,26 +70,27 @@ export const IndexUsersPage = () => {
         <>
             <TitleBar text={"Account"} hasBackAction />
 
-            <div className="flex justify-between items-center my-8">
+            <div className="grid grid-cols-2 gap-6 my-8">
                 <Input
                     id="search"
                     type="text"
                     placeholder={search}
                     leading={<IoIosSearch />}
                     required={true}
+                    label={search}
                     value={searchQuery}
+                    fullWidth
                     onChange={handleSearchChange}
-                    className="w-1/2"
                 />
                 <Select
                     label={sort}
                     id="sort"
-                    fullWidth={true}
-                    required={true}
+                    fullWidth
+                    required
                     options={{ alphabetical: sortRating, rating: sortAlphabetic }}
                     value={sortOption}
                     onChange={handleSortChange}
-                    className="w-1/2 ml-4"
+                    
                 />
             </div>
 
