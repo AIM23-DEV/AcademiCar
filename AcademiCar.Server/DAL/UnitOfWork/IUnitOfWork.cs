@@ -16,6 +16,8 @@ namespace AcademiCar.Server.DAL.UnitOfWork
         ITripRepository Trips { get; }
         ITripRequestRepository TripRequests { get; }
         IAddressRepository Addresses { get; }
+        IChatRepository Chats { get; }
+        IMessageRepository Messages { get; }
 
         Task<int> SaveChangesAsync();
     }

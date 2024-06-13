@@ -31,6 +31,8 @@ namespace AcademiCar.Server.DAL.UnitOfWork
             modelBuilder.Entity<TripRequest>().ToTable("TripRequest", schema: "academicar");
             modelBuilder.Entity<Address>().ToTable("Address", schema: "academicar");
             modelBuilder.Entity<User>().ToTable("User", schema: "academicar");
+            modelBuilder.Entity<User>().ToTable("Chat", schema: "academicar");
+            modelBuilder.Entity<User>().ToTable("Message", schema: "academicar");
         }
 
         // Your DbSets
@@ -41,5 +43,7 @@ namespace AcademiCar.Server.DAL.UnitOfWork
         public DbSet<TripRequest> TripRequests { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
+        public DbSet<Vehicle> Chats { get; set; }
+        public DbSet<Vehicle> Messages { get; set; }
     }
 }
