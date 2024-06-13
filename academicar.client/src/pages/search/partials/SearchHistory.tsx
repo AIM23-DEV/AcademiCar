@@ -18,15 +18,6 @@ const DATA = [
         time: "10:00"
     }
 ]
-interface Trip {
-    // TODO implement Trip type globally...
-}
-
-function GetTripHistory(): Trip[] {
-    // TODO implement history loading...
-
-    return [];
-}
 
 // TODO re-layout
 export const SearchHistory = () => {

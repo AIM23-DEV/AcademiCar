@@ -1,4 +1,5 @@
-﻿using AcademiCar.Server.DAL.Entities;
+﻿using AcademiCar.Server.DAL.BaseInterfaces;
+using AcademiCar.Server.DAL.Entities;
 using AcademiCar.Server.Services.Response;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 

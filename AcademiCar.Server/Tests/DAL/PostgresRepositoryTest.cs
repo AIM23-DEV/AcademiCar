@@ -1,121 +1,113 @@
-﻿using AcademiCar.Server.DAL.Entities;
-using AcademiCar.Server.DAL.UnitOfWork;
+﻿using AcademiCar.Server.DAL.BaseInterfaces;
+using AcademiCar.Server.DAL.Entities;
 using AcademiCar.Server.Tests.BaseClasses;
 using NUnit.Framework;
 
-namespace AcademiCar.Server.Tests.DAL
+namespace AcademiCar.Server.Tests.DAL;
+
+public class PostgresRepositoryTest : BaseUnitTest
 {
-    [TestFixture]
-    public class PostgresRepositoryTest : BaseUnitTest
+    [Test]
+    [TestCase(ExpectedResult = true)]
+    public bool TestFilterBy()
     {
-        const string TEST_EMAIL = "postgre@repo.test";
-        const string FIRST_NAME = "testFirstName";
-        const string LAST_NAME = "testLastName";
-        const int STATS_ID = 1;
-
-
-        public override async Task Setup()
+        try
         {
-            await base.Setup();
+            if (!_unitOfWork.Vehicles.FilterBy(v => v.Type == "Admin").Any())
+                throw new Exception("FilterBy Error!");
 
-            await _unitOfWork.Stats.InsertAsync(new Stats() { ID = 1});
-            await _unitOfWork.Users.InsertAsync(new User() { FirstName = FIRST_NAME, LastName = LAST_NAME, FK_Stats = STATS_ID, Email = TEST_EMAIL });
+            return true;
         }
-        public override async Task TearDown()
+        catch (Exception e)
         {
-            await base.TearDown();
-
-            await _unitOfWork.Users.DeleteAsync(u => u.Email == TEST_EMAIL);
-            await _unitOfWork.Stats.DeleteAsync(u => u.ID == STATS_ID);
+            Console.WriteLine(e);
+            return false;
         }
-
-
-        [Test]
-        [TestCase(ExpectedResult = true)]
-        public bool TestFilterBy()
-        {
-            try
-            {
-                if (!_unitOfWork.Users.FilterBy(u => u.Email == TEST_EMAIL).Any()
-                || !_unitOfWork.Users.FilterBy(u => u.Email == TEST_EMAIL, a => (object)a).Any())
-                    throw new Exception("FilterBy Error!");
-
-                return true;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return false;
-            }
-        }
-
-        [Test]
-        [TestCase(ExpectedResult = true)]
-        public async Task<bool> TestFind()
-        {
-            try
-            {
-                User testUser = await _GetUserByEmail(TEST_EMAIL);
-                if (testUser.Email != TEST_EMAIL) throw new Exception("FindAsync Error!");
-
-                User idTestUser = await _unitOfWork.Users.FindByIdAsync(((IEntity)testUser).ID);
-                if (idTestUser.Email != TEST_EMAIL) throw new Exception("FindById Error!");
-
-                return true;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return false;
-            }
-        }
-
-        [Test]
-        [TestCase(ExpectedResult = true)]
-        public async Task<bool> TestCRUD()
-        {
-            try
-            {
-                int initialUserCount = _GetCurrentUserCount();
-
-                await _unitOfWork.Users.InsertAsync(new User() { Email = "insert@crud.test" });
-                await _unitOfWork.Users.InsertAsync(new User() { Email = "delete@crud.test" });
-                
-                if (!(_GetCurrentUserCount() == initialUserCount + 2))
-                    throw new Exception("InsertAsync Error!");
-
-                User insertedUser = await _GetUserByEmail("insert@crud.test");
-                if (insertedUser.Email != "insert@crud.test")
-                    throw new Exception("FindAsync Error!");
-
-                insertedUser.Email = "update@crud.test";
-                await _unitOfWork.Users.UpdateAsync(insertedUser);
-                User updatedUser = await _GetUserByEmail("update@crud.test");
-                if (((IEntity)updatedUser).ID != ((IEntity)insertedUser).ID)
-                    throw new Exception("UpdateAsync Error!");
-
-                await _unitOfWork.Users.DeleteAsync(u => u.Email == "delete@crud.test");
-                if (!(_GetCurrentUserCount() == initialUserCount + 1))
-                    throw new Exception("DeleteAsync Error!");
-
-                await _unitOfWork.Users.DeleteByIdAsync(((IEntity)insertedUser).ID);
-                if (!(_GetCurrentUserCount() == initialUserCount))
-                    throw new Exception("DeleteById Error!");
-
-                return true;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return false;
-            }
-        }
-
-        private async Task<User> _GetUserByEmail(string email)
-            => await _unitOfWork.Users.FindAsync(u => u.Email == email);
-        private int _GetCurrentUserCount()
-            => _unitOfWork.Users.FilterBy(u => u.Email.Contains("@crud.test")).Count();
     }
-    
 
+    [Test]
+    [TestCase(ExpectedResult = true)]
+    public async Task<bool> TestFind()
+    {
+        try
+        {
+            Vehicle? testVehicle = await _GetVehicleByType("Admin");
+            if (testVehicle?.Type != "Admin")
+                throw new Exception("FindAsync Error!");
+
+            Vehicle? compareVehicle = await _unitOfWork.Vehicles.FindByIdAsync(((IEntity)testVehicle).ID);
+            if (compareVehicle?.ID != -999)
+                throw new Exception("FindById Error!");
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return false;
+        }
+    }
+
+    [Test]
+    [TestCase(ExpectedResult = true)]
+    public async Task<bool> TestCRUD()
+    {
+        try
+        {
+            int initialVehicleCount = _GetCurrentVehicleCount();
+
+            await _unitOfWork.Vehicles.InsertAsync(new Vehicle()
+            {
+                Type = "InsertTestType",
+                ID = -899,
+                Color = "Yellow",
+                Picture = [],
+                Features = "TestFeature",
+                FK_User = "-999",
+            });
+            await _unitOfWork.Vehicles.InsertAsync(new Vehicle()
+            {
+                Type = "DeleteTestType",
+                ID = -898,
+                Color = "Yellow",
+                Picture = [],
+                Features = "TestFeature",
+                FK_User = "-999",
+            });
+                
+            if (_GetCurrentVehicleCount() != initialVehicleCount + 2)
+                throw new Exception("InsertAsync Error!");
+
+            Vehicle? insertedVehicle = await _GetVehicleByType("InsertTestType");
+            if (insertedVehicle?.Type != "InsertTestType")
+                throw new Exception("FindAsync Error!");
+
+            insertedVehicle.Type = "Update";
+            await _unitOfWork.Vehicles.UpdateAsync(insertedVehicle);
+            
+            Vehicle? updatedVehicle = await _GetVehicleByType("Update");
+            if (updatedVehicle != null && ((IEntity)updatedVehicle).ID != ((IEntity)insertedVehicle).ID)
+                throw new Exception("UpdateAsync Error!");
+
+            await _unitOfWork.Vehicles.DeleteAsync(v => v.Type == "DeleteTestType");
+            if (_GetCurrentVehicleCount() != initialVehicleCount + 1)
+                throw new Exception("DeleteAsync Error!");
+
+            await _unitOfWork.Vehicles.DeleteByIdAsync(insertedVehicle.ID);
+            if (_GetCurrentVehicleCount() != initialVehicleCount)
+                throw new Exception("DeleteById Error!");
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return false;
+        }
+    }
+
+    private async Task<Vehicle?> _GetVehicleByType(string type)
+        => await _unitOfWork.Vehicles.FindAsync(v => v.Type == type);
+    private int _GetCurrentVehicleCount()
+        => _unitOfWork.Vehicles.FilterBy(v => true).Count();
 }
