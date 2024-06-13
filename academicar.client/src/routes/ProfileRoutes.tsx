@@ -8,6 +8,7 @@ import PersonalDataFaceSheet from "../pages/profile/PersonalDataFaceSheet.tsx";
 import {SettingsPage} from "../pages/profile/SettingsPage.tsx";
 import {RewardsPage} from "../pages/profile/RewardsPage.tsx";
 import {StatsPage} from "../pages/profile/StatsPage.tsx";
+import {BalancePage} from "../pages/profile/BalancePage.tsx";
 
 // All routes are prefixed with /profile.
 export default <Route key="/profile" path="/profile" element={<Outlet/>}>
@@ -21,5 +22,6 @@ export default <Route key="/profile" path="/profile" element={<Outlet/>}>
     <Route path="settings" element={<SettingsPage/>} />
     <Route path="rewards" element={<RewardsPage/>} />
     <Route path="stats" element={<StatsPage/>} />
+    <Route path="balance" element={<BalancePage/>} />
 
 </Route>;

@@ -16,9 +16,9 @@ const BUTTONS = [
     { textKey: "personalData", icon: BiUser, path: "/auth/login" },
     { textKey: "profile", icon: BsPencilSquare, path: "/trips" },
     { textKey: "vehicles", icon: BiCar, path: "/auth/login" },
-    { textKey: "balance", icon: TbCurrencyEuro, path: "/auth/login" },
+    { textKey: "balance", icon: TbCurrencyEuro, path: "//balance" },
     { textKey: "statistics", icon: BiStats, path: "/auth/login" },
-    { textKey: "rewards", icon: CiTrophy, path: "/auth/login" },
+    { textKey: "rewards", icon: CiTrophy, path: "/rewards" },
     { textKey: "settings", icon: IoSettingsOutline, path: "/auth/login" },
 ];
 
