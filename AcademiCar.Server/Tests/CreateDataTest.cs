@@ -9,6 +9,27 @@ namespace AcademiCar.Server.Tests;
 public class CreateDataTest : BaseUnitTest
 {
     [Test]
+    [TestCase (ExpectedResult = true)]
+    public async Task<bool> CreateTestCarlos()
+    {
+        try
+        {
+            Carlos? existingTestCarlos = await _unitOfWork.Carlos.FindByIdAsync(-999);
+            if (existingTestCarlos != null) return true;
+            
+            foreach (Carlos carlos in _GetCarlos())
+                await _unitOfWork.Carlos.InsertAsync(carlos);
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Carlos creation failed: {e}");
+            return false;
+        }
+    }
+
+    [Test]
     [Order(1)]
     [TestCase (ExpectedResult = true)]
     public async Task<bool> CreateTestStatsAndUser()
@@ -172,6 +193,38 @@ public class CreateDataTest : BaseUnitTest
 
     #region Data
 
+    private static Carlos[] _GetCarlos()
+    {
+        Carlos testCarlos1 = new()
+        {
+            ID = -999,
+            Message = "RIP Carlos",
+            Image = []
+        };
+
+        Carlos testCarlos2 = new()
+        {
+            ID = -998,
+            Message = "Car-los",
+            Image = []
+        };
+
+        Carlos testCarlos3 = new()
+        {
+            ID = -997,
+            Message = "Carlos ist los",
+            Image = []
+        };
+
+        Carlos testCarlos4 = new()
+        {
+            ID = -996,
+            Message = "Was ist mit dem Carlos?",
+            Image = []
+        };
+
+        return [testCarlos1, testCarlos2, testCarlos3, testCarlos4];
+    }
     private static Stats[] _GetStats()
     {
         Stats testStatsAdmin = new()

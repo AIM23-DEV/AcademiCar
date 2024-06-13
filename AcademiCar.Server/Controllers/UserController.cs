@@ -8,8 +8,8 @@ using AcademiCar.Server.Services.Response;
 
 namespace AcademiCar.Server.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
         private readonly IGlobalService _globalService;
@@ -17,6 +17,12 @@ namespace AcademiCar.Server.Controllers
         private readonly SignInManager<User> _signInManager;
         private readonly PostgresDbContext _context;
 
+        /*
+        protected readonly Service<T> _service;
+        protected readonly ClaimsPrincipal _claimsPrincipal;
+        protected readonly string _userEmail;
+        */
+         
         public UserController(IGlobalService globals, IHttpContextAccessor accessor, UserManager<User> userManager,
             SignInManager<User> signInManager, PostgresDbContext context)
         {
@@ -24,6 +30,24 @@ namespace AcademiCar.Server.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
+            
+            /*
+            _claimsPrincipal = accessor.HttpContext?.User;
+
+            Task modelState = _service.SetModelState(ModelState);
+            modelState.Wait();
+
+            IEnumerable<Claim> claims = _claimsPrincipal?.Claims;
+            Claim? emailClaim = claims?.FirstOrDefault(c => c.Type == ClaimTypes.Email);
+            if (emailClaim != null)
+            {
+                _userEmail = emailClaim.Value;
+
+                //TODO - Load user for authentication purposes?
+                //Task user = _service.Load(_userEmail);
+                //user.Wait();
+            }
+            */
         }
 
         [HttpGet("{id}", Name = "GetUserbyId")]

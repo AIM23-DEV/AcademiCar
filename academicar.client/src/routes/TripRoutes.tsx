@@ -12,18 +12,18 @@ import {DriverDetailsPage} from "../pages/trips/DriverDetailsPage.tsx";
 import {PassengerDetailsPage} from "../pages/trips/PassengerDetailsPage.tsx";
 
 // All routes are prefixed with /trips.
-export default <Route key="/trips" path="/trips" element={<Outlet/>}>
+export default <Route key="tripsRoute" path="/trips" element={<Outlet/>}>
 
-    <Route key="" path="" element={<IndexTripsPage/>}/>,
-    <Route key="create1" path="create1" element={<CreateTripPage1/>}/>,
-    <Route key="create2" path="create2" element={<CreateTripPage2/>}/>,
-    <Route key="create3" path="create3" element={<CreateTripPage3/>}/>,
-    <Route key="create4" path="create4" element={<CreateTripPage4/>}/>,
-    <Route key="update" path="update" element={<UpdateTripPage/>}/>,
-    <Route key=":id" path=":id" element={<ShowTripPage/>}/>,
-    <Route key="history/driver" path="history/driver" element={<DriverTripHistoryPage/>}/>,
-    <Route key="history/passenger" path="history/passenger" element={<PassengerTripHistoryPage/>}/>,
+    <Route key="tripsMainRoute" path="" element={<IndexTripsPage/>} />,
+    <Route key="tripsCreate1Route" path="create1" element={<CreateTripPage1/>} />,
+    <Route key="tripsCreate2Route" path="create2" element={<CreateTripPage2/>} />,
+    <Route key="tripsCreate3Route" path="create3" element={<CreateTripPage3/>} />,
+    <Route key="tripsCreate4Route" path="create4" element={<CreateTripPage4/>} />,
+    <Route key="tripsUpdateRoute" path="update" element={<UpdateTripPage/>} />,
+    <Route key="tripsShowRoute" path=":id" element={<ShowTripPage/>} />,
+    <Route key="tripsDriverHistoryRoute" path="history/driver" element={<DriverTripHistoryPage/>} />,
+    <Route key="tripsPassengerHistoryRoute" path="history/passenger" element={<PassengerTripHistoryPage/>} />,
+    <Route key="tripsDriverDetailRoute" path="details/driver" element={<DriverDetailsPage/>} />,
+    <Route key="tripsPassengerDetailRoute" path="details/passenger" element={<PassengerDetailsPage/>} />,
     
-    <Route key="details/driver" path="details/driver" element={<DriverDetailsPage/>}/>,
-    <Route key="details/passenger" path="details/passenger" element={<PassengerDetailsPage/>}/>,
 </Route>;
