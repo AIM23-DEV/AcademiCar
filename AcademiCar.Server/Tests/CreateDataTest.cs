@@ -8,8 +8,7 @@ namespace AcademiCar.Server.Tests;
 [Order(1)]
 public class CreateDataTest : BaseUnitTest
 {
-    [Test]
-    [TestCase (ExpectedResult = true)]
+    [Test (ExpectedResult = true)]
     public async Task<bool> CreateTestCarlos()
     {
         try
@@ -29,9 +28,8 @@ public class CreateDataTest : BaseUnitTest
         }
     }
 
-    [Test]
+    [Test (ExpectedResult = true)]
     [Order(1)]
-    [TestCase (ExpectedResult = true)]
     public async Task<bool> CreateTestStatsAndUser()
     {
         try
@@ -54,8 +52,7 @@ public class CreateDataTest : BaseUnitTest
         }
     }
 
-    [Test]
-    [TestCase (ExpectedResult = true)]
+    [Test (ExpectedResult = true)]
     public async Task<bool> CreateTestFavUser()
     {
         try
@@ -77,9 +74,8 @@ public class CreateDataTest : BaseUnitTest
         }
     }
 
-    [Test]
+    [Test (ExpectedResult = true)]
     [Order(2)]
-    [TestCase (ExpectedResult = true)]
     public async Task<bool> CreateTestVehicle()
     {
         try
@@ -99,9 +95,8 @@ public class CreateDataTest : BaseUnitTest
         }
     }
 
-    [Test]
-    [Order(3)]
     [TestCase(ExpectedResult = true)]
+    [Order(3)]
     public async Task<bool> CreateTestAddressAndTrip()
     {
         try
@@ -127,8 +122,7 @@ public class CreateDataTest : BaseUnitTest
         }
     }
 
-    [Test]
-    [TestCase(ExpectedResult = true)]
+    [Test (ExpectedResult = true)]
     public async Task<bool> CreateTestTripRequest()
     {
         try
@@ -148,8 +142,7 @@ public class CreateDataTest : BaseUnitTest
         }
     }
 
-    [Test]
-    [TestCase(ExpectedResult = true)]
+    [Test (ExpectedResult = true)]
     public async Task<bool> CreateTestRatings()
     {
         try
@@ -169,8 +162,7 @@ public class CreateDataTest : BaseUnitTest
         }
     }
 
-    [Test]
-    [TestCase(ExpectedResult = true)]
+    [Test (ExpectedResult = true)]
     public async Task<bool> CreateTestPreferences()
     {
         try
