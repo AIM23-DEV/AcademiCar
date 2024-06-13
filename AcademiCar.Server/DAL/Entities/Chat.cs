@@ -16,11 +16,6 @@ public class Chat : Entity
     [JsonIgnore] public User User { get; set; }
     public string FK_User { get; set; }
     
-    [ForeignKey("FK_Messsage")]
-    [JsonProperty(Required = Required.Default)]
-    [JsonIgnore] public Message Message { get; set; }
-    public int FK_Message { get; set; }
-    
-    public bool Moreas2 { get; set; }
+    public bool HasMoreThan2 { get; set; }
     public DateTime UpdatedAt { get; set; }
 }
