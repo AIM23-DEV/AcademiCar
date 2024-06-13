@@ -6,7 +6,7 @@ namespace AcademiCar.Server.Services.ServiceImpl;
 
 public class CarlosService : Service<Carlos>
 {
-    public CarlosService(IPostgresRepository<Carlos> repo) : base(repo) { }
+    public CarlosService(ICarlosRepository repo) : base(repo) { }
 
     
     public override async Task<bool> Validate(Carlos entity)
