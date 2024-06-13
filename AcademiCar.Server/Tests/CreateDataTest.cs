@@ -8,9 +8,28 @@ namespace AcademiCar.Server.Tests;
 [Order(1)]
 public class CreateDataTest : BaseUnitTest
 {
-    [Test]
+    [Test (ExpectedResult = true)]
+    public async Task<bool> CreateTestCarlos()
+    {
+        try
+        {
+            Carlos? existingTestCarlos = await _unitOfWork.Carlos.FindByIdAsync(-999);
+            if (existingTestCarlos != null) return true;
+            
+            foreach (Carlos carlos in _GetCarlos())
+                await _unitOfWork.Carlos.InsertAsync(carlos);
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Carlos creation failed: {e}");
+            return false;
+        }
+    }
+
+    [Test (ExpectedResult = true)]
     [Order(1)]
-    [TestCase (ExpectedResult = true)]
     public async Task<bool> CreateTestStatsAndUser()
     {
         try
@@ -33,8 +52,7 @@ public class CreateDataTest : BaseUnitTest
         }
     }
 
-    [Test]
-    [TestCase (ExpectedResult = true)]
+    [Test (ExpectedResult = true)]
     public async Task<bool> CreateTestFavUser()
     {
         try
@@ -56,9 +74,8 @@ public class CreateDataTest : BaseUnitTest
         }
     }
 
-    [Test]
+    [Test (ExpectedResult = true)]
     [Order(2)]
-    [TestCase (ExpectedResult = true)]
     public async Task<bool> CreateTestVehicle()
     {
         try
@@ -78,9 +95,8 @@ public class CreateDataTest : BaseUnitTest
         }
     }
 
-    [Test]
-    [Order(3)]
     [TestCase(ExpectedResult = true)]
+    [Order(3)]
     public async Task<bool> CreateTestAddressAndTrip()
     {
         try
@@ -106,9 +122,8 @@ public class CreateDataTest : BaseUnitTest
         }
     }
 
-    [Test]
+    [Test (ExpectedResult = true)]
     [Order(4)]
-    [TestCase(ExpectedResult = true)]
     public async Task<bool> CreateTestTripRequest()
     {
         try
@@ -128,8 +143,7 @@ public class CreateDataTest : BaseUnitTest
         }
     }
 
-    [Test]
-    [TestCase(ExpectedResult = true)]
+    [Test (ExpectedResult = true)]
     public async Task<bool> CreateTestRatings()
     {
         try
@@ -149,8 +163,7 @@ public class CreateDataTest : BaseUnitTest
         }
     }
 
-    [Test]
-    [TestCase(ExpectedResult = true)]
+    [Test (ExpectedResult = true)]
     public async Task<bool> CreateTestPreferences()
     {
         try
@@ -170,9 +183,8 @@ public class CreateDataTest : BaseUnitTest
         }
     }
     
-    [Test]
-    [TestCase(ExpectedResult = true)]
-    public async Task<bool> CreateTestMessages()
+    [Test (ExpectedResult = true)]
+    public async Task<bool> CreateTestChatAndMessages()
     {
         try
         {
@@ -197,6 +209,38 @@ public class CreateDataTest : BaseUnitTest
 
     #region Data
 
+    private static Carlos[] _GetCarlos()
+    {
+        Carlos testCarlos1 = new()
+        {
+            ID = -999,
+            Message = "RIP Carlos",
+            Image = []
+        };
+
+        Carlos testCarlos2 = new()
+        {
+            ID = -998,
+            Message = "Car-los",
+            Image = []
+        };
+
+        Carlos testCarlos3 = new()
+        {
+            ID = -997,
+            Message = "Carlos ist los",
+            Image = []
+        };
+
+        Carlos testCarlos4 = new()
+        {
+            ID = -996,
+            Message = "Was ist mit dem Carlos?",
+            Image = []
+        };
+
+        return [testCarlos1, testCarlos2, testCarlos3, testCarlos4];
+    }
     private static Stats[] _GetStats()
     {
         Stats testStatsAdmin = new()

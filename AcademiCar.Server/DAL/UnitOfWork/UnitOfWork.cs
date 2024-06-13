@@ -12,6 +12,7 @@ namespace AcademiCar.Server.DAL.UnitOfWork
             Context = context;
         }
 
+        public ICarlosRepository Carlos => new CarlosRepository(Context);
         public IUserRepository Users => new UserRepository(Context);
         public IFavoriteUserRepository FavoriteUsers => new FavoriteUserRepository(Context);
         public IStatsRepository Stats => new StatsRepository(Context);

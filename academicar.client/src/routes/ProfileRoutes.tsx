@@ -8,18 +8,22 @@ import PersonalDataFaceSheet from "../pages/profile/PersonalDataFaceSheet.tsx";
 import {SettingsPage} from "../pages/profile/SettingsPage.tsx";
 import {RewardsPage} from "../pages/profile/RewardsPage.tsx";
 import {StatsPage} from "../pages/profile/StatsPage.tsx";
+import {BalancePage} from "../pages/profile/BalancePage.tsx";
+import {BalanceHistoryPage} from "../pages/profile/BalanceHistoryPage.tsx";
 
 // All routes are prefixed with /profile.
-export default <Route key="/profile" path="/profile" element={<Outlet/>}>
+export default <Route key="profileRoute" path="/profile" element={<Outlet/>}>
 
-    <Route key="" path="" element={<IndexProfilePage/>}/>,
-    <Route key="cars/" path="cars/" element={<ShowCarsPage/>}/>,
-    <Route key="cars/create" path="cars/create" element={<CreateCarPage/>}/>,
-    <Route key="cars/update" path="cars/update" element={<UpdateCarPage/>}/>,
-    <Route path="edit" element={<EditProfilePage/>} />
-    <Route path="facesheet" element={<PersonalDataFaceSheet/>} />
-    <Route path="settings" element={<SettingsPage/>} />
-    <Route path="rewards" element={<RewardsPage/>} />
-    <Route path="stats" element={<StatsPage/>} />
+    <Route key="profileMainRoute" path="" element={<IndexProfilePage/>}/>,
+    <Route key="profileCarRoute" path="cars/" element={<ShowCarsPage/>}/>,
+    <Route key="profileCarCreateRoute" path="cars/create" element={<CreateCarPage/>}/>,
+    <Route key="profileCarUpdateRoute" path="cars/update" element={<UpdateCarPage/>}/>,
+    <Route key="profileEditRoute" path="edit" element={<EditProfilePage/>} />
+    <Route key="profileFacesheetRoute" path="facesheet" element={<PersonalDataFaceSheet/>} />
+    <Route key="profileSettingsRoute" path="settings" element={<SettingsPage/>} />
+    <Route key="profileRewardsRoute" path="rewards" element={<RewardsPage/>} />
+    <Route key="profileStatsRoute" path="stats" element={<StatsPage/>} />
+    <Route key="profileBalanceRoute" path="balance" element={<BalancePage/>} />
+    <Route key="profileBalanceHistoryRoute" path="balance/history" element={<BalanceHistoryPage/>} />
 
 </Route>;

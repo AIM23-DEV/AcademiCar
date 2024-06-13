@@ -7,13 +7,14 @@ using AcademiCar.Server.Services.Response;
 
 namespace AcademiCar.Server.Controllers;
 
-public class VehicleController : BaseController<Vehicle>
+[ApiController]
+[Route("api/vehicle")]
+public class VehicleController : ControllerBase
 {
-    private IGlobalService _globalService;
+    private readonly IGlobalService _globalService;
     private readonly PostgresDbContext _context;
 
-    public VehicleController(IGlobalService globals, IHttpContextAccessor accessor, PostgresDbContext context)
-        : base(globals.VehicleService, accessor)
+    public VehicleController(IGlobalService globals, PostgresDbContext context)
     {
         _globalService = globals;
         _context = context;

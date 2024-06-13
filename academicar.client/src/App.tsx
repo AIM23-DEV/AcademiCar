@@ -14,15 +14,14 @@ import ProfileRoutes from "./routes/ProfileRoutes.tsx";
 import AdditionalRoutes from "./routes/AdditionalRoutes.tsx";
 import AdminRoutes from "./routes/AdminRoutes.tsx";
 
+// Todo remove when obsolete
 const App: React.FC = () => {
     return (
         <AuthProvider>
             <I18nextProvider i18n={i18next}>
                     <Routes>
-                        {/* Todo remove when obsolete */}
-                        <Route index element={<HomePage />} />
+                        <Route index key="homeRoute" element={<HomePage />} />
                         
-                        {/* Routes are saved in separate files. */}
                         {AuthenticationRoutes}
                         {SearchRoutes}
                         {TripRoutes}
