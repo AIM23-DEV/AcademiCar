@@ -106,5 +106,9 @@
     "recharge": "Recharge",
     "activities": "Latest activities",
     "history": "Archive"
+  },
+  "BalanceHistoryPage": {
+    "title": "My Balance",
+    "delete": "Delete all activities"
   }
 }
