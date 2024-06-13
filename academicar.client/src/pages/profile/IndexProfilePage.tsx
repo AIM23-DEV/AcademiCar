@@ -1,40 +1,74 @@
 import {TitleBar} from "../../components/TitleBar";
-import SetPageTitle from "../../hooks/set_page_title.tsx";
-import {BottomNavigationBar} from "../../components/BottomNavigationBar.tsx";
-import {Button, TextButton} from "../../components/Buttons.tsx";
+import SetPageTitle from "../../hooks/set_page_title";
+import {BottomNavigationBar} from "../../components/BottomNavigationBar";
+import {Button, TextButton} from "../../components/Buttons";
 import {useNavigate} from "react-router-dom";
-import {BiLogOut} from "react-icons/bi";
-import {LanguageSelector} from "../../components/LanguageSelector";
+import {BiCar, BiChevronRight, BiLogOut, BiStats, BiUser} from "react-icons/bi";
 import {useTranslation} from "react-i18next";
-import {BiCar, BiChevronRight} from "react-icons/bi";
+import {BsPencilSquare} from "react-icons/bs";
+import {TbCurrencyEuro} from "react-icons/tb";
+import {CiTrophy} from "react-icons/ci";
+import {IoSettingsOutline} from "react-icons/io5";
+import {Divider} from "../../components/Divider";
+
+const BUTTONS = [
+    { textKey: "personalData", icon: BiUser, path: "edit" },
+    { textKey: "profile", icon: BsPencilSquare, path: "facesheet" },
+    { textKey: "vehicles", icon: BiCar, path: "cars" },
+    { textKey: "balance", icon: TbCurrencyEuro, path: "balance" },
+    { textKey: "statistics", icon: BiStats, path: "stats" },
+    { textKey: "rewards", icon: CiTrophy, path: "rewards" },
+    { textKey: "settings", icon: IoSettingsOutline, path: "settings" },
+];
+
+interface IndexProfilePageProps {
+    avatarUrl?: string;
+    userName?: string;
+}
 
 // TODO add content components and follow up pages
-export const IndexProfilePage = () => {
+export const IndexProfilePage: React.FC<IndexProfilePageProps> = ({avatarUrl = "/../src/assets/react.svg",
+userName = "Maximilian Bauer"
+}) => {
     const [t] = useTranslation(['common', 'pages/profile']);
     const navigate = useNavigate();
 
     const pageTitle = t("pages/profile:IndexProfilePage.title");
+    
     SetPageTitle(pageTitle);
 
     return (
         <>
             <TitleBar text={pageTitle}/>
 
-            <div className="w-full flex flex-col items-center py-6">
-                <LanguageSelector/>
-                
-                <Button
-                    text={t("pages/profile:IndexProfilePage.cars")}
-                    type="button"
-                    fullWidth
-                    textFullWidth
-                    textAlign="left"
-                    onClick={() => navigate("cars/")}
-                    className="mt-6"
-                    variant="outline"
-                    leading={<BiCar className="icon-md text-primary-600"/>}
-                    trailing={<BiChevronRight className="icon-md"/>}
-                />
+                <div className="mt-6">
+                    <img
+                        src={avatarUrl}
+                        alt="avatar"
+                        className="border-gray-600 rounded-full"
+                    />
+                </div>
+
+
+                <h1 className="headline-2">{userName}</h1>
+
+                <Divider className="mt-2"/>
+
+                {BUTTONS.map((button, index) => (
+                    <Button
+                        key={index}
+                        variant="outline"
+                        fullWidth
+                        text={t(`pages/profile:IndexProfilePage.${button.textKey}`)}
+                        textAlign="left"
+                        textFullWidth
+                        leading={<button.icon className="text-green-600" />}
+                        trailing={<BiChevronRight className="icon" />}
+                        type="button"
+                        className="mt-6"
+                        onClick={() => navigate(button.path)}
+                    />
+                ))}
 
                 <TextButton
                     text={t("common:actions.logout")}
@@ -44,9 +78,8 @@ export const IndexProfilePage = () => {
                     variant="accent"
                     onClick={() => navigate("/auth/login")}
                     leading={<BiLogOut className="icon-md"/>}
-                    className="mt-8"
+                    className="mt-6 mb-16"
                 />
-            </div>
 
             <BottomNavigationBar selected="profile"/>
         </>

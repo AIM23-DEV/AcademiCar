@@ -1,11 +1,50 @@
 {
   "IndexTripsPage": {
-    "title": "Current trips"
+    "title": "Current trips",
+    "myTrips": "My Trips",
+    "passenger": "Passenger",
+    "archive": "Archive"
   },
   "CreateTripPage": {
     "title": "Create a new trip"
   },
+  "DriverTripHistoryPage": {
+    "title": "Driver Trip History",
+    "activeTrips": "Current trips",
+    "inactiveTrips": "Past trips"
+  },
+  "PassengerTripHistoryPage": {
+    "title": "Passenger Trip History",
+    "activeTrips": "Current trips",
+    "inactiveTrips": "Past trips"
+  },
   "ShowTripPage": {
     "title": "Trip {{id}} details"
+  },
+  "DriverDetailsPage": {
+    "ratings": "Ratings",
+    "studies": "Studies",
+    "interests": "Interests",
+    "music": "Music",
+    "preferences": "Preferences",
+    "background": "Background",
+    "vehicles": "Vehicles",
+    "activeTrips": "Current trips",
+    "memberStatus": "Member status"
+  },
+  "PassengerDetailsPage": {
+    "ratings": "Ratings",
+    "requests": "Requests",
+    "studies": "Studies",
+    "interests": "Interests",
+    "music": "Music",
+    "preferences": "Preferences",
+    "background": "Background",
+    "memberStatus": "Member status"
+  },
+  "RequestCard": {
+    "requested": "Requested:",
+    "cancel": "Cancel",
+    "accept": "Accept"
   }
 }

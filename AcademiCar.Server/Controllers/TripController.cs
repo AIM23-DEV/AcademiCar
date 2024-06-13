@@ -2,15 +2,17 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using AcademiCar.Server.Services.Response;
 
 namespace AcademiCar.Server.Controllers;
 
-public class TripController : BaseController<Trip>
+[ApiController]
+[Route("api/trip")]
+public class TripController : ControllerBase
 {
-    private IGlobalService _globalService;
+    private readonly IGlobalService _globalService;
 
-    public TripController(IGlobalService globals, IHttpContextAccessor accessor)
-        : base(globals.TripService, accessor)
+    public TripController(IGlobalService globals)
     {
         _globalService = globals;
     }
@@ -18,7 +20,7 @@ public class TripController : BaseController<Trip>
 
     [HttpPost("Create")]
     [Authorize]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserController.ActionResultResponseModel))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResultResponseModel))]
     public async Task<Services.Response.ActionResultResponseModel> CreateTrip([Required][FromBody] Trip trip)
         => await _globalService.TripService.Create(trip);
 }

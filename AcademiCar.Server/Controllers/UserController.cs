@@ -4,11 +4,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using AcademiCar.Server.DAL.UnitOfWork;
+using AcademiCar.Server.Services.Response;
 
 namespace AcademiCar.Server.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
         private readonly IGlobalService _globalService;
@@ -16,6 +17,12 @@ namespace AcademiCar.Server.Controllers
         private readonly SignInManager<User> _signInManager;
         private readonly PostgresDbContext _context;
 
+        /*
+        protected readonly Service<T> _service;
+        protected readonly ClaimsPrincipal _claimsPrincipal;
+        protected readonly string _userEmail;
+        */
+         
         public UserController(IGlobalService globals, IHttpContextAccessor accessor, UserManager<User> userManager,
             SignInManager<User> signInManager, PostgresDbContext context)
         {
@@ -23,6 +30,24 @@ namespace AcademiCar.Server.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
+            
+            /*
+            _claimsPrincipal = accessor.HttpContext?.User;
+
+            Task modelState = _service.SetModelState(ModelState);
+            modelState.Wait();
+
+            IEnumerable<Claim> claims = _claimsPrincipal?.Claims;
+            Claim? emailClaim = claims?.FirstOrDefault(c => c.Type == ClaimTypes.Email);
+            if (emailClaim != null)
+            {
+                _userEmail = emailClaim.Value;
+
+                //TODO - Load user for authentication purposes?
+                //Task user = _service.Load(_userEmail);
+                //user.Wait();
+            }
+            */
         }
 
         [HttpGet("{id}", Name = "GetUserbyId")]
@@ -75,11 +100,11 @@ namespace AcademiCar.Server.Controllers
 
             if (result.Succeeded)
             {
-                return Ok(new ActionResultResponseModel { Success = true, Message = "User registered successfully" });
+                return Ok(new ActionResultResponseModel { IsSuccess = true, Message = "User registered successfully" });
             }
 
             return BadRequest(new ActionResultResponseModel
-                { Success = false, Message = string.Join(", ", result.Errors.Select(e => e.Description)) });
+                { IsSuccess = false, Message = string.Join(", ", result.Errors.Select(e => e.Description)) });
         }
 
         [HttpPost("SamlLogin")]
@@ -104,13 +129,13 @@ namespace AcademiCar.Server.Controllers
                 if (!result.Succeeded)
                 {
                     return BadRequest(new ActionResultResponseModel
-                        { Success = false, Message = string.Join(", ", result.Errors.Select(e => e.Description)) });
+                        { IsSuccess = false, Message = string.Join(", ", result.Errors.Select(e => e.Description)) });
                 }
             }
 
             await _signInManager.SignInAsync(user, isPersistent: false);
 
-            return Ok(new ActionResultResponseModel { Success = true, Message = "SAML user logged in successfully" });
+            return Ok(new ActionResultResponseModel { IsSuccess = true, Message = "SAML user logged in successfully" });
         }
 
         [HttpPost("AdminLogin")]
@@ -176,13 +201,6 @@ namespace AcademiCar.Server.Controllers
             [Required]
             [DataType(DataType.Password)]
             public string Password { get; set; }
-        }
-
-
-        public class ActionResultResponseModel
-        {
-            public bool Success { get; set; }
-            public string Message { get; set; }
         }
     }
 }

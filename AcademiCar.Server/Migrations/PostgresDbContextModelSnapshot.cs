@@ -57,6 +57,27 @@ namespace AcademiCar.Server.Migrations
                     b.ToTable("Address", "academicar");
                 });
 
+            modelBuilder.Entity("AcademiCar.Server.DAL.Entities.Carlos", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ID"));
+
+                    b.Property<byte[]>("Image")
+                        .IsRequired()
+                        .HasColumnType("bytea");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Carlos", "academicar");
+                });
+
             modelBuilder.Entity("AcademiCar.Server.DAL.Entities.FavoriteUser", b =>
                 {
                     b.Property<int>("ID")
@@ -65,19 +86,19 @@ namespace AcademiCar.Server.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ID"));
 
-                    b.Property<string>("FavUserId")
+                    b.Property<string>("FK_FavUserId")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("UserId")
+                    b.Property<string>("FK_UserId")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("FavUserId");
+                    b.HasIndex("FK_FavUserId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("FK_UserId");
 
                     b.ToTable("FavoriteUser", "academicar");
                 });
@@ -509,13 +530,13 @@ namespace AcademiCar.Server.Migrations
                 {
                     b.HasOne("AcademiCar.Server.DAL.Entities.User", "FavUser")
                         .WithMany()
-                        .HasForeignKey("FavUserId")
+                        .HasForeignKey("FK_FavUserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("AcademiCar.Server.DAL.Entities.User", "User")
                         .WithMany("Favorits")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("FK_UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

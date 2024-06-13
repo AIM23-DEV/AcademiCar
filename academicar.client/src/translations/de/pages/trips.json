@@ -1,11 +1,50 @@
 {
   "IndexTripsPage": {
-    "title": "Aktuelle Fahrten"
+    "title": "Aktuelle Fahrten",
+    "myTrips": "Meine Fahrten",
+    "passenger": "Passagier",
+    "archive": "Archiv"
   },
   "CreateTripPage": {
     "title": "Neue Fahrt erstellen"
   },
+  "DriverTripHistoryPage": {
+    "title": "Fahrtenarchiv (Fahrer)",
+    "activeTrips": "Aktuelle Fahrten",
+    "inactiveTrips": "Vergangene Fahrten"
+  },  
+  "PassengerTripHistoryPage": {
+    "title": "Passagierarchiv",
+    "activeTrips": "Aktuelle Fahrten",
+    "inactiveTrips": "Vergangene Fahrten"
+  },
   "ShowTripPage": {
-    "title": "Details zu Fahrt {id}"
+    "title": "Details zu Fahrt {{id}}"
+  },
+  "DriverDetailsPage": {
+    "ratings": "Bewertungen",
+    "studies": "Studium",
+    "interests": "Interessen",
+    "music": "Musikgeschmack",
+    "preferences": "Präferenzen",
+    "background": "Hintergrund",
+    "vehicles": "Fahrzeuge",
+    "activeTrips": "Aktuelle Fahrten",
+    "memberStatus": "Mitgliedsstatus"
+  },
+  "PassengerDetailsPage": {
+    "ratings": "Bewertungen",
+    "requests": "Anfragen",
+    "studies": "Studium",
+    "interests": "Interessen",
+    "music": "Musikgeschmack",
+    "preferences": "Präferenzen",
+    "background": "Hintergrund",
+    "memberStatus": "Mitgliedsstatus"
+  },
+  "RequestCard": {
+    "requested": "Angefragt:",
+    "cancel": "Absagen",
+    "accept": "Annehmen"
   }
 }

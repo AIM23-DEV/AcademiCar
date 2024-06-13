@@ -1,4 +1,6 @@
-﻿using AcademiCar.Server.DAL.Repositories;
+﻿using AcademiCar.Server.DAL.BaseClasses;
+using AcademiCar.Server.DAL.BaseInterfaces;
+using AcademiCar.Server.DAL.Repositories;
 
 namespace AcademiCar.Server.DAL.UnitOfWork
 {
@@ -10,6 +12,7 @@ namespace AcademiCar.Server.DAL.UnitOfWork
             Context = context;
         }
 
+        public ICarlosRepository Carlos => new CarlosRepository(Context);
         public IUserRepository Users => new UserRepository(Context);
         public IFavoriteUserRepository FavoriteUsers => new FavoriteUserRepository(Context);
         public IStatsRepository Stats => new StatsRepository(Context);

@@ -1,4 +1,4 @@
-﻿using AcademiCar.Server.DAL.Repositories;
+﻿using AcademiCar.Server.DAL.BaseInterfaces;
 
 namespace AcademiCar.Server.DAL.UnitOfWork
 {
@@ -6,6 +6,7 @@ namespace AcademiCar.Server.DAL.UnitOfWork
     {
         PostgresDbContext Context { get; }
 
+        ICarlosRepository Carlos { get;  }
         IUserRepository Users { get; }
         IFavoriteUserRepository FavoriteUsers { get; }
         IStatsRepository Stats { get; }
