@@ -1,20 +1,17 @@
 using AcademiCar.Server.DAL.BaseInterfaces;
 using AcademiCar.Server.DAL.Entities;
-using AcademiCar.Server.DAL.UnitOfWork;
 
-namespace AcademiCar.Server.Services.ServiceImpl
+namespace AcademiCar.Server.Services.ServiceImpl;
+
+public class ChatService : Service<Chat>
 {
-    public class ChatService : Service<Chat>
+    public ChatService(IChatRepository repo) : base(repo) { }
+
+
+    public override async Task<bool> Validate(Chat entity)
     {
-        public ChatService(IUnitOfWork uow, IChatRepository repo, IGlobalService globals)
-            : base(uow, repo, globals) { }
+        if (entity == null) validationDictionary.AddError("Empty", "No Chat was sent.");
 
-
-        public override async Task<bool> Validate(Chat entity)
-        {
-            if (entity == null) validationDictionary.AddError("Empty", "No Chat was sent.");
-
-            return validationDictionary.IsValid;
-        }
+        return validationDictionary.IsValid;
     }
 }

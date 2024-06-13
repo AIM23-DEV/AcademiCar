@@ -7,45 +7,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AcademiCar.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class chatmessagetable : Migration
+    public partial class ChatAndMessageMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_FavoriteUser_User_FavUserId",
-                schema: "academicar",
-                table: "FavoriteUser");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_FavoriteUser_User_UserId",
-                schema: "academicar",
-                table: "FavoriteUser");
-
-            migrationBuilder.RenameColumn(
-                name: "UserId",
-                schema: "academicar",
-                table: "FavoriteUser",
-                newName: "FK_UserId");
-
-            migrationBuilder.RenameColumn(
-                name: "FavUserId",
-                schema: "academicar",
-                table: "FavoriteUser",
-                newName: "FK_FavUserId");
-
-            migrationBuilder.RenameIndex(
-                name: "IX_FavoriteUser_UserId",
-                schema: "academicar",
-                table: "FavoriteUser",
-                newName: "IX_FavoriteUser_FK_UserId");
-
-            migrationBuilder.RenameIndex(
-                name: "IX_FavoriteUser_FavUserId",
-                schema: "academicar",
-                table: "FavoriteUser",
-                newName: "IX_FavoriteUser_FK_FavUserId");
-
             migrationBuilder.CreateTable(
                 name: "Chat",
                 schema: "academicar",
@@ -55,9 +21,7 @@ namespace AcademiCar.Server.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     FK_Trip = table.Column<int>(type: "integer", nullable: false),
                     FK_User = table.Column<string>(type: "text", nullable: false),
-                    FK_Messsage = table.Column<int>(type: "integer", nullable: false),
-                    FK_Message = table.Column<int>(type: "integer", nullable: false),
-                    Moreas2 = table.Column<bool>(type: "boolean", nullable: false),
+                    HasMoreThan2 = table.Column<bool>(type: "boolean", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
@@ -119,12 +83,6 @@ namespace AcademiCar.Server.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Chat_FK_Messsage",
-                schema: "academicar",
-                table: "Chat",
-                column: "FK_Messsage");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Chat_FK_Trip",
                 schema: "academicar",
                 table: "Chat",
@@ -153,56 +111,11 @@ namespace AcademiCar.Server.Migrations
                 schema: "academicar",
                 table: "Message",
                 column: "FK_User");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_FavoriteUser_User_FK_FavUserId",
-                schema: "academicar",
-                table: "FavoriteUser",
-                column: "FK_FavUserId",
-                principalSchema: "academicar",
-                principalTable: "User",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_FavoriteUser_User_FK_UserId",
-                schema: "academicar",
-                table: "FavoriteUser",
-                column: "FK_UserId",
-                principalSchema: "academicar",
-                principalTable: "User",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Chat_Message_FK_Messsage",
-                schema: "academicar",
-                table: "Chat",
-                column: "FK_Messsage",
-                principalSchema: "academicar",
-                principalTable: "Message",
-                principalColumn: "ID",
-                onDelete: ReferentialAction.Cascade);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_FavoriteUser_User_FK_FavUserId",
-                schema: "academicar",
-                table: "FavoriteUser");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_FavoriteUser_User_FK_UserId",
-                schema: "academicar",
-                table: "FavoriteUser");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Chat_Message_FK_Messsage",
-                schema: "academicar",
-                table: "Chat");
-
             migrationBuilder.DropTable(
                 name: "Message",
                 schema: "academicar");
@@ -210,50 +123,6 @@ namespace AcademiCar.Server.Migrations
             migrationBuilder.DropTable(
                 name: "Chat",
                 schema: "academicar");
-
-            migrationBuilder.RenameColumn(
-                name: "FK_UserId",
-                schema: "academicar",
-                table: "FavoriteUser",
-                newName: "UserId");
-
-            migrationBuilder.RenameColumn(
-                name: "FK_FavUserId",
-                schema: "academicar",
-                table: "FavoriteUser",
-                newName: "FavUserId");
-
-            migrationBuilder.RenameIndex(
-                name: "IX_FavoriteUser_FK_UserId",
-                schema: "academicar",
-                table: "FavoriteUser",
-                newName: "IX_FavoriteUser_UserId");
-
-            migrationBuilder.RenameIndex(
-                name: "IX_FavoriteUser_FK_FavUserId",
-                schema: "academicar",
-                table: "FavoriteUser",
-                newName: "IX_FavoriteUser_FavUserId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_FavoriteUser_User_FavUserId",
-                schema: "academicar",
-                table: "FavoriteUser",
-                column: "FavUserId",
-                principalSchema: "academicar",
-                principalTable: "User",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_FavoriteUser_User_UserId",
-                schema: "academicar",
-                table: "FavoriteUser",
-                column: "UserId",
-                principalSchema: "academicar",
-                principalTable: "User",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
         }
     }
 }

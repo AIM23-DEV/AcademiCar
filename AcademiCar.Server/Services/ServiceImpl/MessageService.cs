@@ -1,21 +1,17 @@
 using AcademiCar.Server.DAL.BaseInterfaces;
 using AcademiCar.Server.DAL.Entities;
-using AcademiCar.Server.DAL.UnitOfWork;
 
-namespace AcademiCar.Server.Services.ServiceImpl
+namespace AcademiCar.Server.Services.ServiceImpl;
+
+public class MessageService : Service<Message>
 {
+    public MessageService(IMessageRepository repo) : base(repo) { }
 
-    public class MessageService : Service<Message>
+
+    public override async Task<bool> Validate(Message entity)
     {
-        public MessageService(IUnitOfWork uow, IMessageRepository repo, IGlobalService globals)
-            : base(uow, repo, globals) { }
+        if (entity == null) validationDictionary.AddError("Empty", "No Message was sent.");
 
-
-        public override async Task<bool> Validate(Message entity)
-        {
-            if (entity == null) validationDictionary.AddError("Empty", "No Message was sent.");
-
-            return validationDictionary.IsValid;
-        }
+        return validationDictionary.IsValid;
     }
 }

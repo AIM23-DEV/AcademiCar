@@ -1,28 +1,27 @@
 using System.ComponentModel.DataAnnotations;
 using AcademiCar.Server.DAL.Entities;
-using AcademiCar.Server.DAL.UnitOfWork;
 using AcademiCar.Server.Services.Response;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AcademiCar.Server.Controllers;
 
-public class ChatController : BaseController<Chat>
+[ApiController]
+[Route("api/chat")]
+public class ChatController : ControllerBase
 {
     private IGlobalService _globalService;
-    private readonly PostgresDbContext _context;
     
-    public ChatController(IGlobalService globals, IHttpContextAccessor accessor, PostgresDbContext context)
-        : base(globals.ChatService, accessor)
+    public ChatController(IGlobalService globals)
     {
         _globalService = globals;
-        _context = context;
     }
+    
     
     [HttpGet("{id}", Name = "GetChatbyId")]
     public async Task<ActionResult<Chat>> GetTestByIdAsync(int id)
     {
-        var entry = await _context.Chats.FindAsync(id);
+        Chat? entry = await _globalService.ChatService.Get(id);
         if (entry == null)
         {
             return NotFound();

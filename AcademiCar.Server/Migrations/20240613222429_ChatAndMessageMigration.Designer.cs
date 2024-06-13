@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AcademiCar.Server.Migrations
 {
     [DbContext(typeof(PostgresDbContext))]
-    [Migration("20240613212756_chatmigration")]
-    partial class chatmigration
+    [Migration("20240613222429_ChatAndMessageMigration")]
+    partial class ChatAndMessageMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -58,6 +58,27 @@ namespace AcademiCar.Server.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Address", "academicar");
+                });
+
+            modelBuilder.Entity("AcademiCar.Server.DAL.Entities.Carlos", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ID"));
+
+                    b.Property<byte[]>("Image")
+                        .IsRequired()
+                        .HasColumnType("bytea");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Carlos", "academicar");
                 });
 
             modelBuilder.Entity("AcademiCar.Server.DAL.Entities.Chat", b =>
