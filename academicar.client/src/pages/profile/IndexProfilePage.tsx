@@ -4,7 +4,6 @@ import {BottomNavigationBar} from "../../components/BottomNavigationBar";
 import {Button, TextButton} from "../../components/Buttons";
 import {useNavigate} from "react-router-dom";
 import {BiCar, BiChevronRight, BiLogOut, BiStats, BiUser} from "react-icons/bi";
-import {LanguageSelector} from "../../components/LanguageSelector";
 import {useTranslation} from "react-i18next";
 import {BsPencilSquare} from "react-icons/bs";
 import {TbCurrencyEuro} from "react-icons/tb";
@@ -13,13 +12,13 @@ import {IoSettingsOutline} from "react-icons/io5";
 import {Divider} from "../../components/Divider";
 
 const BUTTONS = [
-    { textKey: "personalData", icon: BiUser, path: "/auth/login" },
-    { textKey: "profile", icon: BsPencilSquare, path: "/trips" },
-    { textKey: "vehicles", icon: BiCar, path: "/auth/login" },
-    { textKey: "balance", icon: TbCurrencyEuro, path: "//balance" },
-    { textKey: "statistics", icon: BiStats, path: "/auth/login" },
-    { textKey: "rewards", icon: CiTrophy, path: "/rewards" },
-    { textKey: "settings", icon: IoSettingsOutline, path: "/auth/login" },
+    { textKey: "personalData", icon: BiUser, path: "edit" },
+    { textKey: "profile", icon: BsPencilSquare, path: "facesheet" },
+    { textKey: "vehicles", icon: BiCar, path: "cars" },
+    { textKey: "balance", icon: TbCurrencyEuro, path: "balance" },
+    { textKey: "statistics", icon: BiStats, path: "stats" },
+    { textKey: "rewards", icon: CiTrophy, path: "rewards" },
+    { textKey: "settings", icon: IoSettingsOutline, path: "settings" },
 ];
 
 interface IndexProfilePageProps {
@@ -35,27 +34,12 @@ userName = "Maximilian Bauer"
     const navigate = useNavigate();
 
     const pageTitle = t("pages/profile:IndexProfilePage.title");
+    
     SetPageTitle(pageTitle);
 
     return (
         <>
             <TitleBar text={pageTitle}/>
-
-            <div className="w-full flex flex-col items-center py-6">
-                <LanguageSelector/>
-                
-                <Button
-                    text={t("pages/profile:IndexProfilePage.cars")}
-                    type="button"
-                    fullWidth
-                    textFullWidth
-                    textAlign="left"
-                    onClick={() => navigate("cars/")}
-                    className="mt-6"
-                    variant="outline"
-                    leading={<BiCar className="icon-md text-primary-600"/>}
-                    trailing={<BiChevronRight className="icon-md"/>}
-                />
 
                 <div className="mt-6">
                     <img
@@ -96,7 +80,6 @@ userName = "Maximilian Bauer"
                     leading={<BiLogOut className="icon-md"/>}
                     className="mt-6 mb-16"
                 />
-            </div>
 
             <BottomNavigationBar selected="profile"/>
         </>
