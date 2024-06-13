@@ -1,4 +1,5 @@
-﻿using AcademiCar.Server.DAL.Entities;
+﻿using AcademiCar.Server.DAL.BaseInterfaces;
+using AcademiCar.Server.DAL.Entities;
 using AcademiCar.Server.DAL.Repositories;
 using AcademiCar.Server.DAL.UnitOfWork;
 using AcademiCar.Server.Services.Response;
@@ -7,7 +8,7 @@ using Services.ModelState;
 
 namespace AcademiCar.Server.Services
 {
-    public abstract class Service<TEntity> : IService<TEntity> where TEntity : Entity
+    public abstract class Service<TEntity> : IService<TEntity> where TEntity : IEntity
     {
         protected IUnitOfWork unitOfWork;
         protected IPostgresRepository<TEntity> repository;
