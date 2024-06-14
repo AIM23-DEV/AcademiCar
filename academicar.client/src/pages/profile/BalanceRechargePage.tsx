@@ -7,7 +7,8 @@ import {Card} from "../../components/Cards.tsx";
 // @ts-ignore
 import DOMPurify from 'dompurify';
 import {Input, RadioCollection} from "../../components/FormFields.tsx";
-import {BiLeaf} from "react-icons/bi";
+import {useState} from "react";
+import {Button} from "../../components/Buttons.tsx";
 
 export const BalanceRechargePage = () => {
     const [t] = useTranslation();
@@ -18,6 +19,9 @@ export const BalanceRechargePage = () => {
     const fifty_euro = t("pages/profile:BalanceRechargePage.fifty_euro");
     const eighty_euro = t("pages/profile:BalanceRechargePage.eighty_euro");
     const hundred_euro = t("pages/profile:BalanceRechargePage.hundred_euro");
+    const euro_suffix = t("pages/profile:BalanceRechargePage.euro_suffix");
+    const recharge_btn = t("pages/profile:BalanceRechargePage.recharge_btn");
+    const [radioValue, setRadioValue] = useState('');
 
 
     SetPageTitle(pageTitle);
@@ -36,7 +40,7 @@ export const BalanceRechargePage = () => {
                             id="eine-id"
                             type="text"
                             fullWidth={true}
-                            placeholder="Placeholder Text"
+                            placeholder={t("pages/profile:BalanceRechargePage.card_holder")}
                             required={true}
                             className="my-8"
                         />
@@ -45,7 +49,7 @@ export const BalanceRechargePage = () => {
                                 id="eine-id"
                                 type="text"
                                 fullWidth={true}
-                                placeholder="Placeholder Text"
+                                placeholder={t("pages/profile:BalanceRechargePage.csv")}
                                 required={true}
                                 className="my-8"
                             />
@@ -53,7 +57,7 @@ export const BalanceRechargePage = () => {
                                 id="eine-id"
                                 type="text"
                                 fullWidth={true}
-                                placeholder="Placeholder Text"
+                                placeholder={t("pages/profile:BalanceRechargePage.month")}
                                 required={true}
                                 className="my-8"
                             />
@@ -61,7 +65,7 @@ export const BalanceRechargePage = () => {
                                 id="eine-id"
                                 type="text"
                                 fullWidth={true}
-                                placeholder="Placeholder Text"
+                                placeholder={t("pages/profile:BalanceRechargePage.year")}
                                 required={true}
                                 className="my-8"
                             />
@@ -69,24 +73,28 @@ export const BalanceRechargePage = () => {
                     </div>
                 </Card>
                 <Card
-                    label={t("pages/profile:BalanceRechargePage.amount")}
+                    label={t("pages/profile:BalanceRechargePage.amount_subtitle")}
                     labelPosition="outside">
                     <div className="flex flex-col items-center justify-center gap-5">
-                        <RadioCollection value={radioValue} setValue={setSetRadioValue} items={[
-                            {
-                                value: 1,
-                                label:
-                                    <div className="flex flex-row space-x-3">
-                                        <span>Radio 1</span>
-                                        <BiLeaf className="icon"/>
-                                    </div>
-                            },
-                            {value: 2, label: "Radio 2"},
-                            {value: 3, label: "Radio 3", disabled: true},
-                            {value: 4, label: "Radio 4"},
-                        ]} useDivider columns={1}/>
+                        <RadioCollection value={radioValue} setValue={setRadioValue} items={[
+                            {value: 1, label: ten_euro + euro_suffix},
+                            {value: 2, label: twenty_euro + euro_suffix},
+                            {value: 3, label: thirty_euro + euro_suffix},
+                            {value: 4, label: fifty_euro + euro_suffix},
+                            {value: 5, label: eighty_euro + euro_suffix},
+                            {value: 6, label: hundred_euro + euro_suffix},
+                        ]} useDivider columns={2}/>
                     </div>
                 </Card>
+
+                <Button
+                    variant="primary"
+                    fullWidth
+                    text={recharge_btn}
+                    textAlign="center"
+                    onClick={() => alert("TODO")}
+                    className="col-span-full mt-8"
+                />
             </div>
 
             <BottomNavigationBar selected="profile"/>
