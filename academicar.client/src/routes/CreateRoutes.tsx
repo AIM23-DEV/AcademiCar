@@ -7,10 +7,10 @@ import { UpdateTripPage } from "../pages/create/UpdateTripPage.tsx";
 
 export default <Route key="createRoute" path="/create" element={<Outlet/>}>
 
-    <Route key="create1Route" path="1" element={<CreateTripPage1/>} />,
-    <Route key="create2Route" path="2" element={<CreateTripPage2/>} />,
-    <Route key="create3Route" path="3" element={<CreateTripPage3/>} />,
-    <Route key="create4Route" path="4" element={<CreateTripPage4/>} />,
+    <Route key="create1Route" path="route" element={<CreateTripPage1/>} />,
+    <Route key="create2Route" path="time" element={<CreateTripPage2/>} />,
+    <Route key="create3Route" path="vehicle" element={<CreateTripPage3/>} />,
+    <Route key="create4Route" path="pricing" element={<CreateTripPage4/>} />,
     <Route key="createUpdateRoute" path=":id" element={<UpdateTripPage/>} />,
     
 </Route>;
