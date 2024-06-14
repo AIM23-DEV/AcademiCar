@@ -5,7 +5,7 @@ import {BlobServiceClient} from "@azure/storage-blob";
 
 
 export const ImageUploadForm = () => {
-    const [selectedFile, setSelectedFile] = useState<File|null>(null);
+   // const [selectedFile, setSelectedFile] = useState<File|null>(null);
     const [list] = useState<string[]>([]);
         // Other component code...
     
@@ -20,18 +20,20 @@ export const ImageUploadForm = () => {
         )
             return;
         console.log(`Selected file: ${target?.files[0].name}`);
-        setSelectedFile(target?.files[0]);
+       // setSelectedFile(target?.files[0]);
+        handleUpload(target?.files[0]);
+        
         
     };
 
-    async function handleUpload() {
+    async function handleUpload(selectedFile:File) {
 
         console.log(`handleUpload: ${selectedFile}`);
         if(selectedFile == null)
             return;
 
         const connectionString = 'DefaultEndpointsProtocol=https;AccountName=academicar;AccountKey=mNaipDioJQ1IoDwVaR7BKDXgm+RYRX6IqlW4dXBvkBA63yOpteGM8jqUWAF4nEMiURmrPf43XphD+AStZeKFtA==;EndpointSuffix=core.windows.net';
-        const containerName = 'academicar';
+        const containerName = 'profile-images';
 
         const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
         console.log(`blobServiceClient-accountName: ${blobServiceClient.accountName}`);
@@ -67,7 +69,6 @@ export const ImageUploadForm = () => {
                     text={"Upload Image"}
                     type={"submit"}
                     className={"col-span-full"}
-                    onClick={handleUpload}
                 />
                 
 
