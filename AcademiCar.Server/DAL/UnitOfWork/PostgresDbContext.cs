@@ -1,5 +1,4 @@
-﻿using AcademiCar.Server.DAL.BaseInterfaces;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using AcademiCar.Server.DAL.Entities;
 
@@ -31,6 +30,9 @@ namespace AcademiCar.Server.DAL.UnitOfWork
             modelBuilder.Entity<TripRequest>().ToTable("TripRequest", schema: "academicar");
             modelBuilder.Entity<Address>().ToTable("Address", schema: "academicar");
             modelBuilder.Entity<User>().ToTable("User", schema: "academicar");
+            modelBuilder.Entity<Carlos>().ToTable("Carlos", schema: "academicar");
+            modelBuilder.Entity<Chat>().ToTable("Chat", schema: "academicar");
+            modelBuilder.Entity<Message>().ToTable("Message", schema: "academicar");
         }
 
         // Your DbSets
@@ -41,5 +43,8 @@ namespace AcademiCar.Server.DAL.UnitOfWork
         public DbSet<TripRequest> TripRequests { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
+        public DbSet<Carlos> Carlos { get; set; }
+        public DbSet<Chat> Chats { get; set; }
+        public DbSet<Message> Messages { get; set; }
     }
 }

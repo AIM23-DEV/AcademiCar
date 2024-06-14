@@ -7,18 +7,23 @@ namespace AcademiCar.Server
     {
         public IUnitOfWork UnitOfWork { get; set; }
 
+        public CarlosService CarlosService { get; set; }
         public UserService UserService { get; set; }
         public VehicleService VehicleService { get; set; }
         public TripService TripService { get; set; }
-
+        public ChatService ChatService { get; set; }
+        public MessageService MessageService { get; set; }
 
         public GlobalService(IUnitOfWork uow)
         {
             UnitOfWork = uow;
 
-            UserService = new UserService(UnitOfWork, UnitOfWork.Users, this);
-            VehicleService = new VehicleService(UnitOfWork, UnitOfWork.Vehicles, this);
-            TripService = new TripService(UnitOfWork, UnitOfWork.Trips, this);
+            CarlosService = new CarlosService(UnitOfWork.Carlos);
+            UserService = new UserService(UnitOfWork.Users);
+            VehicleService = new VehicleService(UnitOfWork.Vehicles);
+            TripService = new TripService(UnitOfWork.Trips);
+            ChatService = new ChatService(UnitOfWork.Chats);
+            MessageService = new MessageService(UnitOfWork.Messages);
         }
     }
 }

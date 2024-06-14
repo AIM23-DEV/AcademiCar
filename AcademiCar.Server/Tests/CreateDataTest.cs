@@ -8,9 +8,28 @@ namespace AcademiCar.Server.Tests;
 [Order(1)]
 public class CreateDataTest : BaseUnitTest
 {
-    [Test]
+    [Test (ExpectedResult = true)]
+    public async Task<bool> CreateTestCarlos()
+    {
+        try
+        {
+            Carlos? existingTestCarlos = await _unitOfWork.Carlos.FindByIdAsync(-999);
+            if (existingTestCarlos != null) return true;
+            
+            foreach (Carlos carlos in _GetCarlos())
+                await _unitOfWork.Carlos.InsertAsync(carlos);
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Carlos creation failed: {e}");
+            return false;
+        }
+    }
+
+    [Test (ExpectedResult = true)]
     [Order(1)]
-    [TestCase (ExpectedResult = true)]
     public async Task<bool> CreateTestStatsAndUser()
     {
         try
@@ -33,8 +52,7 @@ public class CreateDataTest : BaseUnitTest
         }
     }
 
-    [Test]
-    [TestCase (ExpectedResult = true)]
+    [Test (ExpectedResult = true)]
     public async Task<bool> CreateTestFavUser()
     {
         try
@@ -56,9 +74,8 @@ public class CreateDataTest : BaseUnitTest
         }
     }
 
-    [Test]
+    [Test (ExpectedResult = true)]
     [Order(2)]
-    [TestCase (ExpectedResult = true)]
     public async Task<bool> CreateTestVehicle()
     {
         try
@@ -78,9 +95,8 @@ public class CreateDataTest : BaseUnitTest
         }
     }
 
-    [Test]
-    [Order(3)]
     [TestCase(ExpectedResult = true)]
+    [Order(3)]
     public async Task<bool> CreateTestAddressAndTrip()
     {
         try
@@ -106,8 +122,8 @@ public class CreateDataTest : BaseUnitTest
         }
     }
 
-    [Test]
-    [TestCase(ExpectedResult = true)]
+    [Test (ExpectedResult = true)]
+    [Order(4)]
     public async Task<bool> CreateTestTripRequest()
     {
         try
@@ -127,8 +143,7 @@ public class CreateDataTest : BaseUnitTest
         }
     }
 
-    [Test]
-    [TestCase(ExpectedResult = true)]
+    [Test (ExpectedResult = true)]
     public async Task<bool> CreateTestRatings()
     {
         try
@@ -148,8 +163,7 @@ public class CreateDataTest : BaseUnitTest
         }
     }
 
-    [Test]
-    [TestCase(ExpectedResult = true)]
+    [Test (ExpectedResult = true)]
     public async Task<bool> CreateTestPreferences()
     {
         try
@@ -168,10 +182,65 @@ public class CreateDataTest : BaseUnitTest
             return false;
         }
     }
+    
+    [Test (ExpectedResult = true)]
+    public async Task<bool> CreateTestChatAndMessages()
+    {
+        try
+        {
+            Chat? existingChat = await _unitOfWork.Chats.FindByIdAsync(-999);
+            if (existingChat != null) return true;
+            
+            foreach (Chat chat in _GetChat())
+                await _unitOfWork.Chats.InsertAsync(chat);
+            
+            foreach (Message message in _GetMessage())
+                await _unitOfWork.Messages.InsertAsync(message);
+            
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Chat and Message creation failed: {e}");
+            return false;
+        }
+    }
 
 
     #region Data
 
+    private static Carlos[] _GetCarlos()
+    {
+        Carlos testCarlos1 = new()
+        {
+            ID = -999,
+            Message = "RIP Carlos",
+            Image = []
+        };
+
+        Carlos testCarlos2 = new()
+        {
+            ID = -998,
+            Message = "Car-los",
+            Image = []
+        };
+
+        Carlos testCarlos3 = new()
+        {
+            ID = -997,
+            Message = "Carlos ist los",
+            Image = []
+        };
+
+        Carlos testCarlos4 = new()
+        {
+            ID = -996,
+            Message = "Was ist mit dem Carlos?",
+            Image = []
+        };
+
+        return [testCarlos1, testCarlos2, testCarlos3, testCarlos4];
+    }
     private static Stats[] _GetStats()
     {
         Stats testStatsAdmin = new()
@@ -572,6 +641,92 @@ public class CreateDataTest : BaseUnitTest
         };
 
         return [testPrefAdmin, testPrefPassenger1, testPrefPassenger2, testPrefDriver];
+    }
+    
+    private static Message[] _GetMessage()
+    {
+        Message testMessageAdmin = new()
+        {
+            ID = -999,
+            FK_User = "-999",
+            FK_Chat = -999,
+            FK_TripRequest = -999,
+            Content = "Test Admin",
+            SentAt = DateTime.UtcNow.AddHours(-2).AddMinutes(-24),
+        };
+        
+        Message testMessage1 = new()
+        {
+            ID = -998,
+            FK_User = "-998",
+            FK_Chat = -998,
+            FK_TripRequest = -998,
+            Content = "Test Eins",
+            SentAt = DateTime.UtcNow.AddHours(-1).AddMinutes(-43),
+        };
+        
+        Message testMessage2 = new()
+        {
+            ID = -997,
+            FK_User = "-997",
+            FK_Chat = -997,
+            FK_TripRequest = -997,
+            Content = "Zweiter Test",
+            SentAt = DateTime.UtcNow.AddMinutes(-7),
+        };
+        
+        Message testMessage3 = new()
+        {
+            ID = -996,
+            FK_User = "-996",
+            FK_Chat = -996,
+            FK_TripRequest = -996,
+            Content = "3. Test",
+            SentAt = DateTime.UtcNow.AddDays(-1).AddHours(17).AddMinutes(-6),
+        };
+
+        return [testMessageAdmin, testMessage1, testMessage2, testMessage3];
+    }
+    
+    private static Chat[] _GetChat()
+    {
+        Chat testChatAdmin = new()
+        {
+            ID = -999,
+            FK_Trip = -999,
+            FK_User = "-999",
+            HasMoreThan2 = true,
+            UpdatedAt = DateTime.UtcNow.AddHours(-2).AddMinutes(-24)
+        };
+        
+        Chat testChat1 = new()
+        {
+            ID = -998,
+            FK_Trip = -998,
+            FK_User = "-998",
+            HasMoreThan2 = false,
+            UpdatedAt = DateTime.UtcNow.AddHours(-1).AddMinutes(-43)
+        };
+        
+        Chat testChat2 = new()
+        {
+            ID = -997,
+            FK_Trip = -997,
+            FK_User = "-997",
+            HasMoreThan2 = false,
+            UpdatedAt = DateTime.UtcNow.AddMinutes(-7)
+        };
+        
+        Chat testChat3 = new()
+        {
+            ID = -996,
+            FK_Trip = -996,
+            FK_User = "-996",
+            HasMoreThan2 = true,
+            UpdatedAt = DateTime.UtcNow.AddDays(-1).AddHours(17).AddMinutes(-6)
+        };
+
+        return [testChatAdmin, testChat1, testChat2, testChat3];
     }
     
     #endregion

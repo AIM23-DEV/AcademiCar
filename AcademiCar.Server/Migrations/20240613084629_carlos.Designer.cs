@@ -3,6 +3,7 @@ using System;
 using AcademiCar.Server.DAL.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AcademiCar.Server.Migrations
 {
     [DbContext(typeof(PostgresDbContext))]
-    partial class PostgresDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240613084629_carlos")]
+    partial class carlos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -78,36 +81,6 @@ namespace AcademiCar.Server.Migrations
                     b.ToTable("Carlos", "academicar");
                 });
 
-            modelBuilder.Entity("AcademiCar.Server.DAL.Entities.Chat", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ID"));
-
-                    b.Property<int>("FK_Trip")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("FK_User")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<bool>("HasMoreThan2")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("FK_Trip");
-
-                    b.HasIndex("FK_User");
-
-                    b.ToTable("Chat", "academicar");
-                });
-
             modelBuilder.Entity("AcademiCar.Server.DAL.Entities.FavoriteUser", b =>
                 {
                     b.Property<int>("ID")
@@ -131,41 +104,6 @@ namespace AcademiCar.Server.Migrations
                     b.HasIndex("FK_UserId");
 
                     b.ToTable("FavoriteUser", "academicar");
-                });
-
-            modelBuilder.Entity("AcademiCar.Server.DAL.Entities.Message", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ID"));
-
-                    b.Property<string>("Content")
-                        .HasColumnType("text");
-
-                    b.Property<int>("FK_Chat")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("FK_TripRequest")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("FK_User")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("SentAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("FK_Chat");
-
-                    b.HasIndex("FK_TripRequest");
-
-                    b.HasIndex("FK_User");
-
-                    b.ToTable("Message", "academicar");
                 });
 
             modelBuilder.Entity("AcademiCar.Server.DAL.Entities.Preferences", b =>
@@ -591,25 +529,6 @@ namespace AcademiCar.Server.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("AcademiCar.Server.DAL.Entities.Chat", b =>
-                {
-                    b.HasOne("AcademiCar.Server.DAL.Entities.Trip", "Trip")
-                        .WithMany()
-                        .HasForeignKey("FK_Trip")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AcademiCar.Server.DAL.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("FK_User")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Trip");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("AcademiCar.Server.DAL.Entities.FavoriteUser", b =>
                 {
                     b.HasOne("AcademiCar.Server.DAL.Entities.User", "FavUser")
@@ -625,33 +544,6 @@ namespace AcademiCar.Server.Migrations
                         .IsRequired();
 
                     b.Navigation("FavUser");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("AcademiCar.Server.DAL.Entities.Message", b =>
-                {
-                    b.HasOne("AcademiCar.Server.DAL.Entities.Chat", "Chat")
-                        .WithMany()
-                        .HasForeignKey("FK_Chat")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AcademiCar.Server.DAL.Entities.TripRequest", "TripRequest")
-                        .WithMany()
-                        .HasForeignKey("FK_TripRequest")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AcademiCar.Server.DAL.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("FK_User")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Chat");
-
-                    b.Navigation("TripRequest");
 
                     b.Navigation("User");
                 });

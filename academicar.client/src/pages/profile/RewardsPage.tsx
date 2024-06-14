@@ -6,8 +6,6 @@ import {Card} from "../../components/Cards.tsx";
 import {Button, IconButton} from "../../components/Buttons.tsx";
 import { BiLeaf, BiChevronRight } from "react-icons/bi";
 import {Divider} from "../../components/Divider.tsx";
-// @ts-ignore
-import DOMPurify from 'dompurify';
 
 const DATA = {
     parking: 4,
@@ -27,16 +25,20 @@ const DATA = {
     ]
 }
 
-// @ts-ignore
+/*
 function SafeHtml({html}) {
     const sanitizedHtml = DOMPurify.sanitize(html);
     return <div dangerouslySetInnerHTML={{ __html: sanitizedHtml }} />;
 }
+*/
+
 export const RewardsPage = () => {
     const [t] = useTranslation();
     const pageTitle = t("pages/profile:RewardsPage.title");
     SetPageTitle(pageTitle);
     
+    // TODO SafeHtml: concatenate some strings instead, extract html out of translation
+    // <SafeHtml html={t("pages/profile:RewardsPage.parking.text", {amount: DATA.parking})} />
     return (
         <>
             <TitleBar hasBackAction={true} text={pageTitle}/>
@@ -49,7 +51,7 @@ export const RewardsPage = () => {
                     >
                         <div className="flex flex-col items-center justify-center gap-5">
                             <div className="flex text-left subtitle">
-                                <SafeHtml html={t("pages/profile:RewardsPage.parking.text", {amount: DATA.parking})} />
+                                TODO: Replace this "SafeHtml"
                             </div>
                             <Button
                                 variant="outline"

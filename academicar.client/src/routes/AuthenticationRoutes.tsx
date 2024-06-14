@@ -4,24 +4,24 @@ import { Navigate } from 'react-router-dom';
 import {useAuth} from "../AuthContext.tsx";
 import Dashboard from "../pages/auth/Dashboard.tsx";
 
-// All routes are prefixed with /auth.
-
-
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const { user } = useAuth();
     return user ? <>{children}</> : <Navigate to="/" />;
 };
 
+// All routes are prefixed with /auth.
 const AuthenticationRoutes = (
-    <Route path="/auth" element={<Outlet />}>
-        <Route path="login" element={<LoginPage />} />
-        <Route path="dashboard"
+    <Route key="authRoute" path="/auth" element={<Outlet />}>
+        
+        <Route key="authLoginRoute" path="login" element={<LoginPage />} />
+        <Route key="authDashboardRoute" path="dashboard"
             element={
                 <PrivateRoute>
                     <Dashboard />
                 </PrivateRoute>
             }
         />
+        
     </Route>
 );
 

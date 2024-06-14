@@ -32,12 +32,16 @@ namespace AcademiCar.Server.Tests.BaseClasses
 
         protected virtual void _CollectServices()
         {
-            var builder = WebApplication.CreateBuilder();
+            WebApplicationBuilder builder = WebApplication.CreateBuilder();
             
             _services.AddDbContext<PostgresDbContext>(options =>
                 options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
             
             _services.AddSingleton<IUnitOfWork, UnitOfWork>();
         }
+
+        
+        [Test (ExpectedResult = true)]
+        public async Task<bool> TestSetup() => await Task.FromResult(_services.Count != 0);
     }
 }
