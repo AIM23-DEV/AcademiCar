@@ -19,9 +19,9 @@ export const ImageUploadForm = () => {
             target?.files[0] === null
         )
             return;
-
+        console.log(`Selected file: ${target?.files[0].name}`);
         setSelectedFile(target?.files[0]);
-        console.log(`Selected file: ${selectedFile}`);
+        
     };
 
     async function handleUpload() {
