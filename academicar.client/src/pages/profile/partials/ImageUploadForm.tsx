@@ -45,14 +45,15 @@ export const ImageUploadForm = () => {
         const connectionString = 'DefaultEndpointsProtocol=https;AccountName=academicar;AccountKey=mNaipDioJQ1IoDwVaR7BKDXgm+RYRX6IqlW4dXBvkBA63yOpteGM8jqUWAF4nEMiURmrPf43XphD+AStZeKFtA==;EndpointSuffix=core.windows.net';
         const containerName = 'profile-images';
 
-        const blobServiceClient = BlobServiceClient.fromConnectionString('https://academicar.blob.core.windows.net');
-        console.log(`blobServiceClient-accountName: ${blobServiceClient.accountName}`);
-        console.log(`blobServiceClient-url: ${blobServiceClient.url}`);
+        const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
+       
         const containerClient = blobServiceClient.getContainerClient(containerName);
+    /*    console.log(`blobServiceClient-accountName: ${blobServiceClient.accountName}`);
+        console.log(`blobServiceClient-url: ${blobServiceClient.url}`);
         console.log(`containerClient-accountName: ${containerClient.accountName}`);
         console.log(`containerClient-containerName: ${containerClient.containerName}`);
         console.log(`containerClient-url: ${containerClient.url}`);
-
+*/
       
 // Example for file upload
             const blobName = `photos/${selectedFile.name}`;
