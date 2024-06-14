@@ -2,6 +2,14 @@ import {ChangeEvent, useState} from "react";
 import {Button} from "../../../components/Buttons.tsx";
 import {Card} from "../../../components/Cards.tsx";
 import {BlobServiceClient} from "@azure/storage-blob";
+/*
+import { ClientSecretCredential } from '@azure/identity';
+
+const clientId = 'your_client_id_here';
+const clientSecret = 'your_client_secret_here';
+
+const credential = new ClientSecretCredential(clientId, clientSecret);*/
+// Use the credential to access Azure Blob Storage
 
 
 export const ImageUploadForm = () => {
@@ -35,7 +43,7 @@ export const ImageUploadForm = () => {
             return;
 
         const connectionString = 'DefaultEndpointsProtocol=https;AccountName=academicar;AccountKey=mNaipDioJQ1IoDwVaR7BKDXgm+RYRX6IqlW4dXBvkBA63yOpteGM8jqUWAF4nEMiURmrPf43XphD+AStZeKFtA==;EndpointSuffix=core.windows.net';
-        const containerName = 'profile-images';
+        const containerName = 'https://academicar.blob.core.windows.net/profile-images';
 
         const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
         console.log(`blobServiceClient-accountName: ${blobServiceClient.accountName}`);
@@ -57,7 +65,25 @@ export const ImageUploadForm = () => {
                 console.log(`Error: ${error.message}`);
             }
         }
-    
+    const blobUrl = 'https://academicar.blob.core.windows.net/profile-images/test.jpg';
+
+// Create a function to download the blob
+    async function downloadBlob() {
+        try {
+            const response = await fetch(blobUrl);
+            if (response.ok) {
+                // Get the blob content
+                const blobContent = await response.blob();
+                // Do something with the blob content (e.g., display, save, etc.)
+                console.log('Blob content:', blobContent);
+            } else {
+                console.error('Error fetching blob:', response.status, response.statusText);
+            }
+        } catch (error) {
+            console.error('Error fetching blob:', error);
+        }
+    }
+
 
     return (
         <Card label="Suche" className="mt-6">
@@ -71,6 +97,7 @@ export const ImageUploadForm = () => {
                     text={"Upload Image"}
                     type={"submit"}
                     className={"col-span-full"}
+                    onClick={downloadBlob}
                 />
                 
 
