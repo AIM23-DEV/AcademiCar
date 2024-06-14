@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using AcademiCar.Server.DAL.UnitOfWork;
+using Microsoft.EntityFrameworkCore;
 
 namespace AcademiCar.Server.Controllers
 {
@@ -38,22 +39,15 @@ namespace AcademiCar.Server.Controllers
         }
         
         [HttpGet]
-        public async Task<IActionResult> GetUser()
+        public async Task<ActionResult<User>> GetUser()
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound();
+                return Unauthorized("User is not logged in.");
             }
 
-            var roles = await _userManager.GetRolesAsync(user);
-
-            return Ok(new
-            {
-                UserName = user.UserName,
-                FirstName = user.FirstName,
-                Roles = roles
-            });
+            return user;
         }
 
         [HttpPost("Register")]
