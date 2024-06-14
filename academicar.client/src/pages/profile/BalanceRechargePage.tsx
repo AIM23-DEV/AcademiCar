@@ -47,7 +47,7 @@ export const BalanceRechargePage = () => {
                         <form aria-label="Suche" className="w-full grid grid-cols-3 gap-4">
                             <Input
                                 id="eine-id"
-                                type="text"
+                                type="number"
                                 fullWidth={true}
                                 placeholder={t("pages/profile:BalanceRechargePage.csv")}
                                 required={true}
@@ -55,7 +55,7 @@ export const BalanceRechargePage = () => {
                             />
                             <Input
                                 id="eine-id"
-                                type="text"
+                                type="number"
                                 fullWidth={true}
                                 placeholder={t("pages/profile:BalanceRechargePage.month")}
                                 required={true}
@@ -63,7 +63,7 @@ export const BalanceRechargePage = () => {
                             />
                             <Input
                                 id="eine-id"
-                                type="text"
+                                type="number"
                                 fullWidth={true}
                                 placeholder={t("pages/profile:BalanceRechargePage.year")}
                                 required={true}
