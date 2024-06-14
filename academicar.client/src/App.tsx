@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import { I18nextProvider } from "react-i18next";
 import i18next from "i18next";
 
-import { AuthProvider  } from './AuthContext';
+import {AuthProvider} from './AuthContext';
 import {HomePage} from './pages/HomePage';
 
 import AuthenticationRoutes from "./routes/AuthenticationRoutes.tsx";

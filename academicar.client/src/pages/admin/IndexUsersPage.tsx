@@ -2,7 +2,7 @@ import { TitleBar } from "../../components/TitleBar.tsx";
 import { BottomNavigationBar } from "../../components/BottomNavigationBar.tsx";
 import { Button } from "../../components/Buttons.tsx";
 import { ConfirmationModal } from "../../components/Modal.tsx";
-import { SetStateAction, useState} from "react";
+import {SetStateAction, useEffect, useState} from "react";
 import SetPageTitle from "../../hooks/set_page_title.tsx";
 import {useTranslation} from "react-i18next";
 import {BiChevronRight} from "react-icons/bi";
@@ -14,7 +14,8 @@ import {IoIosSearch} from "react-icons/io";
 import {Input, Select} from "../../components/FormFields.tsx";
 
 
-//TODO Datenbank anknüpfen 
+//TODO Datenbank anknüpfen
+
 
 export const IndexUsersPage = () => {
     const [t] = useTranslation(['common', 'pages/admin']);
@@ -30,13 +31,24 @@ export const IndexUsersPage = () => {
 
     SetPageTitle(pageTitle);
 
-    const USER = [
+
+    const [users, setUsers] = useState<IUser[]>();
+
+    useEffect(() => {
+        fetch('api/admin/users')
+            .then(response => response.json())
+            .then((fusers: IUser[]) => setUsers(fusers));
+    }, []);
+    
+
+    /*const USER = [
         {id: 1, name: 'Sofie Buchhalter', imgSrc: 'path/to/image1.jpg', rating: 4.5, path: "/admin/users/1"},
         {id: 2, name: 'Samantha Kinsley', imgSrc: 'path/to/image2.jpg', rating: 3.8, path: "/admin/users/2"},
         {id: 3, name: 'Max Kruse', imgSrc: 'path/to/image3.jpg', rating: 4.2, path: "/admin/users/3"},
         {id: 4, name: 'Jane Doe', imgSrc: 'path/to/image4.jpg', rating: 3.9, path: "/admin/users/4"},
         {id: 5, name: 'Bernd Kern', imgSrc: 'path/to/image5.jpg', rating: 4.7, path: "/admin/users/5"},
-    ]; 
+    ]; */
+    
 
     const navigate = useNavigate();
 
@@ -52,15 +64,15 @@ export const IndexUsersPage = () => {
         setSortOption(event.target.value);
     };
 
-    const filteredUsers = USER.filter(user =>
-        user.name.toLowerCase().includes(searchQuery.toLowerCase())
+    const filteredUsers = users?.filter(user =>
+        user.lastname.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-    const sortedUsers = [...filteredUsers].sort((a, b) => {
+    const sortedUsers = filteredUsers?.sort((a, b) => {
         if (sortOption === 'alphabetical') {
-            return a.name.localeCompare(b.name);
+            return a.lastname.localeCompare(b.lastname);
         } else if (sortOption === 'rating') {
-            return b.rating - a.rating;
+            return b.fk_stats - a.fk_stats;
         } else {
             return 0;
         }
@@ -102,12 +114,12 @@ export const IndexUsersPage = () => {
                     padding="base"
                     className="mt-1"
                 >
-                    {sortedUsers.map((user) => (
-                        <div key={user.id}>
+                    {sortedUsers?.map((users) => (
+                        <div key={users.id}>
                             <Button
                                 variant="outline"
                                 fullWidth
-                                text={user.name}
+                                text={users.firstname + users.lastname}
                                 textAlign="left"
                                 textFullWidth
                                 leading={<RxAvatar className="icon-md" />}
@@ -115,7 +127,7 @@ export const IndexUsersPage = () => {
                                 type="button"
                                 disabled={false}
                                 className="mt-1"
-                                onClick={() => navigate(user.path)}
+                                onClick={() => navigate(`/admin/users/${users.id}`)}
                             />
                             <Divider className="my-2" />
                         </div>

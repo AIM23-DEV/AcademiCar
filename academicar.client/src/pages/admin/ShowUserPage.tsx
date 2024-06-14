@@ -87,7 +87,8 @@ export const ShowUserPage = () => {
                             </div>
                         </div>
 
-                        
+
+                    <div className="grid-cols-1  gap-6 my-8">
                         <Input
                             id="address"
                             type="text"
@@ -97,7 +98,8 @@ export const ShowUserPage = () => {
                             label={adress}
                             className="col-span-2"
                         />
-                        
+
+                   
                         <div className="address-info">
                             <Input
                                 id="postal-code"
@@ -116,8 +118,11 @@ export const ShowUserPage = () => {
                                 
                             />
                         </div>
+                    </div>
                     
                     <Divider className="my-2" />
+                    
+                    
                     <div className="user-details-section">
                         <h3>{phonenumber}</h3>
                         <Input
