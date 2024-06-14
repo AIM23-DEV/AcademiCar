@@ -27,6 +27,9 @@ export const ImageUploadForm = () => {
     async function handleUpload() {
 
         console.log(`handleUpload: ${selectedFile}`);
+        if(selectedFile == null)
+            return;
+
         const connectionString = 'DefaultEndpointsProtocol=https;AccountName=academicar;AccountKey=mNaipDioJQ1IoDwVaR7BKDXgm+RYRX6IqlW4dXBvkBA63yOpteGM8jqUWAF4nEMiURmrPf43XphD+AStZeKFtA==;EndpointSuffix=core.windows.net';
         const containerName = 'academicar';
 
@@ -38,14 +41,17 @@ export const ImageUploadForm = () => {
         console.log(`containerClient-containerName: ${containerClient.containerName}`);
         console.log(`containerClient-url: ${containerClient.url}`);
 
-        if(selectedFile == null)
-            return;
-        
+      
 // Example for file upload
             const blobName = `photos/${selectedFile.name}`;
             console.log(`Uploading with blobname: ${blobName}`);
             const blockBlobClient = containerClient.getBlockBlobClient(blobName);
-            await blockBlobClient.uploadData(selectedFile); 
+            try {
+                await blockBlobClient.uploadData(selectedFile);
+            }catch(error){
+                // @ts-ignore
+                console.log(`Error: ${error.message}`);
+            }
         }
     
 
