@@ -19,7 +19,22 @@
     "inactiveTrips": "Vergangene Fahrten"
   },
   "ShowTripPage": {
-    "title": "Details zu Fahrt {{id}}"
+    "title": "Details zu Fahrt {{id}}",
+    "drive": "Fahrt",
+    "requests": "Anfragen",
+    "passengers": "Mitfahrende",
+    "vehicleDetails": "Fahrzeug Details",
+    "preferences": "Präferenzen",
+    "actions": "Aktionen",
+    "editDrive": "Fahrt bearbeiten",
+    "shareDrive": "Fahrt teilen",
+    "cancelDrive": "Fahrt absagen",
+    "label_seats": "Sitze",
+    "extra_suitcase": "Gepäckstücke",
+    "duration": "Dauer",
+    "distance": "Distanz",
+    "price": "Kosten",
+    "km": "km"
   },
   "DriverDetailsPage": {
     "ratings": "Bewertungen",

@@ -6,8 +6,7 @@ namespace AcademiCar.Server.Tests.DAL;
 
 public class UserRepositoryTest : BaseUnitTest
 {
-    [Test]
-    [TestCase(ExpectedResult = true)]
+    [Test (ExpectedResult = true)]
     public bool TestFilterBy()
     {
         try
@@ -24,8 +23,7 @@ public class UserRepositoryTest : BaseUnitTest
         }
     }
 
-    [Test]
-    [TestCase(ExpectedResult = true)]
+    [Test (ExpectedResult = true)]
     public async Task<bool> TestFind()
     {
         try
@@ -47,8 +45,7 @@ public class UserRepositoryTest : BaseUnitTest
         }
     }
 
-    [Test]
-    [TestCase(ExpectedResult = true)]
+    [Test (ExpectedResult = true)]
     public async Task<bool> TestCRUD()
     {
         try

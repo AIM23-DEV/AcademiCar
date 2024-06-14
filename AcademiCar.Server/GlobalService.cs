@@ -11,7 +11,8 @@ namespace AcademiCar.Server
         public UserService UserService { get; set; }
         public VehicleService VehicleService { get; set; }
         public TripService TripService { get; set; }
-
+        public ChatService ChatService { get; set; }
+        public MessageService MessageService { get; set; }
 
         public GlobalService(IUnitOfWork uow)
         {
@@ -21,6 +22,8 @@ namespace AcademiCar.Server
             UserService = new UserService(UnitOfWork.Users);
             VehicleService = new VehicleService(UnitOfWork.Vehicles);
             TripService = new TripService(UnitOfWork.Trips);
+            ChatService = new ChatService(UnitOfWork.Chats);
+            MessageService = new MessageService(UnitOfWork.Messages);
         }
     }
 }

@@ -7,8 +7,7 @@ namespace AcademiCar.Server.Tests.DAL;
 
 public class PostgresRepositoryTest : BaseUnitTest
 {
-    [Test]
-    [TestCase(ExpectedResult = true)]
+    [Test (ExpectedResult = true)]
     public bool TestFilterBy()
     {
         try
@@ -25,8 +24,7 @@ public class PostgresRepositoryTest : BaseUnitTest
         }
     }
 
-    [Test]
-    [TestCase(ExpectedResult = true)]
+    [Test (ExpectedResult = true)]
     public async Task<bool> TestFind()
     {
         try
@@ -48,8 +46,7 @@ public class PostgresRepositoryTest : BaseUnitTest
         }
     }
 
-    [Test]
-    [TestCase(ExpectedResult = true)]
+    [Test (ExpectedResult = true)]
     public async Task<bool> TestCRUD()
     {
         try

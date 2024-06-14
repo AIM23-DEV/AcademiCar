@@ -19,7 +19,22 @@
     "inactiveTrips": "Past trips"
   },
   "ShowTripPage": {
-    "title": "Trip {{id}} details"
+    "title": "Trip {{id}} details",
+    "drive": "Route",
+    "requests": "Requests",
+    "passengers": "Passengers",
+    "vehicleDetails": "Vehicle Details",
+    "preferences": "Preferences",
+    "actions": "Actions",
+    "editDrive": "Edit Drive",
+    "shareDrive": "Share Drive",
+    "cancelDrive": "Cancel Drive",
+    "label_seats": "Seats",
+    "extra_suitcase": "Suitcases",
+    "duration": "Duration",
+    "distance": "Distance",
+    "price": "Price",
+    "km": "km"
   },
   "DriverDetailsPage": {
     "ratings": "Ratings",
