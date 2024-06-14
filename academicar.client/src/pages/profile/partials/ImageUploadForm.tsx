@@ -38,12 +38,12 @@ export const ImageUploadForm = () => {
 
     async function handleUpload(selectedFile:File) {
 
-        console.log(`handleUpload: ${selectedFile}`);
-        if(selectedFile == null)
+        console.log(`handleUpload: ${selectedFile.name}`);
+        if(!selectedFile)
             return;
 
         const connectionString = 'DefaultEndpointsProtocol=https;AccountName=academicar;AccountKey=mNaipDioJQ1IoDwVaR7BKDXgm+RYRX6IqlW4dXBvkBA63yOpteGM8jqUWAF4nEMiURmrPf43XphD+AStZeKFtA==;EndpointSuffix=core.windows.net';
-        const containerName = 'https://academicar.blob.core.windows.net/profile-images';
+        const containerName = 'profile-images';
 
         const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
         console.log(`blobServiceClient-accountName: ${blobServiceClient.accountName}`);
