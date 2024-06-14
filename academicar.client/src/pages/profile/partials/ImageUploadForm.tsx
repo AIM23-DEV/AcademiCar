@@ -21,7 +21,9 @@ export const ImageUploadForm = () => {
             return;
         console.log(`Selected file: ${target?.files[0].name}`);
        // setSelectedFile(target?.files[0]);
-        handleUpload(target?.files[0]);
+        handleUpload(target?.files[0]).then(r => {
+            console.log(`R: ${(r)}`)
+        });
         
         
     };
