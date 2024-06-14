@@ -1,3 +1,11 @@
+<root xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" 
+      xmlns:mdrpi="urn:oasis:names:tc:SAML:2.0:assertion" 
+      xmlns:mdattr="urn:oasis:names:tc:SAML:2.0:assertion" 
+      xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui" 
+      xmlns:shibmd="urn:mace:shibboleth:metadata:1.0"
+      xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
+      xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+
   <md:EntityDescriptor entityID="https://idp.fh-joanneum.at/idp/shibboleth">
     <md:Extensions>
       <mdrpi:RegistrationInfo registrationAuthority="http://eduid.at" registrationInstant="2015-02-16T10:29:20Z">
@@ -79,3 +87,4 @@ FaM76TBX0JxWOxqWce24DPI/3UTL/iGk+WE61+ar5rD+jAdtgHFhc9UMvxdZYJmz
       <md:EmailAddress>mailto:helpdesk@fh-joanneum.at</md:EmailAddress>
     </md:ContactPerson>
   </md:EntityDescriptor>
+</root>
