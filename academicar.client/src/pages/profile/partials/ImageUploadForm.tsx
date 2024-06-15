@@ -56,7 +56,7 @@ export const ImageUploadForm = () => {
         
     };
    
-    const sasUrl = "https://academicar.blob.core.windows.net/profile-images?sp=racwdl&st=2024-06-15T00:09:52Z&se=2024-06-15T08:09:52Z&sv=2022-11-02&sr=c&sig=L45L1BM15PFjqVVKKy7xyJo%2FCDLmry9Y1KyHxkGgjA4%3D";
+    const sasUrl = "https://academicar.blob.core.windows.net/profile-images?sp=rw&st=2024-06-15T00:09:52Z&se=2024-06-15T08:09:52Z&sv=2022-11-02&sr=c&sig=79OlX2WBKzJ506j7pmn44jV8IpDYGdoEt9ffjkPBNWk%3D";
     const uploadFileToBlob = async (file:File) => {
         try {
             const blockBlobClient = new BlockBlobClient(sasUrl);
