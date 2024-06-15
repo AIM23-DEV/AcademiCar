@@ -37,12 +37,12 @@ export const ImageUploadForm = () => {
   
     
      const uploadFileToBlob = async (file:File) => {
-      
+         // Fetch the file as an ArrayBuffer
+         const arrayBuffer = await file.arrayBuffer();
         try {
            const blockBlobClient = new BlockBlobClient(sasUrl);
 
-            // Fetch the file as an ArrayBuffer
-            const arrayBuffer = await file.arrayBuffer();
+           
 
             // Upload the file
             await blockBlobClient.uploadData(arrayBuffer, {
