@@ -1,4 +1,4 @@
-import {ChangeEvent} from "react";
+import {ChangeEvent, useState} from "react";
 import {Button} from "../../../components/Buttons.tsx";
 import {Card} from "../../../components/Cards.tsx";
 import { BlockBlobClient} from "@azure/storage-blob";
@@ -13,8 +13,9 @@ const credential = new ClientSecretCredential(clientId, clientSecret);*/
 const sasUrl = "https://academicar.blob.core.windows.net/?sv=2022-11-02&ss=bfqt&srt=c&sp=rwdlacupiytfx&se=2024-06-15T10:04:03Z&st=2024-06-15T02:04:03Z&spr=https&sig=and%2BWbKzZeBXVymd%2FsQQFl7NTqOCPZ%2FcAqYSJ5vz%2BOg%3D";
 
 export const ImageUploadForm = () => {
-   // const [selectedFile, setSelectedFile] = useState<File|null>(null);
-   // const [list] = useState<string[]>([]);
+    const [selectedFile, setSelectedFile] = useState<File|null>(null);
+    // @ts-ignore
+    const [list] = useState<string[]>([]);
         // Other component code...
     
     const handleFileSelection = (event: ChangeEvent<HTMLInputElement>) => {
@@ -28,8 +29,10 @@ export const ImageUploadForm = () => {
         )
             return;
         console.log(`Selected file: ${target?.files[0].name}`);
-       // setSelectedFile(target?.files[0]);
-        uploadFileToBlob(target?.files[0]);
+        setSelectedFile(target?.files[0]);
+        console.log(`Selected file: ${selectedFile?.name}`);
+        if(selectedFile != null)
+            uploadFileToBlob(selectedFile);
     };
   
     
