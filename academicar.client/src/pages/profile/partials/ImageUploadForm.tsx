@@ -19,6 +19,7 @@ export const ImageUploadForm = () => {
         // Other component code...
     
     const handleFileSelection = (event: ChangeEvent<HTMLInputElement>) => {
+        console.log('handleFileSelection');
         const { target } = event;
 
         if (!(target instanceof HTMLInputElement)) return;
@@ -39,10 +40,10 @@ export const ImageUploadForm = () => {
     
      const uploadFileToBlob = async (file:File) => {
          // Fetch the file as an ArrayBuffer
-         const arrayBuffer = await file.arrayBuffer();
+         console.log('uploadFileToBlob');
         try {
            const blockBlobClient = new BlockBlobClient(sasUrl);
-
+            const arrayBuffer = await file.arrayBuffer();
            
 
             // Upload the file
@@ -63,7 +64,7 @@ export const ImageUploadForm = () => {
   
     async function handleUpload(selectedFile:File) {
 
-        console.log(`handleUpload: ${selectedFile.name}`);
+        console.log(`handleUpload`);
         if(!selectedFile)
             return;
 
