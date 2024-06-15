@@ -1,7 +1,7 @@
 import {ChangeEvent, useState} from "react";
 import {Button} from "../../../components/Buttons.tsx";
 import {Card} from "../../../components/Cards.tsx";
-import {BlobServiceClient, BlockBlobClient} from "@azure/storage-blob";
+import { BlockBlobClient} from "@azure/storage-blob";
 /*
 import { ClientSecretCredential } from '@azure/identity';
 
@@ -11,7 +11,7 @@ const clientSecret = 'your_client_secret_here';
 const credential = new ClientSecretCredential(clientId, clientSecret);*/
 // Use the credential to access Azure Blob Storage
 
-const convertFileToArrayBuffer = (file: File): Promise<ArrayBuffer> => {
+/*const convertFileToArrayBuffer = (file: File): Promise<ArrayBuffer> => {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = () => {
@@ -22,7 +22,7 @@ const convertFileToArrayBuffer = (file: File): Promise<ArrayBuffer> => {
         };
         reader.readAsArrayBuffer(file);
     });
-};
+};*/
 export const ImageUploadForm = () => {
    // const [selectedFile, setSelectedFile] = useState<File|null>(null);
     const [list] = useState<string[]>([]);
@@ -40,6 +40,8 @@ export const ImageUploadForm = () => {
             return;
         console.log(`Selected file: ${target?.files[0].name}`);
        // setSelectedFile(target?.files[0]);
+        uploadFileToBlob(target?.files[0])
+        /*
         convertFileToArrayBuffer(target?.files[0]).then((fileArrayBuffer) => {
             if (fileArrayBuffer === null ||
         fileArrayBuffer.byteLength < 1 ||
@@ -50,11 +52,33 @@ export const ImageUploadForm = () => {
         const blockBlobClient = new BlockBlobClient("https://academicar.blob.core.windows.net/profile-images?sp=racwdl&st=2024-06-15T00:09:52Z&se=2024-06-15T08:09:52Z&sv=2022-11-02&sr=c&sig=L45L1BM15PFjqVVKKy7xyJo%2FCDLmry9Y1KyHxkGgjA4%3D");
         return blockBlobClient.uploadData(fileArrayBuffer);
     });
-        
+        */
         
     };
+   
+    const sasUrl = "https://academicar.blob.core.windows.net/profile-images?sp=racwdl&st=2024-06-15T00:09:52Z&se=2024-06-15T08:09:52Z&sv=2022-11-02&sr=c&sig=L45L1BM15PFjqVVKKy7xyJo%2FCDLmry9Y1KyHxkGgjA4%3D";
+    const uploadFileToBlob = async (file:File) => {
+        try {
+            const blockBlobClient = new BlockBlobClient(sasUrl);
 
-    async function handleUpload(selectedFile:File) {
+            // Fetch the file as an ArrayBuffer
+            const arrayBuffer = await file.arrayBuffer();
+
+            // Upload the file
+            await blockBlobClient.uploadData(arrayBuffer, {
+                blobHTTPHeaders: {
+                    blobContentType: file.type,
+                    blobContentDisposition: `attachment; filename="${file.name}"`
+                }
+            });
+
+            console.log('Upload successful');
+        } catch (error) {
+            // @ts-ignore
+            console.error('Error uploading file:', error.message);
+        }
+    };
+ /*   async function handleUpload(selectedFile:File) {
 
         console.log(`handleUpload: ${selectedFile.name}`);
         if(!selectedFile)
@@ -74,7 +98,7 @@ export const ImageUploadForm = () => {
 */
       
 // Example for file upload
-            const blobName = `${selectedFile.name}`;
+    /*        const blobName = `${selectedFile.name}`;
             console.log(`Uploading with blobname: ${blobName}`);
             const blockBlobClient = containerClient.getBlockBlobClient(blobName);
             try {
@@ -90,9 +114,9 @@ export const ImageUploadForm = () => {
             }
         }
     const blobUrl = 'https://academicar.blob.core.windows.net/profile-images/test.jpg';
-
+*/
 // Create a function to download the blob
-    async function downloadBlob() {
+    async function downloadBlob() {/*
         try {
             const response = await fetch(blobUrl);
             if (response.ok) {
@@ -106,7 +130,7 @@ export const ImageUploadForm = () => {
         } catch (error) {
             console.error('Error fetching blob:', error);
         }
-    }
+ */   }
 
 
     return (
