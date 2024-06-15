@@ -111,7 +111,7 @@ export const IndexTripsPage = () => {
             driver: {
                 name: "Du (Driver)",
                 rating: 4.0,
-                avatar: "/../src/assets/react.svg"
+                avatar: "/src/assets/react.svg"
             }
         },
         {
@@ -125,7 +125,7 @@ export const IndexTripsPage = () => {
             driver: {
                 name: "Du (Driver)",
                 rating: 4.5,
-                avatar: "/../src/assets/react.svg"
+                avatar: "/src/assets/react.svg"
             }
         }
     ];
@@ -141,7 +141,7 @@ export const IndexTripsPage = () => {
             driver: {
                 name: "Sebastian Kurcz",
                 rating: 5.0,
-                avatar: "/../src/assets/krucziii.jpg"
+                avatar: "/src/assets/krucziii.jpg"
             }
         },
         {
@@ -155,7 +155,7 @@ export const IndexTripsPage = () => {
             driver: {
                 name: "Angelina Wolf",
                 rating: 2.5,
-                avatar: "/../src/assets/women_mock.jpg"
+                avatar: "/src/assets/women_mock.jpg"
             }
         }
     ];
