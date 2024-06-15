@@ -140,37 +140,18 @@ export const ImageUploadForm = () => {
         }
     const blobUrl = 'https://academicar.blob.core.windows.net/profile-images/test.jpg';
 */
-// Create a function to download the blob
-    async function downloadBlob() {/*
-        try {
-            const response = await fetch(blobUrl);
-            if (response.ok) {
-                // Get the blob content
-                const blobContent = await response.blob();
-                // Do something with the blob content (e.g., display, save, etc.)
-                console.log('Blob content:', blobContent);
-            } else {
-                console.error('Error fetching blob:', response.status, response.statusText);
-            }
-        } catch (error) {
-            console.error('Error fetching blob:', error);
-        }
- */   }
+
 
 
     return (
         <Card label="Suche" className="mt-6">
             <form aria-label="Suche" className="w-full grid grid-cols-12 gap-4">
                 <input type="file" className={"col-span-full"} onChange={handleFileSelection} />
-
-             
-                
                 <Button
                     variant={"primary"}
                     text={"Upload Image"}
                     type={"submit"}
                     className={"col-span-full"}
-                    onClick={downloadBlob}
                 />
                 
 
