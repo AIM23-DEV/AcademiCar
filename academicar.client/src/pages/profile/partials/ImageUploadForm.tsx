@@ -35,8 +35,7 @@ export const ImageUploadForm = () => {
     const crypto = require('crypto');
     
      const uploadFileToBlob = async (file:File) => {
-        let selectedFile = new File(['content'], 'filename.txt', { type: 'text/plain' });
-        selectedFile = file;
+      
         try {
           //  const blockBlobClient = new BlockBlobClient(sasUrl);
 
@@ -59,13 +58,13 @@ export const ImageUploadForm = () => {
             }
             const accountName = 'academicar';
             const accountKey = 'mNaipDioJQ1IoDwVaR7BKDXgm+RYRX6IqlW4dXBvkBA63yOpteGM8jqUWAF4nEMiURmrPf43XphD+AStZeKFtA==';
-            const blobName = selectedFile.name;
+            const blobName = file.name;
             const containerName = 'profile-images';
             const url = `https://${accountName}.blob.core.windows.net/${containerName}/${blobName}`;
             const method = 'PUT';
             const now = new Date().toUTCString();
             const contentLength = arrayBuffer.byteLength;
-            const contentType = selectedFile.type;
+            const contentType = file.type;
 
             const generateAuthorizationHeader = (accountName:String, accountKey:String, 
                                                  method:String, now:String, contentLength:Number, 
@@ -90,7 +89,7 @@ export const ImageUploadForm = () => {
                 'Content-Type': contentType,
                 'x-ms-blob-type': 'BlockBlob',
                 'Authorization': authorizationHeader,
-                'x-ms-blob-content-disposition': `attachment; filename="${selectedFile.name}"`,
+                'x-ms-blob-content-disposition': `attachment; filename="${file.name}"`,
             };
 
             // Upload the file
