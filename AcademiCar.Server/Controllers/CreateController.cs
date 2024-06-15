@@ -15,14 +15,11 @@ public class CreateController : ControllerBase
     }
     
     
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetTripById(int id)
+    [HttpGet ("{id}")]
+    public async Task<IActionResult> GetTripById(string id)
     {
-        Trip? trip = await _globalService.TripService.Get(id);
-
-        Console.WriteLine("Get Trip By ID");
-        Console.WriteLine($"{id}");
-        Console.WriteLine($"{trip}");
+        int idAsInt = Int32.Parse(id);
+        Trip? trip = await _globalService.TripService.Get(idAsInt);
         
         if (trip == null)
             return NotFound();
