@@ -33,7 +33,7 @@ const convertFileToArrayBuffer = (file: File): Promise<ArrayBuffer> => {
         reader.readAsArrayBuffer(file);
     });
 };
-export const ImageUploadForm = () => {
+export const SASForm = () => {
 
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [sasTokenUrl, setSasTokenUrl] = useState<string>('');

@@ -4,7 +4,8 @@ import {Button} from "../../components/Buttons";
 import SetPageTitle from "../../hooks/set_page_title";
 import { useTranslation } from "react-i18next";
 import { Card } from "../../components/Cards";
-import {ImageUploadForm} from "./partials/ImageUploadWithSAS.tsx";
+import {SASForm} from "./partials/ImageUploadWithSAS.tsx";
+import {ImageUploadForm} from "./partials/ImageUploadForm.tsx";
 
 const EditProfilePage: React.FC = () => {
     const [t] = useTranslation(['common', 'pages/profile']);
@@ -23,6 +24,7 @@ const EditProfilePage: React.FC = () => {
                 />
             </div>
 
+            <SASForm/>
             <ImageUploadForm />
             <Card label={t('pages/profile:EditProfilePage.title')} className="mt-4 w-full">
                 <form className="mt-4 w-full grid grid-cols-12 gap-4">

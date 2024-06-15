@@ -1,7 +1,7 @@
 import {ChangeEvent, useState} from "react";
 import {Button} from "../../../components/Buttons.tsx";
 import {Card} from "../../../components/Cards.tsx";
-import {BlobServiceClient} from "@azure/storage-blob";
+import {BlobServiceClient, BlockBlobClient} from "@azure/storage-blob";
 /*
 import { ClientSecretCredential } from '@azure/identity';
 
@@ -11,7 +11,18 @@ const clientSecret = 'your_client_secret_here';
 const credential = new ClientSecretCredential(clientId, clientSecret);*/
 // Use the credential to access Azure Blob Storage
 
-
+const convertFileToArrayBuffer = (file: File): Promise<ArrayBuffer> => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+            resolve(reader.result as ArrayBuffer);
+        };
+        reader.onerror = () => {
+            reject(new Error('Failed to read file as ArrayBuffer'));
+        };
+        reader.readAsArrayBuffer(file);
+    });
+};
 export const ImageUploadForm = () => {
    // const [selectedFile, setSelectedFile] = useState<File|null>(null);
     const [list] = useState<string[]>([]);
@@ -29,9 +40,16 @@ export const ImageUploadForm = () => {
             return;
         console.log(`Selected file: ${target?.files[0].name}`);
        // setSelectedFile(target?.files[0]);
-        handleUpload(target?.files[0]).then(r => {
-            console.log(`R: ${r}`)
-        });
+        convertFileToArrayBuffer(target?.files[0]).then((fileArrayBuffer) => {
+            if (fileArrayBuffer === null ||
+        fileArrayBuffer.byteLength < 1 ||
+        fileArrayBuffer.byteLength > 256000
+    )
+        return;
+
+        const blockBlobClient = new BlockBlobClient("https://academicar.blob.core.windows.net/profile-images?sp=racwdl&st=2024-06-15T00:09:52Z&se=2024-06-15T08:09:52Z&sv=2022-11-02&sr=c&sig=L45L1BM15PFjqVVKKy7xyJo%2FCDLmry9Y1KyHxkGgjA4%3D");
+        return blockBlobClient.uploadData(fileArrayBuffer);
+    });
         
         
     };
