@@ -3,6 +3,7 @@ import {Button} from "../../../components/Buttons.tsx";
 import {Card} from "../../../components/Cards.tsx";
 //import { BlockBlobClient} from "@azure/storage-blob";
 import axios from "axios";
+import crypto from 'crypto';
 /*
 import { ClientSecretCredential } from '@azure/identity';
 
@@ -32,7 +33,7 @@ export const ImageUploadForm = () => {
        // setSelectedFile(target?.files[0]);
         uploadFileToBlob(target?.files[0]);
     };
-    const crypto = require('crypto');
+  
     
      const uploadFileToBlob = async (file:File) => {
       
