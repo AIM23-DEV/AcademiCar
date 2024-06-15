@@ -24,8 +24,10 @@ const EditProfilePage: React.FC = () => {
                 />
             </div>
 
-            <SASForm/>
-            <ImageUploadForm />
+            <div>
+            <SASForm/></div>
+            <div>
+            <ImageUploadForm /></div>
             <Card label={t('pages/profile:EditProfilePage.title')} className="mt-4 w-full">
                 <form className="mt-4 w-full grid grid-cols-12 gap-4">
                     <div className="col-span-full">
