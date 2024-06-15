@@ -1,7 +1,7 @@
 import {ChangeEvent, useState} from "react";
 import {Button} from "../../../components/Buttons.tsx";
 import {Card} from "../../../components/Cards.tsx";
-import {BlobServiceClient, BlockBlobClient} from "@azure/storage-blob";
+import {BlockBlobClient} from "@azure/storage-blob";
 /*
 import { ClientSecretCredential } from '@azure/identity';
 
@@ -33,7 +33,7 @@ export const ImageUploadForm = () => {
         
         
         uploadFileToBlob(target?.files[0]);
-        handleUpload(target?.files[0]);
+      //  handleUpload(target?.files[0]);
         
         
     };
@@ -63,7 +63,7 @@ export const ImageUploadForm = () => {
     };
 
   
-    async function handleUpload(selectedFile:File) {
+/*    async function handleUpload(selectedFile:File) {
 
         console.log(`handleUpload`);
         if(!selectedFile)
@@ -83,7 +83,7 @@ export const ImageUploadForm = () => {
 */
       
 // Example for file upload
-           const blobName = `${selectedFile.name}`;
+   /*        const blobName = `${selectedFile.name}`;
             console.log(`Uploading with blobname: ${blobName}`);
             const blockBlobClient = containerClient.getBlockBlobClient(blobName);
             try {
@@ -98,9 +98,9 @@ export const ImageUploadForm = () => {
                 console.log(`Error: ${error.message}`);
             }
         }
-   // const blobUrl = 'https://academicar.blob.core.windows.net/profile-images/test.jpg';
+   const blobUrl = 'https://academicar.blob.core.windows.net/profile-images/test.jpg';
 
-
+*/
 
 
     return (
