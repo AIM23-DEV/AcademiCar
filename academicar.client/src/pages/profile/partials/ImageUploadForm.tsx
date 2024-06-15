@@ -30,11 +30,13 @@ export const ImageUploadForm = () => {
         )
             return;
         
+        
+        
+        uploadFileToBlob(target?.files[0]);
+        handleUpload(target?.files[0]);
+        
         setSelectedFile(target?.files[0]);
-        if(selectedFile != null){
-            list.push(selectedFile.name);
-            uploadFileToBlob(target?.files[0]);
-        handleUpload(target?.files[0]);}
+            list.push(selectedFile?.name as string);
     };
   
     
