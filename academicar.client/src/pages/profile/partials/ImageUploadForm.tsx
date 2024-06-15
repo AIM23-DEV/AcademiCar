@@ -1,7 +1,7 @@
 import {ChangeEvent, useState} from "react";
 import {Button} from "../../../components/Buttons.tsx";
 import {Card} from "../../../components/Cards.tsx";
-import {BlobServiceClient, BlockBlobClient} from "@azure/storage-blob";
+import {BlobServiceClient} from "@azure/storage-blob";
 /*
 import { ClientSecretCredential } from '@azure/identity';
 
@@ -10,7 +10,7 @@ const clientSecret = 'your_client_secret_here';
 
 const credential = new ClientSecretCredential(clientId, clientSecret);*/
 // Use the credential to access Azure Blob Storage
-const sasUrl = "https://academicar.blob.core.windows.net/?sv=2022-11-02&ss=bfqt&srt=c&sp=rwdlacupiytfx&se=2024-06-15T10:04:03Z&st=2024-06-15T02:04:03Z&spr=https&sig=and%2BWbKzZeBXVymd%2FsQQFl7NTqOCPZ%2FcAqYSJ5vz%2BOg%3D";
+//const sasUrl = "https://academicar.blob.core.windows.net/?sv=2022-11-02&ss=bfqt&srt=c&sp=rwdlacupiytfx&se=2024-06-15T10:04:03Z&st=2024-06-15T02:04:03Z&spr=https&sig=and%2BWbKzZeBXVymd%2FsQQFl7NTqOCPZ%2FcAqYSJ5vz%2BOg%3D";
 
 export const ImageUploadForm = () => {
   //  const [selectedFile, setSelectedFile] = useState<File|null>(null);
@@ -39,7 +39,7 @@ export const ImageUploadForm = () => {
     };
   
     
-     const uploadFileToBlob = async (file:File) => {
+  /*   const uploadFileToBlob = async (file:File) => {
          // Fetch the file as an ArrayBuffer
          console.log('uploadFileToBlob');
         try {
@@ -62,7 +62,7 @@ export const ImageUploadForm = () => {
         }
     };
 
-  
+  */
     async function handleUpload(selectedFile:File) {
 
         console.log(`handleUpload`);
