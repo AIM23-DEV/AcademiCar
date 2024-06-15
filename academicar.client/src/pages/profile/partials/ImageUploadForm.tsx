@@ -1,4 +1,4 @@
-import {ChangeEvent} from "react";
+import {ChangeEvent, useState} from "react";
 import {Button} from "../../../components/Buttons.tsx";
 import {Card} from "../../../components/Cards.tsx";
 import {BlockBlobClient} from "@azure/storage-blob";
@@ -6,7 +6,7 @@ import {BlockBlobClient} from "@azure/storage-blob";
 export const ImageUploadForm = () => {
   //  const [selectedFile, setSelectedFile] = useState<File|null>(null);
     // @ts-ignore
-   // const [list] = useState<string[]>([]);
+    const [list] = useState<string[]>([]);
         // Other component code...
     
     const handleFileSelection = (event: ChangeEvent<HTMLInputElement>) => {
@@ -26,7 +26,7 @@ export const ImageUploadForm = () => {
         uploadFileToBlob(target?.files[0]);
       //  handleUpload(target?.files[0]);
         
-        
+        list.push(target?.files[0].name);
     };
   
     
