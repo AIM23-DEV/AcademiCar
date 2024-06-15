@@ -1,16 +1,7 @@
 import {ChangeEvent, useState} from "react";
 import {Button} from "../../../components/Buttons.tsx";
 import {Card} from "../../../components/Cards.tsx";
-import {BlobServiceClient} from "@azure/storage-blob";
-/*
-import { ClientSecretCredential } from '@azure/identity';
-
-const clientId = 'your_client_id_here';
-const clientSecret = 'your_client_secret_here';
-
-const credential = new ClientSecretCredential(clientId, clientSecret);*/
-// Use the credential to access Azure Blob Storage
-//const sasUrl = "https://academicar.blob.core.windows.net/?sv=2022-11-02&ss=bfqt&srt=c&sp=rwdlacupiytfx&se=2024-06-15T10:04:03Z&st=2024-06-15T02:04:03Z&spr=https&sig=and%2BWbKzZeBXVymd%2FsQQFl7NTqOCPZ%2FcAqYSJ5vz%2BOg%3D";
+import {BlockBlobClient} from "@azure/storage-blob";
 
 export const ImageUploadForm = () => {
   //  const [selectedFile, setSelectedFile] = useState<File|null>(null);
@@ -32,19 +23,21 @@ export const ImageUploadForm = () => {
         
         
         
-      //  uploadFileToBlob(target?.files[0]);
-        handleUpload(target?.files[0]);
+        uploadFileToBlob(target?.files[0]);
+      //  handleUpload(target?.files[0]);
         
         
     };
   
     
-  /*   const uploadFileToBlob = async (file:File) => {
-         // Fetch the file as an ArrayBuffer
+     const uploadFileToBlob = async (file:File) => {
+         
          console.log('uploadFileToBlob');
-        try {
+         const sasUrl = "https://academicar.blob.core.windows.net/?sv=2022-11-02&ss=bfqt&srt=c&sp=rwdlacupiytfx&se=2024-06-15T10:04:03Z&st=2024-06-15T02:04:03Z&spr=https&sig=and%2BWbKzZeBXVymd%2FsQQFl7NTqOCPZ%2FcAqYSJ5vz%2BOg%3D";
+
+         try {
            const blockBlobClient = new BlockBlobClient(sasUrl);
-            const arrayBuffer = await file.arrayBuffer();
+            const arrayBuffer = await file.arrayBuffer();// Fetch the file as an ArrayBuffer
            
 
             // Upload the file
@@ -62,8 +55,8 @@ export const ImageUploadForm = () => {
         }
     };
 
-  */
-    async function handleUpload(selectedFile:File) {
+  
+/*    async function handleUpload(selectedFile:File) {
 
         console.log(`handleUpload`);
         if(!selectedFile)
@@ -83,7 +76,7 @@ export const ImageUploadForm = () => {
 */
       
 // Example for file upload
-           const blobName = `${selectedFile.name}`;
+   /*        const blobName = `${selectedFile.name}`;
             console.log(`Uploading with blobname: ${blobName}`);
             const blockBlobClient = containerClient.getBlockBlobClient(blobName);
             try {
@@ -98,9 +91,9 @@ export const ImageUploadForm = () => {
                 console.log(`Error: ${error.message}`);
             }
         }
-//   const blobUrl = 'https://academicar.blob.core.windows.net/profile-images/test.jpg';
+   const blobUrl = 'https://academicar.blob.core.windows.net/profile-images/test.jpg';
 
-
+*/
 
 
     return (
