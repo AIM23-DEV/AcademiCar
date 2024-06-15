@@ -4,7 +4,7 @@ import {Button} from "../../components/Buttons";
 import SetPageTitle from "../../hooks/set_page_title";
 import { useTranslation } from "react-i18next";
 import { Card } from "../../components/Cards";
-import {ImageUploadForm} from "./partials/ImageUploadForm.tsx";
+import {ImageUploadForm} from "./partials/ImageUploadWithSAS.tsx";
 
 const EditProfilePage: React.FC = () => {
     const [t] = useTranslation(['common', 'pages/profile']);
@@ -16,11 +16,11 @@ const EditProfilePage: React.FC = () => {
         <div className="pb-24 w-full">
             <TitleBar text={pageTitle} hasBackAction />
             <div className="flex justify-center">
-                <!--img
-                    src="path/to/avatar.jpg"
+                <img
+                    src="https://academicar.blob.core.windows.net/profile-images/test.jpg"
                     alt="Profile Avatar"
                     className="rounded-full w-32 h-32"
-                /-->
+                />
             </div>
 
             <ImageUploadForm />
