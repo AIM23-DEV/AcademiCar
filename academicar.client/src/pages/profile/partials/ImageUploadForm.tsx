@@ -1,4 +1,4 @@
-import {ChangeEvent, useState} from "react";
+import {ChangeEvent} from "react";
 import {Button} from "../../../components/Buttons.tsx";
 import {Card} from "../../../components/Cards.tsx";
 //import { BlockBlobClient} from "@azure/storage-blob";
@@ -15,7 +15,7 @@ const credential = new ClientSecretCredential(clientId, clientSecret);*/
 
 export const ImageUploadForm = () => {
    // const [selectedFile, setSelectedFile] = useState<File|null>(null);
-    const [list] = useState<string[]>([]);
+   // const [list] = useState<string[]>([]);
         // Other component code...
     
     const handleFileSelection = (event: ChangeEvent<HTMLInputElement>) => {
@@ -154,27 +154,6 @@ export const ImageUploadForm = () => {
                     className={"col-span-full"}
                 />
                 
-
-                {list.map((item) => (
-                    
-                    <Card>
-                        {item.endsWith('.jpg') ||
-                        item.endsWith('.png') ||
-                        item.endsWith('.jpeg') ||
-                        item.endsWith('.gif') ? (
-                            <img
-                                src={item}
-                                alt="Profile Avatar"
-                                className="rounded-full w-32 h-32"
-                            />
-                        ) : (
-                            <div className="body-1" >
-                                {item}
-                            </div>
-                        )}
-                    </Card>
-                   
-                ))}
             </form>
         </Card>
     );
