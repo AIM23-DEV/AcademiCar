@@ -1,10 +1,10 @@
 import React from 'react';
 import { Outlet, Route } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
+import { IndexUsersPage } from "../pages/admin/IndexUsersPage.tsx";
+import { ShowUserPage } from "../pages/admin/ShowUserPage.tsx";
 import Dashboard from "../pages/auth/Dashboard";
 import AdminLogin from "../pages/auth/AdminLogin.tsx";
-import {IndexUsersPage} from "../pages/admin/IndexUsersPage.tsx";
-import {ShowUserPage} from "../pages/admin/ShowUserPage.tsx";
 
 const AdminPrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const { user } = useAuth();
@@ -20,13 +20,14 @@ const AdminPrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }
     return <>{children}</>;
 };
 
-// All routes are prefixed with /admin.
 const AdminRoutes = (
     <Route key="adminRoute" path="/admin" element={<AdminPrivateRoute><Outlet /></AdminPrivateRoute>}>
+        
         <Route key="adminDashboardRoute" path="dashboard" element={<Dashboard />} />
         <Route key="adminLoginRoute" path="login" element={<AdminLogin />} />
         <Route key="adminUsersRoute" path="users" element={<IndexUsersPage/>} />,
         <Route key="adminShowUserRoute" path="users/:id" element={<ShowUserPage/>} />,
+        
     </Route>
 );
 

@@ -19,12 +19,12 @@ export const TripVehicleCreationForm = () => {
         <div className="w-full flex flex-col items-center">
             <Card label={vehicleLabelText} outsideLink={createVehicleLinkText}>
                 <Select/>
-                <p> {seatsLabelText} <Input/></p>
+                <div> {seatsLabelText} <Input/></div>
             </Card>
 
             <Card label={extrasLabelText}>
-                <p><Checkmark label={luggageExtraText}/> <Input/> {extrasUnitText} </p>
-                <p><Checkmark label={suitcaseExtraText}/> <Input/> {extrasUnitText} </p>
+                <div><Checkmark label={luggageExtraText}/> <Input/> {extrasUnitText} </div>
+                <div><Checkmark label={suitcaseExtraText}/> <Input/> {extrasUnitText} </div>
                 <Checkmark label={bicycleExtraText}/>
                 <Checkmark label={skiExtraText}/>
                 <Checkmark label={miscExtraText}/>
