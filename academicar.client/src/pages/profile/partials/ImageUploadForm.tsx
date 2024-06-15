@@ -1,4 +1,4 @@
-import {ChangeEvent} from "react";
+import {ChangeEvent, useState} from "react";
 import {Button} from "../../../components/Buttons.tsx";
 import {Card} from "../../../components/Cards.tsx";
 //import { BlockBlobClient} from "@azure/storage-blob";
@@ -25,7 +25,10 @@ const credential = new ClientSecretCredential(clientId, clientSecret);*/
     });
 };*/
 export const ImageUploadForm = () => {
-   
+   // const [selectedFile, setSelectedFile] = useState<File|null>(null);
+    const [list] = useState<string[]>([]);
+        // Other component code...
+    
     const handleFileSelection = (event: ChangeEvent<HTMLInputElement>) => {
         const { target } = event;
 
@@ -38,7 +41,8 @@ export const ImageUploadForm = () => {
             return;
         console.log(`Selected file: ${target?.files[0].name}`);
        // setSelectedFile(target?.files[0]);
-        uploadFileToBlob(target?.files[0])
+        uploadFileToBlob(target?.files[0]);
+        list.push(target?.files[0].name);
         /*
         convertFileToArrayBuffer(target?.files[0]).then((fileArrayBuffer) => {
             if (fileArrayBuffer === null ||
@@ -120,8 +124,9 @@ export const ImageUploadForm = () => {
             const response = await axios.put(url, arrayBuffer, { headers });
             console.log('Upload successful', response.data);
 
-        } catch (error){
-            console.log(`Error uploading file`)
+        } catch (error) {
+            // @ts-ignore
+            console.error('Error uploading file:', error.message);
         }
     };
 
@@ -163,20 +168,21 @@ export const ImageUploadForm = () => {
         }
     const blobUrl = 'https://academicar.blob.core.windows.net/profile-images/test.jpg';
 */
+// Create a function to download the blob
+    
 
 
     return (
         <Card label="Suche" className="mt-6">
             <form aria-label="Suche" className="w-full grid grid-cols-12 gap-4">
                 <input type="file" className={"col-span-full"} onChange={handleFileSelection} />
-
-             
                 
                 <Button
                     variant={"primary"}
                     text={"Upload Image"}
                     type={"submit"}
                     className={"col-span-full"}
+                   
                 />
                 
             </form>
