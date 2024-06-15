@@ -9,13 +9,14 @@ import { TripRouteCreationForm } from "./partials/TripRouteCreationForm.tsx";
 import { TripVehicleCreationForm } from "./partials/TripVehicleCreationForm.tsx";
 import { TripPricingCreationForm } from "./partials/TripPricingCreationForm.tsx";
 import { TripTimeCreationForm } from "./partials/TripTimeCreationForm.tsx";
+import {TabPanel, TabPanels} from "@headlessui/react";
 
 export const UpdateTripPage = () => {
     const [t] = useTranslation(["common", "pages/create"]);
     const [trip, setTrip] = useState<ITrip | null>();
     const [error, setError] = useState<string | null>();
     const { id } = useParams();
-    const pageTitle = t("pages/create:Common.title_create");
+    const pageTitle = t("pages/create:Common.title_update");
     const routeTabText = t("pages/create:UpdateTripPage.tab_route");
     const timeTabText = t("pages/create:UpdateTripPage.tab_time");
     const vehicleTabText = t("pages/create:UpdateTripPage.tab_vehicle");
@@ -46,7 +47,6 @@ export const UpdateTripPage = () => {
         console.log(trip?.id);
     }
     
-    // TODO make tabs dynamic...
     return (
         <>
             <TitleBar text={pageTitle} hasBackAction={true} />
@@ -58,12 +58,15 @@ export const UpdateTripPage = () => {
                     {name: vehicleTabText},
                     {name: pricingTabText}
                 ]}
+                children={            
+                    <TabPanels>
+                        <TabPanel> <TripRouteCreationForm /> </TabPanel>
+                        <TabPanel> <TripTimeCreationForm /> </TabPanel>
+                        <TabPanel> <TripVehicleCreationForm /> </TabPanel>
+                        <TabPanel> <TripPricingCreationForm /> </TabPanel>
+                    </TabPanels>
+                }
             />
-
-            <TripRouteCreationForm />
-            <TripTimeCreationForm />
-            <TripVehicleCreationForm />
-            <TripPricingCreationForm />
             
             <Button variant={"primary"} text={updateButtonText} onClick={updateTrip} />
         </>
