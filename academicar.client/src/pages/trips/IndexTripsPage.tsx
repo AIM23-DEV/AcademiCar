@@ -48,7 +48,7 @@ const Route: React.FC<RouteProps> = ({ startPoint, endPoint, stops }) => {
                 </div>
                 <div className="flex flex-row items-center gap-2">
                     <span className="flex">
-                        {Array.from({ length: 4 - startPoint.freeSeats }).map((_, index) => (
+                        {Array.from({ length: 3 - startPoint.freeSeats }).map((_, index) => (
                             <BiUserCircle key={index} className="icon text-gray-400" />
                         ))}
                         {Array.from({ length: startPoint.freeSeats }).map((_, index) => (
@@ -68,7 +68,7 @@ const Route: React.FC<RouteProps> = ({ startPoint, endPoint, stops }) => {
                         </div>
                         <div className="flex flex-row items-center gap-2">
                             <span className="flex">
-                                 {Array.from({ length: 4 - stop.freeSeats }).map((_, index) => (
+                                 {Array.from({ length: 3 - stop.freeSeats }).map((_, index) => (
                                      <BiUserCircle key={index} className="icon text-gray-400" />
                                  ))}
 
@@ -132,17 +132,16 @@ export const IndexTripsPage = () => {
 
     const passengerTrips = [
         {
-            startPoint: { location: "Graz Hauptbahnhof", time: "13:00", freeSeats: 2 },
-            endPoint: { location: "Wien Flughafen", time: "15:30", freeSeats: 2 },
+            startPoint: { location: "Vinzenzgasse 57, Graz", time: "12:30", freeSeats: 2 },
+            endPoint: { location: "Klagenfurt, Hbf", time: "14:15", freeSeats: 2 },
             stops: [
-                { location: "Linz Hauptbahnhof", time: "14:00", freeSeats: 1 },
-                { location: "St. Pölten Hauptbahnhof", time: "14:45", freeSeats: 3 }
+                { location: "FH Joanneum Graz", time: "12:34", freeSeats: 2 },
             ],
-            price: "€ 12,80",
+            price: "€ 10,00",
             driver: {
-                name: "John Doe",
-                rating: 4.0,
-                avatar: "/../src/assets/react.svg"
+                name: "Sebastian Kurcz",
+                rating: 5.0,
+                avatar: "/../src/assets/krucziii.jpg"
             }
         },
         {
@@ -152,11 +151,11 @@ export const IndexTripsPage = () => {
                 { location: "Wörgl Hauptbahnhof", time: "11:00", freeSeats: 0 },
                 { location: "Jenbach Bahnhof", time: "11:45", freeSeats: 2 }
             ],
-            price: "€ 15,00",
+            price: "€ 13,37",
             driver: {
-                name: "Jane Smith",
-                rating: 4.5,
-                avatar: "/../src/assets/react.svg"
+                name: "Angelina Wolf",
+                rating: 2.5,
+                avatar: "/../src/assets/women_mock.jpg"
             }
         }
     ];
@@ -220,8 +219,10 @@ export const IndexTripsPage = () => {
                                             src={trip.driver.avatar}
                                             alt="avatar"
                                             className="border-gray-600 rounded-full"
+                                            style={{width: '55px', height: '55px', objectFit: 'cover'}}
                                         />
                                     </div>
+
                                     <div>
                                         <div>{trip.driver.name}</div>
                                         <div className="flex items-center">
