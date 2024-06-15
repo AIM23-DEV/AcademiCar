@@ -17,7 +17,7 @@ const EditProfilePage: React.FC = () => {
             <TitleBar text={pageTitle} hasBackAction />
             <div className="flex justify-center">
                 <img
-                    src="path/to/avatar.jpg"
+                    src="https://academicar.blob.core.windows.net/profile-images/test.jpg"
                     alt="Profile Avatar"
                     className="rounded-full w-32 h-32"
                 />
