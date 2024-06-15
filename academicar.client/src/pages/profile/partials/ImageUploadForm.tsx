@@ -2,6 +2,7 @@ import {ChangeEvent, useState} from "react";
 import {Button} from "../../../components/Buttons.tsx";
 import {Card} from "../../../components/Cards.tsx";
 import { BlockBlobClient} from "@azure/storage-blob";
+import axios from "axios";
 /*
 import { ClientSecretCredential } from '@azure/identity';
 
@@ -55,7 +56,10 @@ export const ImageUploadForm = () => {
         */
         
     };
-   
+    const crypto = require('crypto');
+
+ 
+
     const sasUrl = "https://academicar.blob.core.windows.net/profile-images?sp=rw&st=2024-06-15T00:09:52Z&se=2024-06-15T08:09:52Z&sv=2022-11-02&sr=c&sig=79OlX2WBKzJ506j7pmn44jV8IpDYGdoEt9ffjkPBNWk%3D";
     const uploadFileToBlob = async (file:File) => {
         let selectedFile = new File(['content'], 'filename.txt', { type: 'text/plain' });
@@ -75,11 +79,58 @@ export const ImageUploadForm = () => {
             });
 
             console.log('Upload successful');
+
+
+            if (!arrayBuffer || arrayBuffer.byteLength < 1 || arrayBuffer.byteLength > 256000) {
+                throw new Error('File size must be between 1 byte and 256 KB');
+            }
+            const accountName = 'academicar';
+            const accountKey = 'mNaipDioJQ1IoDwVaR7BKDXgm+RYRX6IqlW4dXBvkBA63yOpteGM8jqUWAF4nEMiURmrPf43XphD+AStZeKFtA==';
+            const blobName = selectedFile.name;
+            const containerName = 'profile-images';
+            const url = `https://${accountName}.blob.core.windows.net/${containerName}/${blobName}`;
+            const method = 'PUT';
+            const now = new Date().toUTCString();
+            const contentLength = arrayBuffer.byteLength;
+            const contentType = selectedFile.type;
+
+            const generateAuthorizationHeader = (accountName:String, accountKey:String, 
+                                                 method:String, now:String, contentLength:Number, 
+                                                 contentType:String, containerName:String, blobName:String) => {
+                const stringToSign =
+                    `${method}\n\n\n${contentLength}\n\n${contentType}\n\n\n\n\n\n\nx-ms-date:${now}\nx-ms-version:2020-04-08\n/${accountName}/${containerName}/${blobName}`;
+
+                const signature = crypto.createHmac('sha256', Buffer.from(accountKey, 'base64'))
+                    .update(stringToSign, 'utf8')
+                    .digest('base64');
+
+                return `SharedKey ${accountName}:${signature}`;
+            };
+
+
+            const authorizationHeader = generateAuthorizationHeader(accountName, accountKey, method, now, contentLength, contentType, containerName, blobName);
+
+            const headers = {
+                'x-ms-date': now,
+                'x-ms-version': '2020-04-08',
+                'Content-Length': contentLength,
+                'Content-Type': contentType,
+                'x-ms-blob-type': 'BlockBlob',
+                'Authorization': authorizationHeader,
+                'x-ms-blob-content-disposition': `attachment; filename="${selectedFile.name}"`,
+            };
+
+            // Upload the file
+            const response = await axios.put(url, arrayBuffer, { headers });
+            console.log('Upload successful', response.data);
+
         } catch (error) {
             // @ts-ignore
             console.error('Error uploading file:', error.message);
         }
     };
+
+  
  /*   async function handleUpload(selectedFile:File) {
 
         console.log(`handleUpload: ${selectedFile.name}`);
