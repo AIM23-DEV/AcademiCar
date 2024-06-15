@@ -62,8 +62,7 @@ export const ImageUploadForm = () => {
 
   //  const sasUrl = "https://academicar.blob.core.windows.net/profile-images?sp=rw&st=2024-06-15T00:09:52Z&se=2024-06-15T08:09:52Z&sv=2022-11-02&sr=c&sig=79OlX2WBKzJ506j7pmn44jV8IpDYGdoEt9ffjkPBNWk%3D";
     const uploadFileToBlob = async (file:File) => {
-        let selectedFile = new File(['content'], 'filename.txt', { type: 'text/plain' });
-        selectedFile = file;
+       
         try {
          //   const blockBlobClient = new BlockBlobClient(sasUrl);
 
@@ -86,13 +85,13 @@ if (!arrayBuffer || arrayBuffer.byteLength < 1 || arrayBuffer.byteLength > 25600
             
             const accountName = 'academicar';
             const accountKey = 'mNaipDioJQ1IoDwVaR7BKDXgm+RYRX6IqlW4dXBvkBA63yOpteGM8jqUWAF4nEMiURmrPf43XphD+AStZeKFtA==';
-            const blobName = selectedFile.name;
+            const blobName = file.name;
             const containerName = 'profile-images';
             const url = `https://${accountName}.blob.core.windows.net/${containerName}/${blobName}`;
             const method = 'PUT';
             const now = new Date().toUTCString();
             const contentLength = arrayBuffer.byteLength;
-            const contentType = selectedFile.type;
+            const contentType = file.type;
 
             const generateAuthorizationHeader = (accountName:String, accountKey:String, 
                                                  method:String, now:String, contentLength:Number, 
@@ -117,7 +116,7 @@ if (!arrayBuffer || arrayBuffer.byteLength < 1 || arrayBuffer.byteLength > 25600
                 'Content-Type': contentType,
                 'x-ms-blob-type': 'BlockBlob',
                 'Authorization': authorizationHeader,
-                'x-ms-blob-content-disposition': `attachment; filename="${selectedFile.name}"`,
+                'x-ms-blob-content-disposition': `attachment; filename="${file.name}"`,
             };
 
             // Upload the file
