@@ -58,6 +58,8 @@ export const ImageUploadForm = () => {
    
     const sasUrl = "https://academicar.blob.core.windows.net/profile-images?sp=rw&st=2024-06-15T00:09:52Z&se=2024-06-15T08:09:52Z&sv=2022-11-02&sr=c&sig=79OlX2WBKzJ506j7pmn44jV8IpDYGdoEt9ffjkPBNWk%3D";
     const uploadFileToBlob = async (file:File) => {
+        let selectedFile = new File(['content'], 'filename.txt', { type: 'text/plain' });
+        selectedFile = file;
         try {
             const blockBlobClient = new BlockBlobClient(sasUrl);
 
@@ -67,8 +69,8 @@ export const ImageUploadForm = () => {
             // Upload the file
             await blockBlobClient.uploadData(arrayBuffer, {
                 blobHTTPHeaders: {
-                    blobContentType: file.type,
-                    blobContentDisposition: `attachment; filename="${file.name}"`
+                    blobContentType: selectedFile.type,
+                    blobContentDisposition: `attachment; filename="${selectedFile.name}"`
                 }
             });
 
