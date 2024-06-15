@@ -16,7 +16,7 @@ export const TripPricingCreationForm = () => {
             <Card label={pricingLabelText}>
                 <p>TODO Radio Collection, option 1 {noCostRadioText}</p>
                 <Divider/>
-                <p>TODO Radio Collection, option 2 {fixedCostRadioText} <Input/></p>
+                <div>TODO Radio Collection, option 2 {fixedCostRadioText} <Input/></div>
                 <p>{recommendedPriceLabelText} 13€</p>
                 <p>{kilometreAllowanceLabelText} 0.06 €/km</p>
             </Card>
