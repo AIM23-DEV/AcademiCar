@@ -110,5 +110,22 @@
   "BalanceHistoryPage": {
     "title": "My Balance",
     "delete": "Delete all activities"
+  },
+  "BalanceRechargePage": {
+    "title": "Recharge account",
+    "creditcard": "Credit card",
+    "card_holder": "credit card holder",
+    "csv": "CSV",
+    "month": "month",
+    "year": "year",
+    "amount_subtitle": "Which amount would you like to choose?",
+    "ten_euro": "10",
+    "twenty_euro": "20",
+    "thirty_euro": "30",
+    "fifty_euro": "50",
+    "eighty_euro": "80",
+    "hundred_euro": "100",
+    "euro_suffix": " Euro",
+    "recharge_btn": "Top up account now"
   }
 }

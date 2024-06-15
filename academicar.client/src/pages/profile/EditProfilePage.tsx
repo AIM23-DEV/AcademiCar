@@ -17,12 +17,13 @@ const EditProfilePage: React.FC = () => {
             <TitleBar text={pageTitle} hasBackAction />
             <div className="flex justify-center">
                 <img
-                    src="path/to/avatar.jpg"
+                    src="https://academicar.blob.core.windows.net/profile-images/test.jpg"
                     alt="Profile Avatar"
                     className="rounded-full w-32 h-32"
                 />
             </div>
 
+            
             <ImageUploadForm />
             <Card label={t('pages/profile:EditProfilePage.title')} className="mt-4 w-full">
                 <form className="mt-4 w-full grid grid-cols-12 gap-4">
