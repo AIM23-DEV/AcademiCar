@@ -16,11 +16,11 @@ const EditProfilePage: React.FC = () => {
         <div className="pb-24 w-full">
             <TitleBar text={pageTitle} hasBackAction />
             <div className="flex justify-center">
-                <img
-                    src="https://academicar.blob.core.windows.net/profile-images/test.jpg"
+                <!--img
+                    src="path/to/avatar.jpg"
                     alt="Profile Avatar"
                     className="rounded-full w-32 h-32"
-                />
+                /-->
             </div>
 
             <ImageUploadForm />
