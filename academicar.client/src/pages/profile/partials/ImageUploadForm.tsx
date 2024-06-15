@@ -1,4 +1,4 @@
-import {ChangeEvent, useState} from "react";
+import {ChangeEvent} from "react";
 import {Button} from "../../../components/Buttons.tsx";
 import {Card} from "../../../components/Cards.tsx";
 //import { BlockBlobClient} from "@azure/storage-blob";
@@ -25,10 +25,7 @@ const credential = new ClientSecretCredential(clientId, clientSecret);*/
     });
 };*/
 export const ImageUploadForm = () => {
-   // const [selectedFile, setSelectedFile] = useState<File|null>(null);
-    const [list] = useState<string[]>([]);
-        // Other component code...
-    
+   
     const handleFileSelection = (event: ChangeEvent<HTMLInputElement>) => {
         const { target } = event;
 
@@ -64,24 +61,24 @@ export const ImageUploadForm = () => {
     const uploadFileToBlob = async (file:File) => {
        
         try {
-         //   const blockBlobClient = new BlockBlobClient(sasUrl);
+            //   const blockBlobClient = new BlockBlobClient(sasUrl);
 
-            // Fetch the file as an ArrayBuffer
-            const arrayBuffer = await file.arrayBuffer();
+        // Fetch the file as an ArrayBuffer
+        const arrayBuffer = await file.arrayBuffer();
 
             // Upload the file
-        /*    await blockBlobClient.uploadData(arrayBuffer, {
-                blobHTTPHeaders: {
-                    blobContentType: selectedFile.type,
-                    blobContentDisposition: `attachment; filename="${selectedFile.name}"`
+            /*    await blockBlobClient.uploadData(arrayBuffer, {
+                    blobHTTPHeaders: {
+                        blobContentType: selectedFile.type,
+                        blobContentDisposition: `attachment; filename="${selectedFile.name}"`
+                    }
+                });
+    
+                console.log('Upload successful');
+    if (!arrayBuffer || arrayBuffer.byteLength < 1 || arrayBuffer.byteLength > 256000) {
+                    throw new Error('File size must be between 1 byte and 256 KB');
                 }
-            });
-
-            console.log('Upload successful');
-if (!arrayBuffer || arrayBuffer.byteLength < 1 || arrayBuffer.byteLength > 256000) {
-                throw new Error('File size must be between 1 byte and 256 KB');
-            }
-*/
+    */
             
             const accountName = 'academicar';
             const accountKey = 'mNaipDioJQ1IoDwVaR7BKDXgm+RYRX6IqlW4dXBvkBA63yOpteGM8jqUWAF4nEMiURmrPf43XphD+AStZeKFtA==';
@@ -123,9 +120,8 @@ if (!arrayBuffer || arrayBuffer.byteLength < 1 || arrayBuffer.byteLength > 25600
             const response = await axios.put(url, arrayBuffer, { headers });
             console.log('Upload successful', response.data);
 
-        } catch (error) {
-            // @ts-ignore
-            console.error('Error uploading file:', error.message);
+        } catch (error){
+            console.log(`Error uploading file`)
         }
     };
 
@@ -167,22 +163,6 @@ if (!arrayBuffer || arrayBuffer.byteLength < 1 || arrayBuffer.byteLength > 25600
         }
     const blobUrl = 'https://academicar.blob.core.windows.net/profile-images/test.jpg';
 */
-// Create a function to download the blob
-    async function downloadBlob() {/*
-        try {
-            const response = await fetch(blobUrl);
-            if (response.ok) {
-                // Get the blob content
-                const blobContent = await response.blob();
-                // Do something with the blob content (e.g., display, save, etc.)
-                console.log('Blob content:', blobContent);
-            } else {
-                console.error('Error fetching blob:', response.status, response.statusText);
-            }
-        } catch (error) {
-            console.error('Error fetching blob:', error);
-        }
- */   }
 
 
     return (
@@ -197,30 +177,8 @@ if (!arrayBuffer || arrayBuffer.byteLength < 1 || arrayBuffer.byteLength > 25600
                     text={"Upload Image"}
                     type={"submit"}
                     className={"col-span-full"}
-                    onClick={downloadBlob}
                 />
                 
-
-                {list.map((item) => (
-                    
-                    <Card>
-                        {item.endsWith('.jpg') ||
-                        item.endsWith('.png') ||
-                        item.endsWith('.jpeg') ||
-                        item.endsWith('.gif') ? (
-                            <img
-                                src={item}
-                                alt="Profile Avatar"
-                                className="rounded-full w-32 h-32"
-                            />
-                        ) : (
-                            <div className="body-1" >
-                                {item}
-                            </div>
-                        )}
-                    </Card>
-                   
-                ))}
             </form>
         </Card>
     );
