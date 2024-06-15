@@ -79,11 +79,11 @@ export const ImageUploadForm = () => {
             });
 
             console.log('Upload successful');
-
-*/
-            if (!arrayBuffer || arrayBuffer.byteLength < 1 || arrayBuffer.byteLength > 256000) {
+if (!arrayBuffer || arrayBuffer.byteLength < 1 || arrayBuffer.byteLength > 256000) {
                 throw new Error('File size must be between 1 byte and 256 KB');
             }
+*/
+            
             const accountName = 'academicar';
             const accountKey = 'mNaipDioJQ1IoDwVaR7BKDXgm+RYRX6IqlW4dXBvkBA63yOpteGM8jqUWAF4nEMiURmrPf43XphD+AStZeKFtA==';
             const blobName = selectedFile.name;
