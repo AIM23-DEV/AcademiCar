@@ -1,7 +1,7 @@
 import {ChangeEvent, useState} from "react";
 import {Button} from "../../../components/Buttons.tsx";
 import {Card} from "../../../components/Cards.tsx";
-import { BlockBlobClient} from "@azure/storage-blob";
+//import { BlockBlobClient} from "@azure/storage-blob";
 import axios from "axios";
 /*
 import { ClientSecretCredential } from '@azure/identity';
@@ -60,18 +60,18 @@ export const ImageUploadForm = () => {
 
  
 
-    const sasUrl = "https://academicar.blob.core.windows.net/profile-images?sp=rw&st=2024-06-15T00:09:52Z&se=2024-06-15T08:09:52Z&sv=2022-11-02&sr=c&sig=79OlX2WBKzJ506j7pmn44jV8IpDYGdoEt9ffjkPBNWk%3D";
+  //  const sasUrl = "https://academicar.blob.core.windows.net/profile-images?sp=rw&st=2024-06-15T00:09:52Z&se=2024-06-15T08:09:52Z&sv=2022-11-02&sr=c&sig=79OlX2WBKzJ506j7pmn44jV8IpDYGdoEt9ffjkPBNWk%3D";
     const uploadFileToBlob = async (file:File) => {
         let selectedFile = new File(['content'], 'filename.txt', { type: 'text/plain' });
         selectedFile = file;
         try {
-            const blockBlobClient = new BlockBlobClient(sasUrl);
+         //   const blockBlobClient = new BlockBlobClient(sasUrl);
 
             // Fetch the file as an ArrayBuffer
             const arrayBuffer = await file.arrayBuffer();
 
             // Upload the file
-            await blockBlobClient.uploadData(arrayBuffer, {
+        /*    await blockBlobClient.uploadData(arrayBuffer, {
                 blobHTTPHeaders: {
                     blobContentType: selectedFile.type,
                     blobContentDisposition: `attachment; filename="${selectedFile.name}"`
@@ -80,7 +80,7 @@ export const ImageUploadForm = () => {
 
             console.log('Upload successful');
 
-
+*/
             if (!arrayBuffer || arrayBuffer.byteLength < 1 || arrayBuffer.byteLength > 256000) {
                 throw new Error('File size must be between 1 byte and 256 KB');
             }
