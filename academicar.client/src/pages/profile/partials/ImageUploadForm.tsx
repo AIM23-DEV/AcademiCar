@@ -30,7 +30,7 @@ export const ImageUploadForm = () => {
         console.log(`Selected file: ${target?.files[0].name}`);
        // setSelectedFile(target?.files[0]);
         handleUpload(target?.files[0]).then(r => {
-            console.log(`R: ${(r)}`)
+            console.log(`R: ${r}`)
         });
         
         
@@ -56,11 +56,16 @@ export const ImageUploadForm = () => {
 */
       
 // Example for file upload
-            const blobName = `photos/${selectedFile.name}`;
+            const blobName = `${selectedFile.name}`;
             console.log(`Uploading with blobname: ${blobName}`);
             const blockBlobClient = containerClient.getBlockBlobClient(blobName);
             try {
-                await blockBlobClient.uploadData(selectedFile);
+                const response = await blockBlobClient.uploadData(selectedFile);
+                if(response._response.status == 200){
+                    console.log(`Response: OK`)
+                }else {
+                    console.error('Error fetching blob:', response.errorCode, response._response.status);
+                }
             }catch(error){
                 // @ts-ignore
                 console.log(`Error: ${error.message}`);
