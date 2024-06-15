@@ -1,7 +1,7 @@
 import {ChangeEvent, useState} from "react";
 import {Button} from "../../../components/Buttons.tsx";
 import {Card} from "../../../components/Cards.tsx";
-import { BlockBlobClient} from "@azure/storage-blob";
+import {BlobServiceClient, BlockBlobClient} from "@azure/storage-blob";
 /*
 import { ClientSecretCredential } from '@azure/identity';
 
@@ -28,11 +28,11 @@ export const ImageUploadForm = () => {
             target?.files[0] === null
         )
             return;
-        console.log(`Selected file: ${target?.files[0].name}`);
+        
         setSelectedFile(target?.files[0]);
-        console.log(`Selected file: ${selectedFile?.name}`);
-        if(selectedFile != null)
+        if(selectedFile != null){
             uploadFileToBlob(selectedFile);
+        handleUpload(selectedFile);}
     };
   
     
@@ -60,13 +60,13 @@ export const ImageUploadForm = () => {
     };
 
   
- /*   async function handleUpload(selectedFile:File) {
+    async function handleUpload(selectedFile:File) {
 
         console.log(`handleUpload: ${selectedFile.name}`);
         if(!selectedFile)
             return;
 
-        const connectionString = 'DefaultEndpointsProtocol=https;AccountName=academicar;AccountKey=mNaipDioJQ1IoDwVaR7BKDXgm+RYRX6IqlW4dXBvkBA63yOpteGM8jqUWAF4nEMiURmrPf43XphD+AStZeKFtA==;EndpointSuffix=core.windows.net';
+        const connectionString = 'BlobEndpoint=https://academicar.blob.core.windows.net/;QueueEndpoint=https://academicar.queue.core.windows.net/;FileEndpoint=https://academicar.file.core.windows.net/;TableEndpoint=https://academicar.table.core.windows.net/;SharedAccessSignature=sv=2022-11-02&ss=bfqt&srt=c&sp=rwdlacupiytfx&se=2024-06-15T10:04:03Z&st=2024-06-15T02:04:03Z&spr=https&sig=and%2BWbKzZeBXVymd%2FsQQFl7NTqOCPZ%2FcAqYSJ5vz%2BOg%3D';
         const containerName = 'profile-images';
 
         const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
@@ -80,7 +80,7 @@ export const ImageUploadForm = () => {
 */
       
 // Example for file upload
-    /*        const blobName = `${selectedFile.name}`;
+           const blobName = `${selectedFile.name}`;
             console.log(`Uploading with blobname: ${blobName}`);
             const blockBlobClient = containerClient.getBlockBlobClient(blobName);
             try {
@@ -95,8 +95,8 @@ export const ImageUploadForm = () => {
                 console.log(`Error: ${error.message}`);
             }
         }
-    const blobUrl = 'https://academicar.blob.core.windows.net/profile-images/test.jpg';
-*/
+   // const blobUrl = 'https://academicar.blob.core.windows.net/profile-images/test.jpg';
+
 
 
 
