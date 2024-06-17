@@ -33,16 +33,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }): ReactElemen
         };
         checkAuth();
     }, []);
-
-    /*
-    const login = () => {
-        window.location.href = '/Saml2/Login';
-    };
-    */
+    
     const selectIdP = () => {
         // Optionally, you can add the current URL as a return URL parameter
         const returnUrl = encodeURIComponent(window.location.href);
-        window.location.href = `/api/Account/login?returnUrl=${returnUrl}`;
+        window.location.href = `/saml2/login?returnUrl=${returnUrl}`;
     };
 
     const adminLogin = async (username: string, password: string) => {
@@ -55,8 +50,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }): ReactElemen
     };
 
     const logout = async () => {
-        await axios.get('/Saml2/Logout', { withCredentials: true });
-        setUser(null);
+        try {
+            await axios.post('/saml2/logout', {}, { withCredentials: true });
+            setUser(null);
+        } catch (error) {
+            console.error('Logout failed:', error);
+        }
     };
 
     return (
