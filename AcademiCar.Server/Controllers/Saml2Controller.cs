@@ -8,8 +8,8 @@ using System.Linq;
 
 namespace AcademiCar.Server.Controllers
 {
-    [ApiController]
     [Route("Saml2")]
+    [ApiController]
     public class Saml2Controller : ControllerBase
     {
         private readonly ILogger<Saml2Controller> _logger;
