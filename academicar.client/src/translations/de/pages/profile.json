@@ -110,5 +110,22 @@
   "BalanceHistoryPage": {
     "title": "Mein Guthaben",
     "delete": "Alle Aktivitäten löschen"
+  },
+  "BalanceRechargePage": {
+    "title": "Konto aufladen",
+    "creditcard": "Kreditkarte",
+    "card_holder": "Kreditkarteninhaber:in",
+    "csv": "CSV",
+    "month": "Monat",
+    "year": "Jahr",
+    "amount_subtitle": "Welchen Betrag möchten Sie wählen?",
+    "ten_euro": "10",
+    "twenty_euro": "20",
+    "thirty_euro": "30",
+    "fifty_euro": "50",
+    "eighty_euro": "80",
+    "hundred_euro": "100",
+    "euro_suffix": " Euro",
+    "recharge_btn": "Konto jetzt aufladen"
   }
 }

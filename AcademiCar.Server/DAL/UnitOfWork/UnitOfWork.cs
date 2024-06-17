@@ -22,7 +22,9 @@ namespace AcademiCar.Server.DAL.UnitOfWork
         public ITripRepository Trips => new TripRepository(Context);
         public ITripRequestRepository TripRequests => new TripRequestRepository(Context);
         public IAddressRepository Addresses => new AddressRepository(Context);
-
+        public IChatRepository Chats => new ChatRepository(Context);
+        public IMessageRepository Messages => new MessageRepository(Context);
+        
         public async Task<int> SaveChangesAsync() => await Context.SaveChangesAsync();
     }
 }

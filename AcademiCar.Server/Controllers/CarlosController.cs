@@ -16,7 +16,7 @@ public class CarlosController : ControllerBase
     
     
     [HttpGet]
-    public async Task<ActionResult<Carlos>> GetCarlos()
+    public async Task<IActionResult> GetCarlos()
     {
         Carlos carlos = await _globalService.CarlosService.GetRandomCarlos();
         return Ok(carlos);
