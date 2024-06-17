@@ -18,10 +18,14 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IGlobalService, GlobalService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddHttpContextAccessor(); 
 
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 builder.Logging.AddDebug();
+
+var env = builder.Environment;
+var metadataFilePath = Path.Combine(env.ContentRootPath, "metadata.xml");
 
 // Configure database context
 if (!builder.Environment.IsDevelopment())
@@ -47,29 +51,32 @@ else
 var enableSaml2 = builder.Configuration.GetValue<bool>("EnableSaml2");
 var useSingleIdP = builder.Configuration.GetValue<bool>("UseSingleIdP");
 
-builder.Services.AddAuthentication(options =>
-    {
-        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = Saml2Defaults.Scheme;
-    })
-    .AddCookie()
-    .AddSaml2(options =>
-    {
-        options.SPOptions.EntityId = new EntityId(builder.Configuration["SustainsysSaml2:Issuer"]);
-
-        var idp = new IdentityProvider(
-            new EntityId(builder.Configuration["SustainsysSaml2:Idp:EntityId"]),
-            options.SPOptions)
+if (enableSaml2)
+{
+    builder.Services.AddAuthentication(options =>
         {
-            MetadataLocation = builder.Configuration["SustainsysSaml2:Idp:MetadataLocation"]
-        };
+            options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = Saml2Defaults.Scheme;
+        })
+        .AddCookie()
+        .AddSaml2(options =>
+        {
+            options.SPOptions.EntityId = new EntityId(builder.Configuration["SustainsysSaml2:Issuer"]);
 
-        var certPath = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:FileName"];
-        var certPassword = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:Password"];
-        idp.SigningKeys.AddConfiguredKey(new X509Certificate2(certPath, certPassword));
+            var idp = new IdentityProvider(
+                new EntityId(builder.Configuration["SustainsysSaml2:Idp:EntityId"]),
+                options.SPOptions)
+            {
+                MetadataLocation = metadataFilePath
+            };
 
-        options.IdentityProviders.Add(idp);
-    });
+            /*var certPath = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:FileName"];
+            var certPassword = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:Password"];
+            idp.SigningKeys.AddConfiguredKey(new X509Certificate2(certPath, certPassword));
+    */
+            options.IdentityProviders.Add(idp);
+        });
+}
 
 // Add authorization policies
 builder.Services.AddAuthorization(options =>

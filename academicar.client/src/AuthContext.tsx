@@ -39,8 +39,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }): ReactElemen
     };
 
     const selectIdP = () => {
-        //const returnUrl = encodeURIComponent(window.location.href);
-        window.location.href = `http://localhost:5117/api/Account/login`;
+        // Optionally, you can add the current URL as a return URL parameter
+        const returnUrl = encodeURIComponent(window.location.href);
+        window.location.href = `/api/Account/login?returnUrl=${returnUrl}`;
     };
 
     const adminLogin = async (username: string, password: string) => {
