@@ -20,6 +20,10 @@ const AdminLogin: React.FC = () => {
         }
     };
 
+    //TODO Translastions missing
+    //TODO Komponenten fehlen - (Kometik) 
+    //TODO CST217 
+    
     return (
         <div>
             <h2>Admin Login</h2>

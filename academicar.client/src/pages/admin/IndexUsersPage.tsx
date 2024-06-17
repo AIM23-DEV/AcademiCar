@@ -1,25 +1,23 @@
 import { TitleBar } from "../../components/TitleBar.tsx";
 import { BottomNavigationBar } from "../../components/BottomNavigationBar.tsx";
 import { Button } from "../../components/Buttons.tsx";
-import { ConfirmationModal } from "../../components/Modal.tsx";
-import {SetStateAction, useEffect, useState} from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import SetPageTitle from "../../hooks/set_page_title.tsx";
-import {useTranslation} from "react-i18next";
-import {BiChevronRight} from "react-icons/bi";
-import {Card} from "../../components/Cards.tsx";
-import {RxAvatar} from "react-icons/rx";
-import {Divider} from "../../components/Divider.tsx";
-import {useNavigate} from "react-router-dom";
-import {IoIosSearch} from "react-icons/io";
-import {Input, Select} from "../../components/FormFields.tsx";
+import { useTranslation } from "react-i18next";
+import { BiChevronRight } from "react-icons/bi";
+import { Card } from "../../components/Cards.tsx";
+//import { RxAvatar } from "react-icons/rx";
+import { Divider } from "../../components/Divider.tsx";
+import { useNavigate } from "react-router-dom";
+import { IoIosSearch } from "react-icons/io";
+import { Input, Select } from "../../components/FormFields.tsx";
 
 export const IndexUsersPage = () => {
     const [t] = useTranslation(['common', 'pages/admin']);
-    const [users, setUsers] = useState<IUser[]>();
-    const [filteredUsers, setFilteredUsers] = useState<IUser[]>();
-    const [showModal, setShowModal] = useState(false);
+    const [users, setUsers] = useState<IUser[]>([]);
+    const [filteredUsers, setFilteredUsers] = useState<IUser[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
-    const [sortOption, setSortOption] = useState('alphabetical');
+    const [sortOption, setSortOption] = useState('');
     const navigate = useNavigate();
 
     // Translations
@@ -27,21 +25,42 @@ export const IndexUsersPage = () => {
     const search = t('pages/admin:IndexUsersPage.search');
     const sort = t('pages/admin:IndexUsersPage.sort');
     const persons = t('pages/admin:IndexUsersPage.persons');
-    const sortRating = t('pages/admin:IndexUsersPage.sortRating');
-    const sortAlphabetic = t('pages/admin:IndexUsersPage.sortAlphabetic');
+    const sortFirstName = t('pages/admin:IndexUsersPage.sortFirstName');
+    const sortLastName = t('pages/admin:IndexUsersPage.sortLastName');
+
     SetPageTitle(pageTitle);
 
+    // Fetch users from API
     useEffect(() => {
         fetch('https://localhost:5173/api/admin/users')
             .then(response => response.json())
-            .then((fetchedUsers: IUser[]) => setUsers(fetchedUsers));
+            .then((fetchedUsers: IUser[]) => {
+                setUsers(fetchedUsers);
+                setFilteredUsers(fetchedUsers);
+            });
     }, []);
 
-    if (users && !filteredUsers) {
-        setFilteredUsers(users.filter(user => user.lastName.toLowerCase().includes(searchQuery.toLowerCase())));
-    }
+    // Filter and sort users
+    useEffect(() => {
+        filterAndSortUsers();
+    }, [searchQuery, sortOption]);
 
-    // Handling Change
+    const filterAndSortUsers = () => {
+        let filtered = users.filter(user =>
+            user.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            user.lastName.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+
+        if (sortOption === 'first_name') {
+            filtered = filtered.sort((a, b) => a.firstName.localeCompare(b.firstName));
+        } else if (sortOption === 'last_name') {
+            filtered = filtered.sort((a, b) => a.lastName.localeCompare(b.lastName));
+        }
+
+        setFilteredUsers(filtered);
+    };
+
+    //Filter search users 
     const handleSearchChange = (event: { target: { value: SetStateAction<string>; }; }) => {
         setSearchQuery(event.target.value);
     };
@@ -49,17 +68,6 @@ export const IndexUsersPage = () => {
     const handleSortChange = (event: { target: { value: SetStateAction<string>; }; }) => {
         setSortOption(event.target.value);
     };
-
-    // TODO actually sort by rating
-    const sortedUsers = filteredUsers?.sort((a, b) => {
-        if (sortOption === 'alphabetical') {
-            return a.lastName.localeCompare(b.lastName);
-        } else if (sortOption === 'rating') {
-            return a.fK_Stats - a.fK_Stats;
-        } else {
-            return 0;
-        }
-    });
 
     return (
         <>
@@ -82,7 +90,11 @@ export const IndexUsersPage = () => {
                     id="sort"
                     fullWidth
                     required
-                    options={{ alphabetical: sortRating, rating: sortAlphabetic }}
+                    options={{
+                        '': '---',
+                        first_name: sortFirstName,
+                        last_name: sortLastName,
+                    }}
                     value={sortOption}
                     onChange={handleSortChange}
                 />
@@ -96,20 +108,27 @@ export const IndexUsersPage = () => {
                     padding="base"
                     className="mt-1"
                 >
-                    {sortedUsers?.map((users) => (
-                        <div key={users.id}>
+                    {filteredUsers.map((user) => (
+                        <div key={user.id}>
                             <Button
                                 variant="outline"
                                 fullWidth
-                                text={`${users.firstName} ${users.lastName}`}
+                                text={`${user.firstName} ${user.lastName}`}
                                 textAlign="left"
                                 textFullWidth
-                                leading={<RxAvatar className="icon-md" />}
-                                trailing={<BiChevronRight className="icon" />}
+                                
+                                //TODO Wenn DB Fotos speichern kann  
+                                //leading={user.picture? <img src={user.picture} alt="User Picture" className="rounded-full w-12 h-12" /> : <RxAvatar />}
+                                leading={<img
+                                    src="https://academicar.blob.core.windows.net/profile-images/test.jpg"
+                                    alt="Profile Avatar"
+                                    className="rounded-full w-12 h-12"
+                                />}
+                                trailing={<BiChevronRight className="icon"/>}
                                 type="button"
                                 disabled={false}
                                 className="mt-1"
-                                onClick={() => navigate(`/admin/users/${users.id}`)}
+                                onClick={() => navigate(`/admin/users/${user.id}`)}
                             />
                             <Divider className="my-2" />
                         </div>
@@ -118,13 +137,6 @@ export const IndexUsersPage = () => {
             </div>
 
             <BottomNavigationBar selected={"profile"} />
-
-            <ConfirmationModal
-                open={showModal}
-                setOpen={setShowModal}
-                subtitle="Das ist ein Bestätigungs-Modal. Hier kann man einige Einstellungen mitgeben!"
-                onConfirm={() => alert("Confirmed")}
-            />
         </>
     );
 };

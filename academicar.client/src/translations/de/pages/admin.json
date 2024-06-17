@@ -11,8 +11,8 @@
     "actions": "Actionen",
     "blockaccount": "Konto sperren",
     "deleteaccount": "Konto löschen",
-    "sortRating": "Bewertungen",
-    "sortAlphabetic": "Alphabetisch"
+    "sortFirstName": "Vorname",
+    "sortLastName": "Nachname"
   },
 
   "ShowUserPage":  {

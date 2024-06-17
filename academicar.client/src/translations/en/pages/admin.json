@@ -11,8 +11,8 @@
     "actions": "Actions",
     "blockaccount": "Block Account",
     "deleteaccount": "Delete Account",
-    "sortRating": "Rating",
-    "sortAlphabetic": "Alphabetic"
+    "sortFirstName": "Firstname",
+    "sortLastName": "Lastname"
   },
 
   "ShowUserPage":  {
