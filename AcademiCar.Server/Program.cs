@@ -3,15 +3,11 @@ using Azure.Identity;
 using AcademiCar.Server.DAL.UnitOfWork;
 using Sustainsys.Saml2;
 using Sustainsys.Saml2.AspNetCore2;
+using Sustainsys.Saml2.Metadata;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
-using System.Xml.Linq;
 using AcademiCar.Server;
-using AcademiCar.Server.DAL.Entities;
-using Microsoft.AspNetCore.Authentication;
-using Sustainsys.Saml2.Metadata;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +18,14 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IGlobalService, GlobalService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddHttpContextAccessor(); 
+
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+
+var env = builder.Environment;
+var metadataFilePath = Path.Combine(env.ContentRootPath, "metadata.xml");
 
 // Configure database context
 if (!builder.Environment.IsDevelopment())
@@ -43,106 +47,35 @@ else
     builder.Services.AddDbContext<PostgresDbContext>(options =>
         options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 }
-
-// Add identity services
-builder.Services.AddIdentity<User, IdentityRole>()
-    .AddEntityFrameworkStores<PostgresDbContext>()
-    .AddDefaultTokenProviders();
-
-// Add authentication services
-builder.Services.AddAuthentication(options =>
-    {
-        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme; // Use Cookie as the default challenge scheme for now
-    })
-    .AddCookie(options =>
-    {
-        options.LoginPath = "/api/user/adminlogin";
-        options.LogoutPath = "/api/user/logout";  
-        options.Cookie.HttpOnly = true;
-        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-    });
-
 // Conditional SAML2 Setup
 var enableSaml2 = builder.Configuration.GetValue<bool>("EnableSaml2");
 var useSingleIdP = builder.Configuration.GetValue<bool>("UseSingleIdP");
 
 if (enableSaml2)
 {
-    builder.Services.AddAuthentication()
+    builder.Services.AddAuthentication(options =>
+        {
+            options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = Saml2Defaults.Scheme;
+        })
+        .AddCookie()
         .AddSaml2(options =>
         {
-            options.SPOptions.EntityId = new EntityId("https://academicar-dev.azurewebsites.net/Saml2");
-            options.SPOptions.ReturnUrl = new Uri("https://academicar-dev.azurewebsites.net/Saml2/Acs");
+            options.SPOptions.EntityId = new EntityId(builder.Configuration["SustainsysSaml2:Issuer"]);
 
-            if (useSingleIdP)
+            var idp = new IdentityProvider(
+                new EntityId(builder.Configuration["SustainsysSaml2:Idp:EntityId"]),
+                options.SPOptions)
             {
-                // Single IdP configuration
-                var entityId = builder.Configuration["Saml2:SingleIdP:EntityId"];
-                var ssoUrl = builder.Configuration["Saml2:SingleIdP:SingleSignOnServiceUrl"];
-                var certificate = builder.Configuration["Saml2:SingleIdP:SigningCertificate"];
+                MetadataLocation = metadataFilePath
+            };
 
-                var idp = new IdentityProvider(new EntityId(entityId), options.SPOptions)
-                {
-                    LoadMetadata = false,
-                    SingleSignOnServiceUrl = new Uri(ssoUrl)
-                };
-
-                var key = new X509Certificate2(Convert.FromBase64String(certificate));
-                idp.SigningKeys.AddConfiguredKey(key);
-
-                options.IdentityProviders.Add(idp);
-            }
-            else
-            {
-                // Multiple IdPs configuration
-                var metadataUrl = "https://eduid.at/md/aconet-registered.xml";
-                var httpClient = new HttpClient();
-                var metadataXml = httpClient.GetStringAsync(metadataUrl).Result;
-
-                var metadataDoc = XDocument.Parse(metadataXml);
-                var ns = metadataDoc.Root.Name.Namespace;
-
-                foreach (var entity in metadataDoc.Descendants(ns + "EntityDescriptor"))
-                {
-                    var idpDescriptor = entity.Descendants(ns + "IDPSSODescriptor").FirstOrDefault();
-                    if (idpDescriptor != null)
-                    {
-                        var entityId = entity.Attribute("entityID")?.Value;
-                        var ssoService = idpDescriptor.Descendants(ns + "SingleSignOnService").FirstOrDefault();
-                        var ssoUrl = ssoService?.Attribute("Location")?.Value;
-
-                        if (!string.IsNullOrEmpty(entityId) && !string.IsNullOrEmpty(ssoUrl))
-                        {
-                            var idp = new IdentityProvider(new EntityId(entityId), options.SPOptions)
-                            {
-                                LoadMetadata = false,
-                                SingleSignOnServiceUrl = new Uri(ssoUrl)
-                            };
-
-                            var keys = idpDescriptor.Descendants(ns + "KeyDescriptor")
-                                                    .Where(k => k.Attribute("use")?.Value == "signing" || k.Attribute("use") == null)
-                                                    .Select(k => k.Descendants(ns + "X509Certificate").FirstOrDefault()?.Value)
-                                                    .Where(c => !string.IsNullOrEmpty(c))
-                                                    .Select(c => new X509Certificate2(Convert.FromBase64String(c)));
-
-                            foreach (var key in keys)
-                            {
-                                idp.SigningKeys.AddConfiguredKey(key);
-                            }
-
-                            options.IdentityProviders.Add(idp);
-                        }
-                    }
-                }
-            }
+            /*var certPath = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:FileName"];
+            var certPassword = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:Password"];
+            idp.SigningKeys.AddConfiguredKey(new X509Certificate2(certPath, certPassword));
+    */
+            options.IdentityProviders.Add(idp);
         });
-
-    // Ensure SAML2 is the default challenge scheme if enabled
-    builder.Services.Configure<AuthenticationOptions>(options =>
-    {
-        options.DefaultChallengeScheme = Saml2Defaults.Scheme;
-    });
 }
 
 // Add authorization policies
@@ -177,6 +110,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -186,7 +122,6 @@ app.MapControllers();
 app.MapFallbackToFile("/index.html");
 
 app.Run();
-return;
 
 static void ApplyMigrations(IHost app)
 {
