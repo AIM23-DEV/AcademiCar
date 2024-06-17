@@ -1,17 +1,18 @@
-﻿import {Outlet, Route} from 'react-router-dom';
-import {IndexTripsPage} from "../pages/trips/IndexTripsPage.tsx";
-import {ShowTripPage} from "../pages/search/ShowTripPage.tsx";
-import {CreateTripPage} from "../pages/trips/CreateTripPage.tsx";
-import {DriverTripHistoryPage} from "../pages/trips/DriverTripHistoryPage.tsx";
-import {PassengerTripHistoryPage} from "../pages/trips/PassengerTripHistoryPage.tsx";
+﻿import { Outlet, Route } from 'react-router-dom';
+import { IndexTripsPage } from "../pages/trips/IndexTripsPage.tsx";
+import { ShowTripPage } from "../pages/trips/ShowTripPage.tsx";
+import { DriverTripHistoryPage } from "../pages/trips/DriverTripHistoryPage.tsx";
+import { PassengerTripHistoryPage } from "../pages/trips/PassengerTripHistoryPage.tsx";
+import { DriverDetailsPage } from "../pages/trips/DriverDetailsPage.tsx";
+import { PassengerDetailsPage } from "../pages/trips/PassengerDetailsPage.tsx";
 
-// All routes are prefixed with /trips.
-export default <Route key="/trips" path="/trips" element={<Outlet/>}>
+export default <Route key="tripsRoute" path="/trips" element={<Outlet/>}>
 
-    <Route key="" path="" element={<IndexTripsPage/>}/>,
-    <Route key="create" path="create" element={<CreateTripPage/>}/>,
-    <Route key=":id" path=":id" element={<ShowTripPage/>}/>,
-    <Route key="history/driver" path="history/driver" element={<DriverTripHistoryPage/>}/>,
-    <Route key="history/passenger" path="history/passenger" element={<PassengerTripHistoryPage/>}/>,
+    <Route key="tripsMainRoute" path="" element={<IndexTripsPage/>} />,
+    <Route key="tripsShowRoute" path=":id" element={<ShowTripPage/>} />,
+    <Route key="tripsDriverHistoryRoute" path="history/driver" element={<DriverTripHistoryPage/>} />,
+    <Route key="tripsPassengerHistoryRoute" path="history/passenger" element={<PassengerTripHistoryPage/>} />,
+    <Route key="tripsDriverDetailRoute" path="details/driver" element={<DriverDetailsPage/>} />,
+    <Route key="tripsPassengerDetailRoute" path="details/passenger" element={<PassengerDetailsPage/>} />,
     
 </Route>;

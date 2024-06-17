@@ -125,7 +125,9 @@ app.Run();
 
 static void ApplyMigrations(IHost app)
 {
-    using var scope = app.Services.CreateScope();
-    var db = scope.ServiceProvider.GetRequiredService<PostgresDbContext>();
+    using IServiceScope scope = app.Services.CreateScope();
+    PostgresDbContext db = scope.ServiceProvider.GetRequiredService<PostgresDbContext>();
+    
+    // db.Database.EnsureDeleted();
     db.Database.Migrate();
 }

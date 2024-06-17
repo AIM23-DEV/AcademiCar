@@ -1,6 +1,7 @@
 {
   "SearchTripsPage": {
-    "title": "Mitfahrgelegenheit finden"
+    "title": "Mitfahrgelegenheit finden",
+    "latest": "Letzte Suchanfragen"
   },
 
   "SearchResultsPage": {
@@ -33,7 +34,6 @@
     "notSpecified": "keine Angabe",
     "resetFilter": "Filter zurücksetzen"
   },
-
   "Ratings": {
     "title": "Fahrer Bewertungen",
     "back": "Zurück",

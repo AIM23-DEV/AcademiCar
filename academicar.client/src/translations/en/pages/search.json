@@ -1,6 +1,7 @@
 {
   "SearchTripsPage": {
-    "title": "Find a ride"
+    "title": "Find a ride",
+    "latest": "Latest searches"
   },
   "SearchResultsPage": {
     "title": "Search results",
@@ -32,7 +33,6 @@
     "notSpecified": "Not specified",
     "resetFilter": "Reset filter"
   },
-
   "Ratings": {
     "title": "Driver Reviews",
     "back": "Return",

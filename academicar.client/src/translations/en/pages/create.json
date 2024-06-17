@@ -1,0 +1,57 @@
+{
+  "Common": {
+    "title_create": "Create new trip",
+    "title_update": "Update trip"
+  },
+  
+  "CreateTripPage1": {
+    "label_route": "Trip",
+    "label_input_from": "From",
+    "placeholder_input_from": "Departure location",
+    "label_input_to": "To",
+    "placeholder_input_to": "Destination",
+    "label_stops_list": "Stopover",
+    "action_add_stop": "Add stop",
+    "label_input_stop": "Stop {{stopNr}}",
+    "label_input_stay": "Stay",
+    "toggle_enable_stops": "Enable stopovers"
+  },
+  
+  "CreateTripPage2": {
+    "label_start_time": "Time of departure",
+    "label_input_date": "Date",
+    "label_input_time": "Time",
+    "label_stop_reached_time": "Reach stopover",
+    "label_stop_continued_time": "Continue",
+    "label_arrival_time": "Planned time of arrival"
+  },
+  
+  "CreateTripPage3": {
+    "label_vehicle": "Vehicle",
+    "link_create_vehicle": "New Vehicle",
+    "label_seats": "Number of seats",
+    "label_extras": "Extras",
+    "extra_unit": "pieces",
+    "extra_small_luggage": "Luggage Transport",
+    "extra_suitcase": "Suitcase Transport",
+    "extra_bicycle": "Bicycle Transport",
+    "extra_ski": "Ski Transport",
+    "extra_misc": "Miscellaneous Objects"
+  },
+  
+  "CreateTripPage4": {
+    "label_pricing": "Pricing",
+    "radio_no_cost": "Free",
+    "radio_fixed_cost": "Fixed price",
+    "label_recommended_price": "Recommended price",
+    "label_kilometre_allowance": "Kilometre allowance"
+  },
+  
+  "UpdateTripPage": {
+    "tab_route": "Route",
+    "tab_time": "Time",
+    "tab_vehicle": "Vehicle",
+    "tab_pricing": "Pricing",
+    "button_update": "Save"
+  }
+}

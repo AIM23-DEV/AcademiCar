@@ -1,4 +1,6 @@
-﻿using AcademiCar.Server.DAL.Repositories;
+﻿using AcademiCar.Server.DAL.BaseClasses;
+using AcademiCar.Server.DAL.BaseInterfaces;
+using AcademiCar.Server.DAL.Repositories;
 
 namespace AcademiCar.Server.DAL.UnitOfWork
 {
@@ -10,6 +12,7 @@ namespace AcademiCar.Server.DAL.UnitOfWork
             Context = context;
         }
 
+        public ICarlosRepository Carlos => new CarlosRepository(Context);
         public IUserRepository Users => new UserRepository(Context);
         public IFavoriteUserRepository FavoriteUsers => new FavoriteUserRepository(Context);
         public IStatsRepository Stats => new StatsRepository(Context);
@@ -19,7 +22,9 @@ namespace AcademiCar.Server.DAL.UnitOfWork
         public ITripRepository Trips => new TripRepository(Context);
         public ITripRequestRepository TripRequests => new TripRequestRepository(Context);
         public IAddressRepository Addresses => new AddressRepository(Context);
-
+        public IChatRepository Chats => new ChatRepository(Context);
+        public IMessageRepository Messages => new MessageRepository(Context);
+        
         public async Task<int> SaveChangesAsync() => await Context.SaveChangesAsync();
     }
 }

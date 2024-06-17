@@ -5,6 +5,7 @@ import validation_en from "../translations/en/validation.json";
 import pages_admin_en from "../translations/en/pages/admin.json";
 import pages_auth_en from "../translations/en/pages/auth.json";
 import pages_chat_en from "../translations/en/pages/chat.json";
+import pages_create_en from "../translations/en/pages/create.json";
 import pages_profile_en from "../translations/en/pages/profile.json";
 import pages_search_en from "../translations/en/pages/search.json";
 import pages_trips_en from "../translations/en/pages/trips.json";
@@ -16,6 +17,7 @@ import validation_de from "../translations/de/validation.json";
 import pages_admin_de from "../translations/de/pages/admin.json";
 import pages_auth_de from "../translations/de/pages/auth.json";
 import pages_chat_de from "../translations/de/pages/chat.json";
+import pages_create_de from "../translations/de/pages/create.json";
 import pages_profile_de from "../translations/de/pages/profile.json";
 import pages_search_de from "../translations/de/pages/search.json";
 import pages_trips_de from "../translations/de/pages/trips.json";
@@ -39,6 +41,7 @@ export const InitLocalization = async () => {
                 "pages/admin": pages_admin_en,
                 "pages/auth": pages_auth_en,
                 "pages/chat": pages_chat_en,
+                "pages/create": pages_create_en,
                 "pages/profile": pages_profile_en,
                 "pages/search": pages_search_en,
                 "pages/trips": pages_trips_en,
@@ -51,6 +54,7 @@ export const InitLocalization = async () => {
                 "pages/admin": pages_admin_de,
                 "pages/auth": pages_auth_de,
                 "pages/chat": pages_chat_de,
+                "pages/create": pages_create_de,
                 "pages/profile": pages_profile_de,
                 "pages/search": pages_search_de,
                 "pages/trips": pages_trips_de,

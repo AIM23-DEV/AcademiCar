@@ -1,27 +1,30 @@
-import React from 'react';
 import { TitleBar } from "../../components/TitleBar";
 import { BottomNavigationBar } from "../../components/BottomNavigationBar";
-import { Button } from "../../components/Buttons";
+import {Button} from "../../components/Buttons";
 import SetPageTitle from "../../hooks/set_page_title";
 import { useTranslation } from "react-i18next";
 import { Card } from "../../components/Cards";
+import {ImageUploadForm} from "./partials/ImageUploadForm.tsx";
 
 const EditProfilePage: React.FC = () => {
     const [t] = useTranslation(['common', 'pages/profile']);
     const pageTitle = t('pages/profile:EditProfilePage.title');
     SetPageTitle(pageTitle);
 
+
     return (
         <div className="pb-24 w-full">
             <TitleBar text={pageTitle} hasBackAction />
             <div className="flex justify-center">
                 <img
-                    src="path/to/avatar.jpg"
+                    src="https://academicar.blob.core.windows.net/profile-images/test.jpg"
                     alt="Profile Avatar"
                     className="rounded-full w-32 h-32"
                 />
             </div>
 
+            
+            <ImageUploadForm />
             <Card label={t('pages/profile:EditProfilePage.title')} className="mt-4 w-full">
                 <form className="mt-4 w-full grid grid-cols-12 gap-4">
                     <div className="col-span-full">

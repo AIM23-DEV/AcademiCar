@@ -3,16 +3,18 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using AcademiCar.Server.DAL.UnitOfWork;
+using AcademiCar.Server.Services.Response;
 
 namespace AcademiCar.Server.Controllers;
 
-public class VehicleController : BaseController<Vehicle>
+[ApiController]
+[Route("api/vehicle")]
+public class VehicleController : ControllerBase
 {
-    private IGlobalService _globalService;
+    private readonly IGlobalService _globalService;
     private readonly PostgresDbContext _context;
 
-    public VehicleController(IGlobalService globals, IHttpContextAccessor accessor, PostgresDbContext context)
-        : base(globals.VehicleService, accessor)
+    public VehicleController(IGlobalService globals, PostgresDbContext context)
     {
         _globalService = globals;
         _context = context;
@@ -33,7 +35,7 @@ public class VehicleController : BaseController<Vehicle>
 
     [HttpPost("Add")]
     [Authorize]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserController.ActionResultResponseModel))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResultResponseModel))]
     public async Task<Services.Response.ActionResultResponseModel> AddVehicle([Required][FromBody] Vehicle vehicle)
         => await _globalService.VehicleService.Create(vehicle);
 }

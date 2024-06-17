@@ -25,8 +25,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }): ReactElemen
     useEffect(() => {
         const checkAuth = async () => {
             try {
-                const response = await axios.get('/api/user', { withCredentials: true });
-                setUser(response.data);
+                // TODO fix 404
+                //const response = await axios.get('/api/user', { withCredentials: true });
+                //setUser(response.data);
             } catch (error) {
                 setUser(null);
             }

@@ -10,7 +10,9 @@
     "email": "E-Mail",
     "actions": "Actionen",
     "blockaccount": "Konto sperren",
-    "deleteaccount": "Konto löschen"
+    "deleteaccount": "Konto löschen",
+    "sortRating": "Bewertungen",
+    "sortAlphabetic": "Alphabetisch"
   },
 
   "ShowUserPage":  {

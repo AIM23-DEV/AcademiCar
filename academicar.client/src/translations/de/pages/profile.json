@@ -75,5 +75,57 @@
     "interests": "Interessen",
     "communication": "Kommunikativ",
     "save_changes": "Änderungen Speichern"
+  },
+  "SettingsPage": {
+    "title": "Einstellungen",
+    "agbs": "AGBs und Datenschutz"
+  },
+  "RewardsPage": {
+    "title": "Meine Belohnungen",
+    "parking": {
+      "title": "Parkplätze",
+      "text": "Es steht dir <span class=\"text-primary-600\">{{amount}}</span> Tage ein Parkplatz an deiner Ausbildungsstätte zu."
+    },
+    "discount": "Rabatt",
+    "discounts": "Rabatte",
+    "booking": "Buchen"
+  },
+  "StatsPage": {
+    "title": "Meine Statistiken",
+    "ratings": "Bewertungen",
+    "km_full": "Gefahrende Kilometer",
+    "drive_count": "Anzahl der Fahrten",
+    "km_driver": "Kilometer (Fahrer)",
+    "km_passenger": "Kilometer (Mitfahrende:r)",
+    "co2_savings": "CO2 Ersparnis",
+    "trees": "Bäume"
+  },
+  "BalancePage": {
+    "title": "Mein Guthaben",
+    "balance": "AkademiCar-Guthaben",
+    "recharge": "Aufladen",
+    "activities": "Letzte Aktivitäten",
+    "history": "Archiv"
+  },
+  "BalanceHistoryPage": {
+    "title": "Mein Guthaben",
+    "delete": "Alle Aktivitäten löschen"
+  },
+  "BalanceRechargePage": {
+    "title": "Konto aufladen",
+    "creditcard": "Kreditkarte",
+    "card_holder": "Kreditkarteninhaber:in",
+    "csv": "CSV",
+    "month": "Monat",
+    "year": "Jahr",
+    "amount_subtitle": "Welchen Betrag möchten Sie wählen?",
+    "ten_euro": "10",
+    "twenty_euro": "20",
+    "thirty_euro": "30",
+    "fifty_euro": "50",
+    "eighty_euro": "80",
+    "hundred_euro": "100",
+    "euro_suffix": " Euro",
+    "recharge_btn": "Konto jetzt aufladen"
   }
 }

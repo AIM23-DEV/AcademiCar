@@ -12,18 +12,12 @@ namespace AcademiCar.Server.DAL.UnitOfWork
         {
             base.OnModelCreating(modelBuilder); // Ensure Identity tables are created
 
-            // Configure the User entity to map the IEntity.ID property
-            modelBuilder.Entity<User>(entity =>
-            {
-                entity.Ignore(e => ((IEntity)e).ID);
-            });
-
             // Configure the FavoriteUser entity
             modelBuilder.Entity<FavoriteUser>(entity =>
             {
                 entity.HasOne(fu => fu.FavUser)
                       .WithMany()
-                      .HasForeignKey(fu => fu.FavUserId)
+                      .HasForeignKey(fu => fu.FK_FavUserId)
                       .OnDelete(DeleteBehavior.Restrict);
             });
             
@@ -36,6 +30,9 @@ namespace AcademiCar.Server.DAL.UnitOfWork
             modelBuilder.Entity<TripRequest>().ToTable("TripRequest", schema: "academicar");
             modelBuilder.Entity<Address>().ToTable("Address", schema: "academicar");
             modelBuilder.Entity<User>().ToTable("User", schema: "academicar");
+            modelBuilder.Entity<Carlos>().ToTable("Carlos", schema: "academicar");
+            modelBuilder.Entity<Chat>().ToTable("Chat", schema: "academicar");
+            modelBuilder.Entity<Message>().ToTable("Message", schema: "academicar");
         }
 
         // Your DbSets
@@ -46,5 +43,8 @@ namespace AcademiCar.Server.DAL.UnitOfWork
         public DbSet<TripRequest> TripRequests { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
+        public DbSet<Carlos> Carlos { get; set; }
+        public DbSet<Chat> Chats { get; set; }
+        public DbSet<Message> Messages { get; set; }
     }
 }

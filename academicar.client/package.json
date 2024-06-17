@@ -10,11 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@azure/identity": "^4.2.1",
+    "@azure/storage-blob": "^12.14.0",
     "@fontsource-variable/noto-sans": "^5.0.5",
     "@fontsource-variable/outfit": "^5.0.13",
     "@headlessui/react": "^2.0.3",
     "@types/react-router-dom": "^5.3.3",
     "axios": "^1.7.2",
+    "dompurify": "^3.1.5",
     "i18next": "^23.11.5",
     "rc-slider": "^10.6.2",
     "rc-tooltip": "^6.2.0",
