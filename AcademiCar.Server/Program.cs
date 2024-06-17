@@ -9,7 +9,9 @@ using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml.Linq;
 using AcademiCar.Server;
+using AcademiCar.Server.DAL.BaseInterfaces;
 using AcademiCar.Server.DAL.Entities;
+using AcademiCar.Server.DAL.Repositories;
 using Microsoft.AspNetCore.Authentication;
 using Sustainsys.Saml2.Metadata;
 
@@ -22,6 +24,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IGlobalService, GlobalService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IVehicleRepository, VehicleRepository>();
 
 // Configure database context
 if (!builder.Environment.IsDevelopment())

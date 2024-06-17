@@ -77,6 +77,7 @@ namespace AcademiCar.Server.Controllers
             {
                 UserName = user.UserName,
                 FirstName = user.FirstName,
+                Id = user.Id,
                 Roles = roles
             });
         }
