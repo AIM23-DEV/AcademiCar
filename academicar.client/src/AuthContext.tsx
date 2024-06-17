@@ -39,8 +39,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }): ReactElemen
     };
 
     const selectIdP = () => {
-        const returnUrl = encodeURIComponent(window.location.href);
-        window.location.href = `https://eduid.at/ds/wayf/?entityID=https://academicar-dev.azurewebsites.net/Saml2&return=${returnUrl}&returnIDParam=idp`;
+        //const returnUrl = encodeURIComponent(window.location.href);
+        window.location.href = `http://localhost:5117/api/Account/login`;
     };
 
     const adminLogin = async (username: string, password: string) => {

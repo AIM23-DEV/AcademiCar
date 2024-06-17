@@ -7,8 +7,6 @@ using Sustainsys.Saml2.Metadata;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
-using System.Xml;
-using System.Xml.Linq;
 using AcademiCar.Server;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -63,7 +61,6 @@ builder.Services.AddAuthentication(options =>
             new EntityId(builder.Configuration["SustainsysSaml2:Idp:EntityId"]),
             options.SPOptions)
         {
-            LoadMetadata = true,
             MetadataLocation = builder.Configuration["SustainsysSaml2:Idp:MetadataLocation"]
         };
 
@@ -124,23 +121,4 @@ static void ApplyMigrations(IHost app)
     using var scope = app.Services.CreateScope();
     var db = scope.ServiceProvider.GetRequiredService<PostgresDbContext>();
     db.Database.Migrate();
-}
-
-static XElement LoadEntityDescriptor(string metadataPath)
-{
-    string xmlContent = File.ReadAllText(metadataPath);
-
-    // Ensure all namespaces are declared in the XML string
-    xmlContent = xmlContent.Replace("<md:EntityDescriptor", @"
-        <md:EntityDescriptor 
-        xmlns:md=""urn:oasis:names:tc:SAML:2.0:metadata"" 
-        xmlns:mdrpi=""urn:oasis:names:tc:SAML:metadata:rpi"" 
-        xmlns:mdattr=""urn:oasis:names:tc:SAML:metadata:attribute"" 
-        xmlns:saml=""urn:oasis:names:tc:SAML:2.0:assertion"" 
-        xmlns:shibmd=""urn:mace:shibboleth:metadata:1.0"" 
-        xmlns:mdui=""urn:oasis:names:tc:SAML:metadata:ui"" 
-        xmlns:ds=""http://www.w3.org/2000/09/xmldsig#""
-        ");
-
-    return XElement.Parse(xmlContent);
 }
