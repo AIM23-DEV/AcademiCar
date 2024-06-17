@@ -21,4 +21,40 @@ public class AdminController : ControllerBase
         List<User?> users  = await _globalService.UserService.Get();
         return Ok(users);
     }
+    
+    [HttpPut ("users/delete/{id}")]
+    public async Task<IActionResult> DeleteUser(string id)
+    {
+        User? user  = await _globalService.UserService.Get(id);
+        if (user == null)
+        {
+            return NotFound();
+        }
+        await _globalService.UserService.Delete(id);
+        return Ok();
+    }
+    
+    
+    [HttpPut ("users/block/{id}")]
+    public async Task<IActionResult> BlockUser(string id)
+    {
+        User? user  = await _globalService.UserService.Get(id);
+        if (user == null)
+        {
+            return NotFound();
+        }
+        user.PasswordHash = "";
+        await _globalService.UserService.Update(user);
+        return Ok();
+    }
+    
+    [HttpGet("users/stats/{id}")]
+    public async Task<IActionResult> GetUserStats(string id)
+    {
+        int idAsInt = int.Parse(id);
+        Stats? userStats  = await _globalService.StatsService.Get(idAsInt);
+        return Ok(userStats);
+    }
+    
+    
 }
