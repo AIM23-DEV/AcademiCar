@@ -68,7 +68,6 @@ if (enableSaml2)
                 new EntityId(builder.Configuration["SustainsysSaml2:Idp:EntityId"]),
                 options.SPOptions)
             {
-                AllowUnsolicitedAuthnResponse = true,
                 MetadataLocation = metadataFilePath
             };
 
