@@ -20,17 +20,15 @@ namespace AcademiCar.Server.Controllers
         [HttpPost("Acs")]
         public async Task<IActionResult> Acs()
         {
-            _logger.LogWarning("Acs endpoint hit. Yessssss!");
+            _logger.LogInformation("Acs endpoint hit.");
             var result = await HttpContext.AuthenticateAsync(Saml2Defaults.Scheme);
             if (!result.Succeeded)
             {
-                _logger.LogWarning("result not succeeded");
                 return Unauthorized();
             }
 
             var claimsIdentity = new ClaimsIdentity(result.Principal.Claims, "Saml2");
             await HttpContext.SignInAsync(new ClaimsPrincipal(claimsIdentity));
-            _logger.LogWarning("result succeeded");
             return Redirect("/");
         }
 

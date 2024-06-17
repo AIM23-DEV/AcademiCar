@@ -14,7 +14,7 @@ namespace AcademiCar.Server.Controllers
         public IActionResult Login()
         {
             // RedirectUri is the URL to redirect to after login, typically the homepage or dashboard
-            return Challenge(new AuthenticationProperties { RedirectUri = "https://academicar.net" }, Saml2Defaults.Scheme);
+            return Challenge(new AuthenticationProperties { RedirectUri = "http://localhost:3000" }, Saml2Defaults.Scheme);
         }
 
         // Handles the logout process

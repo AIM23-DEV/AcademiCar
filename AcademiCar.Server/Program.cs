@@ -26,7 +26,6 @@ builder.Logging.AddDebug();
 
 var env = builder.Environment;
 var metadataFilePath = Path.Combine(env.ContentRootPath, "metadata.xml");
-var certificateFilePath = Path.Combine(env.ContentRootPath, "certificate.pfx");
 
 // Configure database context
 if (!builder.Environment.IsDevelopment())
@@ -71,10 +70,10 @@ if (enableSaml2)
                 MetadataLocation = metadataFilePath
             };
 
-            var certPath = certificateFilePath;
+            /*var certPath = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:FileName"];
             var certPassword = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:Password"];
             idp.SigningKeys.AddConfiguredKey(new X509Certificate2(certPath, certPassword));
-    
+    */
             options.IdentityProviders.Add(idp);
         });
 }
