@@ -53,7 +53,7 @@ export default defineConfig({
                 changeOrigin: true,
                 secure: false
             },
-            '/saml2': {
+            '/Saml2': {
                 target,
                 changeOrigin: true,
                 secure: false
