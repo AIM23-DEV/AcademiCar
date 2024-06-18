@@ -2,4 +2,4 @@
 
 namespace AcademiCar.Server.DAL.BaseInterfaces;
 
-public interface IAddressRepository : IPostgresRepository<Address>;
+public interface IInterestPreferenceRepository : IPostgresRepository<InterestPreference>;

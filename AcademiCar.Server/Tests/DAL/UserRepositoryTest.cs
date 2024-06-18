@@ -58,7 +58,8 @@ public class UserRepositoryTest : BaseUnitTest
                 Email = "Insert@repo.test",
                 FirstName = "testFirstName",
                 LastName = "testLastName",
-                FK_Stats = -999
+                FK_Address = -999,
+                FK_Stats = -999,
             });
             await _unitOfWork.Users.InsertAsync(new User()
             {
@@ -66,7 +67,8 @@ public class UserRepositoryTest : BaseUnitTest
                 Email = "Delete@repo.test",
                 FirstName = "testFirstName",
                 LastName = "testLastName",
-                FK_Stats = -999
+                FK_Address = -999,
+                FK_Stats = -999,
             });
                 
             if (_GetCurrentUserCount() != initialUserCount + 2)

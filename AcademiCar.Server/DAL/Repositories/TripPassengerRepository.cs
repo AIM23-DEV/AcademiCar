@@ -5,7 +5,7 @@ using AcademiCar.Server.DAL.UnitOfWork;
 
 namespace AcademiCar.Server.DAL.Repositories;
 
-public class ChatRepository : PostgresRepository<Chat>, IChatRepository
+public class TripPassengerRepository : PostgresRepository<TripPassenger>, ITripPassengerRepository
 {
-    public ChatRepository(PostgresDbContext dbContext) : base(dbContext) {}
+    public TripPassengerRepository(PostgresDbContext dbContext) : base(dbContext) {}
 }

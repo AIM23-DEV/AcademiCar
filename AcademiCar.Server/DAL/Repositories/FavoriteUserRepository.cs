@@ -3,10 +3,9 @@ using AcademiCar.Server.DAL.BaseInterfaces;
 using AcademiCar.Server.DAL.Entities;
 using AcademiCar.Server.DAL.UnitOfWork;
 
-namespace AcademiCar.Server.DAL.Repositories
+namespace AcademiCar.Server.DAL.Repositories;
+
+public class FavoriteUserRepository : PostgresRepository<FavoriteUser>, IFavoriteUserRepository
 {
-    public class FavoriteUserRepository : PostgresRepository<FavoriteUser>, IFavoriteUserRepository
-    {
-        public FavoriteUserRepository(PostgresDbContext dbContext) : base(dbContext) {}
-    }
+    public FavoriteUserRepository(PostgresDbContext dbContext) : base(dbContext) {}
 }
