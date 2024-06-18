@@ -1,3 +1,4 @@
+using System.Net.WebSockets;
 using Microsoft.EntityFrameworkCore;
 using Azure.Identity;
 using AcademiCar.Server.DAL.UnitOfWork;
@@ -7,6 +8,7 @@ using Sustainsys.Saml2.Metadata;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using AcademiCar.Server;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -47,6 +49,7 @@ else
     builder.Services.AddDbContext<PostgresDbContext>(options =>
         options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 }
+
 // Conditional SAML2 Setup
 var enableSaml2 = builder.Configuration.GetValue<bool>("EnableSaml2");
 var useSingleIdP = builder.Configuration.GetValue<bool>("UseSingleIdP");
@@ -119,6 +122,9 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.UseWebSockets();
+app.UseWebSocketMiddleware();
+
 app.MapFallbackToFile("/index.html");
 
 app.Run();
@@ -130,4 +136,49 @@ static void ApplyMigrations(IHost app)
     
     // db.Database.EnsureDeleted();
     db.Database.Migrate();
+}
+
+public class WebSocketMiddleware
+{
+    private readonly RequestDelegate _next;
+
+    public WebSocketMiddleware(RequestDelegate next)
+    {
+        _next = next;
+    }
+
+    public async Task InvokeAsync(HttpContext context)
+    {
+        if (context.WebSockets.IsWebSocketRequest)
+        {
+            using var webSocket = await context.WebSockets.AcceptWebSocketAsync();
+            await HandleWebSocketAsync(context, webSocket);
+        }
+        else
+        {
+            await _next(context);
+        }
+    }
+
+    private async Task HandleWebSocketAsync(HttpContext context, WebSocket webSocket)
+    {
+        var buffer = new byte[1024 * 4];
+        WebSocketReceiveResult result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+        while (!result.CloseStatus.HasValue)
+        {
+            var message = Encoding.UTF8.GetString(buffer, 0, result.Count);
+            // Broadcast the message to all connected clients or handle it as needed
+            await webSocket.SendAsync(new ArraySegment<byte>(Encoding.UTF8.GetBytes("Echo: " + message)), result.MessageType, result.EndOfMessage, CancellationToken.None);
+            result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+        }
+        await webSocket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
+    }
+}
+
+public static class WebSocketMiddlewareExtensions
+{
+    public static IApplicationBuilder UseWebSocketMiddleware(this IApplicationBuilder builder)
+    {
+        return builder.UseMiddleware<WebSocketMiddleware>();
+    }
 }
