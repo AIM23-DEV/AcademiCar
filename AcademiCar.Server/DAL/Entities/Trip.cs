@@ -18,8 +18,6 @@ public class Trip : Entity
     [JsonIgnore] public Vehicle Vehicle { get; set; }
     public int FK_Vehicle { get; set; }
 
-    public List<User> Passengers { get; set; }
-
     [ForeignKey("FK_StartAddress")]
     [JsonProperty(Required = Required.Default)]
     [JsonIgnore] public Address StartAddress { get; set; }
@@ -32,9 +30,8 @@ public class Trip : Entity
 
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
-    public decimal Duration { get; set; }
     public int AvailableSeats { get; set; }
-    public decimal Price { get; set; }
+    public float Price { get; set; }
     public string PaymentMethod { get; set; }
     public string Status { get; set; }
 }

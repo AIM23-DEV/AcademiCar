@@ -3,10 +3,9 @@ using AcademiCar.Server.DAL.BaseInterfaces;
 using AcademiCar.Server.DAL.Entities;
 using AcademiCar.Server.DAL.UnitOfWork;
 
-namespace AcademiCar.Server.DAL.Repositories
+namespace AcademiCar.Server.DAL.Repositories;
+
+public class VehicleRepository : PostgresRepository<Vehicle>, IVehicleRepository
 {
-    public class VehicleRepository : PostgresRepository<Vehicle>, IVehicleRepository
-    {
-        public VehicleRepository(PostgresDbContext dbContext) : base(dbContext) {}
-    }
+    public VehicleRepository(PostgresDbContext dbContext) : base(dbContext) {}
 }
