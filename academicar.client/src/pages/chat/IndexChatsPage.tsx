@@ -7,6 +7,7 @@ import {OpenRequestsList} from "./partials/OpenRequestsList.tsx";
 import {ChatsList} from "./partials/ChatsList.tsx";
 import {ChatSearchResultsList} from "./partials/ChatSearchResultsList.tsx";
 import {Input} from "../../components/FormFields.tsx";
+import Chat from "../../components/Chat.tsx";
 
 export const IndexChatsPage = () => {
     const [t] = useTranslation(["common", "pages/chat"]);
@@ -63,6 +64,10 @@ export const IndexChatsPage = () => {
             <div>
                 <h1>{noChatsTitleText}</h1>
                 <p>{noChatsInfoText}</p>
+            </div>
+            
+            <div>
+                <Chat/>
             </div>
 
             <BottomNavigationBar selected="chat"/>

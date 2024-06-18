@@ -28,6 +28,7 @@
     "react-router-dom": "^6.23.1"
   },
   "devDependencies": {
+    "@microsoft/signalr": "^8.0.0",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/forms": "^0.5.7",
     "@types/node": "^20.11.30",
