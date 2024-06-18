@@ -5,15 +5,19 @@ export const CarlosPage = () => {
     const [carlos, setCarlos] = useState<ICarlos>();
 
     useEffect(() => {
-        fetch('api/carlos')
-            .then(response => response.json())
-            .then((c: ICarlos) => setCarlos(c));
+        fetch('https://localhost:5173/api/carlos')
+        .then(response => response.json())
+        .then((c: ICarlos) => setCarlos(c));
     }, []);
     
     return (
         <div>
             <Divider />
-            <h1>{carlos?.message}</h1>
+            <div className="text-center">
+                <h1>{carlos?.message}</h1>
+            </div>
+            <Divider />
+            <img src={carlos?.imageSrc}  alt="..." />
             <Divider />
         </div>
     );

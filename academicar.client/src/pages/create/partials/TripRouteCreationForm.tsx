@@ -1,8 +1,16 @@
-import {useTranslation} from "react-i18next";
-import {RouteForm} from "./RouteForm.tsx";
-import {StopsList} from "./StopsList.tsx";
+import { useTranslation } from "react-i18next";
+import { RouteForm } from "./RouteForm.tsx";
+import { StopsList } from "./StopsList.tsx";
 
-export const TripRouteCreationForm = () => {
+interface TripRouteCreationFormProps {
+    startAddress?: IAddress | null,
+    endAddress?: IAddress | null,
+
+    setStartAddress: (val: string) => void,
+    setEndAddress: (val: string) => void,
+}
+
+export const TripRouteCreationForm = (props: TripRouteCreationFormProps) => {
     const [t] = useTranslation(["common", "pages/create"]);
     const routeLabelText = t("pages/create:CreateTripPage1.label_route");
     const fromInputLabelText = t("pages/create:CreateTripPage1.label_input_from");
@@ -24,6 +32,12 @@ export const TripRouteCreationForm = () => {
                 fromPlaceholderText={fromInputPlaceholderText}
                 toLabelText={toInputLabelText}
                 toPlaceholderText={toInputPlaceholderText}
+                
+                fromValue={`${props.startAddress != undefined ? (props.startAddress.street) + ' ' + (props.startAddress.number) + ' ' + (props.startAddress.zip) + ' ' + (props.startAddress.place) : ''}`}
+                toValue={`${props.endAddress != undefined ? (props.endAddress.street) + ' ' + (props.endAddress.number) + ' ' + (props.endAddress.zip) + ' ' + (props.endAddress.place) : ''}`}
+
+                setFromValue={props.setStartAddress}
+                setToValue={props.setEndAddress}
             />
 
             <StopsList

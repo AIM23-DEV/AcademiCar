@@ -40,8 +40,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }): ReactElemen
     };
 
     const selectIdP = () => {
+        // Optionally, you can add the current URL as a return URL parameter
         const returnUrl = encodeURIComponent(window.location.href);
-        window.location.href = `https://eduid.at/ds/wayf/?entityID=https://academicar-dev.azurewebsites.net/Saml2&return=${returnUrl}&returnIDParam=idp`;
+        window.location.href = `/api/Account/login?returnUrl=${returnUrl}`;
     };
 
     const adminLogin = async (username: string, password: string) => {

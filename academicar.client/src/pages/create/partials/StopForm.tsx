@@ -10,11 +10,11 @@ export const StopForm = (props: StopFormProps) => {
     return (
         <>
             <Input label={props.stopInputLabelText} />
-            <p>
+            <div>
                 {props.stayInputLabelText}
                 <Input />
                 {props.stayInputUnitText}
-            </p>
+            </div>
         </>
     )
 }

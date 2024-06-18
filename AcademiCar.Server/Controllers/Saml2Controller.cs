@@ -1,48 +1,60 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication;
 using Sustainsys.Saml2.AspNetCore2;
-using System.Security.Claims;
+using Microsoft.Extensions.Logging;
 
-namespace AcademiCar.Server.Controllers;
-
-[Route("Saml2")]
-public class Saml2Controller : Controller
+namespace AcademiCar.Server.Controllers
 {
-    [HttpPost("Acs")]
-    public async Task<IActionResult> Acs()
+    [Route("Saml2")]
+    [ApiController]
+    public class Saml2Controller : ControllerBase
     {
-        var result = await HttpContext.AuthenticateAsync("Saml2");
-        if (!result.Succeeded)
+        private readonly ILogger<Saml2Controller> _logger;
+
+        public Saml2Controller(ILogger<Saml2Controller> logger)
         {
-            return Unauthorized();
+            _logger = logger;
         }
 
-        var claimsIdentity = new ClaimsIdentity(result.Principal.Claims, "Saml2");
-        await HttpContext.SignInAsync(new ClaimsPrincipal(claimsIdentity));
-        return Redirect("/");
-    }
-
-    [HttpGet("Login")]
-    public IActionResult Login([FromQuery] string idp)
-    {
-        if (string.IsNullOrEmpty(idp))
+        [HttpPost("Acs")]
+        public async Task<IActionResult> Acs()
         {
-            return BadRequest("IdP parameter is required.");
+            _logger.LogInformation("Acs endpoint hit.");
+            var result = await HttpContext.AuthenticateAsync(Saml2Defaults.Scheme);
+            if (!result.Succeeded)
+            {
+                return Unauthorized();
+            }
+
+            var claimsIdentity = new ClaimsIdentity(result.Principal.Claims, "Saml2");
+            await HttpContext.SignInAsync(new ClaimsPrincipal(claimsIdentity));
+            return Redirect("/");
         }
 
-        var properties = new AuthenticationProperties
+        [HttpGet("Login")]
+        public IActionResult Login()
         {
-            RedirectUri = "/"
-        };
-        properties.Items["idp"] = idp;
+            _logger.LogInformation("Login endpoint hit.");
 
-        return Challenge(properties, Saml2Defaults.Scheme);
-    }
+            var properties = new AuthenticationProperties
+            {
+                RedirectUri = "/"
+            };
 
-    [HttpGet("Logout")]
-    public async Task<IActionResult> Logout()
-    {
-        await HttpContext.SignOutAsync();
-        return Redirect("/");
+            properties.Items["idp"] = "https://idp.fh-joanneum.at/idp/shibboleth";
+
+            _logger.LogInformation("Initiating challenge to SAML2 IdP: {IdP}", properties.Items["idp"]);
+
+            return Challenge(properties, Saml2Defaults.Scheme);
+        }
+
+        [HttpGet("Logout")]
+        public async Task<IActionResult> Logout()
+        {
+            _logger.LogInformation("Logout endpoint hit.");
+            await HttpContext.SignOutAsync();
+            return Redirect("/");
+        }
     }
 }

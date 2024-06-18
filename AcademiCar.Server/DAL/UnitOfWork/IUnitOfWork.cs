@@ -6,18 +6,23 @@ namespace AcademiCar.Server.DAL.UnitOfWork
     {
         PostgresDbContext Context { get; }
 
+        IAddressRepository Addresses { get; }
         ICarlosRepository Carlos { get;  }
-        IUserRepository Users { get; }
+        IChatRepository Chats { get; }
         IFavoriteUserRepository FavoriteUsers { get; }
-        IStatsRepository Stats { get; }
-        IRatingRepository Ratings { get; }
+        IInterestPreferenceRepository InterestPreferences { get; }
+        IMessageRepository Messages { get; }
+        IMusicPreferenceRepository MusicPreferences { get; }
         IPreferencesRepository Preferences { get; }
-        IVehicleRepository Vehicles { get; }
+        IRatingRepository Ratings { get; }
+        IStatsRepository Stats { get; }
+        ITravelPreferenceRepository TravelPreferences { get; }
+        ITripPassengerRepository TripPassengers { get; }
         ITripRepository Trips { get; }
         ITripRequestRepository TripRequests { get; }
-        IAddressRepository Addresses { get; }
-        IChatRepository Chats { get; }
-        IMessageRepository Messages { get; }
+        ITripStopRepository TripStops { get; }
+        IUserRepository Users { get; }
+        IVehicleRepository Vehicles { get; }
 
         Task<int> SaveChangesAsync();
     }

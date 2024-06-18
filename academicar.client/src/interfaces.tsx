@@ -11,70 +11,124 @@ interface IAddress{
 interface ICarlos {
     id: number;
     message: string;
-    image: any;
+    imageSrc: string;
+}
+
+interface IChat {
+    id: number;
+    fK_Trip: number;
+    fK_User: string;
+    hasMoreThan2: boolean;
+    updatedAt: string;
 }
 
 interface IFavoriteUser
 {
     id: number;
-    fk_userid: string;
-    fk_fav_userid: string;
+    fK_Userid: string;
+    fK_FavUserId: string;
+}
+
+interface IInterestPreference
+{
+    id: number;
+    fK_Preferences: number;
+    interest: string;
+}
+
+interface IMessage
+{
+    id: number;
+    fK_User: string;
+    fK_Chat: number;
+    fK_TripRequest: number;
+    content: string;
+    sentAt: string;
+}
+
+interface IMusicPreference
+{
+    id: number;
+    fK_Preferences: number;
+    genre: string;
 }
 
 interface IPreferences {
     id: number;
-    fk_user: string;
+    fK_User: string;
 }
 
 interface IRating {
     id: number;
-    fk_user: string;
-    is_driver: boolean;
-    is_passenger: boolean;
+    fK_RatingUser: string;
+    fK_RatedUser: string;
+    isDriver: boolean;
+    isPassenger: boolean;
     score: number;
+    comment: string;
 }
 
 interface IStats {
     id: number;
-    nr_trips: number;
-    co2_savings: number;
-    driver_rating: number;
-    passenger_rating: number;
+    driverKilometres: number;
+    passengerKilometres: number;
+    nrTrips: number;
+    co2Savings: number;
+}
+
+interface ITravelPreference
+{
+    id: number;
+    fK_Preferences: number;
+    preferenceText: string;
+    iconType: string;
 }
 
 interface ITrip {
     id: number;
     title: string;
-    fk_driver: string;
-    fk_vehicle: number;
-    passengers: IUser[];
-    fk_start_address: number;
-    fk_end_address: number;
-    start_time: any;
-    end_time: any;
-    duration: number;
-    available_seats: number;
+    fK_Driver: string;
+    fK_Vehicle: number;
+    fK_StartAddress: number;
+    fK_EndAddress: number;
+    startTime: Date;
+    endTime: Date;
+    availableSeats: number;
     price: number;
-    payment_method: string;
+    paymentMethod: string;
     status: string;
+}
+
+interface ITripPassenger {
+    id: number;
+    fK_Trip: number;
+    fK_PassengerUser: string;
 }
 
 interface ITripRequest {
     id: number;
-    fk_trip: number;
-    fk_potential_passenger: string;
+    fK_Trip: number;
+    fK_PotentialPassenger: string;
     comment: string;
     status: string;
+}
+
+interface ITripStop {
+    id: number;
+    fK_Trip: number;
+    fK_StopAddress: number;
+    stopDurationInMinutes: number;
 }
 
 interface IUser {
     id: string;
     email: string; 
-    firstname: string;
-    lastname: string; 
-    picture: any[];
-    fk_stats: number;
-    favorits: string[];
+    firstName: string;
+    lastName: string; 
+    pictureSrc: string;
+    fK_Address: number;
+    fK_Stats: number;
+    phoneNumber: string;
 }
 
 interface IVehicle {
@@ -82,8 +136,8 @@ interface IVehicle {
     type: string;
     seats: number;
     color: string;
-    picture: any[];
+    pictureSrc: any[];
     features: string;
-    is_electric: boolean;
-    fk_user: string;
+    isElectric: boolean;
+    fK_User: string;
 }

@@ -1,73 +1,102 @@
-import {TitleBar} from "../../components/TitleBar.tsx";
-import {BottomNavigationBar} from "../../components/BottomNavigationBar.tsx";
-import {Button} from "../../components/Buttons.tsx";
-import {ConfirmationModal} from "../../components/Modal.tsx";
-import {useState} from "react";
+import { TitleBar } from "../../components/TitleBar.tsx";
+import { BottomNavigationBar } from "../../components/BottomNavigationBar.tsx";
+import { Button } from "../../components/Buttons.tsx";
+import { SetStateAction, useEffect, useState } from "react";
 import SetPageTitle from "../../hooks/set_page_title.tsx";
-import {useTranslation} from "react-i18next";
-import {BiChevronRight, BiSortAlt2} from "react-icons/bi";
-import {Card} from "../../components/Cards.tsx";
-import {IoSearch} from "react-icons/io5";
-import {RxAvatar} from "react-icons/rx";
-import {Divider} from "../../components/Divider.tsx";
-import {useNavigate} from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { BiChevronRight } from "react-icons/bi";
+import { Card } from "../../components/Cards.tsx";
+//import { RxAvatar } from "react-icons/rx";
+import { Divider } from "../../components/Divider.tsx";
+import { useNavigate } from "react-router-dom";
+import { IoIosSearch } from "react-icons/io";
+import { Input, Select } from "../../components/FormFields.tsx";
 
 export const IndexUsersPage = () => {
-    // This is how to import the translation function for multiple namespaces.
     const [t] = useTranslation(['common', 'pages/admin']);
-    
-    //Translations
+    const [users, setUsers] = useState<IUser[]>([]);
+    const [filteredUsers, setFilteredUsers] = useState<IUser[]>([]);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [sortOption, setSortOption] = useState('');
+    const navigate = useNavigate();
+
+    // Translations
     const pageTitle = t('pages/admin:IndexUsersPage.title');
     const search = t('pages/admin:IndexUsersPage.search');
     const sort = t('pages/admin:IndexUsersPage.sort');
     const persons = t('pages/admin:IndexUsersPage.persons');
-    SetPageTitle(pageTitle);
-    
-    //Accounts
-    const USER = [
-        { id: 1, name: 'Sofie Buchhalter', imgSrc: 'path/to/image1.jpg', path: "/admin/users/1" },
-        { id: 2, name: 'Samantha Kinsley', imgSrc: 'path/to/image2.jpg', path: "/admin/users/1"},
-        { id: 3, name: 'Max Kruse', imgSrc: 'path/to/image3.jpg', path: "/admin/users/1"},
-        { id: 4, name: 'Jane Doe', imgSrc: 'path/to/image4.jpg', path: "/admin/users/1"},
-        { id: 5, name: 'Bernd Kern', imgSrc: 'path/to/image5.jpg', path: "/admin/users/1"},
-    ];
+    const sortFirstName = t('pages/admin:IndexUsersPage.sortFirstName');
+    const sortLastName = t('pages/admin:IndexUsersPage.sortLastName');
 
-    const navigate = useNavigate();
-    
-    // This is how to work with a component that needs a state
-    const [showModal, setShowModal] = useState(false);
+    SetPageTitle(pageTitle);
+
+    // Fetch users from API
+    useEffect(() => {
+        fetch('https://localhost:5173/api/admin/users')
+            .then(response => response.json())
+            .then((fetchedUsers: IUser[]) => {
+                setUsers(fetchedUsers);
+                setFilteredUsers(fetchedUsers);
+            });
+    }, []);
+
+    // Filter and sort users
+    useEffect(() => {
+        filterAndSortUsers();
+    }, [searchQuery, sortOption]);
+
+    const filterAndSortUsers = () => {
+        let filtered = users.filter(user =>
+            user.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            user.lastName.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+
+        if (sortOption === 'first_name') {
+            filtered = filtered.sort((a, b) => a.firstName.localeCompare(b.firstName));
+        } else if (sortOption === 'last_name') {
+            filtered = filtered.sort((a, b) => a.lastName.localeCompare(b.lastName));
+        }
+
+        setFilteredUsers(filtered);
+    };
+
+    //Filter search users 
+    const handleSearchChange = (event: { target: { value: SetStateAction<string>; }; }) => {
+        setSearchQuery(event.target.value);
+    };
+
+    const handleSortChange = (event: { target: { value: SetStateAction<string>; }; }) => {
+        setSortOption(event.target.value);
+    };
 
     return (
         <>
-            <TitleBar text={"Account"} hasBackAction/>
+            <TitleBar text={"Account"} hasBackAction />
 
-            <div aria-label="SuchenSortieren" className="w-full grid grid-cols-12 gap-x-32">
-                <Button
-                    variant="outline"
-                    fullWidth={false}
-                    text={search}
-                    textAlign="center"
-                    textFullWidth
-                    leading={<IoSearch className="icon"/>}
-                    type="button"
-                    className="mt-1"
-                    onClick={() => {
-                        alert("Test");
-                    }}
+            <div className="grid grid-cols-2 gap-6 my-8">
+                <Input
+                    id="search"
+                    type="text"
+                    placeholder={search}
+                    leading={<IoIosSearch />}
+                    required={true}
+                    label={search}
+                    value={searchQuery}
+                    fullWidth
+                    onChange={handleSearchChange}
                 />
-
-                <Button
-                    variant="outline"
-                    fullWidth={false}
-                    text={sort}
-                    textAlign="center"
-                    textFullWidth
-                    leading={<BiSortAlt2 className="icon"/>}
-                    type="button"
-                    className="mt-1"
-                    onClick={() => {
-                        alert("Test");
+                <Select
+                    label={sort}
+                    id="sort"
+                    fullWidth
+                    required
+                    options={{
+                        '': '---',
+                        first_name: sortFirstName,
+                        last_name: sortLastName,
                     }}
+                    value={sortOption}
+                    onChange={handleSortChange}
                 />
             </div>
 
@@ -79,36 +108,35 @@ export const IndexUsersPage = () => {
                     padding="base"
                     className="mt-1"
                 >
-                    {USER.map((USER) => (
-                        <div key={USER.id}>
+                    {filteredUsers.map((user) => (
+                        <div key={user.id}>
                             <Button
                                 variant="outline"
                                 fullWidth
-                                text={USER.name}
+                                text={`${user.firstName} ${user.lastName}`}
                                 textAlign="left"
                                 textFullWidth
-                                leading={<RxAvatar className="icon-md" />}
-                                trailing={<BiChevronRight className="icon" />}
+                                
+                                //TODO Wenn DB Fotos speichern kann  
+                                //leading={user.picture? <img src={user.picture} alt="User Picture" className="rounded-full w-12 h-12" /> : <RxAvatar />}
+                                leading={<img
+                                    src="https://academicar.blob.core.windows.net/profile-images/test.jpg"
+                                    alt="Profile Avatar"
+                                    className="rounded-full w-12 h-12"
+                                />}
+                                trailing={<BiChevronRight className="icon"/>}
                                 type="button"
                                 disabled={false}
                                 className="mt-1"
-                                onClick={() => navigate(USER.path)}
+                                onClick={() => navigate(`/admin/users/${user.id}`)}
                             />
-                            
-                            {<Divider className="my-2" />}
-                            
+                            <Divider className="my-2" />
                         </div>
                     ))}
                 </Card>
             </div>
-            
-            <BottomNavigationBar
-                selected={"profile"}
-            />
-            
-            <ConfirmationModal open={showModal} setOpen={setShowModal}
-                               subtitle="Das ist ein Bestätigungs-Modal. Hier kann man einige Einstellungen mitgeben!"
-                               onConfirm={() => alert("Confirmed")}/>
+
+            <BottomNavigationBar selected={"profile"} />
         </>
     );
 };

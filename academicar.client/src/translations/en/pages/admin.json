@@ -10,7 +10,9 @@
     "email": "E-Mail",
     "actions": "Actions",
     "blockaccount": "Block Account",
-    "deleteaccount": "Delete Account"
+    "deleteaccount": "Delete Account",
+    "sortFirstName": "Firstname",
+    "sortLastName": "Lastname"
   },
 
   "ShowUserPage":  {

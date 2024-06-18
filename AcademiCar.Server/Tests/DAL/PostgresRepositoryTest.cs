@@ -58,7 +58,7 @@ public class PostgresRepositoryTest : BaseUnitTest
                 Type = "InsertTestType",
                 ID = -899,
                 Color = "Yellow",
-                Picture = [],
+                PictureSrc = "",
                 Features = "TestFeature",
                 FK_User = "-999",
             });
@@ -67,7 +67,7 @@ public class PostgresRepositoryTest : BaseUnitTest
                 Type = "DeleteTestType",
                 ID = -898,
                 Color = "Yellow",
-                Picture = [],
+                PictureSrc = "",
                 Features = "TestFeature",
                 FK_User = "-999",
             });

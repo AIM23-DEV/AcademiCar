@@ -1,6 +1,7 @@
 {
   "Common": {
-    "title_create": "Neue Reise erstellen"
+    "title_create": "Neue Reise erstellen",
+    "title_update": "Reise aktualisieren"
   },
   
   "CreateTripPage1": {

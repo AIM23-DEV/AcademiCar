@@ -1,6 +1,7 @@
 {
   "Common": {
-    "title_create": "Create new trip"
+    "title_create": "Create new trip",
+    "title_update": "Update trip"
   },
   
   "CreateTripPage1": {
