@@ -13,7 +13,11 @@ export const CarlosPage = () => {
     return (
         <div>
             <Divider />
-            <h1>{carlos?.message}</h1>
+            <div className="text-center">
+                <h1>{carlos?.message}</h1>
+            </div>
+            <Divider />
+            <img src={carlos?.imageSrc}  alt="..." />
             <Divider />
         </div>
     );
