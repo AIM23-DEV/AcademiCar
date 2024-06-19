@@ -6,7 +6,7 @@ interface StateProps {
     type: 'searchResult' | 'chatResult'
 }
 export const EmptyChat = (props: StateProps) => {
-    const [t] = useTranslation();
+    const [t] = useTranslation(["common", "pages/chat"]);
     let icon;
     if (props.type == "searchResult") {
         icon = <BiMessageMinus className="icon-xl"/>

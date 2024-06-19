@@ -19,6 +19,7 @@ interface IChat {
     fK_Trip: number;
     fK_User: string;
     hasMoreThan2: boolean;
+    user: IUser | undefined;
     updatedAt: string;
 }
 
