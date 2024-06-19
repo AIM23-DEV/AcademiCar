@@ -69,18 +69,12 @@ namespace AcademiCar.Server.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound();
+                return Unauthorized("User is not logged in.");
             }
 
             var roles = await _userManager.GetRolesAsync(user);
 
-            return Ok(new
-            {
-                UserName = user.UserName,
-                FirstName = user.FirstName,
-                Id = user.Id,
-                Roles = roles
-            });
+            return user;
         }
 
         [HttpPost("Register")]
