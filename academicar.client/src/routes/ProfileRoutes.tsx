@@ -22,7 +22,8 @@ export default <Route key="profileRoute" path="/profile" element={<Outlet/>}>
     <Route key="profileFacesheetRoute" path="facesheet" element={<PersonalDataFaceSheet/>} />
     <Route key="profileSettingsRoute" path="settings" element={<SettingsPage/>} />
     <Route key="profileRewardsRoute" path="rewards" element={<RewardsPage/>} />
-    <Route key="profileStatsRoute" path="stats" element={<StatsPage/>} />
+    <Route key="profileStatsRouteOld" path="stats" element={<StatsPage/>} />
+    <Route key="profileStatsRoute" path="stats/:id" element={<StatsPage/>} />
     <Route key="profileBalanceRoute" path="balance" element={<BalancePage/>} />
     <Route key="profileBalanceHistoryRoute" path="balance/history" element={<BalanceHistoryPage/>} />
     <Route key="profileBalanceRechargeRoute" path="balance/recharge" element={<BalanceRechargePage/>} />
