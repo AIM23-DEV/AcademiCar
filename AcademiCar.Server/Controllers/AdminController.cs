@@ -60,6 +60,7 @@ public class AdminController : ControllerBase
         return Ok();
     }
     
+    //GET RATING (Stars)
     [HttpGet("users/rating/{id}")]
     public async Task<IActionResult> GetUserRating(string id)
     {
@@ -84,6 +85,25 @@ public class AdminController : ControllerBase
         
         return Ok(totalRating);
     }
+    
+    //GET REVIEWS 
+    [HttpGet("users/review/{id}")]
+    public async Task<ActionResult<User>> GetUserReviews(string id)
+    {
+        
+        List<Rating?> userRatings  = await _globalService.RatingService.Get();
+        
+        if (userRatings.Count == 0)
+        {
+            return NotFound();
+        }; 
+        
+        List<Rating> FilterdUserRatings = userRatings.Where(r => r != null && r.FK_RatedUser == id).ToList();
+        
+        return Ok(FilterdUserRatings.Count());
+        
+    }
+    
     
     
 }

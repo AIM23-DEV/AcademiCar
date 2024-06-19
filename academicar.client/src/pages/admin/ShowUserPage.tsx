@@ -21,6 +21,7 @@ export const ShowUserPage = () => {
     const { id } = useParams();
     const [user, setUser] = useState<IUser | null>();
     const [rating, setRating] = useState<TotalRating | null>();
+    const [review, setReview] = useState<number | null>();
     const [error, setError] = useState<string | null>();
     
     // This is how to import the navigator with which you can navigate between pages.
@@ -65,7 +66,19 @@ export const ShowUserPage = () => {
     }
     if (!rating) return <div>Loading stats...</div>;
     
-
+    
+    if (user && !review) {
+        fetch(`https://localhost:5173/api/admin/users/review/${user.id}`)
+            .then(response => response.json())
+            .then(data => setReview(data))
+            .catch(error => {
+                setError("There was an error fetching the Admin rating!");
+                console.error(error);
+            });
+    }
+    if (!setReview) return <div>Loading stats...</div>;
+    
+    console.log(review);
 
 
     //TODO DELETE & BLOCK USER CONTROLLER aufrufen 
