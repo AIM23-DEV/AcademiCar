@@ -23,6 +23,10 @@
     "email": "E-Mail",
     "actions": "Actions",
     "blockaccount": "Block Account",
-    "deleteaccount": "Delete Account"
+    "deleteaccount": "Delete Account",
+    "messageBlock": "Do you really want to block this account?",
+    "messageDelete": "Do you really want to delete this account? This action cannot be undone."
+
+    
   }
 }

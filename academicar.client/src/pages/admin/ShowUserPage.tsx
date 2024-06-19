@@ -16,10 +16,14 @@ interface TotalRating {
     rating: number;
 }
 export const ShowUserPage = () => {
+    
     // This is how to import the translation function for multiple namespaces.
     const [t] = useTranslation(['common', 'pages/admin/user']);
+    
+    //Const for loading data 
     const { id } = useParams();
     const [user, setUser] = useState<IUser | null>();
+    const [adressUser, setAdressUser] = useState<IAddress | null>();
     const [rating, setRating] = useState<TotalRating | null>();
     const [review, setReview] = useState<number | null>();
     const [error, setError] = useState<string | null>();
@@ -39,9 +43,14 @@ export const ShowUserPage = () => {
     const actions = t('pages/admin:ShowUserPage.actions');
     const blockaccount = t('pages/admin:ShowUserPage.blockaccount');
     const deleteaccount = t('pages/admin:ShowUserPage.deleteaccount');
+    const messageBlock = t('pages/admin:ShowUserPage.messageBlock');
+    const messageDelete = t('pages/admin:ShowUserPage.messageDelete');
+    
+    
+    
     SetPageTitle(pageTitle);
 
-    // Loading
+    // Loading user from IndexUserPage
     useEffect(() => {
         fetch(`https://localhost:5173/api/admin/users/${id}`)
             .then(response => response.json())
@@ -55,6 +64,7 @@ export const ShowUserPage = () => {
     if (error) return <div>{error}</div>;
     if (!user) return <div>Loading user...</div>;
     
+    //Loading user rating (stars)
     if (user && !rating) {
         fetch(`https://localhost:5173/api/admin/users/rating/${user.id}`)
             .then(response => response.json())
@@ -66,21 +76,33 @@ export const ShowUserPage = () => {
     }
     if (!rating) return <div>Loading stats...</div>;
     
-    
+    //Loading user review
     if (user && !review) {
         fetch(`https://localhost:5173/api/admin/users/review/${user.id}`)
             .then(response => response.json())
             .then(data => setReview(data))
             .catch(error => {
-                setError("There was an error fetching the Admin rating!");
+                setError("There was an error fetching the Admin review!");
                 console.error(error);
             });
     }
     if (!setReview) return <div>Loading stats...</div>;
     
-    console.log(review);
 
-
+    //Loading user adress
+    if (user && !adressUser) {
+        fetch(`https://localhost:5173/api/admin/address/${user.id}`)
+            .then(response => response.json())
+            .then(data => setAdressUser(data))
+            .catch(error => {
+                setError("There was an error fetching the Admin review!");
+                console.error(error);
+            });
+    }
+    if (!setAdressUser) return <div>Loading stats...</div>;
+    
+    
+    
     //TODO DELETE & BLOCK USER CONTROLLER aufrufen 
     
     
@@ -102,13 +124,13 @@ export const ShowUserPage = () => {
                                 <div className="flex items-center">
                                     <span><BiSolidStar className="icon text-yellow-400"/></span>
                                     <span><BiSolidStar className="icon text-yellow-400"/></span>
-                                    <span><BiSolidStar className="icon text-yellow-400"/></span>
-                                    <span><BiSolidStar className="icon text-yellow-400"/></span>
                                     <span><BiSolidStar className="icon text-gray-300"/></span>
-                                    <span className="ml-2">({rating.rating})</span> //TODO
+                                    <span><BiSolidStar className="icon text-gray-300"/></span>
+                                    <span><BiSolidStar className="icon text-gray-300"/></span>
+                                    <span className="ml-2">({rating.rating})</span>
                                 </div>
                                 <div className="mt-2">
-                                    <span>{ratings} {rating.rating}</span>
+                                <span>{review} {ratings} </span>
                                     
                                 </div>
                             </div>
@@ -121,7 +143,7 @@ export const ShowUserPage = () => {
                             type="text"
                             placeholder="Adresse"
                             required={true}
-                            value={user.firstName +" " +user.lastName}
+                            value={adressUser?.street +" "+ adressUser?.number}
                             label={adress}
                             fullWidth={true}
                             className="col-span-12"
@@ -132,7 +154,7 @@ export const ShowUserPage = () => {
                             type="text"
                             placeholder="Postleitzahl"
                             required={true}
-                            //value={USERDATA.postalCode} //TODO
+                            value={adressUser?.zip} 
                             fullWidth={true}
                             className="col-span-4"
                         />
@@ -142,7 +164,7 @@ export const ShowUserPage = () => {
                             type="text"
                             placeholder="Stadt"
                             required={true}
-                            //value={USERDATA.city} //TODO
+                            value={adressUser?.place} 
                             className="col-span-8"
                             fullWidth={true}
                         />
@@ -181,33 +203,35 @@ export const ShowUserPage = () => {
                                 text={blockaccount}
                                 leading={<BiShieldX/>}
                                 variant="accent"
-                                onClick={() => {
-                                    alert("TODO")
-                                }}
+                                onClick={()=> {
+                                    setShowModal(true);
+                                    }}
                             />
-
+                            <ConfirmationModal open={showModal} setOpen={setShowModal}
+                                               subtitle={messageBlock}
+                                               onConfirm={() => alert("Confirmed")}/> //TODO conform
+                            
                             <TextButton
                                 text={deleteaccount}
                                 leading={<BiTrash/>}
                                 variant="accent"
-                                onClick={() => {
-                                    alert("TODO")
+                                onClick={()=> {
+                                    setShowModal(true);
                                 }}
                             />
+                            <ConfirmationModal open={showModal} setOpen={setShowModal}
+                                               subtitle={messageDelete}
+                                               onConfirm={() => alert("Confirmed")}/> //TODO conform
                         </div>
                     </Card>
                 </div> 
                 
+                
+                
+                
     <BottomNavigationBar
-
         selected={"profile"}
     />
-
-
-    {/* Put absolutely positioned elements like modals here. */}
-                <ConfirmationModal open={showModal} setOpen={setShowModal}
-                                   subtitle="Das ist ein Bestätigungs-Modal. Hier kann man einige Einstellungen mitgeben!"
-                                   onConfirm={() => alert("Confirmed")}/>
             </>
         );
 

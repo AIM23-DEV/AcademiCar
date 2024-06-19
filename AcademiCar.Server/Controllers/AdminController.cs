@@ -14,7 +14,7 @@ public class AdminController : ControllerBase
         _globalService = globals;
     }
     
-    
+    //GET all users
     [HttpGet("users")]
     public async Task<IActionResult> GetUsers()
     {
@@ -22,6 +22,7 @@ public class AdminController : ControllerBase
         return Ok(users);
     }
     
+    //GET one user
     [HttpGet("users/{id}")]
     public async Task<ActionResult<User>> GetUserByIdAsync(string id)
     {
@@ -33,7 +34,21 @@ public class AdminController : ControllerBase
         return entry;
     }
     
+    //Get user adress
+    [HttpGet ("address/{id}")]
+    public async Task<IActionResult> GetAddressById(string id)
+    {
+        int idAsInt = int.Parse(id);
+        Address? address = await _globalService.AddressService.Get(idAsInt);
+        
+        if (address == null)
+            return NotFound();
+        
+        return Ok(address);
+    }
     
+    
+    //PUT DELETE user
     [HttpPut ("users/delete/{id}")]
     public async Task<IActionResult> DeleteUser(string id)
     {
@@ -46,7 +61,7 @@ public class AdminController : ControllerBase
         return Ok();
     }
     
-    
+    //PUT BLOCK user
     [HttpPut ("users/block/{id}")]
     public async Task<IActionResult> BlockUser(string id)
     {

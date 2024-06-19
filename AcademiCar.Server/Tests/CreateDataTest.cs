@@ -236,10 +236,10 @@ public class CreateDataTest : BaseUnitTest
         Address testAddress1 = new()
         {
             ID = -999,
-            Street = "Admin Street",
-            Number = 1,
+            Street = "Eggenbergeralle ",
+            Number = 12,
             ZIP = 1111,
-            Place = "Admin Place",
+            Place = "Graz",
             Longitude = "0°",
             Latitude = "0°"
         };
@@ -842,9 +842,9 @@ public class CreateDataTest : BaseUnitTest
         User testUser1 = new()
         {
             Id = "-999",
-            FirstName = "Admin",
-            LastName = "Test",
-            PictureSrc = "/src/assets/krucziii.jpg",
+            FirstName = "Sebastian",
+            LastName = "Kurz",
+            PictureSrc = "/src/assets/RealKurz.jpg",
             Email = "admin.test@academi.car",
             FK_Stats = -999,
             FK_Address = -999,
