@@ -8,17 +8,17 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
 using AcademiCar.Server;
+using Azure.Security.KeyVault.Certificates;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IGlobalService, GlobalService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddHttpContextAccessor(); 
+builder.Services.AddHttpContextAccessor();
 
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
@@ -27,29 +27,30 @@ builder.Logging.AddDebug();
 var env = builder.Environment;
 var metadataFilePath = Path.Combine(env.ContentRootPath, "metadata.xml");
 
-// Configure database context
+var vaultUri = new Uri("https://keyvaultacademicar.vault.azure.net/");
+
 if (!builder.Environment.IsDevelopment())
 {
-    var vaultUri = $"https://keyvaultacademicar.vault.azure.net/";
-    builder.Configuration.AddAzureKeyVault(new Uri(vaultUri), new DefaultAzureCredential());
-    
+    builder.Configuration.AddAzureKeyVault(vaultUri, new DefaultAzureCredential());
+
     var secrets = new[] { "DBHOST", "DBPASSWORD", "DBUSER" };
     foreach (var secret in secrets)
     {
         var secretValue = builder.Configuration[secret];
         builder.Configuration[secret] = secretValue;
     }
+
     builder.Services.AddDbContext<PostgresDbContext>(options =>
-        options.UseNpgsql($"Host={builder.Configuration["DBHOST"]};Database={builder.Configuration["DBNAME"]};Username={builder.Configuration["DBUSER"]};Password={builder.Configuration["DBPASSWORD"]}"));
+        options.UseNpgsql(
+            $"Host={builder.Configuration["DBHOST"]};Database={builder.Configuration["DBNAME"]};Username={builder.Configuration["DBUSER"]};Password={builder.Configuration["DBPASSWORD"]}"));
 }
 else
 {
     builder.Services.AddDbContext<PostgresDbContext>(options =>
         options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 }
-// Conditional SAML2 Setup
+
 var enableSaml2 = builder.Configuration.GetValue<bool>("EnableSaml2");
-var useSingleIdP = builder.Configuration.GetValue<bool>("UseSingleIdP");
 
 if (enableSaml2)
 {
@@ -70,10 +71,12 @@ if (enableSaml2)
                 MetadataLocation = metadataFilePath
             };
 
-            /*var certPath = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:FileName"];
-            var certPassword = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:Password"];
-            idp.SigningKeys.AddConfiguredKey(new X509Certificate2(certPath, certPassword));
-    */
+            var certificateName = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:CertificateName"];
+            var certificateClient = new CertificateClient(vaultUri, new DefaultAzureCredential());
+            var certificate = certificateClient.GetCertificateAsync(certificateName).GetAwaiter().GetResult().Value;
+
+            idp.SigningKeys.AddConfiguredKey(new X509Certificate2(certificate.Cer));
+
             options.IdentityProviders.Add(idp);
         });
 }
@@ -105,18 +108,14 @@ if (app.Environment.IsDevelopment())
             var user = new ClaimsPrincipal(new ClaimsIdentity());
             context.User = user;
         }
+
         await next();
     });
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
-
-app.UseRouting();
-
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.MapFallbackToFile("/index.html");
@@ -127,7 +126,6 @@ static void ApplyMigrations(IHost app)
 {
     using IServiceScope scope = app.Services.CreateScope();
     PostgresDbContext db = scope.ServiceProvider.GetRequiredService<PostgresDbContext>();
-    
-    // db.Database.EnsureDeleted();
+
     db.Database.Migrate();
 }
