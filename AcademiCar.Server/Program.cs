@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
 using AcademiCar.Server;
+using AcademiCar.Server.DAL.BaseInterfaces;
+using AcademiCar.Server.DAL.Repositories;
+using AcademiCar.Server.Services.ServiceImpl;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +21,9 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IGlobalService, GlobalService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IBalanceRepository, BalanceRepository>();
+
+builder.Services.AddScoped<BalanceService>(); //TODO Find net wo ich es no hinzufügen muss das ohne des geht
 builder.Services.AddHttpContextAccessor(); 
 
 builder.Logging.ClearProviders();

@@ -24,4 +24,5 @@ public interface IGlobalService
     public TripStopService TripStopService { get; set; }
     public UserService UserService { get; set; }
     public VehicleService VehicleService { get; set; }
+    public BalanceService BalanceService { get; set; }
 }
