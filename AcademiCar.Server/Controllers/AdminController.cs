@@ -22,6 +22,18 @@ public class AdminController : ControllerBase
         return Ok(users);
     }
     
+    [HttpGet("users/{id}")]
+    public async Task<ActionResult<User>> GetUserByIdAsync(string id)
+    {
+        var entry = await _globalService.UserService.Get(id);
+        if (entry == null)
+        {
+            return NotFound();
+        }
+        return entry;
+    }
+    
+    
     [HttpPut ("users/delete/{id}")]
     public async Task<IActionResult> DeleteUser(string id)
     {
@@ -48,13 +60,36 @@ public class AdminController : ControllerBase
         return Ok();
     }
     
-    [HttpGet("users/stats/{id}")]
-    public async Task<IActionResult> GetUserStats(string id)
+    [HttpGet("users/rating/{id}")]
+    public async Task<IActionResult> GetUserRating(string id)
     {
-        int idAsInt = int.Parse(id);
-        Stats? userStats  = await _globalService.StatsService.Get(idAsInt);
-        return Ok(userStats);
+        List<Rating?> userRatings  = await _globalService.RatingService.Get();
+        
+        if (userRatings.Count == 0)
+        {
+            return NotFound();
+        }; 
+        
+        List<Rating> FilterdUserRatings = userRatings.Where(r => r != null && r.FK_RatedUser == id).ToList();
+
+        float sumRating = 0;
+
+        foreach (Rating rating in FilterdUserRatings)
+        {
+            sumRating += rating.Score;
+        }
+        TotalRating totalRating = new (); 
+            
+        totalRating.Rating  = sumRating / FilterdUserRatings.Count();
+        
+        return Ok(totalRating);
     }
     
     
+}
+
+class TotalRating
+{
+    public float Rating { get; set; }
+
 }

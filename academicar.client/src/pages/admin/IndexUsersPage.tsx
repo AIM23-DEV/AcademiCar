@@ -6,7 +6,7 @@ import SetPageTitle from "../../hooks/set_page_title.tsx";
 import { useTranslation } from "react-i18next";
 import { BiChevronRight } from "react-icons/bi";
 import { Card } from "../../components/Cards.tsx";
-//import { RxAvatar } from "react-icons/rx";
+import { RxAvatar } from "react-icons/rx";
 import { Divider } from "../../components/Divider.tsx";
 import { useNavigate } from "react-router-dom";
 import { IoIosSearch } from "react-icons/io";
@@ -39,7 +39,7 @@ export const IndexUsersPage = () => {
                 setFilteredUsers(fetchedUsers);
             });
     }, []);
-
+    
     // Filter and sort users
     useEffect(() => {
         filterAndSortUsers();
@@ -116,14 +116,7 @@ export const IndexUsersPage = () => {
                                 text={`${user.firstName} ${user.lastName}`}
                                 textAlign="left"
                                 textFullWidth
-                                
-                                //TODO Wenn DB Fotos speichern kann  
-                                //leading={user.picture? <img src={user.picture} alt="User Picture" className="rounded-full w-12 h-12" /> : <RxAvatar />}
-                                leading={<img
-                                    src="https://academicar.blob.core.windows.net/profile-images/test.jpg"
-                                    alt="Profile Avatar"
-                                    className="rounded-full w-12 h-12"
-                                />}
+                                leading={user.pictureSrc? <img src={user.pictureSrc} alt="User Picture" className="rounded-full w-12 h-12" /> : <RxAvatar />}
                                 trailing={<BiChevronRight className="icon"/>}
                                 type="button"
                                 disabled={false}
