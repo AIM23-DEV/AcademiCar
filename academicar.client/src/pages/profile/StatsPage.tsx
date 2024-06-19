@@ -9,16 +9,15 @@ import {Card} from "../../components/Cards.tsx";
 import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 
-const DATA = {
-    rating: {
-        stars: 5.0,
-        count: 5
-    },
+interface TotalRating {
+    rating: number;
 }
 export const StatsPage = () => {
     const { id } = useParams();
     const [user, setUser] = useState<IUser>();
     const [stats, setStats] = useState<IStats>();
+    const [rating, setRating] = useState<TotalRating | null>();
+    const [review, setReview] = useState<number | null>();
     const [error, setError] = useState<string | null>();
     const [t] = useTranslation();
     const pageTitle = t("pages/profile:StatsPage.title");
@@ -48,6 +47,28 @@ export const StatsPage = () => {
     }
 
     if (!stats) return <div>Loading stats...</div>;
+
+    if (user && !rating) {
+        fetch(`https://localhost:5173/api/admin/users/rating/${user.id}`)
+            .then(response => response.json())
+            .then(data => setRating(data))
+            .catch(error => {
+                setError("There was an error fetching the Admin rating!");
+                console.error(error);
+            });
+    }
+    if (!rating) return <div>Loading stats...</div>;
+    
+    if (user && !review) {
+        fetch(`https://localhost:5173/api/admin/users/review/${user.id}`)
+            .then(response => response.json())
+            .then(data => setReview(data))
+            .catch(error => {
+                setError("There was an error fetching the Admin rating!");
+                console.error(error);
+            });
+    }
+    if (!setReview) return <div>Loading stats...</div>;
     
     return (
         <>
@@ -63,20 +84,20 @@ export const StatsPage = () => {
                         />
                     </div>
                     
-                    <div className="headline-2">{user.firstName} {user.lastName}</div>
+                    <div className="headline-2 flex justify-center">{user.firstName} {user.lastName}</div>
                     
                     <div className="flex justify-center">
-                        {Array.from({length: Math.floor(DATA.rating.stars) }).map((_, idx) => (
+                        {Array.from({length: Math.floor(rating.rating) }).map((_, idx) => (
                             <BiSolidStar key={idx} className="icon text-yellow-400" />
                         ))}
-                        {Array.from({ length: 5 - Math.floor(DATA.rating.stars) }).map((_, idx) => (
+                        {Array.from({ length: 5 - Math.floor(rating.rating) }).map((_, idx) => (
                             <BiSolidStar key={idx} className="icon text-gray-300" />
                         ))}
                     </div>
                     
                     <div className="flex justify-center">
                         <TextButton
-                            text={DATA.rating.count + " " +  t("pages/profile:StatsPage.ratings") + " (" + DATA.rating.stars + ")"}
+                            text={review + " " +  t("pages/profile:StatsPage.ratings") + " (" + rating.rating + ")"}
                             trailing={<BiChevronRight className="icon" />}
                         />
                     </div>
