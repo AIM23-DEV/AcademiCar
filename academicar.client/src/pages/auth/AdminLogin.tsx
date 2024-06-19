@@ -37,6 +37,8 @@ const AdminLogin: React.FC = () => {
                         type="text"
                         fullWidth={true}
                         placeholder="Admin"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
                         required={true}
                     />
 
@@ -45,6 +47,8 @@ const AdminLogin: React.FC = () => {
                         type="password"
                         fullWidth={true}
                         placeholder="*****"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                         required={true}
                     />
 
