@@ -3,8 +3,8 @@ import SetPageTitle from "../../hooks/set_page_title.tsx";
 import {TitleBar} from "../../components/TitleBar.tsx";
 import {BottomNavigationBar} from "../../components/BottomNavigationBar.tsx";
 import {Divider} from "../../components/Divider.tsx";
-import { BiSolidStar, BiChevronRight } from "react-icons/bi";
-import {TextButton} from "../../components/Buttons.tsx";
+import { BiSolidStar, /*BiChevronRight*/ } from "react-icons/bi";
+//import {TextButton} from "../../components/Buttons.tsx";
 import {Card} from "../../components/Cards.tsx";
 import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
@@ -96,10 +96,13 @@ export const StatsPage = () => {
                     </div>
                     
                     <div className="flex justify-center">
-                        <TextButton
+                        {/*<TextButton
                             text={review + " " +  t("pages/profile:StatsPage.ratings") + " (" + rating.rating + ")"}
                             trailing={<BiChevronRight className="icon" />}
-                        />
+                        />*/}
+                        <p>
+                            {review + " " +  t("pages/profile:StatsPage.ratings") + " (" + rating.rating + ")"}
+                        </p>
                     </div>
                 </div>
 
