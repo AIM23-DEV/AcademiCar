@@ -73,7 +73,7 @@ interface IStats {
     driverKilometres: number;
     passengerKilometres: number;
     nrTrips: number;
-    co2Savings: number;
+    cO2Savings: number;
 }
 
 interface ITravelPreference
