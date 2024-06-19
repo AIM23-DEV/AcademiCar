@@ -7,6 +7,8 @@ import {OpenRequestsList} from "./partials/OpenRequestsList.tsx";
 import {ChatsList} from "./partials/ChatsList.tsx";
 import {ChatSearchResultsList} from "./partials/ChatSearchResultsList.tsx";
 import {Input} from "../../components/FormFields.tsx";
+import {Chat} from "../../components/Chat.tsx";
+import {useParams} from 'react-router-dom';
 
 export const IndexChatsPage = () => {
     const [t] = useTranslation(["common", "pages/chat"]);
@@ -18,6 +20,9 @@ export const IndexChatsPage = () => {
     const noResultsInfoText = t("pages/chat:IndexChatsPage.modal_info_no_results");
     const noChatsTitleText = t("pages/chat:IndexChatsPage.modal_title_no_chats");
     const noChatsInfoText = t("pages/chat:IndexChatsPage.modal_info_no_chats");
+    const { loggedInUserId } = useParams();
+
+
     SetPageTitle(pageTitle);
 
     let isSearchActive = false;
@@ -63,6 +68,10 @@ export const IndexChatsPage = () => {
             <div>
                 <h1>{noChatsTitleText}</h1>
                 <p>{noChatsInfoText}</p>
+            </div>
+            
+            <div>
+                <Chat userId={loggedInUserId} chatId="-999"/>
             </div>
 
             <BottomNavigationBar selected="chat"/>

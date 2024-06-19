@@ -206,28 +206,53 @@ public class CreateDataTest : BaseUnitTest
     }
     
     [Test (ExpectedResult = true)]
-    public async Task<bool> CreateTestChatAndMessages()
+    public async Task<bool> CreateTestPersonalChatAndMessages()
     {
         try
         {
-            Chat? existingChat = await _unitOfWork.Chats.FindByIdAsync(-999);
+            PersonalChat? existingChat = await _unitOfWork.PersonalChats.FindByIdAsync(-999);
             if (existingChat != null) return true;
             
-            foreach (Chat chat in _GetChats())
-                await _unitOfWork.Chats.InsertAsync(chat);
+            foreach (PersonalChat chat in _getPersonalChats())
+                await _unitOfWork.PersonalChats.InsertAsync(chat);
             
-            foreach (Message message in _GetMessages())
-                await _unitOfWork.Messages.InsertAsync(message);
+            foreach (PersonalMessage message in _getPersonalMessages())
+                await _unitOfWork.PersonalMessages.InsertAsync(message);
             
             return true;
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Chat and Message creation failed: {e}");
+            Console.WriteLine($"Chat and PersonalMessage creation failed: {e}");
             return false;
         }
     }
+    
+    [Test (ExpectedResult = true)]
+    public async Task<bool> CreateTestGroupChatAndMessages()
+    {
+        try
+        {
+            GroupChat? existingChat = await _unitOfWork.GroupChats.FindByIdAsync(-999);
+            if (existingChat != null) return true;
+            
+            foreach (GroupChat chat in _getGroupChats())
+                await _unitOfWork.GroupChats.InsertAsync(chat);
 
+            foreach (GroupChatUser chatUser in _getGroupChatUsers())
+                await _unitOfWork.GroupChatUsers.InsertAsync(chatUser);
+            
+            foreach (GroupMessage message in _getGroupMessages())
+                await _unitOfWork.GroupMessages.InsertAsync(message);
+            
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Chat and PersonalMessage creation failed: {e}");
+            return false;
+        }
+    }
     
     #region Data
 
@@ -318,45 +343,45 @@ public class CreateDataTest : BaseUnitTest
 
         return [testCarlos1, testCarlos2, testCarlos3, testCarlos4, testCarlos5];
     }
-    private static Chat[] _GetChats()
+    private static PersonalChat[] _getPersonalChats()
     {
-        Chat testChat1 = new()
+        PersonalChat testChat1 = new()
         {
             ID = -999,
             FK_Trip = -999,
-            FK_User = "-999",
-            HasMoreThan2 = true,
+            FK_PassengerUser = "-999",
+            FK_DriverUser = "-998",
             UpdatedAt = DateTime.UtcNow.AddHours(-2).AddMinutes(-24)
         };
         
-        Chat testChat2 = new()
+        PersonalChat testChat2 = new()
         {
             ID = -998,
             FK_Trip = -998,
-            FK_User = "-998",
-            HasMoreThan2 = false,
-            UpdatedAt = DateTime.UtcNow.AddHours(-1).AddMinutes(-43)
-        };
-        
-        Chat testChat3 = new()
-        {
-            ID = -997,
-            FK_Trip = -997,
-            FK_User = "-997",
-            HasMoreThan2 = false,
-            UpdatedAt = DateTime.UtcNow.AddMinutes(-7)
-        };
-        
-        Chat testChat4 = new()
-        {
-            ID = -996,
-            FK_Trip = -996,
-            FK_User = "-996",
-            HasMoreThan2 = true,
-            UpdatedAt = DateTime.UtcNow.AddDays(-1).AddHours(17).AddMinutes(-6)
+            FK_PassengerUser = "-998",
+            FK_DriverUser = "-997",
+            UpdatedAt = DateTime.UtcNow.AddHours(-2).AddMinutes(-24)
         };
 
-        return [testChat1, testChat2, testChat3, testChat4];
+        return [testChat1, testChat2];
+    }
+    private static GroupChat[] _getGroupChats()
+    {
+        GroupChat testChat1 = new()
+        {
+            ID = -999,
+            FK_Trip = -999,
+            UpdatedAt = DateTime.UtcNow.AddHours(-2).AddMinutes(-24)
+        };
+        
+        GroupChat testChat2 = new()
+        {
+            ID = -998,
+            FK_Trip = -998,
+            UpdatedAt = DateTime.UtcNow.AddHours(-2).AddMinutes(-24)
+        };
+
+        return [testChat1, testChat2];
     }
     private static FavoriteUser[] _GetFavoriteUsers()
     {
@@ -422,49 +447,69 @@ public class CreateDataTest : BaseUnitTest
 
         return [testInterestPreference1, testInterestPreference2, testInterestPreference3, testInterestPreference4];
     }
-    private static Message[] _GetMessages()
+    private static GroupMessage[] _getGroupMessages()
     {
-        Message testMessage1 = new()
+        GroupMessage testMessage1 = new()
         {
             ID = -999,
-            FK_User = "-999",
-            FK_Chat = -999,
-            FK_TripRequest = -999,
+            FK_SenderUser = "-999",
+            FK_GroupChat = -999,
             Content = "Test Admin",
             SentAt = DateTime.UtcNow.AddHours(-2).AddMinutes(-24),
         };
         
-        Message testMessage2 = new()
+        GroupMessage testMessage2 = new()
         {
             ID = -998,
-            FK_User = "-998",
-            FK_Chat = -998,
-            FK_TripRequest = -998,
+            FK_SenderUser = "-998",
+            FK_GroupChat = -998,
             Content = "Test Eins",
             SentAt = DateTime.UtcNow.AddHours(-1).AddMinutes(-43),
         };
-        
-        Message testMessage3 = new()
+
+        return [testMessage1, testMessage2];
+    }
+    
+    private static GroupChatUser[] _getGroupChatUsers()
+    {
+        GroupChatUser testChatUser1 = new()
         {
-            ID = -997,
-            FK_User = "-997",
-            FK_Chat = -997,
-            FK_TripRequest = -997,
-            Content = "Zweiter Test",
-            SentAt = DateTime.UtcNow.AddMinutes(-7),
+            ID = -999,
+            FK_GroupChat = -999,
+            FK_User = "-999"
         };
         
-        Message testMessage4 = new()
+        GroupChatUser testChatUser2 = new()
         {
-            ID = -996,
-            FK_User = "-996",
-            FK_Chat = -996,
-            FK_TripRequest = -996,
-            Content = "3. Test",
-            SentAt = DateTime.UtcNow.AddDays(-1).AddHours(17).AddMinutes(-6),
+            ID = -998,
+            FK_GroupChat = -998,
+            FK_User = "-998"
         };
 
-        return [testMessage1, testMessage2, testMessage3, testMessage4];
+        return [testChatUser1, testChatUser2];
+    }
+    
+    private static PersonalMessage[] _getPersonalMessages()
+    {
+        PersonalMessage testMessage1 = new()
+        {
+            ID = -999,
+            FK_SenderUser = "-999",
+            FK_PersonalChat = -999,
+            Content = "Test Admin",
+            SentAt = DateTime.UtcNow.AddHours(-2).AddMinutes(-24),
+        };
+        
+        PersonalMessage testMessage2 = new()
+        {
+            ID = -998,
+            FK_SenderUser = "-998",
+            FK_PersonalChat = -998,
+            Content = "Test Eins",
+            SentAt = DateTime.UtcNow.AddHours(-1).AddMinutes(-43),
+        };
+
+        return [testMessage1, testMessage2];
     }
     private static MusicPreference[] _GetMusicPreferences()
     {

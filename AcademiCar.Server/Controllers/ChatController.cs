@@ -17,22 +17,20 @@ public class ChatController : ControllerBase
         _globalService = globals;
     }
     
-    
-    [HttpGet("{id}", Name = "GetChatbyId")]
-    public async Task<ActionResult<Chat>> GetTestByIdAsync(int id)
-    {
-        Chat? entry = await _globalService.ChatService.Get(id);
-        if (entry == null)
-        {
-            return NotFound();
-        }
-        
-        return entry;
-    }
-    
-    [HttpPost("Create")]
+    [HttpPost("CreatePersonalMessage")]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResultResponseModel))]
-    public async Task<Services.Response.ActionResultResponseModel> CreateChat([Required][FromBody] Chat chat)
-        => await _globalService.ChatService.Create(chat);
+    public async Task<Services.Response.ActionResultResponseModel> CreateChat([Required][FromBody] PersonalMessage personalMessage)
+        => await _globalService.PersonalMessageService.Create(personalMessage);
+    
+    
+    [HttpPost("CreateGroupMessage")]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResultResponseModel))]
+    public async Task<Services.Response.ActionResultResponseModel> CreateMessage([Required][FromBody] GroupMessage groupMessage)
+        => await _globalService.GroupMessageService.Create(groupMessage);
+    
+    //Chat & ChatUser
+    
+    
 }

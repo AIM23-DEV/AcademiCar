@@ -23,8 +23,8 @@ export const BottomNavigationBar = (props: BottomNavigationBarProps) => {
 
                 <BottomNavigationBarItem link="/trips/create" active={props.selected == 'create'}
                                          icon={<BiPlus className="icon-lg"/>}/>
-
-                <BottomNavigationBarItem link="/chat" active={props.selected == 'chat'}
+                //TODO replace with loggedInUserId
+                <BottomNavigationBarItem link="/chat/-999" active={props.selected == 'chat'}
                                          icon={<BiChat className="icon-lg"/>}/>
 
                 <BottomNavigationBarItem link="/profile" active={props.selected == 'profile'}
