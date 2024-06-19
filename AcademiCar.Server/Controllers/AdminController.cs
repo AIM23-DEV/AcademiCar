@@ -1,5 +1,4 @@
 using AcademiCar.Server.DAL.Entities;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AcademiCar.Server.Controllers;
@@ -44,48 +43,24 @@ public class AdminController : ControllerBase
     }
     
     [HttpGet("users/rating/{id}")]
-    public async Task<IActionResult> GetUserRating(string id)
+    public async Task<IActionResult> GetUserRatingData(string id)
     {
         List<Rating?> userRatings  = await _globalService.RatingService.Get();
+        if (userRatings.Count == 0)  return NotFound();
         
-        if (userRatings.Count == 0)
-        {
-            return NotFound();
-        }; 
+        userRatings = [..userRatings.Where(r => r != null && r.FK_RatedUser == id)];
+        float scoreSum = userRatings.Sum(rating => rating.Score);
         
-        List<Rating> FilterdUserRatings = userRatings.Where(r => r != null && r.FK_RatedUser == id).ToList();
-
-        float sumRating = 0;
-
-        foreach (Rating rating in FilterdUserRatings)
-        {
-            sumRating += rating.Score;
-        }
-        TotalRating totalRating = new (); 
-            
-        totalRating.Rating  = sumRating / FilterdUserRatings.Count();
+        RatingData ratingData = new(); 
+        ratingData.TotalScore  = scoreSum / userRatings.Count;
+        ratingData.RatingCount = userRatings.Count;
         
-        return Ok(totalRating);
-    }
-    
-    [HttpGet("users/review/{id}")]
-    public async Task<ActionResult<User>> GetUserReviews(string id)
-    {
-        List<Rating?> userRatings  = await _globalService.RatingService.Get();
-        
-        if (userRatings.Count == 0)
-        {
-            return NotFound();
-        }; 
-        
-        List<Rating> FilterdUserRatings = userRatings.Where(r => r != null && r.FK_RatedUser == id).ToList();
-        
-        return Ok(FilterdUserRatings.Count());
+        return Ok(ratingData);
     }
 }
 
-class TotalRating
+class RatingData
 {
-    public float Rating { get; set; }
-
+    public float TotalScore { get; set; }
+    public int RatingCount { get; set; }
 }

@@ -3,23 +3,23 @@ import SetPageTitle from "../../hooks/set_page_title.tsx";
 import {TitleBar} from "../../components/TitleBar.tsx";
 import {BottomNavigationBar} from "../../components/BottomNavigationBar.tsx";
 import {Divider} from "../../components/Divider.tsx";
-import { BiSolidStar, /*BiChevronRight*/ } from "react-icons/bi";
-//import {TextButton} from "../../components/Buttons.tsx";
+import { BiSolidStar } from "react-icons/bi";
 import {Card} from "../../components/Cards.tsx";
 import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 
-interface TotalRating {
-    rating: number;
+interface RatingData {
+    totalScore: number;
+    ratingCount: number;
 }
+
 export const StatsPage = () => {
     const { id } = useParams();
+    const [t] = useTranslation();
     const [user, setUser] = useState<IUser>();
     const [stats, setStats] = useState<IStats>();
-    const [rating, setRating] = useState<TotalRating | null>();
-    const [review, setReview] = useState<number | null>();
+    const [ratingData, setRatingData] = useState<RatingData | null>();
     const [error, setError] = useState<string | null>();
-    const [t] = useTranslation();
     const pageTitle = t("pages/profile:StatsPage.title");
     SetPageTitle(pageTitle);
 
@@ -48,27 +48,16 @@ export const StatsPage = () => {
 
     if (!stats) return <div>Loading stats...</div>;
 
-    if (user && !rating) {
+    if (user && !ratingData) {
         fetch(`https://localhost:5173/api/admin/users/rating/${user.id}`)
             .then(response => response.json())
-            .then(data => setRating(data))
+            .then(data => setRatingData(data))
             .catch(error => {
                 setError("There was an error fetching the Admin rating!");
                 console.error(error);
             });
     }
-    if (!rating) return <div>Loading stats...</div>;
-    
-    if (user && !review) {
-        fetch(`https://localhost:5173/api/admin/users/review/${user.id}`)
-            .then(response => response.json())
-            .then(data => setReview(data))
-            .catch(error => {
-                setError("There was an error fetching the Admin rating!");
-                console.error(error);
-            });
-    }
-    if (!setReview) return <div>Loading stats...</div>;
+    if (!ratingData) return <div>Loading rating...</div>;
     
     return (
         <>
@@ -87,21 +76,17 @@ export const StatsPage = () => {
                     <div className="headline-2 flex justify-center">{user.firstName} {user.lastName}</div>
                     
                     <div className="flex justify-center">
-                        {Array.from({length: Math.floor(rating.rating) }).map((_, idx) => (
+                        {Array.from({length: Math.floor(ratingData.totalScore) }).map((_, idx) => (
                             <BiSolidStar key={idx} className="icon text-yellow-400" />
                         ))}
-                        {Array.from({ length: 5 - Math.floor(rating.rating) }).map((_, idx) => (
+                        {Array.from({ length: 5 - Math.floor(ratingData.totalScore) }).map((_, idx) => (
                             <BiSolidStar key={idx} className="icon text-gray-300" />
                         ))}
                     </div>
                     
                     <div className="flex justify-center">
-                        {/*<TextButton
-                            text={review + " " +  t("pages/profile:StatsPage.ratings") + " (" + rating.rating + ")"}
-                            trailing={<BiChevronRight className="icon" />}
-                        />*/}
                         <p>
-                            {review + " " +  t("pages/profile:StatsPage.ratings") + " (" + rating.rating + ")"}
+                            {`${ratingData.ratingCount} ${t("pages/profile:StatsPage.ratings")} (${ratingData.totalScore})`}
                         </p>
                     </div>
                 </div>
