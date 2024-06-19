@@ -137,6 +137,46 @@ export const Checkmark = (props: CheckmarkProps) => {
     )
 }
 
+interface CheckmarkHandlerProps {
+    label?: string | ReactNode;
+    id?: string;
+    disabled?: boolean;
+    className?: string;
+    checked: boolean;
+    onChange: (checked: boolean) => void;
+}
+
+
+export const CheckmarkHandler = (props: CheckmarkHandlerProps) => {
+    const handleChange = (checked: boolean) => {
+        props.onChange(checked);
+    };
+
+    return (
+        <Field className={"flex items-center gap-3 body-2" + (props.className ? ' ' + props.className : '')}>
+            <Checkbox
+                id={props.id}
+                checked={props.checked}
+                onChange={handleChange}
+                disabled={props.disabled}
+                className="focusable focus:ring-offset-0 group block size-4 rounded border bg-white data-[checked]:bg-primary-600"
+            >
+                {({ checked }) => (
+                    <>
+                        <svg className={"stroke-gray-100 stroke-1 " + (checked ? 'opacity-100' : 'opacity-0')} viewBox="0 0 14 14" fill="none">
+                            <path d="M3 8L6 11L11 3.5" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                       
+                    </>
+                )}
+            </Checkbox>
+            {props.label ? <label htmlFor={props.id}>{props.label}</label> : null}
+        </Field>
+    )
+};
+
+
+
 interface RadioItemProps {
     value: any
     label: string | ReactNode

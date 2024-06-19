@@ -41,12 +41,12 @@ export const ShowCarsPage = () => {
     return (
         <>
             <TitleBar text={pageTitle} hasBackAction/>
-            <div className="w-full" onClick={() => navigate("update")}>
-                {vehicles?.length === 0 ? (
-                    <p>User has no vehicles</p>
-                ) : (
-                    vehicles?.map((vehicle) => (
-                        <Card label="Golf GTI" className="mt-4 w-full">
+            {vehicles?.length === 0 ? (
+                <p>User has no vehicles</p>
+            ) : (
+                vehicles?.map((vehicle) => (
+                    <div key={vehicle.id} onClick={() => navigate(`update/${vehicle.id}`)}>
+                        <Card key={vehicle.id} label={vehicle.brand_Model} className="mt-4 w-full">
                             <div className="grid grid-cols-3 gap-4">
                                 <div className="flex justify-left">
                                     <img
@@ -58,27 +58,27 @@ export const ShowCarsPage = () => {
                                 <div>
                                     <div className="flex">
                                         <BiCar className="icon-md mr-2"/>
-                                        <p>GU - 123 FH</p>
+                                        <p>{vehicle.license_Plate}</p>
                                     </div>
                                     <div className="flex">
                                         <BiPalette className="icon-md mr-2"/>
-                                        <p>{vehicle?.color}</p>
+                                        <p>{vehicle.color}</p>
                                     </div>
                                     <div className="flex">
                                         <BiGroup className="icon-md mr-2"/>
-                                        <p>{vehicle?.seats}</p>
+                                        <p>{vehicle.seats}</p>
                                     </div>
                                     <div className="flex">
                                         <BiBriefcaseAlt className="icon-md mr-2"/>
-                                        <p>Gepäckstücke</p>
+                                        <p>{vehicle.type}</p>
                                     </div>
                                 </div>
                                 <div className="flex justify-end items-center"><BiChevronRight className="icon-md"/>
                                 </div>
                             </div>
                         </Card>
-                    )))}
-            </div>
+                    </div>
+                )))}
 
             <Button
                 variant="primary"
@@ -88,10 +88,11 @@ export const ShowCarsPage = () => {
                 textFullWidth
                 type="button"
                 className="mt-8"
-                onClick={() => navigate("create")}
+                onClick={() => navigate("update")}
             />
 
             <BottomNavigationBar selected="profile"/>
         </>
-    );
+    )
+        ;
 };

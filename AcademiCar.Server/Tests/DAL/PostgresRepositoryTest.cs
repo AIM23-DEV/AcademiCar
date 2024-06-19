@@ -59,7 +59,6 @@ public class PostgresRepositoryTest : BaseUnitTest
                 ID = -899,
                 Color = "Yellow",
                 PictureSrc = "",
-                Features = "TestFeature",
                 FK_User = "-999",
             });
             await _unitOfWork.Vehicles.InsertAsync(new Vehicle()
@@ -68,7 +67,6 @@ public class PostgresRepositoryTest : BaseUnitTest
                 ID = -898,
                 Color = "Yellow",
                 PictureSrc = "",
-                Features = "TestFeature",
                 FK_User = "-999",
             });
                 

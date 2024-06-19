@@ -16,7 +16,8 @@
     "newcar": "Neues Fahrzeug"
   },
   "CarPage": {
-    "title": "Fahrzeug erstellen",
+    "title_create": "Fahrzeug erstellen",
+    "title_update": "Fahrzeug updaten",
     "brand_placeholder": "Fahrzeug",
     "brand": "Fahrzeugmarke und Modell",
     "economy_placeholder": "Spritverbrauch l / km",

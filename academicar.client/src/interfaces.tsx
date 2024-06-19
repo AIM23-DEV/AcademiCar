@@ -1,4 +1,4 @@
-interface IAddress{
+interface IAddress {
     id: number;
     street: string;
     number: number;
@@ -22,22 +22,19 @@ interface IChat {
     updatedAt: string;
 }
 
-interface IFavoriteUser
-{
+interface IFavoriteUser {
     id: number;
     fK_Userid: string;
     fK_FavUserId: string;
 }
 
-interface IInterestPreference
-{
+interface IInterestPreference {
     id: number;
     fK_Preferences: number;
     interest: string;
 }
 
-interface IMessage
-{
+interface IMessage {
     id: number;
     fK_User: string;
     fK_Chat: number;
@@ -46,8 +43,7 @@ interface IMessage
     sentAt: string;
 }
 
-interface IMusicPreference
-{
+interface IMusicPreference {
     id: number;
     fK_Preferences: number;
     genre: string;
@@ -76,8 +72,7 @@ interface IStats {
     co2Savings: number;
 }
 
-interface ITravelPreference
-{
+interface ITravelPreference {
     id: number;
     fK_Preferences: number;
     preferenceText: string;
@@ -122,9 +117,9 @@ interface ITripStop {
 
 interface IUser {
     id: string;
-    email: string; 
+    email: string;
     firstName: string;
-    lastName: string; 
+    lastName: string;
     pictureSrc: string;
     fK_Address: number;
     fK_Stats: number;
@@ -132,12 +127,30 @@ interface IUser {
 }
 
 interface IVehicle {
-    id: number;
+    id?: number;
     type: string;
     seats: number;
     color: string;
-    pictureSrc: any[];
-    features: string;
-    isElectric: boolean;
+    pictureSrc: string;
     fK_User: string;
+    brand_Model: string;
+    fuel_Consumption: string;
+    license_Plate: string;
+    fuel_Type: string;
+    ac: boolean;
+    led: boolean;
+    vehicle_Inspection: boolean;
+    automatic: boolean;
+    ski_Bag: boolean;
+    leather: boolean;
+    seat_Heating: boolean;
+    cruise_Control: boolean;
+    bike_Rack: boolean;
+    hand_luggage: boolean;
+    nounting_Roof: boolean;
+    animals: boolean;
+    suitcase: boolean;
+    ski: boolean;
+    plants: boolean;
+    other: boolean;
 }

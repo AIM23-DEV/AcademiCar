@@ -898,8 +898,6 @@ public class CreateDataTest : BaseUnitTest
             Seats = 4,
             Color = "Yellow",
             PictureSrc = "/src/assets/c1.jpg",
-            Features = "Admin console",
-            IsElectric = true,
             FK_User = "-999"
         };
         
@@ -910,8 +908,6 @@ public class CreateDataTest : BaseUnitTest
             Seats = 5,
             Color = "Red",
             PictureSrc = "/src/assets/c1.jpg",
-            Features = "Mitsubishi ;)",
-            IsElectric = false,
             FK_User = "-996"
         };
         
@@ -922,8 +918,6 @@ public class CreateDataTest : BaseUnitTest
             Seats = 2,
             Color = "Silver",
             PictureSrc = "/src/assets/c1.jpg",
-            Features = "Compact",
-            IsElectric = false,
             FK_User = "-997"
         };
 
