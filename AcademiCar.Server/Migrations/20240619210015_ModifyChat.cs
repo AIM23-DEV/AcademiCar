@@ -13,7 +13,7 @@ namespace AcademiCar.Server.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "PersonalMessage",
+                name: "Message",
                 schema: "academicar");
 
             migrationBuilder.DropTable(
