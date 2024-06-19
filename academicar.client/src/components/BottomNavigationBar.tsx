@@ -8,6 +8,7 @@ interface BottomNavigationBarProps {
 }
 
 // Todo proper routes
+// TODO replace with loggedInUserId
 export const BottomNavigationBar = (props: BottomNavigationBarProps) => {
     return (
         <nav id="bottom-navigation-bar"
@@ -23,7 +24,7 @@ export const BottomNavigationBar = (props: BottomNavigationBarProps) => {
 
                 <BottomNavigationBarItem link="/trips/create" active={props.selected == 'create'}
                                          icon={<BiPlus className="icon-lg"/>}/>
-                //TODO replace with loggedInUserId
+                
                 <BottomNavigationBarItem link="/chat/-999" active={props.selected == 'chat'}
                                          icon={<BiChat className="icon-lg"/>}/>
 
