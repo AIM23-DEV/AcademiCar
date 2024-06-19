@@ -3,12 +3,12 @@ using AcademiCar.Server.DAL.Entities;
 
 namespace AcademiCar.Server.Services.ServiceImpl;
 
-public class ChatService : Service<Chat>
+public class PersonalChatService : Service<PersonalChat>
 {
-    public ChatService(IChatRepository repo) : base(repo) { }
+    public PersonalChatService(IPersonalChatRepository repo) : base(repo) { }
 
 
-    public override async Task<bool> Validate(Chat entity)
+    public override async Task<bool> Validate(PersonalChat entity)
     {
         if (entity == null) validationDictionary.AddError("Empty", "No Chat was sent.");
 

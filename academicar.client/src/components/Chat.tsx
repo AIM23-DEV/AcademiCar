@@ -1,11 +1,17 @@
-﻿import React, { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import * as signalR from '@microsoft/signalr';
 
-const Chat: React.FC = () => {
-    const [messages, setMessages] = useState<{ user: string; message: string }[]>([]);
+
+interface ChatProps {
+    userId: string | undefined;
+    chatId: string | undefined;
+}
+
+export const Chat = (props: ChatProps) => {
+    const [messages, setMessages] = useState<{ userId: string; message: string }[]>([]);
     const [connection, setConnection] = useState<signalR.HubConnection | null>(null);
     const [message, setMessage] = useState<string>('');
-    const [user, setUser] = useState<string>('');
+
 
     useEffect(() => {
         const newConnection = new signalR.HubConnectionBuilder()
@@ -22,8 +28,8 @@ const Chat: React.FC = () => {
                 .then(() => {
                     console.log('Connected!');
 
-                    connection.on('ReceiveMessage', (user: string, message: string) => {
-                        setMessages(messages => [...messages, { user, message }]);
+                    connection.on('ReceiveMessage', (userId: string, message: string) => {
+                        setMessages(messages => [...messages, { userId, message }]);
                     });
                 })
                 .catch(e => console.log('Connection failed: ', e));
@@ -33,7 +39,8 @@ const Chat: React.FC = () => {
     const sendMessage = async () => {
         if (connection?.state === signalR.HubConnectionState.Connected) {
             try {
-                await connection.send('SendMessage', user, message);
+                //sendpersonal und sendgroup
+                await connection.send('SendMessage', props.userId, props.chatId, message);
                 setMessage('');
             } catch (e) {
                 console.error(e);
@@ -48,14 +55,6 @@ const Chat: React.FC = () => {
             <div>
                 <input
                     type="text"
-                    value={user}
-                    onChange={e => setUser(e.target.value)}
-                    placeholder="Name"
-                />
-            </div>
-            <div>
-                <input
-                    type="text"
                     value={message}
                     onChange={e => setMessage(e.target.value)}
                     placeholder="Message"
@@ -66,12 +65,10 @@ const Chat: React.FC = () => {
                 <h2>Messages</h2>
                 <ul>
                     {messages.map((msg, index) => (
-                        <li key={index}><strong>{msg.user}</strong>: {msg.message}</li>
+                        <li key={index}><strong></strong>: {msg.message}</li>
                     ))}
                 </ul>
             </div>
         </div>
     );
 };
-
-export default Chat;
