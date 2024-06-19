@@ -53,7 +53,6 @@ public class CreateController : ControllerBase
         existingTrip.Title = updatedTrip.Title;
         existingTrip.StartTime = updatedTrip.StartTime;
         existingTrip.EndTime = updatedTrip.EndTime;
-        existingTrip.Duration = updatedTrip.Duration;
         existingTrip.AvailableSeats = updatedTrip.AvailableSeats;
         existingTrip.Price = updatedTrip.Price;
         existingTrip.PaymentMethod = updatedTrip.PaymentMethod;

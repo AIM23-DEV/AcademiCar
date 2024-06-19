@@ -11,14 +11,46 @@ interface IAddress{
 interface ICarlos {
     id: number;
     message: string;
-    image: any;
+    imageSrc: string;
+}
+
+interface IChat {
+    id: number;
+    fK_Trip: number;
+    fK_User: string;
+    hasMoreThan2: boolean;
+    updatedAt: string;
 }
 
 interface IFavoriteUser
 {
     id: number;
     fK_Userid: string;
-    fK_Fav_Userid: string;
+    fK_FavUserId: string;
+}
+
+interface IInterestPreference
+{
+    id: number;
+    fK_Preferences: number;
+    interest: string;
+}
+
+interface IMessage
+{
+    id: number;
+    fK_User: string;
+    fK_Chat: number;
+    fK_TripRequest: number;
+    content: string;
+    sentAt: string;
+}
+
+interface IMusicPreference
+{
+    id: number;
+    fK_Preferences: number;
+    genre: string;
 }
 
 interface IPreferences {
@@ -28,18 +60,28 @@ interface IPreferences {
 
 interface IRating {
     id: number;
-    fK_User: string;
+    fK_RatingUser: string;
+    fK_RatedUser: string;
     isDriver: boolean;
     isPassenger: boolean;
     score: number;
+    comment: string;
 }
 
 interface IStats {
     id: number;
+    driverKilometres: number;
+    passengerKilometres: number;
     nrTrips: number;
     co2Savings: number;
-    driverRating: number;
-    passengerRating: number;
+}
+
+interface ITravelPreference
+{
+    id: number;
+    fK_Preferences: number;
+    preferenceText: string;
+    iconType: string;
 }
 
 interface ITrip {
@@ -47,16 +89,20 @@ interface ITrip {
     title: string;
     fK_Driver: string;
     fK_Vehicle: number;
-    passengers: string[];
     fK_StartAddress: number;
     fK_EndAddress: number;
-    startTime: any;
-    endTime: any;
-    duration: number;
+    startTime: Date;
+    endTime: Date;
     availableSeats: number;
     price: number;
     paymentMethod: string;
     status: string;
+}
+
+interface ITripPassenger {
+    id: number;
+    fK_Trip: number;
+    fK_PassengerUser: string;
 }
 
 interface ITripRequest {
@@ -67,14 +113,22 @@ interface ITripRequest {
     status: string;
 }
 
+interface ITripStop {
+    id: number;
+    fK_Trip: number;
+    fK_StopAddress: number;
+    stopDurationInMinutes: number;
+}
+
 interface IUser {
     id: string;
     email: string; 
     firstName: string;
     lastName: string; 
-    picture: any[];
+    pictureSrc: string;
+    fK_Address: number;
     fK_Stats: number;
-    favorits: string[];
+    phoneNumber: string;
 }
 
 interface IVehicle {
@@ -82,7 +136,7 @@ interface IVehicle {
     type: string;
     seats: number;
     color: string;
-    picture: any[];
+    pictureSrc: any[];
     features: string;
     isElectric: boolean;
     fK_User: string;

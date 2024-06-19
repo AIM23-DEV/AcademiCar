@@ -9,7 +9,7 @@ public class Vehicle : Entity
     public string Type { get; set; }
     public int Seats { get; set; }
     public string Color { get; set; }
-    public byte[] Picture { get; set; }
+    public string PictureSrc { get; set; }
     public string Features { get; set; }
     public bool IsElectric { get; set; }
 
