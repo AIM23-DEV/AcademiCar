@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
 using AcademiCar.Server;
+using AcademiCar.Server.DAL.BaseClasses;
+using AcademiCar.Server.DAL.BaseInterfaces;
+using AcademiCar.Server.DAL.Repositories;
 using AcademiCar.Server.DAL.Hub;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -145,6 +148,7 @@ static void ApplyMigrations(IHost app)
 {
     using IServiceScope scope = app.Services.CreateScope();
     PostgresDbContext db = scope.ServiceProvider.GetRequiredService<PostgresDbContext>();
-    db.Database.EnsureDeleted();
+    
+    // db.Database.EnsureDeleted();
     db.Database.Migrate();
 }

@@ -14,6 +14,7 @@ interface User {
     //roles: string[];
     userName: string
     firstName: string;
+    id: string;
     [key: string]: any;
 }
 
@@ -25,9 +26,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }): ReactElemen
     useEffect(() => {
         const checkAuth = async () => {
             try {
-                // TODO fix 404
-                //const response = await axios.get('/api/user', { withCredentials: true });
-                //setUser(response.data);
+                const response = await axios.get('/api/user', { withCredentials: true });
+                setUser(response.data);
             } catch (error) {
                 setUser(null);
             }
