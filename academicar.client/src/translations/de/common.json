@@ -4,6 +4,9 @@
     "search": "Suchen",
     "logout": "Abmelden"
   },
+  "states": {
+    "loading": "Laden"
+  },
   "trip": {
     "start": "Startpunkt",
     "destination": "Ziel",

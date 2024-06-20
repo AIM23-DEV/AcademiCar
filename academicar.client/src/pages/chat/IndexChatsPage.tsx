@@ -5,23 +5,28 @@ import {useTranslation} from "react-i18next";
 import {Button} from "../../components/Buttons.tsx";
 import {OpenRequestsList} from "./partials/OpenRequestsList.tsx";
 import {ChatsList} from "./partials/ChatsList.tsx";
-import {ChatSearchResultsList} from "./partials/ChatSearchResultsList.tsx";
 import {Input} from "../../components/FormFields.tsx";
 import {BiSearch, BiX} from "react-icons/bi";
 import {useEffect, useState} from "react";
-import {EmptyChat} from "./partials/EmptyChat.tsx";
 
 export const IndexChatsPage = () => {
+    // General
+    const [loading, setLoading] = useState(true);
+
+    // Translations
     const [t] = useTranslation(["common", "pages/chat"]);
     const pageTitle = t("pages/chat:IndexChatsPage.title");
     const requestsListLabelText = t("pages/chat:IndexChatsPage.label_requests");
-    const chatsListLabelText = t("pages/chat:IndexChatsPage.label_chats");
-    const resultsListLabelText = t("pages/chat:IndexChatsPage.label_results");
-    const noResultsTitleText = t("pages/chat:IndexChatsPage.modal_title_no_results");
-    const noResultsInfoText = t("pages/chat:IndexChatsPage.modal_info_no_results");
-    const noChatsTitleText = t("pages/chat:IndexChatsPage.modal_title_no_chats");
-    const noChatsInfoText = t("pages/chat:IndexChatsPage.modal_info_no_chats");
+    const searchPlaceholderText = t("pages/chat:IndexChatsPage.search_placeholder");
+    const loadingText = t("common:states.loading");
     SetPageTitle(pageTitle);
+
+    // Requests
+    const [requests, setRequests] = useState(new Array<ITripRequest>());
+    useEffect(() => {
+        setTimeout(() => setRequests(new Array<ITripRequest>()), 0);
+        // Todo fetch open requests
+    }, []);
 
     // Chat
     const [chats, setChats] = useState(new Array<IChat>());
@@ -29,61 +34,53 @@ export const IndexChatsPage = () => {
         fetch('https://localhost:5173/api/chat/user/-999') // Todo replace with current user id
             .then(response => response.json())
             .then((c: IChat[]) => setChats(c))
+            .then(() => setLoading(false))
             .catch(error => console.error(error));
     }, []);
 
     // Search
     const [search, setSearch] = useState("");
     const [searchActive, setSearchActive] = useState(false);
-    const SearchButton = () => {
-        return (<Button variant="outline"
-                        leading={searchActive ? <BiX className="icon-md"/> : <BiSearch className="icon-md"/>}
-                        onClick={() => setSearchActive(!searchActive)}/>);
-    };
+    const SearchButton =
+        <Button variant="outline"
+                leading={searchActive ? <BiX className="icon-md"/> : <BiSearch className="icon-md"/>}
+                onClick={() => {
+                    setSearchActive(!searchActive);
+                    setSearch("");
+                    setTimeout(() => document.getElementById("chat-search-input")?.focus(), 100);
+                }}/>;
 
-    return searchActive ? (
+    return (
         <>
-            <TitleBar text={pageTitle} trailing={<SearchButton/>}/>
+            <TitleBar text={pageTitle} trailing={SearchButton}/>
 
-            <div className="w-full flex flex-col items-center space-y-6">
-                <Input fullWidth leading={<BiSearch className="icon-md"/>}
-                       className="mt-6"
-                       placeholder="Suche nach einem Namen..." value={search}
-                       onChange={(val) => setSearch(val.target.value)}/>
+            {loading ?
+                // Todo better loading state
+                <div className="w-full flex flex-col items-center space-y-6 mt-8">
+                    {loadingText}...
+                </div> :
+                <div className="w-full flex flex-col items-center space-y-6">
+                    {/* Search input field if searching */}
+                    {searchActive ?
+                        <Input id="chat-search-input" fullWidth leading={<BiSearch className="icon-md"/>}
+                               className="mt-6"
+                               placeholder={searchPlaceholderText} value={search}
+                               onChange={(val) => setSearch(val.target.value)}/>
+                        : <></>}
 
-                {chats.length === 0 ? <EmptyChat type="searchResult"/> : <ChatSearchResultsList
-                    personalResults={chats.filter(c => !c.hasMoreThan2 && (search === "" || `${c.user?.firstName!} ${c.user?.lastName!}`.toLowerCase().includes(search.toLowerCase())))}
-                    tripResults={chats.filter(c => c.hasMoreThan2 && (search === "" || `${c.user?.firstName!} ${c.user?.lastName!}`.toLowerCase().includes(search.toLowerCase())))}
-                    labelText={resultsListLabelText}
-                    noResultsTitleText={noResultsTitleText}
-                    noResultsInfoText={noResultsInfoText}
-                />}
+                    {/* Open requests */}
+                    {!searchActive && requests.length > 0 ?
+                        <OpenRequestsList
+                            requests={[]}
+                            labelText={requestsListLabelText}
+                        /> : <></>}
 
-            </div>
-
-            <BottomNavigationBar selected="chat"/>
-        </>
-    ) : (
-        <>
-            <TitleBar text={pageTitle} trailing={<SearchButton/>}/>
-
-            <div className="w-full flex flex-col items-center">
-                <OpenRequestsList
-                    requests={[]}
-                    labelText={requestsListLabelText}
-                />
-                
-                <ChatsList
-                    personalChats={[]}
-                    tripChats={[]}
-                    labelText={chatsListLabelText}
-                />
-            </div>
-
-            <div>
-                <h1>{noChatsTitleText}</h1>
-                <p>{noChatsInfoText}</p>
-            </div>
+                    {/* Chats or search results */}
+                    <ChatsList className="mt-8"
+                               chats={chats.filter(c => search === "" || `${c.user?.firstName!} ${c.user?.lastName!}`.toLowerCase().includes(search.toLowerCase()))}
+                               searchActive={searchActive}/>
+                </div>
+            }
 
             <BottomNavigationBar selected="chat"/>
         </>

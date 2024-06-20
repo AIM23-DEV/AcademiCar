@@ -1,34 +1,31 @@
+import {useTranslation} from "react-i18next";
 import {Card} from "../../../components/Cards.tsx";
-import {Link} from "react-router-dom";
-
-interface Chat {
-    // TODO implement Chat type globally...
-}
+import {ChatListTile} from "./ChatListTile.tsx";
+import {EmptyChat} from "./EmptyChat.tsx";
 
 interface ChatsListProps {
-    personalChats: Chat[],
-    tripChats: Chat[],
-    labelText: string
+    chats: IChat[],
+    searchActive: boolean
+    className: string
 }
 
 export const ChatsList = (props: ChatsListProps) => {
+    const [t] = useTranslation(["common", "pages/chat"]);
+    const chatsListLabelText = t("pages/chat:IndexChatsPage.label_chats");
+    const resultsListLabelText = t("pages/chat:IndexChatsPage.label_results");
+
+    if (props.chats.length === 0) {
+        return <EmptyChat type={props.searchActive ? "searchResult" : "chatResult"} className={props.className}/>;
+    }
+
     return (
-        <Card label={props.labelText} className="mt-8">
-            <h1>Todo</h1>
+        <Card
+            label={props.searchActive ? resultsListLabelText : chatsListLabelText} className={props.className}>
             <ul>
-                {props.personalChats.map((chat, index) => (
-                    <li key={index}>
-                        <Link to={`/chat/personal/${index}`}>{chat.toString()}</Link>
-                    </li>
-                ))}
-            </ul>
-            <ul>
-                {props.tripChats.map((chat, index) => (
-                    <li key={index}>
-                        <Link to={`/chat/trip/${index}`}>{chat.toString()}</Link>
-                    </li>
+                {props.chats.map((chat) => (
+                    <ChatListTile chat={chat} key={chat.id}/>
                 ))}
             </ul>
         </Card>
-    )
+    );
 }
