@@ -20,17 +20,152 @@ public class ChatController : ControllerBase
     [HttpPost("CreatePersonalMessage")]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResultResponseModel))]
-    public async Task<Services.Response.ActionResultResponseModel> CreateChat([Required][FromBody] PersonalMessage personalMessage)
+    public async Task<Services.Response.ActionResultResponseModel> CreatePersonalMessage([Required][FromBody] PersonalMessage personalMessage)
         => await _globalService.PersonalMessageService.Create(personalMessage);
     
+    [HttpGet]
+    public async Task<IActionResult> GetPersonalMessageById(string id)
+    {
+        int idAsInt = int.Parse(id);
+        PersonalMessage? personalMessage = await _globalService.PersonalMessageService.Get(idAsInt);
+        
+        if (personalMessage == null)
+            return NotFound();
+        
+        return Ok(personalMessage);
+    }
     
-    [HttpPost("CreateGroupMessage")]
+    [HttpGet]
+    public async Task<IActionResult> GetPersonalMessages()
+    {
+        List<PersonalMessage?> personalMessageList = await _globalService.PersonalMessageService.Get();
+        
+        if (!personalMessageList.Any())
+            return NotFound();
+        
+        return Ok(personalMessageList);
+    }
+    
+  [HttpPost("CreateGroupMessage")]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResultResponseModel))]
-    public async Task<Services.Response.ActionResultResponseModel> CreateMessage([Required][FromBody] GroupMessage groupMessage)
+    public async Task<Services.Response.ActionResultResponseModel> CreateGroupMessage([Required][FromBody] GroupMessage groupMessage)
         => await _globalService.GroupMessageService.Create(groupMessage);
     
-    //Chat & ChatUser
+    [HttpGet]
+    public async Task<IActionResult> GetGroupMessageById(string id)
+    {
+        int idAsInt = int.Parse(id);
+        GroupMessage? groupMessage = await _globalService.GroupMessageService.Get(idAsInt);
+        
+        if (groupMessage == null)
+            return NotFound();
+        
+        return Ok(groupMessage);
+    }
     
+    [HttpGet]
+    public async Task<IActionResult> GetGroupMessages()
+    {
+        List<GroupMessage?> groupMessageList = await _globalService.GroupMessageService.Get();
+        
+        if (!groupMessageList.Any())
+            return NotFound();
+        
+        return Ok(groupMessageList);
+    }
     
+    [HttpPost("CreateGroupChat")]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResultResponseModel))]
+    public async Task<Services.Response.ActionResultResponseModel> CreateGroupChat([Required][FromBody] GroupChat groupChat)
+        => await _globalService.GroupChatService.Create(groupChat);
+    
+    [HttpGet]
+    public async Task<IActionResult> GetGroupChatById(string id)
+    {
+        int idAsInt = int.Parse(id);
+        GroupChat? groupChat = await _globalService.GroupChatService.Get(idAsInt);
+        
+        if (groupChat == null)
+            return NotFound();
+        
+        return Ok(groupChat);
+    }
+    
+    [HttpGet]
+    public async Task<IActionResult> GetGroupChats()
+    {
+        List<GroupChat?> groupChatList = await _globalService.GroupChatService.Get();
+        
+        if (!groupChatList.Any())
+            return NotFound();
+        
+        return Ok(groupChatList);
+    }
+    
+    [HttpPost("CreatePersonalChat")]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResultResponseModel))]
+    public async Task<Services.Response.ActionResultResponseModel> CreatePersonalChat([Required][FromBody] PersonalChat personalChat)
+        => await _globalService.PersonalChatService.Create(personalChat);
+    
+    [HttpGet]
+    public async Task<IActionResult> GetPersonalChatById(string id)
+    {
+        int idAsInt = int.Parse(id);
+        PersonalChat? personalChat = await _globalService.PersonalChatService.Get(idAsInt);
+        
+        if (personalChat == null)
+            return NotFound();
+        
+        return Ok(personalChat);
+    }
+    
+    [HttpGet]
+    public async Task<IActionResult> GetPersonalChats()
+    {
+        List<PersonalChat?> personalChatList = await _globalService.PersonalChatService.Get();
+        
+        if (!personalChatList.Any())
+            return NotFound();
+        
+        return Ok(personalChatList);
+    }
+    
+    [HttpPost("CreateGroupChatUser")]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResultResponseModel))]
+    public async Task<Services.Response.ActionResultResponseModel> CreateGroupChatUser([Required][FromBody] GroupChatUser groupChatUser)
+        => await _globalService.GroupChatUserService.Create(groupChatUser);
+    
+    [HttpGet]
+    public async Task<IActionResult> GetGroupChatUserById(string id)
+    {
+        int idAsInt = int.Parse(id);
+        GroupChatUser? groupChatUser = await _globalService.GroupChatUserService.Get(idAsInt);
+        
+        if (groupChatUser == null)
+            return NotFound();
+        
+        return Ok(groupChatUser);
+    }
+    
+    [HttpGet]
+    public async Task<IActionResult> GetGroupChatUsers()
+    {
+        List<GroupChatUser?> groupChatUserList = await _globalService.GroupChatUserService.Get();
+        
+        if (!groupChatUserList.Any())
+            return NotFound();
+        
+        return Ok(groupChatUserList);
+    }
+    
+    [HttpDelete]
+    public async void DeleteGroupChatUser(string id)
+    {
+        int idAsInt = int.Parse(id);
+        await _globalService.GroupChatUserService.Delete(idAsInt);
+    }
 }
