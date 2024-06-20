@@ -3,6 +3,7 @@ import axios from 'axios';
 
 interface AuthContextProps {
     user: User | null;
+    login: () => void;
     logout: () => void;
     selectIdP: () => void;
     adminLogin: (username: string, password: string) => Promise<void>; // Add adminLogin method
@@ -42,7 +43,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }): ReactElemen
     const selectIdP = () => {
         // Optionally, you can add the current URL as a return URL parameter
         const returnUrl = encodeURIComponent(window.location.href);
-        window.location.href = `/api/Account/login?returnUrl=${returnUrl}`;
+        window.location.href = `/saml2/login?returnUrl=${returnUrl}`;
     };
 
     const adminLogin = async (username: string, password: string) => {
@@ -55,12 +56,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }): ReactElemen
     };
 
     const logout = async () => {
-        await axios.get('/Saml2/Logout', { withCredentials: true });
-        setUser(null);
+        try {
+            await axios.post('/Saml2/logout', {}, { withCredentials: true });
+            setUser(null);
+        } catch (error) {
+            console.error('Logout failed:', error);
+        }
     };
 
     return (
-        <AuthContext.Provider value={{ user,  logout, selectIdP, adminLogin }}>
+        <AuthContext.Provider value={{ user, login, logout, selectIdP, adminLogin }}>
             {children}
         </AuthContext.Provider>
     );
