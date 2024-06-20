@@ -261,7 +261,7 @@ public class CreateDataTest : BaseUnitTest
         Address testAddress1 = new()
         {
             ID = -999,
-            Street = "Admin Street",
+            Street = "Admin Street 1",
             Number = 1,
             ZIP = 1111,
             Place = "Admin Place",
@@ -272,7 +272,7 @@ public class CreateDataTest : BaseUnitTest
         Address testAddress2 = new()
         {
             ID = -998,
-            Street = "Alte Poststraße",
+            Street = "Alte Poststraße 149",
             Number = 149,
             ZIP = 8020,
             Place = "Graz",
@@ -283,7 +283,7 @@ public class CreateDataTest : BaseUnitTest
         Address testAddress3 = new()
         {
             ID = -997,
-            Street = "Ostbahnstraße",
+            Street = "Ostbahnstraße 3",
             Number = 3,
             ZIP = 8041,
             Place = "Graz",
@@ -294,7 +294,7 @@ public class CreateDataTest : BaseUnitTest
         Address testAddress4 = new()
         {
             ID = -996,
-            Street = "Friedrich-Schmidt-Platz",
+            Street = "Friedrich-Schmidt-Platz 1",
             Number = 1,
             ZIP = 1010,
             Place = "Wien",

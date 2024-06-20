@@ -1,5 +1,6 @@
-﻿import { useState, useEffect } from 'react';
+﻿// @ts-ignore
 import * as signalR from '@microsoft/signalr';
+import { useState, useEffect } from 'react';
 
 
 interface ChatProps {
@@ -32,7 +33,7 @@ export const Chat = (props: ChatProps) => {
                         setMessages(messages => [...messages, { userId, message }]);
                     });
                 })
-                .catch(e => console.log('Connection failed: ', e));
+                .catch((e: any) => console.log('Connection failed: ', e));
         }
     }, [connection]);
 
