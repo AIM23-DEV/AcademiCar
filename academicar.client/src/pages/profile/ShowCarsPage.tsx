@@ -22,7 +22,7 @@ export const ShowCarsPage = () => {
         //}
         // /api/vehicle/vehicles/${user.id}
 
-        fetch('/api/vehicle/vehicles/1')
+        fetch('/api/vehicle/vehicles/-999')
             .then(response => {
                 if (response.status === 404) {
                     return [];
@@ -46,7 +46,7 @@ export const ShowCarsPage = () => {
             ) : (
                 vehicles?.map((vehicle) => (
                     <div key={vehicle.id} onClick={() => navigate(`update/${vehicle.id}`)}>
-                        <Card key={vehicle.id} label={vehicle.brand_Model} className="mt-4 w-full">
+                        <Card key={vehicle.id} label={vehicle.brandModel} className="mt-4 w-full">
                             <div className="grid grid-cols-3 gap-4">
                                 <div className="flex justify-left">
                                     <img
@@ -58,7 +58,7 @@ export const ShowCarsPage = () => {
                                 <div>
                                     <div className="flex">
                                         <BiCar className="icon-md mr-2"/>
-                                        <p>{vehicle.license_Plate}</p>
+                                        <p>{vehicle.licensePlate}</p>
                                     </div>
                                     <div className="flex">
                                         <BiPalette className="icon-md mr-2"/>

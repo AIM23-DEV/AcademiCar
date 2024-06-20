@@ -9,9 +9,9 @@ import {useNavigate} from "react-router-dom";
 import {useParams} from 'react-router-dom';
 
 export const UpdateCarPage = () => {
-    const {id} = useParams();
+    const {vehicleId} = useParams();
     const [t] = useTranslation(['common', 'pages/profile']);
-    const [vehicle, setVehicle] = useState<IVehicle | null>(null);
+    const [vehicle, setVehicle] = useState<IVehicle>();
     const navigate = useNavigate();
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -19,21 +19,21 @@ export const UpdateCarPage = () => {
         setVehicle(prevVehicle => prevVehicle ? ({
             ...prevVehicle,
             [id]: type === 'checkbox' ? checked : value,
-        }) : null);
+        }) : undefined);
     };
 
     const handleCheckboxChange = (id: string, checked: boolean) => {
         setVehicle(prevVehicle => prevVehicle ? ({
             ...prevVehicle,
             [id]: checked,
-        }) : null);
+        }) : undefined);
     };
 
     const handleSubmit = async () => {
         if (vehicle) {
             try {
-                const response = await fetch(id ? `/api/vehicle/update` : `/api/vehicle/Add`, {
-                    method: id ? 'PUT' : 'POST',
+                const response = await fetch(vehicleId ? `/api/profile/vehicles/update` : `/api/profile/vehicles/add`, {
+                    method: vehicleId ? 'PUT' : 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
@@ -64,7 +64,7 @@ export const UpdateCarPage = () => {
     const handleDelete = async () => {
         if (vehicle) {
             try {
-                const response = await fetch(`/api/vehicle/${vehicle.id}`, {
+                const response = await fetch(`/api/profile/vehicles/${vehicle.id}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
@@ -82,42 +82,44 @@ export const UpdateCarPage = () => {
     };
 
     useEffect(() => {
-        if (id) {
-            fetch(`/api/vehicle/${id}`)
+        if (vehicleId) {
+            fetch(`/api/profile/vehicle/${vehicleId}`)
                 .then(response => response.json())
                 .then((data) => setVehicle(data))
                 .catch((error) => console.error('Error fetching vehicle data:', error));
         } else {
             setVehicle({
+                fK_OwnerUser: '-999',  //TODO replace with logged in user id
                 type: '',
                 seats: 0,
                 color: '',
                 pictureSrc: '',
-                fK_User: '1',  //TODO replace with logged in user id
-                brand_Model: '',
-                fuel_Consumption: '',
-                license_Plate: '',
-                fuel_Type: '',
-                ac: false,
-                led: false,
-                vehicle_Inspection: false,
-                automatic: false,
-                ski_Bag: false,
-                leather: false,
-                seat_Heating: false,
-                cruise_Control: false,
-                bike_Rack: false,
-                hand_luggage: false,
-                nounting_Roof: false,
-                animals: false,
-                suitcase: false,
-                ski: false,
-                plants: false,
-                other: false,
+                brandModel: '',
+                fuelConsumption: '',
+                licensePlate: '',
+                fuelType: '',
+                hasAC: false,
+                hasLed: false,
+                hasVehicleInspection: false,
+                hasAutomatic: false,
+                hasSkiBag: false,
+                hasLeather: false,
+                hasSeatHeating: false,
+                hasCruiseControl: false,
+                hasBikeRack: false,
+                hasHandLuggageSpace: false,
+                hasMountingOnRoof: false,
+                hasAnimalSpace: false,
+                hasSuitcaseSpace: false,
+                hasSkiSpace: false,
+                hasPlantSpace: false,
+                hasOtherSpace: false,
             });
         }
-    }, [id]);
+    }, [vehicleId]);
 
+    if (!vehicle) return <div>Loading vehicle...</div>
+    
     const pageTitle_create = t("pages/profile:CarPage.title_create");
     const pageTitle_update = t("pages/profile:CarPage.title_update");
     const brand_placeholder = t("pages/profile:CarPage.brand_placeholder");
@@ -155,7 +157,7 @@ export const UpdateCarPage = () => {
 
     return (
         <div className="pb-24 w-full">
-            <TitleBar text={id ? pageTitle_update : pageTitle_create} hasBackAction/>
+            <TitleBar text={vehicleId ? pageTitle_update : pageTitle_create} hasBackAction/>
             <div className="flex justify-center">
                 <img
                     src="/../src/assets/react.svg"
@@ -170,7 +172,7 @@ export const UpdateCarPage = () => {
                     type="text"
                     fullWidth
                     placeholder={brand_placeholder}
-                    value={vehicle?.brand_Model}
+                    value={vehicle?.brandModel}
                     onChange={handleInputChange}
                     id="brand_Model"
                     className="col-span-full"
@@ -182,7 +184,7 @@ export const UpdateCarPage = () => {
                     type="number"
                     fullWidth
                     placeholder={economy_placeholder}
-                    value={vehicle?.fuel_Consumption}
+                    value={vehicle?.fuelConsumption}
                     onChange={handleInputChange}
                     id="fuel_Consumption"
                     className="col-span-full"
@@ -194,7 +196,7 @@ export const UpdateCarPage = () => {
                     type="text"
                     fullWidth
                     placeholder="GU - 123FH"
-                    value={vehicle?.license_Plate}
+                    value={vehicle?.licensePlate}
                     id="license_Plate"
                     onChange={handleInputChange}
                     className="col-span-full"
@@ -229,7 +231,7 @@ export const UpdateCarPage = () => {
                     label={fuel}
                     fullWidth
                     required={true}
-                    value={vehicle?.fuel_Consumption}
+                    value={vehicle?.fuelConsumption}
                     options={{1: fuel_selection, 2: "Benzin", 3: "Diesel", 4: "Elektro"}}
                     onChange={handleSelectChange}
                     id="fuel_Consumption"
@@ -253,56 +255,56 @@ export const UpdateCarPage = () => {
                 <div className="grid grid-cols-2 gap-4">
                     <CheckmarkHandler
                         label={ac}
-                        checked={vehicle?.ac ?? false}
+                        checked={vehicle?.hasAC ?? false}
                         onChange={(checked) => handleCheckboxChange('ac', checked)}
                         id="ac"
                         className="flex items-center gap-1"
                     />
                     <CheckmarkHandler
                         label={seat_heating}
-                        checked={vehicle?.seat_Heating ?? false}
+                        checked={vehicle?.hasSeatHeating ?? false}
                         onChange={(checked) => handleCheckboxChange('seat_Heating', checked)}
                         id="seat_Heating"
                         className="flex items-center gap-1"
                     />
                     <CheckmarkHandler
                         label={led}
-                        checked={vehicle?.led ?? false}
+                        checked={vehicle?.hasLed ?? false}
                         onChange={(checked) => handleCheckboxChange('led', checked)}
                         id="led"
                         className="flex items-center gap-1"
                     />
                     <CheckmarkHandler
                         label={ski_bag}
-                        checked={vehicle?.ski_Bag ?? false}
+                        checked={vehicle?.hasSkiBag ?? false}
                         onChange={(checked) => handleCheckboxChange('ski_Bag', checked)}
                         id="ski_Bag"
                         className="flex items-center gap-1"
                     />
                     <CheckmarkHandler
                         label={inspection}
-                        checked={vehicle?.vehicle_Inspection ?? false}
+                        checked={vehicle?.hasVehicleInspection ?? false}
                         onChange={(checked) => handleCheckboxChange('vehicle_Inspection', checked)}
                         id="vehicle_Inspection"
                         className="flex items-center gap-1"
                     />
                     <CheckmarkHandler
                         label={leather}
-                        checked={vehicle?.leather ?? false}
+                        checked={vehicle?.hasLeather ?? false}
                         onChange={(checked) => handleCheckboxChange('leather', checked)}
                         id="leather"
                         className="flex items-center gap-1"
                     />
                     <CheckmarkHandler
                         label={automatic}
-                        checked={vehicle?.automatic ?? false}
+                        checked={vehicle?.hasAutomatic ?? false}
                         onChange={(checked) => handleCheckboxChange('automatic', checked)}
                         id="automatic"
                         className="flex items-center gap-1"
                     />
                     <CheckmarkHandler
                         label={cruise_control}
-                        checked={vehicle?.cruise_Control ?? false}
+                        checked={vehicle?.hasCruiseControl ?? false}
                         onChange={(checked) => handleCheckboxChange('cruise_Control', checked)}
                         id="cruise_Control"
                         className="flex items-center gap-1"
@@ -313,56 +315,56 @@ export const UpdateCarPage = () => {
                 <div className="grid grid-cols-2 gap-4">
                     <CheckmarkHandler
                         label={bike_rack}
-                        checked={vehicle?.bike_Rack ?? false}
+                        checked={vehicle?.hasBikeRack ?? false}
                         onChange={(checked) => handleCheckboxChange('bike_Rack', checked)}
                         id="bike_Rack"
                         className="flex items-center gap-1"
                     />
                     <CheckmarkHandler
                         label={suitcase}
-                        checked={vehicle?.suitcase ?? false}
+                        checked={vehicle?.hasSuitcaseSpace ?? false}
                         onChange={(checked) => handleCheckboxChange('suitcase', checked)}
                         id="suitcase"
                         className="flex items-center gap-1"
                     />
                     <CheckmarkHandler
                         label={hand_luggage}
-                        checked={vehicle?.hand_luggage ?? false}
+                        checked={vehicle?.hasHandLuggageSpace ?? false}
                         onChange={(checked) => handleCheckboxChange('hand_luggage', checked)}
                         id="hand_luggage"
                         className="flex items-center gap-1"
                     />
                     <CheckmarkHandler
                         label={ski}
-                        checked={vehicle?.ski ?? false}
+                        checked={vehicle?.hasSkiSpace ?? false}
                         onChange={(checked) => handleCheckboxChange('ski', checked)}
                         id="ski"
                         className="flex items-center gap-1"
                     />
                     <CheckmarkHandler
                         label={roof_mounting}
-                        checked={vehicle?.nounting_Roof ?? false}
+                        checked={vehicle?.hasMountingOnRoof ?? false}
                         onChange={(checked) => handleCheckboxChange('nounting_Roof', checked)}
                         id="nounting_Roof"
                         className="flex items-center gap-1"
                     />
                     <CheckmarkHandler
                         label={plants}
-                        checked={vehicle?.plants ?? false}
+                        checked={vehicle?.hasPlantSpace ?? false}
                         onChange={(checked) => handleCheckboxChange('plants', checked)}
                         id="plantsplants"
                         className="flex items-center gap-1"
                     />
                     <CheckmarkHandler
                         label={animals}
-                        checked={vehicle?.animals ?? false}
+                        checked={vehicle?.hasAnimalSpace ?? false}
                         onChange={(checked) => handleCheckboxChange('animals', checked)}
                         id="animals"
                         className="flex items-center gap-1"
                     />
                     <CheckmarkHandler
                         label={other}
-                        checked={vehicle?.other ?? false}
+                        checked={vehicle?.hasOtherSpace ?? false}
                         onChange={(checked) => handleCheckboxChange('other', checked)}
                         id="other"
                         className="flex items-center gap-1"
@@ -379,7 +381,7 @@ export const UpdateCarPage = () => {
                 className="col-span-full mt-8"
             />
 
-            {id && (
+            {vehicleId && (
                 <Button
                     variant="secondary"
                     fullWidth

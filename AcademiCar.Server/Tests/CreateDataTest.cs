@@ -343,46 +343,6 @@ public class CreateDataTest : BaseUnitTest
 
         return [testCarlos1, testCarlos2, testCarlos3, testCarlos4, testCarlos5];
     }
-    private static PersonalChat[] _getPersonalChats()
-    {
-        PersonalChat testChat1 = new()
-        {
-            ID = -999,
-            FK_Trip = -999,
-            FK_PassengerUser = "-999",
-            FK_DriverUser = "-998",
-            UpdatedAt = DateTime.UtcNow.AddHours(-2).AddMinutes(-24)
-        };
-        
-        PersonalChat testChat2 = new()
-        {
-            ID = -998,
-            FK_Trip = -998,
-            FK_PassengerUser = "-998",
-            FK_DriverUser = "-997",
-            UpdatedAt = DateTime.UtcNow.AddHours(-2).AddMinutes(-24)
-        };
-
-        return [testChat1, testChat2];
-    }
-    private static GroupChat[] _getGroupChats()
-    {
-        GroupChat testChat1 = new()
-        {
-            ID = -999,
-            FK_Trip = -999,
-            UpdatedAt = DateTime.UtcNow.AddHours(-2).AddMinutes(-24)
-        };
-        
-        GroupChat testChat2 = new()
-        {
-            ID = -998,
-            FK_Trip = -998,
-            UpdatedAt = DateTime.UtcNow.AddHours(-2).AddMinutes(-24)
-        };
-
-        return [testChat1, testChat2];
-    }
     private static FavoriteUser[] _GetFavoriteUsers()
     {
         FavoriteUser testFavUserEntry1 = new()
@@ -447,29 +407,24 @@ public class CreateDataTest : BaseUnitTest
 
         return [testInterestPreference1, testInterestPreference2, testInterestPreference3, testInterestPreference4];
     }
-    private static GroupMessage[] _getGroupMessages()
+    private static GroupChat[] _getGroupChats()
     {
-        GroupMessage testMessage1 = new()
+        GroupChat testChat1 = new()
         {
             ID = -999,
-            FK_SenderUser = "-999",
-            FK_GroupChat = -999,
-            Content = "Test Admin",
-            SentAt = DateTime.UtcNow.AddHours(-2).AddMinutes(-24),
+            FK_Trip = -999,
+            UpdatedAt = DateTime.UtcNow.AddHours(-2).AddMinutes(-24)
         };
         
-        GroupMessage testMessage2 = new()
+        GroupChat testChat2 = new()
         {
             ID = -998,
-            FK_SenderUser = "-998",
-            FK_GroupChat = -998,
-            Content = "Test Eins",
-            SentAt = DateTime.UtcNow.AddHours(-1).AddMinutes(-43),
+            FK_Trip = -998,
+            UpdatedAt = DateTime.UtcNow.AddHours(-2).AddMinutes(-24)
         };
 
-        return [testMessage1, testMessage2];
+        return [testChat1, testChat2];
     }
-    
     private static GroupChatUser[] _getGroupChatUsers()
     {
         GroupChatUser testChatUser1 = new()
@@ -488,23 +443,22 @@ public class CreateDataTest : BaseUnitTest
 
         return [testChatUser1, testChatUser2];
     }
-    
-    private static PersonalMessage[] _getPersonalMessages()
+    private static GroupMessage[] _getGroupMessages()
     {
-        PersonalMessage testMessage1 = new()
+        GroupMessage testMessage1 = new()
         {
             ID = -999,
             FK_SenderUser = "-999",
-            FK_PersonalChat = -999,
+            FK_GroupChat = -999,
             Content = "Test Admin",
             SentAt = DateTime.UtcNow.AddHours(-2).AddMinutes(-24),
         };
         
-        PersonalMessage testMessage2 = new()
+        GroupMessage testMessage2 = new()
         {
             ID = -998,
             FK_SenderUser = "-998",
-            FK_PersonalChat = -998,
+            FK_GroupChat = -998,
             Content = "Test Eins",
             SentAt = DateTime.UtcNow.AddHours(-1).AddMinutes(-43),
         };
@@ -542,6 +496,50 @@ public class CreateDataTest : BaseUnitTest
         };
 
         return [testMusicPreference1, testMusicPreference2, testMusicPreference3, testMusicPreference4];
+    }
+    private static PersonalChat[] _getPersonalChats()
+    {
+        PersonalChat testChat1 = new()
+        {
+            ID = -999,
+            FK_Trip = -999,
+            FK_PassengerUser = "-999",
+            FK_DriverUser = "-998",
+            UpdatedAt = DateTime.UtcNow.AddHours(-2).AddMinutes(-24)
+        };
+        
+        PersonalChat testChat2 = new()
+        {
+            ID = -998,
+            FK_Trip = -998,
+            FK_PassengerUser = "-998",
+            FK_DriverUser = "-997",
+            UpdatedAt = DateTime.UtcNow.AddHours(-2).AddMinutes(-24)
+        };
+
+        return [testChat1, testChat2];
+    }
+    private static PersonalMessage[] _getPersonalMessages()
+    {
+        PersonalMessage testMessage1 = new()
+        {
+            ID = -999,
+            FK_SenderUser = "-999",
+            FK_PersonalChat = -999,
+            Content = "Test Admin",
+            SentAt = DateTime.UtcNow.AddHours(-2).AddMinutes(-24),
+        };
+        
+        PersonalMessage testMessage2 = new()
+        {
+            ID = -998,
+            FK_SenderUser = "-998",
+            FK_PersonalChat = -998,
+            Content = "Test Eins",
+            SentAt = DateTime.UtcNow.AddHours(-1).AddMinutes(-43),
+        };
+
+        return [testMessage1, testMessage2];
     }
     private static Preferences[] _GetPreferences()
     {
@@ -936,37 +934,97 @@ public class CreateDataTest : BaseUnitTest
     }
     private static Vehicle[] _GetVehicles()
     {
-        Vehicle testVehicleAdmin = new()
+        Vehicle testVehicle1 = new()
         {
             ID = -999,
+            FK_OwnerUser = "-999",
             Type = "Admin",
             Seats = 4,
             Color = "Yellow",
             PictureSrc = "/src/assets/c1.jpg",
-            FK_User = "-999"
+            BrandModel = "Admin",
+            FuelConsumption = "3",
+            LicensePlate = "GU - 123 FH",
+            FuelType = "Admin",
+            HasAC = false,
+            HasLed = false,
+            HasVehicleInspection = false,
+            HasAutomatic = true,
+            HasSkiBag = false,
+            HasLeather = false,
+            HasSeatHeating = false,
+            HasCruiseControl = false,
+            HasBikeRack = false,
+            HasHandLuggageSpace = true,
+            HasMountingOnRoof = false,
+            HasAnimalSpace = false,
+            HasSuitcaseSpace = false,
+            HasSkiSpace = false,
+            HasPlantSpace = false,
+            HasOtherSpace = true,
         };
         
-        Vehicle testVehicleDriver = new()
+        Vehicle testVehicle2 = new()
         {
             ID = -998,
+            FK_OwnerUser = "-996",
             Type = "Mitsubishi",
             Seats = 5,
             Color = "Red",
             PictureSrc = "/src/assets/c1.jpg",
-            FK_User = "-996"
+            BrandModel = "X",
+            FuelConsumption = "3",
+            LicensePlate = "GU - 123 FH",
+            FuelType = "Electric",
+            HasAC = true,
+            HasLed = true,
+            HasVehicleInspection = false,
+            HasAutomatic = true,
+            HasSkiBag = true,
+            HasLeather = true,
+            HasSeatHeating = true,
+            HasCruiseControl = true,
+            HasBikeRack = true,
+            HasHandLuggageSpace = true,
+            HasMountingOnRoof = true,
+            HasAnimalSpace = true,
+            HasSuitcaseSpace = true,
+            HasSkiSpace = true,
+            HasPlantSpace = true,
+            HasOtherSpace = true,
         };
         
-        Vehicle testVehiclePassenger2 = new()
+        Vehicle testVehicle3 = new()
         {
             ID = -997,
+            FK_OwnerUser = "-997",
             Type = "Vespa",
             Seats = 2,
             Color = "Silver",
             PictureSrc = "/src/assets/c1.jpg",
-            FK_User = "-997"
+            BrandModel = "1 2 3",
+            FuelConsumption = "3",
+            LicensePlate = "GU - 123 FH",
+            FuelType = "Super",
+            HasAC = false,
+            HasLed = false,
+            HasVehicleInspection = false,
+            HasAutomatic = true,
+            HasSkiBag = false,
+            HasLeather = true,
+            HasSeatHeating = false,
+            HasCruiseControl = false,
+            HasBikeRack = false,
+            HasHandLuggageSpace = true,
+            HasMountingOnRoof = false,
+            HasAnimalSpace = false,
+            HasSuitcaseSpace = false,
+            HasSkiSpace = false,
+            HasPlantSpace = false,
+            HasOtherSpace = true,
         };
 
-        return [testVehicleAdmin, testVehicleDriver, testVehiclePassenger2];
+        return [testVehicle1, testVehicle2, testVehicle3];
     }
     
     #endregion

@@ -626,19 +626,7 @@ namespace AcademiCar.Server.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ID"));
 
-                    b.Property<bool>("AC")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("Animals")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("Automatic")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("Bike_Rack")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Brand_Model")
+                    b.Property<string>("BrandModel")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -646,70 +634,84 @@ namespace AcademiCar.Server.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<bool>("Cruise_Control")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("FK_User")
+                    b.Property<string>("FK_OwnerUser")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Fuel_Consumption")
+                    b.Property<string>("FuelConsumption")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Fuel_Type")
+                    b.Property<string>("FuelType")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<bool>("Hand_luggage")
+                    b.Property<bool>("HasAC")
                         .HasColumnType("boolean");
 
-                    b.Property<bool>("Leather")
+                    b.Property<bool>("HasAnimalSpace")
                         .HasColumnType("boolean");
 
-                    b.Property<bool>("Led")
+                    b.Property<bool>("HasAutomatic")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("License_Plate")
+                    b.Property<bool>("HasBikeRack")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("HasCruiseControl")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("HasHandLuggageSpace")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("HasLeather")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("HasLed")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("HasMountingOnRoof")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("HasOtherSpace")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("HasPlantSpace")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("HasSeatHeating")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("HasSkiBag")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("HasSkiSpace")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("HasSuitcaseSpace")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("HasVehicleInspection")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("LicensePlate")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<bool>("Nounting_Roof")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("Other")
-                        .HasColumnType("boolean");
 
                     b.Property<string>("PictureSrc")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<bool>("Plants")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("Seat_Heating")
-                        .HasColumnType("boolean");
-
                     b.Property<int>("Seats")
                         .HasColumnType("integer");
-
-                    b.Property<bool>("Ski")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("Ski_Bag")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("Suitcase")
-                        .HasColumnType("boolean");
 
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<bool>("Vehicle_Inspection")
-                        .HasColumnType("boolean");
-
                     b.HasKey("ID");
+
+                    b.HasIndex("FK_OwnerUser");
 
                     b.ToTable("Vehicle", "academicar");
                 });
@@ -1132,6 +1134,17 @@ namespace AcademiCar.Server.Migrations
                     b.Navigation("Address");
 
                     b.Navigation("Stats");
+                });
+
+            modelBuilder.Entity("AcademiCar.Server.DAL.Entities.Vehicle", b =>
+                {
+                    b.HasOne("AcademiCar.Server.DAL.Entities.User", "OwnerUser")
+                        .WithMany()
+                        .HasForeignKey("FK_OwnerUser")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("OwnerUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -2,7 +2,6 @@
 using AcademiCar.Server.DAL.BaseInterfaces;
 using AcademiCar.Server.DAL.Entities;
 using AcademiCar.Server.DAL.UnitOfWork;
-using Microsoft.EntityFrameworkCore;
 
 namespace AcademiCar.Server.DAL.Repositories
 {
@@ -15,11 +14,8 @@ namespace AcademiCar.Server.DAL.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<Vehicle>> GetVehiclesWithUseId(string id)
-        {
-            return await _dbContext.Vehicles
-                .Where(v => v.FK_User == id)
-                .ToListAsync();
-        }
+        
+        public async Task<List<Vehicle>> GetVehiclesByUserId(string id)
+            => _dbContext.Vehicles.Where(v => v.FK_OwnerUser == id).ToList();
     }
 }

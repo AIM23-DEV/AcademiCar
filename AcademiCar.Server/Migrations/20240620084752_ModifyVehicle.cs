@@ -5,7 +5,7 @@
 namespace AcademiCar.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class VehicleEntiyMissings : Migration
+    public partial class ModifyVehicle : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -24,64 +24,22 @@ namespace AcademiCar.Server.Migrations
                 name: "IsElectric",
                 schema: "academicar",
                 table: "Vehicle",
-                newName: "Vehicle_Inspection");
+                newName: "HasVehicleInspection");
 
             migrationBuilder.RenameColumn(
                 name: "Features",
                 schema: "academicar",
                 table: "Vehicle",
-                newName: "License_Plate");
+                newName: "LicensePlate");
 
-            migrationBuilder.AddColumn<bool>(
-                name: "AC",
+            migrationBuilder.RenameColumn(
+                name: "FK_User",
                 schema: "academicar",
                 table: "Vehicle",
-                type: "boolean",
-                nullable: false,
-                defaultValue: false);
-
-            migrationBuilder.AddColumn<bool>(
-                name: "Animals",
-                schema: "academicar",
-                table: "Vehicle",
-                type: "boolean",
-                nullable: false,
-                defaultValue: false);
-
-            migrationBuilder.AddColumn<bool>(
-                name: "Automatic",
-                schema: "academicar",
-                table: "Vehicle",
-                type: "boolean",
-                nullable: false,
-                defaultValue: false);
-
-            migrationBuilder.AddColumn<bool>(
-                name: "Bike_Rack",
-                schema: "academicar",
-                table: "Vehicle",
-                type: "boolean",
-                nullable: false,
-                defaultValue: false);
+                newName: "FuelType");
 
             migrationBuilder.AddColumn<string>(
-                name: "Brand_Model",
-                schema: "academicar",
-                table: "Vehicle",
-                type: "text",
-                nullable: false,
-                defaultValue: "");
-
-            migrationBuilder.AddColumn<bool>(
-                name: "Cruise_Control",
-                schema: "academicar",
-                table: "Vehicle",
-                type: "boolean",
-                nullable: false,
-                defaultValue: false);
-
-            migrationBuilder.AddColumn<string>(
-                name: "Fuel_Consumption",
+                name: "BrandModel",
                 schema: "academicar",
                 table: "Vehicle",
                 type: "text",
@@ -89,7 +47,15 @@ namespace AcademiCar.Server.Migrations
                 defaultValue: "");
 
             migrationBuilder.AddColumn<string>(
-                name: "Fuel_Type",
+                name: "FK_OwnerUser",
+                schema: "academicar",
+                table: "Vehicle",
+                type: "text",
+                nullable: false,
+                defaultValue: "");
+
+            migrationBuilder.AddColumn<string>(
+                name: "FuelConsumption",
                 schema: "academicar",
                 table: "Vehicle",
                 type: "text",
@@ -97,7 +63,7 @@ namespace AcademiCar.Server.Migrations
                 defaultValue: "");
 
             migrationBuilder.AddColumn<bool>(
-                name: "Hand_luggage",
+                name: "HasAC",
                 schema: "academicar",
                 table: "Vehicle",
                 type: "boolean",
@@ -105,7 +71,7 @@ namespace AcademiCar.Server.Migrations
                 defaultValue: false);
 
             migrationBuilder.AddColumn<bool>(
-                name: "Leather",
+                name: "HasAnimalSpace",
                 schema: "academicar",
                 table: "Vehicle",
                 type: "boolean",
@@ -113,7 +79,7 @@ namespace AcademiCar.Server.Migrations
                 defaultValue: false);
 
             migrationBuilder.AddColumn<bool>(
-                name: "Led",
+                name: "HasAutomatic",
                 schema: "academicar",
                 table: "Vehicle",
                 type: "boolean",
@@ -121,7 +87,7 @@ namespace AcademiCar.Server.Migrations
                 defaultValue: false);
 
             migrationBuilder.AddColumn<bool>(
-                name: "Nounting_Roof",
+                name: "HasBikeRack",
                 schema: "academicar",
                 table: "Vehicle",
                 type: "boolean",
@@ -129,7 +95,7 @@ namespace AcademiCar.Server.Migrations
                 defaultValue: false);
 
             migrationBuilder.AddColumn<bool>(
-                name: "Other",
+                name: "HasCruiseControl",
                 schema: "academicar",
                 table: "Vehicle",
                 type: "boolean",
@@ -137,7 +103,7 @@ namespace AcademiCar.Server.Migrations
                 defaultValue: false);
 
             migrationBuilder.AddColumn<bool>(
-                name: "Plants",
+                name: "HasHandLuggageSpace",
                 schema: "academicar",
                 table: "Vehicle",
                 type: "boolean",
@@ -145,7 +111,7 @@ namespace AcademiCar.Server.Migrations
                 defaultValue: false);
 
             migrationBuilder.AddColumn<bool>(
-                name: "Seat_Heating",
+                name: "HasLeather",
                 schema: "academicar",
                 table: "Vehicle",
                 type: "boolean",
@@ -153,7 +119,7 @@ namespace AcademiCar.Server.Migrations
                 defaultValue: false);
 
             migrationBuilder.AddColumn<bool>(
-                name: "Ski",
+                name: "HasLed",
                 schema: "academicar",
                 table: "Vehicle",
                 type: "boolean",
@@ -161,7 +127,7 @@ namespace AcademiCar.Server.Migrations
                 defaultValue: false);
 
             migrationBuilder.AddColumn<bool>(
-                name: "Ski_Bag",
+                name: "HasMountingOnRoof",
                 schema: "academicar",
                 table: "Vehicle",
                 type: "boolean",
@@ -169,118 +135,190 @@ namespace AcademiCar.Server.Migrations
                 defaultValue: false);
 
             migrationBuilder.AddColumn<bool>(
-                name: "Suitcase",
+                name: "HasOtherSpace",
                 schema: "academicar",
                 table: "Vehicle",
                 type: "boolean",
                 nullable: false,
                 defaultValue: false);
+
+            migrationBuilder.AddColumn<bool>(
+                name: "HasPlantSpace",
+                schema: "academicar",
+                table: "Vehicle",
+                type: "boolean",
+                nullable: false,
+                defaultValue: false);
+
+            migrationBuilder.AddColumn<bool>(
+                name: "HasSeatHeating",
+                schema: "academicar",
+                table: "Vehicle",
+                type: "boolean",
+                nullable: false,
+                defaultValue: false);
+
+            migrationBuilder.AddColumn<bool>(
+                name: "HasSkiBag",
+                schema: "academicar",
+                table: "Vehicle",
+                type: "boolean",
+                nullable: false,
+                defaultValue: false);
+
+            migrationBuilder.AddColumn<bool>(
+                name: "HasSkiSpace",
+                schema: "academicar",
+                table: "Vehicle",
+                type: "boolean",
+                nullable: false,
+                defaultValue: false);
+
+            migrationBuilder.AddColumn<bool>(
+                name: "HasSuitcaseSpace",
+                schema: "academicar",
+                table: "Vehicle",
+                type: "boolean",
+                nullable: false,
+                defaultValue: false);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Vehicle_FK_OwnerUser",
+                schema: "academicar",
+                table: "Vehicle",
+                column: "FK_OwnerUser");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Vehicle_User_FK_OwnerUser",
+                schema: "academicar",
+                table: "Vehicle",
+                column: "FK_OwnerUser",
+                principalSchema: "academicar",
+                principalTable: "User",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "AC",
+            migrationBuilder.DropForeignKey(
+                name: "FK_Vehicle_User_FK_OwnerUser",
+                schema: "academicar",
+                table: "Vehicle");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Vehicle_FK_OwnerUser",
                 schema: "academicar",
                 table: "Vehicle");
 
             migrationBuilder.DropColumn(
-                name: "Animals",
+                name: "BrandModel",
                 schema: "academicar",
                 table: "Vehicle");
 
             migrationBuilder.DropColumn(
-                name: "Automatic",
+                name: "FK_OwnerUser",
                 schema: "academicar",
                 table: "Vehicle");
 
             migrationBuilder.DropColumn(
-                name: "Bike_Rack",
+                name: "FuelConsumption",
                 schema: "academicar",
                 table: "Vehicle");
 
             migrationBuilder.DropColumn(
-                name: "Brand_Model",
+                name: "HasAC",
                 schema: "academicar",
                 table: "Vehicle");
 
             migrationBuilder.DropColumn(
-                name: "Cruise_Control",
+                name: "HasAnimalSpace",
                 schema: "academicar",
                 table: "Vehicle");
 
             migrationBuilder.DropColumn(
-                name: "Fuel_Consumption",
+                name: "HasAutomatic",
                 schema: "academicar",
                 table: "Vehicle");
 
             migrationBuilder.DropColumn(
-                name: "Fuel_Type",
+                name: "HasBikeRack",
                 schema: "academicar",
                 table: "Vehicle");
 
             migrationBuilder.DropColumn(
-                name: "Hand_luggage",
+                name: "HasCruiseControl",
                 schema: "academicar",
                 table: "Vehicle");
 
             migrationBuilder.DropColumn(
-                name: "Leather",
+                name: "HasHandLuggageSpace",
                 schema: "academicar",
                 table: "Vehicle");
 
             migrationBuilder.DropColumn(
-                name: "Led",
+                name: "HasLeather",
                 schema: "academicar",
                 table: "Vehicle");
 
             migrationBuilder.DropColumn(
-                name: "Nounting_Roof",
+                name: "HasLed",
                 schema: "academicar",
                 table: "Vehicle");
 
             migrationBuilder.DropColumn(
-                name: "Other",
+                name: "HasMountingOnRoof",
                 schema: "academicar",
                 table: "Vehicle");
 
             migrationBuilder.DropColumn(
-                name: "Plants",
+                name: "HasOtherSpace",
                 schema: "academicar",
                 table: "Vehicle");
 
             migrationBuilder.DropColumn(
-                name: "Seat_Heating",
+                name: "HasPlantSpace",
                 schema: "academicar",
                 table: "Vehicle");
 
             migrationBuilder.DropColumn(
-                name: "Ski",
+                name: "HasSeatHeating",
                 schema: "academicar",
                 table: "Vehicle");
 
             migrationBuilder.DropColumn(
-                name: "Ski_Bag",
+                name: "HasSkiBag",
                 schema: "academicar",
                 table: "Vehicle");
 
             migrationBuilder.DropColumn(
-                name: "Suitcase",
+                name: "HasSkiSpace",
+                schema: "academicar",
+                table: "Vehicle");
+
+            migrationBuilder.DropColumn(
+                name: "HasSuitcaseSpace",
                 schema: "academicar",
                 table: "Vehicle");
 
             migrationBuilder.RenameColumn(
-                name: "Vehicle_Inspection",
+                name: "LicensePlate",
+                schema: "academicar",
+                table: "Vehicle",
+                newName: "Features");
+
+            migrationBuilder.RenameColumn(
+                name: "HasVehicleInspection",
                 schema: "academicar",
                 table: "Vehicle",
                 newName: "IsElectric");
 
             migrationBuilder.RenameColumn(
-                name: "License_Plate",
+                name: "FuelType",
                 schema: "academicar",
                 table: "Vehicle",
-                newName: "Features");
+                newName: "FK_User");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Vehicle_FK_User",
