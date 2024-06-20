@@ -49,7 +49,7 @@ public class AdminController : ControllerBase
     
     
     //PUT DELETE user
-    [HttpPut ("users/delete/{id}")]
+    [HttpDelete ("users/deleteUser/{id}")]
     public async Task<IActionResult> DeleteUser(string id)
     {
         User? user  = await _globalService.UserService.Get(id);
@@ -62,15 +62,15 @@ public class AdminController : ControllerBase
     }
     
     //PUT BLOCK user
-    [HttpPut ("users/block/{id}")]
+    [HttpPut ("users/blockUser/{id}")]
     public async Task<IActionResult> BlockUser(string id)
     {
         User? user  = await _globalService.UserService.Get(id);
         if (user == null)
         {
-            return NotFound();
+            return BadRequest();
         }
-        user.PasswordHash = "";
+        user.PasswordHash = "BLOCKED";
         await _globalService.UserService.Update(user);
         return Ok();
     }
