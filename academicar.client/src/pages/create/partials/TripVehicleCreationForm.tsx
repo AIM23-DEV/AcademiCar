@@ -1,25 +1,63 @@
 import {useTranslation} from "react-i18next";
 import {Card} from "../../../components/Cards.tsx";
 import {Checkmark, Input, Select} from "../../../components/FormFields.tsx";
+import {useEffect, useState} from "react";
 
-export const TripVehicleCreationForm = () => {
+interface TripVehicleCreationFormProps {
+    driverId: string;
+    vehicleId?: number;
+    availableSeats?: number;
+
+    setVehicleId: (vehicleId: number) => void;
+    setAvailableSeats: (value: number) => void;
+}
+
+type VehicleOptions = {
+    [key: number]: string;
+}
+
+export const TripVehicleCreationForm = (props: TripVehicleCreationFormProps) => {
     const [t] = useTranslation(["common", "pages/create"]);
-    const vehicleLabelText = t("pages/create:CreateTripPage3.label_vehicle");
-    const createVehicleLinkText = t("pages/create:CreateTripPage3.link_create_vehicle");
-    const seatsLabelText = t("pages/create:CreateTripPage3.label_seats");
-    const extrasLabelText = t("pages/create:CreateTripPage3.label_extras");
-    const extrasUnitText = t("pages/create:CreateTripPage3.extra_unit");
-    const luggageExtraText = t("pages/create:CreateTripPage3.extra_small_luggage");
-    const suitcaseExtraText = t("pages/create:CreateTripPage3.extra_suitcase");
-    const bicycleExtraText = t("pages/create:CreateTripPage3.extra_bicycle");
-    const skiExtraText = t("pages/create:CreateTripPage3.extra_ski");
-    const miscExtraText = t("pages/create:CreateTripPage3.extra_misc");
+    const vehicleLabelText = t("pages/create:CreateTripPage.label_vehicle");
+    const createVehicleLinkText = t("pages/create:CreateTripPage.link_create_vehicle");
+    const seatsLabelText = t("pages/create:CreateTripPage.label_seats");
+    const extrasLabelText = t("pages/create:CreateTripPage.label_extras");
+    const extrasUnitText = t("pages/create:CreateTripPage.extra_unit");
+    const luggageExtraText = t("pages/create:CreateTripPage.extra_small_luggage");
+    const suitcaseExtraText = t("pages/create:CreateTripPage.extra_suitcase");
+    const bicycleExtraText = t("pages/create:CreateTripPage.extra_bicycle");
+    const skiExtraText = t("pages/create:CreateTripPage.extra_ski");
+    const miscExtraText = t("pages/create:CreateTripPage.extra_misc");
+
+    const [vehicleOptions, setVehicleOptions] = useState<VehicleOptions>({});
+
+    useEffect(() => {
+        fetch(`https://localhost:5173/api/create/vehicles/${props.driverId}`)
+            .then(response => response.json())
+            .then((fetchedVehicles: IVehicle[]) => {
+                const options = fetchedVehicles.reduce((options: VehicleOptions, vehicle) => {
+                    const key = vehicle.id ?? -999
+                    options[key] = vehicle.type;
+                    return options;
+                }, {});
+                setVehicleOptions(options);
+            });
+    }, [props.driverId]);
 
     return (
         <div className="w-full flex flex-col items-center">
             <Card label={vehicleLabelText} outsideLink={createVehicleLinkText}>
-                <Select/>
-                <div> {seatsLabelText} <Input/></div>
+                <Select
+                    options={vehicleOptions}
+                    onChange={(e) => props.setVehicleId(Number(e.target.value))}
+                />
+                <span>
+                    {seatsLabelText}
+                    <Input
+                        value={`${props.availableSeats}`}
+                        onChange={(e) => props.setAvailableSeats(Number(e.target.value))}
+                    />
+                </span>
             </Card>
 
             <Card label={extrasLabelText}>
