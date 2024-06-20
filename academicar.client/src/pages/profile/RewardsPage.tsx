@@ -37,6 +37,8 @@ export const RewardsPage = () => {
     const pageTitle = t("pages/profile:RewardsPage.title");
     SetPageTitle(pageTitle);
     
+    const amount = 4;
+    
     // TODO SafeHtml: concatenate some strings instead, extract html out of translation
     // <SafeHtml html={t("pages/profile:RewardsPage.parking.text", {amount: DATA.parking})} />
     return (
@@ -51,7 +53,7 @@ export const RewardsPage = () => {
                     >
                         <div className="flex flex-col items-center justify-center gap-5">
                             <div className="flex text-left subtitle">
-                                TODO: Replace this "SafeHtml"
+                                {t("pages/profile:RewardsPage.parking.text", {amount: amount})}
                             </div>
                             <Button
                                 variant="outline"
@@ -78,7 +80,7 @@ export const RewardsPage = () => {
                                         <IconButton
                                             variant="primary"
                                             icon={<BiLeaf className="icon-md"/>}
-                                            onClick={() => alert("TODO")}
+                                            onClick={() => alert(t("pages/profile:RewardsPage.receiveDiscount"))}
                                         />
                                     </div>
 

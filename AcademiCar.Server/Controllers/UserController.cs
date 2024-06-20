@@ -72,6 +72,8 @@ namespace AcademiCar.Server.Controllers
                 return Unauthorized("User is not logged in.");
             }
 
+            var roles = await _userManager.GetRolesAsync(user);
+
             return user;
         }
 

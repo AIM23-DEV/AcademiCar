@@ -6,8 +6,9 @@ using Sustainsys.Saml2.AspNetCore2;
 using Sustainsys.Saml2.Metadata;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
-using System.Security.Cryptography.X509Certificates;
 using AcademiCar.Server;
+using AcademiCar.Server.DAL.BaseClasses;
+using AcademiCar.Server.DAL.BaseInterfaces;
 using AcademiCar.Server.DAL.Hub;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,7 +20,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IGlobalService, GlobalService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddHttpContextAccessor(); 
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
