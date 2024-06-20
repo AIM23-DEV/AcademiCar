@@ -10,6 +10,7 @@ interface InputProps {
     fullWidth?: boolean
     placeholder?: string
     required?: boolean
+    readonly?: boolean
     leading?: ReactNode
     trailing?: ReactNode
     className?: string
@@ -39,6 +40,7 @@ export const Input = (props: InputProps) => {
                     className={"form-field" + (props.fullWidth ? ' w-full ' : ' w-fit') + (props.leading ? ' pl-10' : '') + (props.trailing ? ' pr-10' : '')}
                     placeholder={props.placeholder && props.placeholder}
                     required={props.required && props.required}
+                    readOnly={props.readonly && props.readonly}
                     value={props.value}
                     onChange={props.onChange}
                 />

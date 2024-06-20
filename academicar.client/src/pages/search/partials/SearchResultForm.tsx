@@ -7,18 +7,15 @@ import {TextLink} from "../../../components/Buttons.tsx";
 import { BiFilter, BiSortAlt2 } from "react-icons/bi";
 import { Menu, MenuButton, MenuItems } from '@headlessui/react'
 
-/*const SEARCHDATA = {
-    startPoint: "Graz Hauptbahnhof",
-    endPoint: "Wien Flughafen",
-    date: "2024-05-16",
-    time: "7:38",
-}*/
+type SearchResultFormProps = {
+    startPoint: string;
+    destination: string;
+    date: string;
+    time: string;
+};
 
-export const SearchResultForm = () => {
+export const SearchResultForm: React.FC<SearchResultFormProps> = ({ startPoint, destination, date, time }) => {
     const [t] = useTranslation();
-    const [startPoint, setStartPoint] = useState('');
-    const [date, setDate] = useState('');
-    const [time, setTime] = useState('');
     const [radioValue, setRadioValue] = useState();
     
     return (
@@ -26,29 +23,27 @@ export const SearchResultForm = () => {
             <div>
                 <div className="w-full grid grid-cols-12 gap-4">
                     <Input
+                        readonly
                         type="text"
                         fullWidth
                         placeholder="Strecke"
-                        value={startPoint}
-                        onChange={(e) => {
-                            setStartPoint(e.target.value)
-                        }}
+                        value={startPoint + " - " + destination}
                         className="col-span-full"
                     />
                     <Input
+                        readonly
                         type="date"
                         fullWidth
                         placeholder="Datum"
                         value={date}
-                        onChange={(e) => setDate(e.target.value)}
                         className="col-span-6"
                     />
                     <Input
+                        readonly
                         type="time"
                         fullWidth
                         placeholder="Uhrzeit"
                         value={time}
-                        onChange={(e) => setTime(e.target.value)}
                         className="col-span-6"
                     />
                 </div>
