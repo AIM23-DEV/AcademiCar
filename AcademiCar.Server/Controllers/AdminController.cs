@@ -23,36 +23,45 @@ public class AdminController : ControllerBase
     }
 
     [HttpGet("users/{id}")]
-    public async Task<ActionResult<User>> GetUserByIdAsync(string id)
+    public async Task<IActionResult> GetUserById(string id)
     {
-        var entry = await _globalService.UserService.Get(id);
-        if (entry == null)
-        {
-            return NotFound();
-        }
+        User? user = await _globalService.UserService.Get(id);
+        if (user == null) return NotFound();
 
-        return entry;
+        return Ok(user);
     }
 
+    [HttpGet("users/address/{id}")]
+    public async Task<IActionResult> GetUserAddress(string id)
+    {
+        User? user = await _globalService.UserService.Get(id);
+        if (user == null) return NotFound();
+        
+        Address? userAddress  = await _globalService.AddressService.Get(user.FK_Address);
+        if (userAddress == null) return NotFound();
+
+        return Ok(userAddress);
+    }
+    
     [HttpGet("users/stats/{id}")]
     public async Task<IActionResult> GetUserStats(string id)
     {
         int idAsInt = int.Parse(id);
-        Stats? userStats  = await _globalService.StatsService.Get(idAsInt);
+        Stats? userStats = await _globalService.StatsService.Get(idAsInt);
         return Ok(userStats);
     }
     
     [HttpGet("users/rating/{id}")]
     public async Task<IActionResult> GetUserRatingData(string id)
     {
-        List<Rating?> userRatings  = await _globalService.RatingService.Get();
-        if (userRatings.Count == 0)  return NotFound();
+        List<Rating?> userRatings = await _globalService.RatingService.Get();
+        if (userRatings.Count == 0) return NotFound();
         
         userRatings = [..userRatings.Where(r => r != null && r.FK_RatedUser == id)];
         float scoreSum = userRatings.Sum(rating => rating.Score);
         
         RatingData ratingData = new(); 
-        ratingData.TotalScore  = scoreSum / userRatings.Count;
+        ratingData.TotalScore = scoreSum / userRatings.Count;
         ratingData.RatingCount = userRatings.Count;
         
         return Ok(ratingData);

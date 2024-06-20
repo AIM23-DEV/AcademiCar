@@ -14,7 +14,7 @@ interface RatingData {
 }
 
 export const StatsPage = () => {
-    const { id } = useParams();
+    const { loggedInUserId } = useParams();
     const [t] = useTranslation();
     const [user, setUser] = useState<IUser>();
     const [stats, setStats] = useState<IStats>();
@@ -24,14 +24,14 @@ export const StatsPage = () => {
     SetPageTitle(pageTitle);
 
     useEffect(() => {
-        fetch(`https://localhost:5173/api/admin/users/${id}`)
+        fetch(`https://localhost:5173/api/admin/users/${loggedInUserId}`)
             .then(response => response.json())
             .then((data: IUser) => setUser(data))
             .catch(error => {
                 setError("There was an error fetching the user details!");
                 console.error(error);
             });
-    }, [id]);
+    }, [loggedInUserId]);
 
     if (error) return <div>{error}</div>;
     if (!user) return <div>Loading user...</div>;

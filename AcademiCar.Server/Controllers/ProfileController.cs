@@ -16,6 +16,43 @@ public class ProfileController : ControllerBase
         _globalService = globals;
     }
 
+    [HttpPut("user/update")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResultResponseModel))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+    public async Task<IActionResult> UpdateUser([Required] [FromBody] User user)
+    {
+        if (!ModelState.IsValid) return ValidationProblem(ModelState);
+
+        ActionResultResponseModel result = await _globalService.UserService.Update(user);
+        if (!result.IsSuccess)
+        {
+            result.Message = "Failed to update user";
+            return BadRequest(result);
+        }
+
+        result.Message = "User updated successfully";
+        return Ok(result);
+    }
+    
+    [HttpPut("address/update")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResultResponseModel))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+    public async Task<IActionResult> UpdateUserAddress([Required] [FromBody] Address address)
+    {
+        if (!ModelState.IsValid) return ValidationProblem(ModelState);
+
+        ActionResultResponseModel result = await _globalService.AddressService.Update(address);
+        if (!result.IsSuccess)
+        {
+            result.Message = "Failed to update address";
+            return BadRequest(result);
+        }
+
+        result.Message = "Address updated successfully";
+        return Ok(result);
+    }
+    
+    
     [HttpGet("vehicle/{vehicleId}")]
     public async Task<IActionResult> GetVehicleById(string vehicleId)
     {
