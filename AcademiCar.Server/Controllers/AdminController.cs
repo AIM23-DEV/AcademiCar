@@ -18,7 +18,7 @@ public class AdminController : ControllerBase
     [HttpGet("users")]
     public async Task<IActionResult> GetUsers()
     {
-        List<User?> users  = await _globalService.UserService.Get();
+        List<User?> users = await _globalService.UserService.Get();
         return Ok(users);
     }
 }
