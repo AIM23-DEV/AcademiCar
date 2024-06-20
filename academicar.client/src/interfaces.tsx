@@ -14,12 +14,39 @@ interface ICarlos {
     imageSrc: string;
 }
 
-interface IChat {
+interface IGroupChat {
     id: number;
     fK_Trip: number;
+    updatedAt: Date;
+}
+
+interface IGroupChatUser {
+    id: number;
+    fK_GroupChat: number;
     fK_User: string;
-    hasMoreThan2: boolean;
-    updatedAt: string;
+}
+interface IGroupMessage {
+    id: number;
+    fK_SenderUser: string;
+    fK_GroupChat: number;
+    content: string;
+    sentAt: Date;
+}
+
+interface IPersonalChat {
+    id: number;
+    fK_Trip: number;
+    fK_DriverUser: string;
+    fK_PassengerUser: string;
+    updatedAt: Date;
+}
+
+interface IPersonalMessage {
+    id: number;
+    fK_SenderUser: string;
+    fK_PersonalChat: number;
+    content: string;
+    updatedAt: Date;
 }
 
 interface IFavoriteUser {
@@ -69,7 +96,7 @@ interface IStats {
     driverKilometres: number;
     passengerKilometres: number;
     nrTrips: number;
-    co2Savings: number;
+    cO2Savings: number;
 }
 
 interface ITravelPreference {

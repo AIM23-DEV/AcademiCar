@@ -23,10 +23,13 @@ namespace AcademiCar.Server.DAL.UnitOfWork
             
             modelBuilder.Entity<Address>().ToTable("Address", schema: "academicar");
             modelBuilder.Entity<Carlos>().ToTable("Carlos", schema: "academicar");
-            modelBuilder.Entity<Chat>().ToTable("Chat", schema: "academicar");
+            modelBuilder.Entity<GroupChat>().ToTable("GroupChat", schema: "academicar");
+            modelBuilder.Entity<GroupChatUser>().ToTable("GroupChatUser", schema: "academicar");
+            modelBuilder.Entity<GroupMessage>().ToTable("GroupMessage", schema: "academicar");
             modelBuilder.Entity<FavoriteUser>().ToTable("FavoriteUser", schema: "academicar");
             modelBuilder.Entity<InterestPreference>().ToTable("InterestPreference", schema: "academicar");
-            modelBuilder.Entity<Message>().ToTable("Message", schema: "academicar");
+            modelBuilder.Entity<PersonalChat>().ToTable("PersonalChat", schema: "academicar");
+            modelBuilder.Entity<PersonalMessage>().ToTable("PersonalMessage", schema: "academicar");
             modelBuilder.Entity<MusicPreference>().ToTable("MusicPreference", schema: "academicar");
             modelBuilder.Entity<Preferences>().ToTable("Preferences", schema: "academicar");
             modelBuilder.Entity<Rating>().ToTable("Rating", schema: "academicar");
@@ -43,10 +46,13 @@ namespace AcademiCar.Server.DAL.UnitOfWork
         // Your DbSets
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Carlos> Carlos { get; set; }
-        public DbSet<Chat> Chats { get; set; }
+        public DbSet<GroupChat> GroupChats { get; set; }
+        public DbSet<GroupChatUser> GroupChatsUsers { get; set; }
+        public DbSet<GroupMessage> GroupMessages { get; set; }
         public DbSet<FavoriteUser> FavoriteUsers { get; set; }
         public DbSet<InterestPreference> InterestPreferences { get; set; }
-        public DbSet<Message> Messages { get; set; }
+        public DbSet<PersonalChat> PersonalChats { get; set; }
+        public DbSet<PersonalMessage> PersonalMessages { get; set; }
         public DbSet<MusicPreference> MusicPreferences { get; set; }
         public DbSet<Preferences> Preferences { get; set; }
         public DbSet<Rating> Ratings { get; set; }

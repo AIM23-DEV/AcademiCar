@@ -4,18 +4,15 @@ using Newtonsoft.Json;
 
 namespace AcademiCar.Server.DAL.Entities;
 
-public class Chat : Entity
+public class GroupChatUser : Entity
 {
-    [ForeignKey("FK_Trip")]
+    [ForeignKey("FK_GroupChat")]
     [JsonProperty(Required = Required.Default)]
-    [JsonIgnore] public Trip Trip { get; set; }
-    public int FK_Trip { get; set; }
+    [JsonIgnore] public GroupChat GroupChat { get; set; }
+    public int FK_GroupChat { get; set; }
     
     [ForeignKey("FK_User")]
     [JsonProperty(Required = Required.Default)]
     [JsonIgnore] public User User { get; set; }
     public string FK_User { get; set; }
-    
-    public bool HasMoreThan2 { get; set; }
-    public DateTime UpdatedAt { get; set; }
 }

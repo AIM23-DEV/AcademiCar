@@ -3,6 +3,7 @@ using System;
 using AcademiCar.Server.DAL.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AcademiCar.Server.Migrations
 {
     [DbContext(typeof(PostgresDbContext))]
-    partial class PostgresDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240619210015_ModifyChat")]
+    partial class ModifyChat
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -626,90 +629,35 @@ namespace AcademiCar.Server.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ID"));
 
-                    b.Property<bool>("AC")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("Animals")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("Automatic")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("Bike_Rack")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Brand_Model")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("Color")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<bool>("Cruise_Control")
-                        .HasColumnType("boolean");
 
                     b.Property<string>("FK_User")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Fuel_Consumption")
+                    b.Property<string>("Features")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Fuel_Type")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<bool>("Hand_luggage")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("Leather")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("Led")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("License_Plate")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<bool>("Nounting_Roof")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("Other")
+                    b.Property<bool>("IsElectric")
                         .HasColumnType("boolean");
 
                     b.Property<string>("PictureSrc")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<bool>("Plants")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("Seat_Heating")
-                        .HasColumnType("boolean");
-
                     b.Property<int>("Seats")
                         .HasColumnType("integer");
-
-                    b.Property<bool>("Ski")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("Ski_Bag")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("Suitcase")
-                        .HasColumnType("boolean");
 
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<bool>("Vehicle_Inspection")
-                        .HasColumnType("boolean");
-
                     b.HasKey("ID");
+
+                    b.HasIndex("FK_User");
 
                     b.ToTable("Vehicle", "academicar");
                 });
@@ -1132,6 +1080,17 @@ namespace AcademiCar.Server.Migrations
                     b.Navigation("Address");
 
                     b.Navigation("Stats");
+                });
+
+            modelBuilder.Entity("AcademiCar.Server.DAL.Entities.Vehicle", b =>
+                {
+                    b.HasOne("AcademiCar.Server.DAL.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("FK_User")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

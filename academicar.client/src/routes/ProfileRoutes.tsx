@@ -15,13 +15,14 @@ import {BalanceRechargePage} from "../pages/profile/BalanceRechargePage.tsx";
 export default <Route key="profileRoute" path="/profile" element={<Outlet/>}>
     <Route key="profileMainRoute" path="" element={<IndexProfilePage/>}/>,
     <Route key="profileCarRoute" path="cars/" element={<ShowCarsPage/>}/>,
-    <Route key="profileCarUpdateRoute" path="cars/update" element={<UpdateCarPage/>}/>,
+    <Route key="profileCarUpdateRouteOld" path="cars/update" element={<UpdateCarPage/>}/>,
     <Route key="profileCarUpdateRoute" path="cars/update/:id" element={<UpdateCarPage/>}/>,
     <Route key="profileEditRoute" path="edit" element={<EditProfilePage/>}/>
     <Route key="profileFacesheetRoute" path="facesheet" element={<PersonalDataFaceSheet/>}/>
     <Route key="profileSettingsRoute" path="settings" element={<SettingsPage/>}/>
     <Route key="profileRewardsRoute" path="rewards" element={<RewardsPage/>}/>
-    <Route key="profileStatsRoute" path="stats" element={<StatsPage/>}/>
+    <Route key="profileStatsRouteOld" path="stats" element={<StatsPage/>} />
+    <Route key="profileStatsRoute" path="stats/:id" element={<StatsPage/>}/>
     <Route key="profileBalanceRoute" path="balance" element={<BalancePage/>}/>
     <Route key="profileBalanceHistoryRoute" path="balance/history" element={<BalanceHistoryPage/>}/>
     <Route key="profileBalanceRechargeRoute" path="balance/recharge" element={<BalanceRechargePage/>}/>
