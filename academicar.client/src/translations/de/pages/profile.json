@@ -85,10 +85,11 @@
     "title": "Meine Belohnungen",
     "parking": {
       "title": "Parkplätze",
-      "text": "Es steht dir <span class=\"text-primary-600\">{{amount}}</span> Tage ein Parkplatz an deiner Ausbildungsstätte zu."
+      "text": "Es steht dir {{amount}} Tage ein Parkplatz an deiner Ausbildungsstätte zu."
     },
     "discount": "Rabatt",
     "discounts": "Rabatte",
+    "receiveDiscount": "Rabatt erhalten",
     "booking": "Buchen"
   },
   "StatsPage": {
