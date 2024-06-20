@@ -34,9 +34,9 @@ builder.Services.AddCors(options =>
     options.AddDefaultPolicy(builder =>
     {
         builder.WithOrigins("https://localhost:5173")
-               .AllowAnyHeader()
-               .AllowAnyMethod()
-               .AllowCredentials();
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
     });
 });
 
@@ -147,7 +147,6 @@ static void ApplyMigrations(IHost app)
 {
     using IServiceScope scope = app.Services.CreateScope();
     PostgresDbContext db = scope.ServiceProvider.GetRequiredService<PostgresDbContext>();
-    
-    // db.Database.EnsureDeleted();
+    //db.Database.EnsureDeleted();
     db.Database.Migrate();
 }
