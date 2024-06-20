@@ -101,6 +101,13 @@ public class ChatController : ControllerBase
         if (!groupChatList.Any())
             return NotFound();
         
+        groupChatList.Sort((a, b) => a.UpdatedAt.CompareTo(b.UpdatedAt));
+        foreach (var groupChat in groupChatList)
+        {
+            if (groupChat == null) break;
+            groupChat.Trip = await _globalService.TripService.Get(groupChat.FK_Trip);
+        }
+        
         return Ok(groupChatList);
     }
     
@@ -129,6 +136,14 @@ public class ChatController : ControllerBase
         
         if (!personalChatList.Any())
             return NotFound();
+
+        personalChatList.Sort((a, b) => a.UpdatedAt.CompareTo(b.UpdatedAt));
+        foreach (var personalChat in personalChatList)
+        {
+            if (personalChat == null) break;
+            personalChat.DriverUser = await _globalService.UserService.Get(personalChat.FK_DriverUser ?? "");
+            personalChat.PassengerUser = await _globalService.UserService.Get(personalChat.FK_PassengerUser ?? "");
+        }
         
         return Ok(personalChatList);
     }

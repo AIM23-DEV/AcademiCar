@@ -17,6 +17,7 @@ interface ICarlos {
 interface IGroupChat {
     id: number;
     fK_Trip: number;
+    trip: ITrip | undefined;
     updatedAt: Date;
 }
 
@@ -25,6 +26,7 @@ interface IGroupChatUser {
     fK_GroupChat: number;
     fK_User: string;
 }
+
 interface IGroupMessage {
     id: number;
     fK_SenderUser: string;
@@ -38,6 +40,8 @@ interface IPersonalChat {
     fK_Trip: number;
     fK_DriverUser: string;
     fK_PassengerUser: string;
+    driverUser: IUser | undefined;
+    passengerUser: IUser | undefined;
     updatedAt: Date;
 }
 

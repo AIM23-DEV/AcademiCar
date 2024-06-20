@@ -7,7 +7,8 @@
     "modal_title_no_results": "No Results",
     "modal_info_no_results": "Your search did not find any chats.",
     "modal_title_no_chats": "No Chats",
-    "modal_info_no_chats": "Requests or chats for your trips appear here."
+    "modal_info_no_chats": "Requests or chats for your trips appear here.",
+    "search_placeholder": "Search for a name..."
   },
 
   "TripChatPage": {
