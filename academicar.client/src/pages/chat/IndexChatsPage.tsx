@@ -8,6 +8,7 @@ import {ChatsList} from "./partials/ChatsList.tsx";
 import {Input} from "../../components/FormFields.tsx";
 import {BiSearch, BiX} from "react-icons/bi";
 import {useEffect, useState} from "react";
+import {Spinner} from "../../components/Spinner.tsx";
 
 export const IndexChatsPage = () => {
     // General
@@ -18,7 +19,6 @@ export const IndexChatsPage = () => {
     const pageTitle = t("pages/chat:IndexChatsPage.title");
     const requestsListLabelText = t("pages/chat:IndexChatsPage.label_requests");
     const searchPlaceholderText = t("pages/chat:IndexChatsPage.search_placeholder");
-    const loadingText = t("common:states.loading");
     SetPageTitle(pageTitle);
 
     // Requests
@@ -57,7 +57,7 @@ export const IndexChatsPage = () => {
             {loading ?
                 // Todo better loading state
                 <div className="w-full flex flex-col items-center space-y-6 mt-8">
-                    {loadingText}...
+                    <Spinner className="icon-lg text-primary-600"/>
                 </div> :
                 <div className="w-full flex flex-col items-center space-y-6">
                     {/* Search input field if searching */}
