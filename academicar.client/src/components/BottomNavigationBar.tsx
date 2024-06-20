@@ -8,7 +8,7 @@ interface BottomNavigationBarProps {
 }
 
 // Todo proper routes
-// TODO replace with loggedInUserId
+// TODO replace -999 with loggedInUserId
 export const BottomNavigationBar = (props: BottomNavigationBarProps) => {
     return (
         <nav id="bottom-navigation-bar"
@@ -19,10 +19,10 @@ export const BottomNavigationBar = (props: BottomNavigationBarProps) => {
                 <BottomNavigationBarItem link="/search" active={props.selected == 'search'}
                                          icon={<BiSearch className="icon-lg"/>}/>
 
-                <BottomNavigationBarItem link="/trips" active={props.selected == 'trips'}
+                <BottomNavigationBarItem link="/trips/-999" active={props.selected == 'trips'}
                                          icon={<BiCar className="icon-lg"/>}/>
 
-                <BottomNavigationBarItem link="/trips/create" active={props.selected == 'create'}
+                <BottomNavigationBarItem link="/create/-999" active={props.selected == 'create'}
                                          icon={<BiPlus className="icon-lg"/>}/>
                 
                 <BottomNavigationBarItem link="/chat/-999" active={props.selected == 'chat'}
