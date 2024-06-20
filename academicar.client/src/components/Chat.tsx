@@ -1,5 +1,7 @@
 ﻿import { useState, useEffect } from 'react';
 import * as signalR from '@microsoft/signalr';
+import {Input} from "./FormFields.tsx";
+import {Button} from "./Buttons.tsx";
 
 
 interface ChatProps {
@@ -66,14 +68,14 @@ export const Chat = (props: ChatProps) => {
     return (
         <div>
             <div>
-                <input
-                    type="text"
-                    value={message}
-                    onChange={e => setMessage(e.target.value)}
-                    placeholder="Message"
-                />
-                <button onClick={sendGroupMessage}>SendGroup</button>
-                <button onClick={sendPersonalMessage}>SendPersonal</button>
+                <Input placeholder="Nachricht ..."
+                       type="text"
+                       value={message}
+                       onChange={e => setMessage(e.target.value)}/>
+                <Button onClick={sendGroupMessage}
+                        text="Send Group"/>
+                <Button onClick={sendPersonalMessage}
+                        text="Send Personal"/>
             </div>
             <div>
                 <h2>Messages</h2>

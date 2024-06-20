@@ -23,7 +23,7 @@ public class ChatController : ControllerBase
     public async Task<Services.Response.ActionResultResponseModel> CreatePersonalMessage([Required][FromBody] PersonalMessage personalMessage)
         => await _globalService.PersonalMessageService.Create(personalMessage);
     
-    [HttpGet]
+    [HttpGet("GetPersonalMessageById")]
     public async Task<IActionResult> GetPersonalMessageById(string id)
     {
         int idAsInt = int.Parse(id);
@@ -35,7 +35,7 @@ public class ChatController : ControllerBase
         return Ok(personalMessage);
     }
     
-    [HttpGet]
+    [HttpGet("GetPersonalMessages")]
     public async Task<IActionResult> GetPersonalMessages()
     {
         List<PersonalMessage?> personalMessageList = await _globalService.PersonalMessageService.Get();
@@ -52,7 +52,7 @@ public class ChatController : ControllerBase
     public async Task<Services.Response.ActionResultResponseModel> CreateGroupMessage([Required][FromBody] GroupMessage groupMessage)
         => await _globalService.GroupMessageService.Create(groupMessage);
     
-    [HttpGet]
+    [HttpGet("GetGroupMessageById")]
     public async Task<IActionResult> GetGroupMessageById(string id)
     {
         int idAsInt = int.Parse(id);
@@ -64,7 +64,7 @@ public class ChatController : ControllerBase
         return Ok(groupMessage);
     }
     
-    [HttpGet]
+    [HttpGet("GetGroupMessages")]
     public async Task<IActionResult> GetGroupMessages()
     {
         List<GroupMessage?> groupMessageList = await _globalService.GroupMessageService.Get();
@@ -81,7 +81,7 @@ public class ChatController : ControllerBase
     public async Task<Services.Response.ActionResultResponseModel> CreateGroupChat([Required][FromBody] GroupChat groupChat)
         => await _globalService.GroupChatService.Create(groupChat);
     
-    [HttpGet]
+    [HttpGet("GetGroupChatById")]
     public async Task<IActionResult> GetGroupChatById(string id)
     {
         int idAsInt = int.Parse(id);
@@ -93,7 +93,7 @@ public class ChatController : ControllerBase
         return Ok(groupChat);
     }
     
-    [HttpGet]
+    [HttpGet("GetGroupChats")]
     public async Task<IActionResult> GetGroupChats()
     {
         List<GroupChat?> groupChatList = await _globalService.GroupChatService.Get();
@@ -110,7 +110,7 @@ public class ChatController : ControllerBase
     public async Task<Services.Response.ActionResultResponseModel> CreatePersonalChat([Required][FromBody] PersonalChat personalChat)
         => await _globalService.PersonalChatService.Create(personalChat);
     
-    [HttpGet]
+    [HttpGet("GetPersonalChatById")]
     public async Task<IActionResult> GetPersonalChatById(string id)
     {
         int idAsInt = int.Parse(id);
@@ -122,7 +122,7 @@ public class ChatController : ControllerBase
         return Ok(personalChat);
     }
     
-    [HttpGet]
+    [HttpGet("GetPersonalChats")]
     public async Task<IActionResult> GetPersonalChats()
     {
         List<PersonalChat?> personalChatList = await _globalService.PersonalChatService.Get();
@@ -139,7 +139,7 @@ public class ChatController : ControllerBase
     public async Task<Services.Response.ActionResultResponseModel> CreateGroupChatUser([Required][FromBody] GroupChatUser groupChatUser)
         => await _globalService.GroupChatUserService.Create(groupChatUser);
     
-    [HttpGet]
+    [HttpGet("GetGroupChatUserById")]
     public async Task<IActionResult> GetGroupChatUserById(string id)
     {
         int idAsInt = int.Parse(id);
@@ -151,7 +151,7 @@ public class ChatController : ControllerBase
         return Ok(groupChatUser);
     }
     
-    [HttpGet]
+    [HttpGet("GetGroupChatUsers")]
     public async Task<IActionResult> GetGroupChatUsers()
     {
         List<GroupChatUser?> groupChatUserList = await _globalService.GroupChatUserService.Get();
@@ -162,7 +162,7 @@ public class ChatController : ControllerBase
         return Ok(groupChatUserList);
     }
     
-    [HttpDelete]
+    [HttpGet("DeleteGroupChatUser")]
     public async void DeleteGroupChatUser(string id)
     {
         int idAsInt = int.Parse(id);
