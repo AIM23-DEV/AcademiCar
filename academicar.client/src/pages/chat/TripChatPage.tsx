@@ -1,8 +1,7 @@
 import {TitleBar} from "../../components/TitleBar";
 import SetPageTitle from "../../hooks/set_page_title.tsx";
 import {useTranslation} from "react-i18next";
-import {ChatMessagesList} from "./partials/ChatMessagesList.tsx";
-import {Chat} from "../../components/Chat.tsx";
+import {Chat} from "./partials/Chat.tsx";
 import {useParams} from 'react-router-dom';
 import {useEffect, useState} from "react";
 
@@ -47,9 +46,7 @@ export const TripChatPage = () => {
         <>
             <TitleBar text={pageTitle} hasBackAction={true} />
 
-            <ChatMessagesList messages={filteredMessages}/>
-
-            <Chat userId="-999" chatId={chatId}/>
+            <Chat userId="-999" chatId={chatId} messages={filteredMessages}/>
         </>
     );
 }

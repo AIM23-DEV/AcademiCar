@@ -1,10 +1,9 @@
 import {useTranslation} from "react-i18next";
 import {JoinRequestCard} from "./partials/JoinRequestCard.tsx";
 import {TitleBar} from "../../components/TitleBar.tsx";
-import {Chat} from "../../components/Chat.tsx";
 import {useParams} from 'react-router-dom';
 import {useEffect, useState} from "react";
-import {ChatMessagesList} from "./partials/ChatMessagesList.tsx";
+import {Chat} from "./partials/Chat.tsx";
 
 export const PersonalChatPage = () => {
     const [t] = useTranslation(["common", "pages/chat"]);
@@ -53,9 +52,7 @@ export const PersonalChatPage = () => {
                     denyButtonText={joinRequestDenyText}
                     acceptButtonText={joinRequestAcceptText}
                 />
-                <ChatMessagesList messages={filteredMessages}/>
-
-                <Chat userId="-999" chatId={chatId}/>
+                <Chat userId="-999" chatId={chatId} messages={filteredMessages}/>
             </div>
         </>
     );

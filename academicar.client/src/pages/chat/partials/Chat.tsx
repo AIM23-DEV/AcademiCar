@@ -1,13 +1,13 @@
-﻿// @ts-ignore
+// @ts-ignore
 import * as signalR from '@microsoft/signalr';
-import {Input} from "./FormFields.tsx";
-import {Button} from "./Buttons.tsx";
+import {Input} from "../../../components/FormFields.tsx";
+import {Button} from "../../../components/Buttons.tsx";
 import { useState, useEffect } from 'react';
-
 
 interface ChatProps {
     userId: string | undefined;
     chatId: string | undefined;
+    messages: {id: string, senderId: string, text: string}[]
 }
 
 export const Chat = (props: ChatProps) => {
@@ -68,6 +68,27 @@ export const Chat = (props: ChatProps) => {
 
     return (
         <div>
+            <ul className="message-list">
+                {props.messages.map((message) => {
+                    return (
+                        <li key={message.id} className="message">
+                            <div>{message.senderId}</div>
+                            <div>{message.text}</div>
+                        </li>
+                    );
+                })}
+            </ul>
+
+            <ul className="message-list">
+                {messages.map((msg, index) => {
+                    return (
+                        <li key={index} className="message">
+                            <div>{msg.user}</div>
+                            <div>{msg.message}</div>
+                        </li>
+                    );
+                })}
+            </ul>
             <div>
                 <Input placeholder="Nachricht ..."
                        type="text"
@@ -77,14 +98,6 @@ export const Chat = (props: ChatProps) => {
                         text="Send Group"/>
                 <Button onClick={sendPersonalMessage}
                         text="Send Personal"/>
-            </div>
-            <div>
-                <h2>Messages</h2>
-                <ul>
-                    {messages.map((msg, index) => (
-                        <li key={index}><strong>{msg.user}</strong>: {msg.message}</li>
-                    ))}
-                </ul>
             </div>
         </div>
     );
