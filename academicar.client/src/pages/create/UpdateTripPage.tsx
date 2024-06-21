@@ -11,13 +11,41 @@ import {TripVehicleCreationForm} from "./partials/TripVehicleCreationForm.tsx";
 import {TripPricingCreationForm} from "./partials/TripPricingCreationForm.tsx";
 import {TripTimeCreationForm} from "./partials/TripTimeCreationForm.tsx";
 
+function getAddress(addressStr: string): IAddress {
+    const addressFields = addressStr.split(' ');
+    return addressFields.length == 4 ? {
+        street: addressFields[0],
+        number: parseInt(addressFields[1]),
+        zip: parseInt(addressFields[2]),
+        place: addressFields[3],
+        longitude: "",
+        latitude: "",
+    } : {
+        street: addressStr,
+        number: 0,
+        zip: 0,
+        place: addressStr,
+        longitude: "",
+        latitude: "",
+    };
+}
+function getDate(dateStr: string, timeStr: string): Date {
+    const dateFields = dateStr.split('.');
+    const timeFields = timeStr.split(':');
+    if (dateFields.length != 3 || timeFields.length != 2)
+        return new Date(2020, 1, 1, 12, 0,0)
+
+    const day = Number(dateFields[0])
+    const month = Number(dateFields[1])
+    const year = Number(dateFields[2])
+    const hours = Number(timeFields[0])
+    const minutes = Number(timeFields[1])
+
+    return new Date(year, month, day, hours, minutes, 0);
+}
+
 export const UpdateTripPage = () => {
     const [t] = useTranslation(["common", "pages/create"]);
-    const [trip, setTrip] = useState<ITrip | null>();
-    const [startAddress, setStartAddress] = useState<IAddress | null>();
-    const [endAddress, setEndAddress] = useState<IAddress | null>();
-    const [error, setError] = useState<string | null>();
-    const { id } = useParams();
     const pageTitle = t("pages/create:Common.title_update");
     const routeTabText = t("pages/create:UpdateTripPage.tab_route");
     const timeTabText = t("pages/create:UpdateTripPage.tab_time");
@@ -26,18 +54,32 @@ export const UpdateTripPage = () => {
     const updateButtonText = t("pages/create:UpdateTripPage.button_update");
     SetPageTitle(pageTitle);
 
+    const { loggedInUserId, tripId } = useParams();
+    const [trip, setTrip] = useState<ITrip>();
+    const [startAddress, setStartAddress] = useState<IAddress>();
+    const [endAddress, setEndAddress] = useState<IAddress>();
+    const [startDate, setStartDate] = useState<string>();
+    const [startTime, setStartTime] = useState<string>();
+    const [endDate, setEndDate] = useState<string>();
+    const [endTime, setEndTime] = useState<string>();
+    const [tripVehicle, setTripVehicle] = useState<IVehicle>();
+    const [tripVehicleId, setTripVehicleId] = useState<number>();
+    const [availableSeats, setAvailableSeats] = useState<number>();
+    const [price, setPrice] = useState<number>(0);
+    const [error, setError] = useState<string | null>();
+
     // Loading
     useEffect(() => {
-        fetch(`https://localhost:5173/api/create/${id}`)
+        fetch(`https://localhost:5173/api/create/${tripId}`)
         .then(response => response.json())
         .then(data => setTrip(data))
         .catch(error => {
             setError("There was an error fetching the trip details!");
             console.error(error);
         });
-    }, [id]);
+    }, [tripId]);
 
-    if (error) return <div>{error}</div>;
+    if (error) return <div>{`There was an error: ${error}`}</div>
     if (!trip) return <div>Loading...</div>;
 
     if (trip && !startAddress) {
@@ -59,40 +101,56 @@ export const UpdateTripPage = () => {
         });
     }
     
-    // Handling change
-    const onChangeStartAddress = (val: string) => setStartAddress(AsAddress(val, startAddress));
-    const onChangeEndAddress = (val: string) => setEndAddress(AsAddress(val, endAddress));
-    
-    const AsAddress = (str: string, currentAddress: IAddress | null | undefined): IAddress | null | undefined => {
-        if (!currentAddress) return currentAddress;
-        
-        const valFields = str.split(' ');
-        return {
-            id: currentAddress.id,
-            street: valFields[0],
-            number: parseInt(valFields[1]),
-            zip: parseInt(valFields[2]),
-            place: valFields[3],
-            longitude: currentAddress.longitude,
-            latitude: currentAddress.latitude,
-        };
+    if (trip && !tripVehicle) {
+        fetch(`https://localhost:5173/api/create/vehicle/${trip?.fK_Vehicle}`)
+            .then(response => response.json())
+            .then(data => setTripVehicle(data))
+            .catch(error => {
+                setError("There was an error fetching the vehicle!");
+                console.error(error);
+            });
     }
+    
+    // Handling change
+    const onChangeStartAddress = (val: string) => setStartAddress(getAddress(val));
+    const onChangeEndAddress = (val: string) => setEndAddress(getAddress(val));
+    
 
     // Buttons
     const updateTrip = () => {
-        const updatedProduct = { ...trip, startAddress, endAddress };
+        if (!startAddress || !endAddress
+        || !startDate || !startTime || !endDate || !endTime
+        || !tripVehicleId || !availableSeats
+        ) return;
 
-        fetch(`https://localhost:5173/api/create/${id}`, {
+        const fullStartDate: Date = getDate(startDate, startTime);
+        const fullEndDate: Date = getDate(endDate, endTime);
+        const updatedTrip: ITrip = {
+            title: `${startAddress?.place} -> ${endAddress?.place}`,
+            fK_Driver: `${loggedInUserId}`,
+            fK_StartAddress: startAddress.id,
+            fK_EndAddress: startAddress.id,
+            startTime: fullStartDate,
+            endTime: fullEndDate,
+            fK_Vehicle: tripVehicleId,
+            availableSeats: availableSeats,
+            price: price,
+            paymentMethod: trip.paymentMethod,
+            status: trip.status
+        }
+
+        fetch(`https://localhost:5173/api/create/${tripId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(updatedProduct)
+                body: JSON.stringify(updatedTrip)
         })
-        .then(response => response.json())
-        .catch(error => {
-            setError(`There was an error updating the trip!`);
-            console.error("Error:", error);
-        });
+            .catch(error => {
+                setError(`There was an error updating the trip!`);
+                console.error("Error:", error);
+            });
     };
+
+    if (!loggedInUserId) return <div>Invalid user!</div>
     
     // Render
     return (
@@ -119,15 +177,36 @@ export const UpdateTripPage = () => {
                         </TabPanel>
                         
                         <TabPanel>
-                            <TripTimeCreationForm />
+                            <TripTimeCreationForm
+                                startDate={startDate}
+                                startTime={startTime}
+                                endDate={endDate}
+                                endTime={endTime}
+                                
+                                setStartDate={setStartDate}
+                                setStartTime={setStartTime}
+                                setEndDate={setEndDate}
+                                setEndTime={setEndTime}
+                            />
                         </TabPanel>
                         
                         <TabPanel>
-                            <TripVehicleCreationForm />
+                            <TripVehicleCreationForm
+                                driverId={loggedInUserId}
+                                vehicleId={trip.fK_Vehicle}
+                                availableSeats={trip.availableSeats}
+                                
+                                setVehicleId={setTripVehicleId}
+                                setAvailableSeats={setAvailableSeats}
+                            />
                         </TabPanel>
                         
                         <TabPanel>
-                            <TripPricingCreationForm />
+                            <TripPricingCreationForm
+                                price={price}
+                                
+                                setPrice={setPrice}
+                            />
                         </TabPanel>
                     </TabPanels>
                 }

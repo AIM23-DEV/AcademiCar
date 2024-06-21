@@ -11,8 +11,8 @@ export const StopsTimeInputCardList = (props: StopsTimeInputCardListProps) => {
     return (
         <>
             <Card label={props.label}>
-                <Input label={props.stopReachedInputLabelText}/>
-                <Input label={props.stopContinueInputLabelText}/>
+                <Input label={props.stopReachedInputLabelText} />
+                <Input label={props.stopContinueInputLabelText} />
             </Card>
         </>
     )

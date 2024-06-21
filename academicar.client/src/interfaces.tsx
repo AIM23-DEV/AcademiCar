@@ -1,5 +1,5 @@
 interface IAddress {
-    id: number;
+    id?: number;
     street: string;
     number: number;
     zip: number;
@@ -111,12 +111,12 @@ interface ITravelPreference {
 }
 
 interface ITrip {
-    id: number;
+    id?: number;
     title: string;
-    fK_Driver: string;
-    fK_Vehicle: number;
-    fK_StartAddress: number;
-    fK_EndAddress: number;
+    fK_Driver?: string;
+    fK_Vehicle?: number;
+    fK_StartAddress?: number;
+    fK_EndAddress?: number;
     startTime: Date;
     endTime: Date;
     availableSeats: number;

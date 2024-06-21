@@ -718,7 +718,7 @@ public class CreateDataTest : BaseUnitTest
             EndTime = DateTime.UtcNow,
             AvailableSeats = 0,
             Price = 0,
-            PaymentMethod = "",
+            PaymentMethod = "None",
             Status = "Done"
         };
         
@@ -734,7 +734,7 @@ public class CreateDataTest : BaseUnitTest
             EndTime = DateTime.UtcNow.AddDays(-1),
             AvailableSeats = 2,
             Price = 0,
-            PaymentMethod = "No cost",
+            PaymentMethod = "None",
             Status = "Done"
         };
         
@@ -750,7 +750,7 @@ public class CreateDataTest : BaseUnitTest
             EndTime = DateTime.UtcNow,
             AvailableSeats = 2,
             Price = 0,
-            PaymentMethod = "No cost",
+            PaymentMethod = "None",
             Status = "Open"
         };
         

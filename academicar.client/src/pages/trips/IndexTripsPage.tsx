@@ -49,7 +49,8 @@ export const IndexTripsPage = () => {
                     outsideLinkText={t('pages/trips:IndexTripsPage.archive')}
                     outsideLink={"/trips/history/driver"}>
                     {driverTrips.map((trip, index) => (
-                        <TripCard tripId={trip.id} cardIndex={index} driverId={trip.fK_Driver} price={trip.price}/>
+                        (trip.id && trip.fK_Driver) ?
+                        <TripCard tripId={trip.id} cardIndex={index} driverId={trip.fK_Driver} price={trip.price}/> : <></>
                     ))}
                 </Card>
                 <div className="mt-8"/>
@@ -58,7 +59,8 @@ export const IndexTripsPage = () => {
                     outsideLinkText={t('pages/trips:IndexTripsPage.archive')}
                     outsideLink={"/trips/history/passenger"}>
                     {passengersTrips.map((trip, index) => (
-                        <TripCard tripId={trip.id} cardIndex={index} driverId={trip.fK_Driver} price={trip.price}/>
+                        (trip.id && trip.fK_Driver) ?
+                        <TripCard tripId={trip.id} cardIndex={index} driverId={trip.fK_Driver} price={trip.price}/> : <></>
                     ))}
                 </Card>
             </div>
