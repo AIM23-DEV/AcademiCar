@@ -16,6 +16,7 @@ public class ProfileController : ControllerBase
         _globalService = globals;
     }
 
+    // Edit Page
     [HttpPut("user/update")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResultResponseModel))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
@@ -52,7 +53,7 @@ public class ProfileController : ControllerBase
         return Ok(result);
     }
     
-    
+    // Vehicle Page
     [HttpGet("vehicle/{vehicleId}")]
     public async Task<IActionResult> GetVehicleById(string vehicleId)
     {

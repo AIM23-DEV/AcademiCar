@@ -7,5 +7,14 @@ namespace AcademiCar.Server.DAL.Repositories;
 
 public class InterestPreferenceRepository : PostgresRepository<InterestPreference>, IInterestPreferenceRepository
 {
-    public InterestPreferenceRepository(PostgresDbContext dbContext) : base(dbContext) {}
+    private readonly PostgresDbContext _dbContext;
+
+    public InterestPreferenceRepository(PostgresDbContext dbContext) : base(dbContext)
+    {
+        _dbContext = dbContext;
+    }
+    
+    
+    public async Task<List<InterestPreference>> GetByPreferencesId(int id)
+        => _dbContext.InterestPreferences.Where(v => v.FK_Preferences == id).ToList();
 }
