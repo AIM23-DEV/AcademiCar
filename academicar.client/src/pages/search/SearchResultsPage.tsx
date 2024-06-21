@@ -34,7 +34,9 @@ export const SearchResultsPage = () => {
     const destination = query.get('end') || '';
     const date = query.get('date') || '';
     const time = query.get('time') || '';
-    
+
+    const [radioValue, setRadioValue] = useState("");
+
     const [trips, setTrips] = useState<ITrip[]>([]);
     const [extendedTrips, setExtendedTrips] = useState<ExtendedTrip[]>([]);
     const [error, setError] = useState<string | null>();
@@ -73,22 +75,41 @@ export const SearchResultsPage = () => {
 
         return formattedTime;
     };
-
+    
+    const sortTrips = () => {
+        if (radioValue == "price") {
+            extendedTrips.sort((a, b) => a.price - b.price)
+        }
+        else if(radioValue == "fastest") {
+            console.log("sort by fastest")
+        }
+        else if (radioValue == "best") {
+            console.log("sort by best")
+        }
+        else if (radioValue == "stops") {
+            console.log("sort by stops")
+        }
+    }
+    
+    sortTrips();
+    
     return(
         <>
             <TitleBar hasBackAction={true} text={pageTitle}/>
 
             <div className="w-full flex flex-col items-center pb-24">
-                <SearchResultForm startPoint={startPoint} destination={destination} date={date} time={time}/>
+                <SearchResultForm radioValue={radioValue} setRadioValue={setRadioValue} startPoint={startPoint} destination={destination} date={date} time={time}/>
                 
                 <div className="w-full mt-6 flex flex-col gap-5">
                     {extendedTrips.map((item) =>
                         <>
                             {(!startPoint && !destination && !item.startTime && !item.endTime) ||
                             item.startPoint.street === startPoint ||
+                            item.startPoint.place === startPoint ||
                             formatTime(item.startTime) === time ||
                             formatDate(item.startTime) === date ||
                             item.endPoint.street === destination ||
+                            item.endPoint.place === destination ||
                             formatTime(item.endTime) === time ||
                             formatDate(item.endTime) === date ? (
                                 <LinkCard>

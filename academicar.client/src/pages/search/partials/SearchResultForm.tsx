@@ -1,4 +1,3 @@
-import {useState} from "react";
 import {Input, RadioCollection} from "../../../components/FormFields.tsx";
 import {Card} from "../../../components/Cards.tsx";
 import {useTranslation} from "react-i18next";
@@ -8,15 +7,17 @@ import { BiFilter, BiSortAlt2 } from "react-icons/bi";
 import { Menu, MenuButton, MenuItems } from '@headlessui/react'
 
 type SearchResultFormProps = {
+    radioValue: string;
+    setRadioValue: (value: any) => void;
     startPoint: string;
     destination: string;
     date: string;
     time: string;
 };
 
-export const SearchResultForm: React.FC<SearchResultFormProps> = ({ startPoint, destination, date, time }) => {
+export const SearchResultForm: React.FC<SearchResultFormProps> = ({ radioValue, setRadioValue, startPoint, destination, date, time }) => {
     const [t] = useTranslation();
-    const [radioValue, setRadioValue] = useState();
+    //const [radioValue, setRadioValue] = useState();
     
     return (
         <Card label="Suche" className="mt-6">
@@ -71,10 +72,10 @@ export const SearchResultForm: React.FC<SearchResultFormProps> = ({ startPoint, 
                                 value={radioValue}
                                 setValue={setRadioValue}
                                 items={[
-                                    {value: 1, label: t('pages/search:SearchResultsForm.sort.price')},
-                                    {value: 2, label: t('pages/search:SearchResultsForm.sort.fast')},
-                                    {value: 3, label: t('pages/search:SearchResultsForm.sort.best')},
-                                    {value: 4, label: t('pages/search:SearchResultsForm.sort.stopps')}
+                                    {value: "price", label: t('pages/search:SearchResultsForm.sort.price')},
+                                    {value: "fastest", label: t('pages/search:SearchResultsForm.sort.fast')},
+                                    {value: "best", label: t('pages/search:SearchResultsForm.sort.best')},
+                                    {value: "stops", label: t('pages/search:SearchResultsForm.sort.stops')}
                                 ]}
                             />
                         </MenuItems>
