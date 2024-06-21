@@ -3,7 +3,7 @@ import axios from 'axios';
 
 interface AuthContextProps {
     user: User | null;
-    login: () => void;
+//    login: () => void;
     logout: () => void;
     selectIdP: () => void;
     adminLogin: (username: string, password: string) => Promise<void>; // Add adminLogin method
@@ -65,7 +65,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }): ReactElemen
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, logout, selectIdP, adminLogin }}>
+//        <AuthContext.Provider value={{ user, login, logout, selectIdP, adminLogin }}>
+        <AuthContext.Provider value={{ user, logout, selectIdP, adminLogin }}>
             {children}
         </AuthContext.Provider>
     );
