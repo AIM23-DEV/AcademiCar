@@ -5,6 +5,7 @@ using Sustainsys.Saml2.AspNetCore2;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using System.Linq;
+using Sustainsys.Saml2.Saml2P;
 
 namespace AcademiCar.Server.Controllers
 {
@@ -19,17 +20,18 @@ namespace AcademiCar.Server.Controllers
             _logger = logger;
         }
 
-        [HttpPost("Acs")]
+        [HttpGet("Acs")]
         public async Task<IActionResult> Acs()
         {
             _logger.LogWarning("Acs endpoint hit. Yessssss!");
+            
             var result = await HttpContext.AuthenticateAsync(Saml2Defaults.Scheme);
             if (!result.Succeeded)
             {
                 _logger.LogWarning("result not succeeded");
                 return Unauthorized();
             }
-
+            
             var claimsIdentity = new ClaimsIdentity(result.Principal.Claims, "Saml2");
             await HttpContext.SignInAsync(new ClaimsPrincipal(claimsIdentity));
             _logger.LogWarning("result succeeded");
