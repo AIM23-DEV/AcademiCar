@@ -14,16 +14,16 @@ export const ChatListTile = (props: ChatListTileProps) => {
     const unreadCount = !isGroupChat(props.chat) && props.chat.id === -999 ? 4 : 0; // Todo set correct unread count
 
     return (
-        <li key={props.chat.id}>
+        <li key={props.chat.id} className="w-full">
             <Link to={isGroupChat(props.chat) ? `/chat/trip/${props.chat.id}` : `/chat/personal/${props.chat.id}`}
                   className="w-full h-full flex flex-row justify-between">
-                <div className="flex flex-row">
+                <div className="flex flex-row w-full">
                     {/* Todo load the right avatars */}
                     <ChatAvatar
                         avatars={isGroupChat(props.chat) ? ["/src/assets/women_mock.jpg", "/src/assets/krucziii.jpg", "/src/assets/c5.jpg", "/src/assets/react.jpg"] : ["/src/assets/c5.jpg"]}
                         alt="avatar"
                         className="mr-4"/>
-                    <div className="flex flex-col">
+                    <div className="flex flex-col w-full">
                         {/* Todo correct user or chat name */}
                         <div className="flex flex-row justify-between">
                             <span className="subtitle">
@@ -36,7 +36,7 @@ export const ChatListTile = (props: ChatListTileProps) => {
 
                         <div className="flex flex-row justify-between">
                             <span className="body-2 line-clamp-2 text-gray-500">
-                                Todo: Die neuste Chat Nachricht sollte hier angezeigt werden.
+                                {props.chat.lastMessageContent}
                             </span>
                             {unreadCount > 3 ?
                                 <div

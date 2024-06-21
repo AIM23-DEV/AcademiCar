@@ -42,8 +42,10 @@ export const IndexChatsPage = () => {
             })
             .then(response => response.json())
             .then((groupChats: IGroupChat[]) => {
-                allChats = allChats.concat(groupChats).sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
+                allChats = allChats.concat(groupChats)
+                    .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
                 setChats(allChats);
+                console.log(allChats);
                 setLoading(false);
             })
             .catch(error => {

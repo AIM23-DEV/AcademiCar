@@ -18,6 +18,7 @@ interface IGroupChat {
     id: number;
     fK_Trip: number;
     trip: ITrip | undefined;
+    lastMessageContent?: string;
     updatedAt: Date;
 }
 
@@ -42,6 +43,7 @@ interface IPersonalChat {
     fK_PassengerUser: string;
     driverUser: IUser | undefined;
     passengerUser: IUser | undefined;
+    lastMessageContent?: string;
     updatedAt: Date;
 }
 
@@ -50,7 +52,7 @@ interface IPersonalMessage {
     fK_SenderUser: string;
     fK_PersonalChat: number;
     content: string;
-    updatedAt: Date;
+    sentAt: Date;
 }
 
 interface IFavoriteUser {

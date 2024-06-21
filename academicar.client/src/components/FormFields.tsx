@@ -1,4 +1,4 @@
-import {ChangeEventHandler, ReactNode} from "react";
+import {ChangeEventHandler, KeyboardEventHandler, ReactNode} from "react";
 import {Switch, Checkbox, RadioGroup, Field, Radio, Label} from '@headlessui/react'
 import {Divider} from "./Divider.tsx";
 
@@ -15,6 +15,7 @@ interface InputProps {
     className?: string
     value?: string | number | readonly string[] | undefined
     onChange?: React.ChangeEventHandler<HTMLInputElement> | undefined
+    onKeyDown?: KeyboardEventHandler<HTMLInputElement> | undefined
 }
 
 export const Input = (props: InputProps) => {
@@ -41,6 +42,7 @@ export const Input = (props: InputProps) => {
                     required={props.required && props.required}
                     value={props.value}
                     onChange={props.onChange}
+                    onKeyDown={props.onKeyDown}
                 />
                 {props.trailing ? (
                     <div className="form-icon end-0 pe-3">
@@ -161,12 +163,13 @@ export const CheckmarkHandler = (props: CheckmarkHandlerProps) => {
                 disabled={props.disabled}
                 className="focusable focus:ring-offset-0 group block size-4 rounded border bg-white data-[checked]:bg-primary-600"
             >
-                {({ checked }) => (
+                {({checked}) => (
                     <>
-                        <svg className={"stroke-gray-100 stroke-1 " + (checked ? 'opacity-100' : 'opacity-0')} viewBox="0 0 14 14" fill="none">
+                        <svg className={"stroke-gray-100 stroke-1 " + (checked ? 'opacity-100' : 'opacity-0')}
+                             viewBox="0 0 14 14" fill="none">
                             <path d="M3 8L6 11L11 3.5" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>
-                       
+
                     </>
                 )}
             </Checkbox>
@@ -174,7 +177,6 @@ export const CheckmarkHandler = (props: CheckmarkHandlerProps) => {
         </Field>
     )
 };
-
 
 
 interface RadioItemProps {

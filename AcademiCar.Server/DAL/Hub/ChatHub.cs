@@ -12,7 +12,7 @@ namespace AcademiCar.Server.DAL.Hub
             _globalService = globals;
         }
         
-        public async Task SendPersonalMessage(string user, string message, string chatId)
+        public async Task SendPersonalMessage(string user, string message, string chatId, object sentAt)
         {
             User? usr = await _globalService.UserService.Get(user);
             
@@ -28,10 +28,10 @@ namespace AcademiCar.Server.DAL.Hub
                 await _globalService.PersonalMessageService.Create(chatMessage);
             }
             
-            await Clients.All.SendAsync("ReceiveMessage", user, message, chatId);
+            await Clients.All.SendAsync("ReceiveMessage", user, message, chatId, DateTime.UtcNow);
         }
         
-        public async Task SendGroupMessage(string user, string message, string chatId)
+        public async Task SendGroupMessage(string user, string message, string chatId, object sentAt)
         {
             User? usr = await _globalService.UserService.Get(user);
             
@@ -49,7 +49,7 @@ namespace AcademiCar.Server.DAL.Hub
                 await _globalService.GroupMessageService.Create(chatMessage);
             }
             
-            await Clients.All.SendAsync("ReceiveMessage", user, message, chatId);
+            await Clients.All.SendAsync("ReceiveMessage", user, message, chatId, DateTime.UtcNow);
         }
     }
 }

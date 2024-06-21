@@ -90,6 +90,8 @@ public class ChatController : ControllerBase
         if (groupChat == null)
             return NotFound();
         
+        groupChat.Trip = await _globalService.TripService.Get(groupChat.FK_Trip);
+        
         return Ok(groupChat);
     }
     
@@ -106,6 +108,7 @@ public class ChatController : ControllerBase
         {
             if (groupChat == null) break;
             groupChat.Trip = await _globalService.TripService.Get(groupChat.FK_Trip);
+            groupChat.LastMessageContent = _globalService.UnitOfWork.GroupMessages.FilterBy(message => message.FK_GroupChat == groupChat.ID).Last().Content;
         }
         
         return Ok(groupChatList);
@@ -126,6 +129,9 @@ public class ChatController : ControllerBase
         if (personalChat == null)
             return NotFound();
         
+        personalChat.DriverUser = await _globalService.UserService.Get(personalChat.FK_DriverUser ?? "");
+        personalChat.PassengerUser = await _globalService.UserService.Get(personalChat.FK_PassengerUser ?? "");
+        
         return Ok(personalChat);
     }
     
@@ -143,6 +149,7 @@ public class ChatController : ControllerBase
             if (personalChat == null) break;
             personalChat.DriverUser = await _globalService.UserService.Get(personalChat.FK_DriverUser ?? "");
             personalChat.PassengerUser = await _globalService.UserService.Get(personalChat.FK_PassengerUser ?? "");
+            personalChat.LastMessageContent = _globalService.UnitOfWork.PersonalMessages.FilterBy(message => message.FK_PersonalChat == personalChat.ID).OrderBy(message => message.SentAt).Last().Content;
         }
         
         return Ok(personalChatList);

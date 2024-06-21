@@ -8,8 +8,12 @@ public class GroupChat : Entity
 {
     [ForeignKey("FK_Trip")]
     [JsonProperty(Required = Required.Default)]
-    [JsonIgnore] public Trip Trip { get; set; }
+    [JsonIgnore]
+    public Trip Trip { get; set; }
+
     public int FK_Trip { get; set; }
-    
+
     public DateTime UpdatedAt { get; set; }
+
+    [NotMapped] [JsonIgnore] public string? LastMessageContent { get; set; }
 }
