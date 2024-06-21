@@ -9,10 +9,15 @@ public interface IGlobalService
 
     public AddressService AddressService { get; set; }
     public CarlosService CarlosService { get; set; }
-    public ChatService ChatService { get; set; }
+    public GroupChatService GroupChatService { get; set; }
+    public PersonalChatService PersonalChatService { get; set; }
+
     public FavoriteUserService FavoriteUserService { get; set; }
     public InterestPreferenceService InterestPreferenceService { get; set; }
-    public MessageService MessageService { get; set; }
+    public GroupMessageService GroupMessageService { get; set; }
+    public PersonalMessageService PersonalMessageService { get; set; }
+    public GroupChatUserService GroupChatUserService { get; set; }
+
     public MusicPreferenceService MusicPreferenceService { get; set; }
     public PreferencesService PreferencesService { get; set; }
     public RatingService RatingService { get; set; }

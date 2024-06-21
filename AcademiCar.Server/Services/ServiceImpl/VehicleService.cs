@@ -5,7 +5,12 @@ namespace AcademiCar.Server.Services.ServiceImpl;
 
 public class VehicleService : Service<Vehicle>
 {
-    public VehicleService(IVehicleRepository repo) : base(repo) { }
+    private IVehicleRepository _repo;
+
+    public VehicleService(IVehicleRepository repo) : base(repo)
+    {
+        _repo = repo;
+    }
 
 
     public override async Task<bool> Validate(Vehicle entity)
@@ -15,4 +20,7 @@ public class VehicleService : Service<Vehicle>
 
         return validationDictionary.IsValid;
     }
+
+    public async Task<List<Vehicle>> GetVehiclesByUserId(string id)
+        => await _repo.GetVehiclesByUserId(id);
 }

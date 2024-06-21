@@ -6,14 +6,15 @@ import {useTranslation} from 'react-i18next';
 import {Card} from "../../components/Cards.tsx";
 import {
     BiCar, BiChevronRight, BiEdit, BiErrorAlt, BiGroup,
-    BiMap, BiMessageCheck, BiMessageX, BiRadioCircleMarked, BiShare, BiShieldX, BiShoppingBag,
-    BiSolidColor,
+    BiMap, BiMessageCheck, BiMessageX, BiPalette, BiRadioCircleMarked, BiShare, BiShieldX, BiShoppingBag,
     BiSolidStar,
     BiUserCircle
 } from "react-icons/bi";
 import {TextButton} from "../../components/Buttons.tsx";
 import React from "react";
 import {Divider} from "../../components/Divider.tsx";
+import {useNavigate} from "react-router-dom";
+
 
 interface Request {
     time: string;
@@ -272,6 +273,7 @@ export const ShowTripPage = () => {
     const {id} = useParams();
     const pageTitle = t("pages/trips:ShowTripPage.title", {id: id});
     SetPageTitle(pageTitle);
+    const navigate = useNavigate();
 
     const requests = [
         {time: "30.12.2023, 14:13", user: "Fred Windsor", score: 5.0},
@@ -302,8 +304,6 @@ export const ShowTripPage = () => {
                 id="eine-id"
                 label={t("pages/trips:ShowTripPage.drive")}
                 labelPosition="outside"
-                outsideLink="/trips/create"
-                outsideLinkText="Route anzeigen"
                 padding="base"
                 className="mt-8"
             >
@@ -351,7 +351,7 @@ export const ShowTripPage = () => {
                                     {details.car}
                                 </div>
                                 <div className="flex gap-4">
-                                    <BiSolidColor className="icon"/>
+                                    <BiPalette className="icon"/>
                                     {details.color}
                                 </div>
                             </div>
@@ -406,6 +406,7 @@ export const ShowTripPage = () => {
                     leading={<BiEdit className="icon"/>}
                     type="button"
                     disabled={false}
+                    onClick={() => navigate("/create/createUpdateRoute")}
                 />
                 <TextButton
                     variant="secondary"
@@ -417,6 +418,7 @@ export const ShowTripPage = () => {
                     type="button"
                     disabled={false}
                     className="mt-2"
+                    onClick={() => navigate("404")}
                 />
                 <TextButton
                     variant="accent"
@@ -428,6 +430,8 @@ export const ShowTripPage = () => {
                     type="button"
                     disabled={false}
                     className="mt-2"
+                    onClick={() => navigate("trips/tripsMainRoute")}
+
                 />
             </Card>
             <BottomNavigationBar selected="trips"/>

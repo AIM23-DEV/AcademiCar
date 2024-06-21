@@ -16,7 +16,8 @@
     "newcar": "Add new car"
   },
   "CarPage": {
-    "title": "Create Car",
+    "title_create": "Create Car",
+    "title_update": "Update Car",
     "brand_placeholder": "Vehicle",
     "brand": "Brand and Model",
     "economy_placeholder": "Fuel consumption l / km",
@@ -88,6 +89,7 @@
     },
     "discount": "Discount",
     "discounts": "Discounts",
+    "receiveDiscount": "Receive discount",
     "booking": "Booking"
   },
   "StatsPage": {

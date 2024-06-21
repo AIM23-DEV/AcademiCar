@@ -6,15 +6,33 @@ namespace AcademiCar.Server.DAL.Entities;
 
 public class Vehicle : Entity
 {
+    [ForeignKey("FK_OwnerUser")]
+    [JsonProperty(Required = Required.Default)]
+    [JsonIgnore] public User OwnerUser { get; set; }
+    public string FK_OwnerUser { get; set; }
+    
     public string Type { get; set; }
     public int Seats { get; set; }
     public string Color { get; set; }
     public string PictureSrc { get; set; }
-    public string Features { get; set; }
-    public bool IsElectric { get; set; }
-
-    [ForeignKey("FK_User")]
-    [JsonProperty(Required = Required.Default)]
-    [JsonIgnore] public User User { get; set; }
-    public string FK_User { get; set; }
+    public string BrandModel { get; set; }
+    public string FuelConsumption { get; set; }
+    public string LicensePlate { get; set; }
+    public string FuelType { get; set; }
+    public bool HasAC { get; set; }
+    public bool HasLed { get; set; }
+    public bool HasVehicleInspection { get; set; }
+    public bool HasAutomatic { get; set; }
+    public bool HasSkiBag { get; set; }
+    public bool HasLeather { get; set; }
+    public bool HasSeatHeating { get; set; }
+    public bool HasCruiseControl { get; set; }
+    public bool HasBikeRack { get; set; }
+    public bool HasHandLuggageSpace { get; set; }
+    public bool HasMountingOnRoof { get; set; }
+    public bool HasAnimalSpace { get; set; }
+    public bool HasSuitcaseSpace { get; set; }
+    public bool HasSkiSpace { get; set; }
+    public bool HasPlantSpace { get; set; }
+    public bool HasOtherSpace { get; set; }
 }

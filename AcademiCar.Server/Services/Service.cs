@@ -10,6 +10,7 @@ namespace AcademiCar.Server.Services
         protected IPostgresRepository<TEntity> repository;
         protected ModelStateDictionary modelStateDictionary;
         protected IModelStateWrapper validationDictionary;
+        
 
         public Service(IPostgresRepository<TEntity> repo)
         {
