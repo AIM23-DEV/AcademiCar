@@ -16,18 +16,18 @@ export const SearchForm = () => {
 
     const handleSearch = () => {
         // build searchquery
-        let searchString = "/search/result";
+        let searchString = "/search/result?";
         if (startPoint.trim()) {
-            searchString += `?start=${encodeURIComponent(startPoint)}`
+            searchString += `start=${encodeURIComponent(startPoint)}&`
         }
         if (destination.trim()) {
-            searchString += `&end=${encodeURIComponent(destination)}`
+            searchString += `end=${encodeURIComponent(destination)}&`
         }
         if (date.trim()) {
-            searchString += `&date=${encodeURIComponent(date)}`
+            searchString += `date=${encodeURIComponent(date)}&`
         }
         if (time.trim()) {
-            searchString += `&time=${encodeURIComponent(time)}`
+            searchString += `time=${encodeURIComponent(time)}`
         }
         
         if (searchString.trim()) {
