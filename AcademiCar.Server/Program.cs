@@ -62,7 +62,41 @@ if (enableSaml2)
         .AddCookie()
         .AddSaml2(options =>
         {
+            var certificateName = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:CertificateName"];
+            var SigningCert = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:CertificateName"];
+            var EncryptionCert = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:CertificateName"];
+            var certificateClient = new CertificateClient(vaultUri, new DefaultAzureCredential());
+            var fhcertificate = certificateClient.GetCertificateAsync(certificateName).GetAwaiter().GetResult().Value;
+            var signingcertificate = certificateClient.GetCertificateAsync(SigningCert).GetAwaiter().GetResult().Value;
+            var enryptioncertificate = certificateClient.GetCertificateAsync(EncryptionCert).GetAwaiter().GetResult().Value;
+            
             options.SPOptions.EntityId = new EntityId(builder.Configuration["SustainsysSaml2:Issuer"]);
+
+            var fhCertPath = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:FhFileName"];
+            var spCertPath = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:SpFileName"];
+            var spSignCertPath = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:SpSignFileName"];
+            var certPassword = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:Password"];
+            var signCertPassword = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:SignPassword"];
+//            var spCert = new X509Certificate2(spCertPath, certPassword);
+//            var spSignCert = new X509Certificate2(spSignCertPath, signCertPassword);
+            var spCert = new X509Certificate2(enryptioncertificate.Cer);
+            var spSignCert = new X509Certificate2(signingcertificate.Cer);
+            
+            options.SPOptions.ServiceCertificates.Add(
+                new ServiceCertificate
+                {
+                    Certificate = spCert,
+                    Use = CertificateUse.Encryption
+                }
+            );
+            
+            options.SPOptions.ServiceCertificates.Add(
+                new ServiceCertificate
+                {
+                    Certificate = spSignCert,
+                    Use = CertificateUse.Signing
+                }
+            );
 
             var idp = new IdentityProvider(
                 new EntityId(builder.Configuration["SustainsysSaml2:Idp:EntityId"]),
@@ -71,11 +105,10 @@ if (enableSaml2)
                 MetadataLocation = metadataFilePath
             };
 
-            var certificateName = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:CertificateName"];
-            var certificateClient = new CertificateClient(vaultUri, new DefaultAzureCredential());
-            var certificate = certificateClient.GetCertificateAsync(certificateName).GetAwaiter().GetResult().Value;
-
-            idp.SigningKeys.AddConfiguredKey(new X509Certificate2(certificate.Cer));
+            idp.SigningKeys.AddConfiguredKey(new X509Certificate2(fhcertificate.Cer));
+//            idp.SigningKeys.AddConfiguredKey(new X509Certificate2(fhCertPath));
+            idp.AllowUnsolicitedAuthnResponse = true;
+            idp.WantAuthnRequestsSigned = true;
 
             options.IdentityProviders.Add(idp);
         });
