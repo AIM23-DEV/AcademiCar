@@ -87,10 +87,10 @@ if (enableSaml2)
                 new ServiceCertificate
                 {
                     Certificate = spCert,
-                    Use = CertificateUse.Encryption
+                    Use = CertificateUse.Both
                 }
             );
-            
+/*            
             options.SPOptions.ServiceCertificates.Add(
                 new ServiceCertificate
                 {
@@ -98,7 +98,7 @@ if (enableSaml2)
                     Use = CertificateUse.Signing
                 }
             );
-
+*/
             var idp = new IdentityProvider(
                 new EntityId(builder.Configuration["SustainsysSaml2:Idp:EntityId"]),
                 options.SPOptions)
