@@ -30,7 +30,7 @@ public class AdminController : ControllerBase
 
         return Ok(user);
     }
-
+    
     [HttpGet("users/address/{id}")]
     public async Task<IActionResult> GetUserAddress(string id)
     {
@@ -66,10 +66,126 @@ public class AdminController : ControllerBase
         
         return Ok(ratingData);
     }
+    
+        
+    // FaceSheet Page
+    [HttpGet("prefs/{id}")]
+    public async Task<IActionResult> GetPrefs(string id)
+    {
+        List<Preferences> userPreferences = await _globalService.PreferencesService.GetByUserId(id);
+        if (userPreferences.Count == 0) return BadRequest();
+
+        List<MusicPreference> allMusicPreferences = [];
+        List<InterestPreference> allInterestPreferences = [];
+        List<TravelPreference> allTravelPreferences = [];
+        foreach (Preferences p in userPreferences)
+        {
+            List<MusicPreference> mPrefs = await _globalService.MusicPreferenceService.GetByPreferenceId(p.ID);
+            List<InterestPreference> iPrefs = await _globalService.InterestPreferenceService.GetByPreferenceId(p.ID);
+            List<TravelPreference> tPrefs = await _globalService.TravelPreferenceService.GetByPreferenceId(p.ID);
+            
+            allMusicPreferences.AddRange(mPrefs);
+            allInterestPreferences.AddRange(iPrefs);
+            allTravelPreferences.AddRange(tPrefs);
+        }
+
+        string musicPrefs = allMusicPreferences.Aggregate("", (s, mPref) => s + $"{mPref.Genre},")[..^1];
+        string interests = allInterestPreferences.Aggregate("", (s, iPref) => s + $"{iPref.Interest},")[..^1];
+        string travelPrefs = allTravelPreferences.Aggregate("", (s, tPref) => s + $"{tPref.PreferenceText},")[..^1];
+
+        PrefsData loadedPrefsData = new();
+        loadedPrefsData.MusicPrefs = musicPrefs;
+        loadedPrefsData.Interests = interests;
+        loadedPrefsData.TravelPrefs = travelPrefs;
+        
+        return Ok(loadedPrefsData);
+    }
+    
+    [HttpPost("prefs/update/{id}")]
+    public async Task<IActionResult> UpdatePrefs(string id, [FromBody] PrefsData prefsData)
+    {
+        try
+        {
+            List<Preferences> userPreferences = await _globalService.PreferencesService.GetByUserId(id);
+            if (userPreferences.Count == 0) return NotFound();
+
+            List<MusicPreference> allMusicPreferences = [];
+            List<InterestPreference> allInterestPreferences = [];
+            List<TravelPreference> allTravelPreferences = [];
+            foreach (Preferences p in userPreferences)
+            {
+                List<MusicPreference> mPrefs = await _globalService.MusicPreferenceService.GetByPreferenceId(p.ID);
+                List<InterestPreference> iPrefs = await _globalService.InterestPreferenceService.GetByPreferenceId(p.ID);
+                List<TravelPreference> tPrefs = await _globalService.TravelPreferenceService.GetByPreferenceId(p.ID);
+            
+                allMusicPreferences.AddRange(mPrefs);
+                allInterestPreferences.AddRange(iPrefs);
+                allTravelPreferences.AddRange(tPrefs);
+            }
+
+            foreach (MusicPreference musicPreference in allMusicPreferences)
+            {
+                await _globalService.MusicPreferenceService.Delete(musicPreference.ID);
+            }
+            foreach (InterestPreference interestPreference in allInterestPreferences)
+            {
+                await _globalService.InterestPreferenceService.Delete(interestPreference.ID);
+            }
+            foreach (TravelPreference travelPreference in allTravelPreferences)
+            {
+                await _globalService.TravelPreferenceService.Delete(travelPreference.ID);
+            }
+
+            string[] musicGenres = prefsData.MusicPrefs.Split(',');
+            foreach (string musicGenre in musicGenres)
+            {
+                MusicPreference newMusicPref = new();
+                newMusicPref.FK_Preferences = userPreferences[0].ID;
+                newMusicPref.Genre = musicGenre;
+
+                await _globalService.MusicPreferenceService.Create(newMusicPref);
+            }
+        
+            string[] interests = prefsData.Interests.Split(',');
+            foreach (string interest in interests)
+            {
+                InterestPreference newInterestPref = new();
+                newInterestPref.FK_Preferences = userPreferences[0].ID;
+                newInterestPref.Interest = interest;
+
+                await _globalService.InterestPreferenceService.Create(newInterestPref);
+            }
+            
+            string[] travelPrefs = prefsData.TravelPrefs.Split(',');
+            foreach (string travelPref in travelPrefs)
+            {
+                TravelPreference newTravelPref = new();
+                newTravelPref.FK_Preferences = userPreferences[0].ID;
+                newTravelPref.PreferenceText = travelPref;
+                newTravelPref.IconType = "Talk";
+
+                await _globalService.TravelPreferenceService.Create(newTravelPref);
+            }
+            
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            Console.Write(e);
+            return BadRequest();
+        }
+    }
 }
 
-class RatingData
+public class RatingData
 {
     public float TotalScore { get; set; }
     public int RatingCount { get; set; }
+}
+
+public class PrefsData
+{
+    public string MusicPrefs { get; set; }
+    public string Interests { get; set; }
+    public string TravelPrefs { get; set; }
 }

@@ -2,4 +2,7 @@
 
 namespace AcademiCar.Server.DAL.BaseInterfaces;
 
-public interface IInterestPreferenceRepository : IPostgresRepository<InterestPreference>;
+public interface IInterestPreferenceRepository : IPostgresRepository<InterestPreference>
+{
+    Task<List<InterestPreference>> GetByPreferencesId(int id);
+}
