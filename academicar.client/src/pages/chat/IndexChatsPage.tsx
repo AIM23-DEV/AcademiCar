@@ -45,7 +45,6 @@ export const IndexChatsPage = () => {
                 allChats = allChats.concat(groupChats)
                     .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
                 setChats(allChats);
-                console.log(allChats);
                 setLoading(false);
             })
             .catch(error => {
@@ -72,7 +71,7 @@ export const IndexChatsPage = () => {
         if (connection) {
             connection.start()
                 .then(() => {
-                    console.log('Connected!');
+                    console.debug('Connected!');
 
                     connection.on('ReceiveMessage', () => {
                         fetchAllChats();
