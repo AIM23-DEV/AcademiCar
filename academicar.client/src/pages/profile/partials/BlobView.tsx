@@ -34,7 +34,7 @@ export const BlobView =() => {
                     if (r === null)
                         return;
                     console.log(`promise: ${typeof (r)}`);
-                  
+                    
                 });
             }
 
@@ -80,7 +80,7 @@ export const BlobView =() => {
 
         const containerClient = blobServiceClient.getContainerClient(containerName);
 
-     //   const arrayBuffer = await selectedFile.arrayBuffer();// Fetch the file as an ArrayBuffer
+        const arrayBuffer = await selectedFile.arrayBuffer();// Fetch the file as an ArrayBuffer
    
       //  const blobName = `${containerName}/${selectedFile.name}`;
 
@@ -107,16 +107,16 @@ export const BlobView =() => {
                     console.error('Error fetching blob:', response.errorCode, response._response.status);
                 }
 
-                return response;
+               
             } catch (error) {
                 // @ts-ignore
                 console.log(`Error: ${error.message}`);
             }
             
         }
-
+       
             console.log('Upload successful');
-           
+        return arrayBuffer;
             //   await createBlobInContainer(containerClient, selectedFile);
         
     }
@@ -124,8 +124,6 @@ export const BlobView =() => {
 
     return (
         <div>
-          
-              
                     <form aria-label="Blob" className="w-full grid grid-cols-12 gap-4" encType="multipart/form-data"
                           method={"POST"}>
                         <input type="file" className={"col-span-full"} onChange={handleFileSelection}/>
