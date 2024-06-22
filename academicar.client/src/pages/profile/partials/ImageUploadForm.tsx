@@ -76,8 +76,8 @@ export const ImageUploadForm = () => {
     }
      async function uploadFileToBlob (file:File)  {
          console.log('uploadFileToBlob');
-         const permissions = 'c';
-         const containerName = 'uploads';
+         const permissions = 'profile-images-permissions';
+         const containerName = 'profile-images';
          const blobName = `${containerName}/${buildBlobName(file)}`;
         const sasToken = generateSasToken(process.env.AzureWebJobsStorage, blobName,permissions);
         
