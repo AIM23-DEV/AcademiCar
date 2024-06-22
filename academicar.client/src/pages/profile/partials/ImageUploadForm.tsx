@@ -112,7 +112,7 @@ export const ImageUploadForm = () => {
               const response = await blockBlobClient.uploadData(selectedFile);
             
               promises.push(response);
-              console.log(`Response: ${promises.toString()}`);
+            
               if (response._response.status == 200) {
                   console.log(`Response: OK`)
               } else {
