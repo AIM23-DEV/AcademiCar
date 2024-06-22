@@ -58,7 +58,8 @@ export const ImageUploadForm = () => {
                 if (r === null)
                     return;
                 console.log(`promise: ${typeof (r)}`);
-                
+                console.log(`promise-sasKey = ${r.sasKey}`);
+                console.log(`promise-url = ${r.url}`);
             });
 
 
@@ -77,11 +78,12 @@ export const ImageUploadForm = () => {
          const permissions = 'profile-images-permissions';
          const containerName = 'profile-images';
         // const blobName = `${containerName}/${buildBlobName(file)}`;
-        const sasToken = await generateSasToken(process.env.AzureWebJobsStorage, containerName,permissions);
+        const sasToken = generateSasToken(process.env.AzureWebJobsStorage, containerName,permissions);
         
 
        //  const sasUrl = "https://academicar.blob.core.windows.net/?sv=2022-11-02&ss=bfqt&srt=c&sp=rwdlacupiytfx&se=2024-06-22T16:09:04Z&st=2024-06-22T08:09:04Z&spr=https&sig=Rvvx00Nlt8pi0QH5CHIY6GNlp0xSjYiperKlEJiUORQ%3D";
          blobUpload(file, sasToken.url, containerName, sasToken.sasKey);
+         return sasToken;
     };
     function blobUpload (file:File, url:URL, container:String, sasKey:String) {
         var blobName = buildBlobName(file);
