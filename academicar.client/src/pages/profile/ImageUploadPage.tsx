@@ -8,11 +8,9 @@ export const ImageUploadPage = () => {
     return (
         <>
             <TitleBar text="Zurück" hasBackAction/>
-            
             <div className="w-full flex flex-col items-center justify-center pt-32">
-            <ImageUploadForm/>
+                <ImageUploadForm/>
             </div>
-               
             <BottomNavigationBar />
         </>
     );
