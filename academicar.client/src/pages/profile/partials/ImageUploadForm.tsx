@@ -35,7 +35,6 @@ export const ImageUploadForm = () => {
 
         // resetstring
         setSasTokenUrl(`${blobUrl}/${container}/${target?.files[0].name}?${sasToken}`);
-        handleFileUpload();
     };
 
     
