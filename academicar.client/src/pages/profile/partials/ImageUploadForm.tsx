@@ -3,10 +3,7 @@ import {Button} from "../../../components/Buttons.tsx";
 import {Card} from "../../../components/Cards.tsx";
 import {
     AnonymousCredential, BlobServiceClient,
-    BlockBlobClient,
-    ContainerSASPermissions,
-    generateBlobSASQueryParameters,
-    StorageSharedKeyCredential
+    BlockBlobClient
 } from "@azure/storage-blob";
 
 export const ImageUploadForm = () => {
@@ -14,9 +11,9 @@ export const ImageUploadForm = () => {
     // @ts-ignore
     const [list] = useState<string[]>([]);
         // Other component code...
-    const { extractConnectionStringParts } = require('../../../../utils.js');
+//    const { extractConnectionStringParts } = require('../../../../utils.js');
 
-    function generateSasToken(connectionString:any, container:string, permissions:string) {
+  /*  function generateSasToken(connectionString:any, container:string, permissions:string) {
         console.log('generateSasToken');
         const { accountKey, accountName, url } = extractConnectionStringParts(connectionString);
         const sharedKeyCredential = new StorageSharedKeyCredential(accountName, accountKey.toString('base64'));
@@ -34,7 +31,7 @@ export const ImageUploadForm = () => {
             sasKey: sasKey.toString(),
             url: url
         };
-    }
+    }*/
     const handleFileSelection = (event: ChangeEvent<HTMLInputElement>) => {
         console.log('handleFileSelection');
         const {target} = event;
@@ -52,23 +49,28 @@ export const ImageUploadForm = () => {
             setSelectedFile(target.files[0]);
             console.log(`target: items = ${target.files?.length}`)
             console.log(`target: name = ${target.files[0]?.name}\ntype = ${target.files[0]?.type}`)
-         
-            
-            uploadImageToBlob(target?.files[0]).then(value => {
-                console.log(`value = ${value}`);
-            })
-            uploadFileToBlob(target?.files[0]).then(r => {
-                console.log(`promise...`);
-                if (r === null)
-                    return;
-                console.log(`promise: ${typeof (r)}`);
-                console.log(`promise-sasKey = ${r.sasKey}`);
-                console.log(`promise-url = ${r.url}`);
-            });
-
-
-            list.push(selectedFile?.name as string);
         }
+            try {
+                uploadFileToBlob(target?.files[0]).then(r => {
+                    console.log(`promise...`);
+                    if (r === null)
+                        return;
+                    console.log(`promise: ${typeof (r)}`);
+
+                });
+
+            }catch (err:any){
+                console.log(`${err.message}`);
+            }
+            try {
+                uploadImageToBlob(target?.files[0]).then(value => {
+                    console.log(`value = ${value}`);
+                });
+            }catch (err:any){ console.log(`${err.message}`);}
+            
+         
+            list.push(selectedFile?.name as string);
+        
     };
 
     function buildBlobName(file:File) {
@@ -79,17 +81,17 @@ export const ImageUploadForm = () => {
     }
      async function uploadFileToBlob (file:File)  {
          console.log('uploadFileToBlob');
-         const permissions = 'profile-images-permissions';
-         const containerName = 'profile-images';
-         const blobName = `${containerName}/${buildBlobName(file)}`;
-        const sasToken = generateSasToken(process.env.AzureWebJobsStorage, blobName,permissions);
+     //    const permissions = 'profile-images-permissions';
+         const containerName = 'uploads';
+    //     const blobName = `${containerName}/${buildBlobName(file)}`;
+       // const sasToken = generateSasToken(process.env.AzureWebJobsStorage, blobName,permissions);
         
-
-       //  const sasUrl = "https://academicar.blob.core.windows.net/?sv=2022-11-02&ss=bfqt&srt=c&sp=rwdlacupiytfx&se=2024-06-22T16:09:04Z&st=2024-06-22T08:09:04Z&spr=https&sig=Rvvx00Nlt8pi0QH5CHIY6GNlp0xSjYiperKlEJiUORQ%3D";
-         blobUpload(file, sasToken.url, containerName, sasToken.sasKey);
+const sasToken = "sp=racwl&st=2024-06-22T15:26:13Z&se=2024-06-22T23:26:13Z&spr=https&sv=2022-11-02&sr=c&sig=pazThAHjxB4avoPy9wrfjk0G%2B%2B7OVNr2x2fyB8W7%2Fmc%3D";
+        const sasUrl = "https://academicar.blob.core.windows.net/uploads?sp=racwl&st=2024-06-22T15:26:13Z&se=2024-06-22T23:26:13Z&spr=https&sv=2022-11-02&sr=c&sig=pazThAHjxB4avoPy9wrfjk0G%2B%2B7OVNr2x2fyB8W7%2Fmc%3D";
+         blobUpload(file, sasUrl, containerName, sasToken);
          return sasToken;
     }
-    function blobUpload (file:File, url:URL, container:String, sasKey:String) {
+    function blobUpload (file:File, url:string, container:String, sasKey:String) {
         console.log('blobUpload');
         var blobName = buildBlobName(file);
         var login = `${url}/${container}/${blobName}?${sasKey}`;
