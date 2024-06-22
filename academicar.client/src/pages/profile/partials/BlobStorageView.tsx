@@ -83,20 +83,22 @@ export const BlobStorageView = () => {
     
     return (
         <>
-            <Card label="lob Storage" className="mt-6">
+            <Card label="Blob Storage" className="mt-6">
 
                 <div className="w-full flex flex-col items-center justify-center pt-32">
-                    <h1 className="headline-1 text-center">Fehler 404 - Seite nicht gefunden</h1>
-                    <input type="file" className={"col-span-full"} onChange={handleFileSelection}/>
-                    <Button
-                        variant={"primary"}
-                        text={"Upload Image"}
-                        type={"submit"}
-                        className={"col-span-full"}
-                    />
+                    <form aria-label="Storage" className="w-full grid grid-cols-12 gap-4" encType="multipart/form-data"
+                          method={"POST"}>
+                        <input type="file" className={"col-span-full"} onChange={handleFileSelection}/>
+                        <Button
+                            variant={"primary"}
+                            text={"Upload Image"}
+                            type={"submit"}
+                            className={"col-span-full"}
+                        />
+                    </form>
                 </div>
 
             </Card>
         </>
-    );
+);
 };
