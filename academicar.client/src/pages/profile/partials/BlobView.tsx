@@ -1,6 +1,6 @@
 import React from 'react';
 // we'll need InteractiveBrowserCredential here to force a user to sign-in through the browser
-import { InteractiveBrowserCredential } from "@azure/identity";
+import { DefaultAzureCredential  } from "@azure/identity";
 // we're using these objects from the storage sdk - there are others for different needs
 import { BlobServiceClient, BlobItem } from "@azure/storage-blob";
 
@@ -22,21 +22,24 @@ export class BlobView extends React.Component<Props, State> {
 
     // here's our azure identity config
     async componentDidMount() {
-        const signInOptions = {
+ /*       const signInOptions = {
             // the client id is the application id, from your earlier app registration
-            clientId: "2ec06642-8884-44d4-9610-a56dbcbc6c75",
+            clientId: "6a88bd44-fb43-4e2e-be79-7df666b70b23",
             // this is your tenant id - the id of your azure ad tenant. available from your app registration overview
             tenantId: "4caa5dc8-1da7-4c89-8c89-dc816e05f20b"
         }
-
+*/
+        const defaultCredentials = new DefaultAzureCredential();
         const blobStorageClient = new BlobServiceClient(
             // this is the blob endpoint of your storage acccount. Available from the portal 
             // they follow this format: <accountname>.blob.core.windows.net for Azure global
             // the endpoints may be slightly different from national clouds like US Gov or Azure China
             "https://academicar.blob.core.windows.net/",
-            new InteractiveBrowserCredential(signInOptions)
-        )
+          //  new DefaultAzureCredential()
+            defaultCredentials
+        );
 
+       // console.log(`token = ${defaultCredentials.ar()}`)
         // this uses our container we created earlier - I named mine "private"
         var containerClient = blobStorageClient.getContainerClient("private");
         var localBlobList = [];

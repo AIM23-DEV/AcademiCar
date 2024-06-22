@@ -72,9 +72,9 @@ export const ImageUploadForm = () => {
             });
             console.log('Upload successful');
             return response;
-        } catch (error) {
+        } catch (err) {
             // @ts-ignore
-            console.error('Error uploading file:', error.message);
+            console.error('Error uploading file:', err.message);
         }
     };
 
