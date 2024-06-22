@@ -125,10 +125,6 @@ export const ImageUploadForm = () => {
           }
       } catch (error) {
           console.log(`ERROR creating client`);
-          // @ts-ignore
-          console.log(`Error: ${error.type.toString()}`);
-          // @ts-ignore
-          console.log(`Error: ${error.message}`);
       }
 //   const blobUrl = 'https://academicar.blob.core.windows.net/profile-images/test.jpg';
 
