@@ -83,10 +83,10 @@ export const BlobStorageView = () => {
     
     return (
         <>
-            <Card label="Blob Storage" className="mt-6">
+            <Card className="mt-6">
 
                 <div className="w-full flex flex-col items-center justify-center pt-32">
-                    <form  className="w-full grid grid-cols-12 gap-4" encType="multipart/form-data"
+                    <form aria-label="Storage" className="w-full grid grid-cols-12 gap-4" encType="multipart/form-data"
                           method={"POST"}>
                         <input type="file" className={"col-span-full"} onChange={handleFileSelection}/>
                         <Button
