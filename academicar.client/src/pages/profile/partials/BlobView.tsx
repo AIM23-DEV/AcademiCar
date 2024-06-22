@@ -39,7 +39,7 @@ export class BlobView extends React.Component<Props, State> {
         );*/
 
         const AZURE_STORAGE_CONNECTION_STRING =
-            process.env.AZURE_STORAGE_CONNECTION_STRING;
+           "DefaultEndpointsProtocol=https;AccountName=academicar;AccountKey=mNaipDioJQ1IoDwVaR7BKDXgm+RYRX6IqlW4dXBvkBA63yOpteGM8jqUWAF4nEMiURmrPf43XphD+AStZeKFtA==;EndpointSuffix=core.windows.net";
 
         if (!AZURE_STORAGE_CONNECTION_STRING) {
             throw Error('Azure Storage Connection string not found');
