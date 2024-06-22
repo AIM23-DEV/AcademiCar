@@ -106,7 +106,7 @@ if (enableSaml2)
                 MetadataLocation = metadataFilePath,
             };
 
-            idp.SigningKeys.AddConfiguredKey(new X509Certificate2(fhcertificate.Cer));
+            idp.SigningKeys.AddConfiguredKey(spCert);
 //            idp.SigningKeys.AddConfiguredKey(new X509Certificate2(fhCertPath));
             idp.AllowUnsolicitedAuthnResponse = true;
             idp.WantAuthnRequestsSigned = true;
