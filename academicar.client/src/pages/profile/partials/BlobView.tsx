@@ -33,7 +33,7 @@ export class BlobView extends React.Component<Props, State> {
             // this is the blob endpoint of your storage acccount. Available from the portal 
             // they follow this format: <accountname>.blob.core.windows.net for Azure global
             // the endpoints may be slightly different from national clouds like US Gov or Azure China
-            "https://<your storage account name>.blob.core.windows.net/",
+            "https://academicar.blob.core.windows.net/",
             new InteractiveBrowserCredential(signInOptions)
         )
 
