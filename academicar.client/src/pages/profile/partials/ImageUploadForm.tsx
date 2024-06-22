@@ -43,25 +43,23 @@ export const ImageUploadForm = () => {
         // resetstring
         setSasTokenUrl(`${blobUrl}/${container}/${target?.files[0].name}?${sasToken}`);
 
-        try {
-             let token = handleFileSasToken(target?.files[0]).then(() => {
-                console.log(`sasurl = ${sasTokenUrl}`);
-            });
+       
+             const token = handleFileSasToken();
+               
             console.log(`token = ${token}`);
-            //  setUploadStatus('');
-        }catch(error){
-            console.error(error as String);
-        }
+     
     };
-     const handleFileSasToken: (file: File) => Promise<undefined | string> = async (file:File) => {
+     const handleFileSasToken = () =>  {
        
             const permission = 'w'; //write
             const timerange = 25; //minutes
          
+         if(!selectedFile) return;
+         
             request
                 .post(
                     `/api/sas?file=${encodeURIComponent(
-                        file.name
+                        selectedFile.name
                     )}&permission=${permission}&container=${container}&timerange=${timerange}`,
                     {
                         headers: {
