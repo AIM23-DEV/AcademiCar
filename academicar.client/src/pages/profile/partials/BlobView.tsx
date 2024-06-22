@@ -82,7 +82,7 @@ export const BlobView =() => {
 
      //   const arrayBuffer = await selectedFile.arrayBuffer();// Fetch the file as an ArrayBuffer
    
-        const blobName = `${containerName}/${selectedFile.name}`;
+      //  const blobName = `${containerName}/${selectedFile.name}`;
 
         // this uses our container we created earlier
         let i = 0;
@@ -91,15 +91,28 @@ export const BlobView =() => {
 
             console.log(`Blob ${i++}: ${blob.name}`);
 
+            const promises = [];
+            const blobName = `profile-images/${selectedFile.name}`;
+            console.log(`Uploading with blobname: ${blobName}`);
+            const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+            try {
 
-            // Upload the file
-            const response = await containerClient.uploadBlockBlob(blob.name, selectedFile.type, 1, {
-                blobHTTPHeaders: {
-                    blobContentType: selectedFile.type,
-                    blobContentDisposition: `attachment; filename="${blobName}"`
+                const response = await blockBlobClient.uploadData(selectedFile);
+
+                promises.push(response);
+
+                if (response._response.status == 200) {
+                    console.log(`Response: OK`)
+                } else {
+                    console.error('Error fetching blob:', response.errorCode, response._response.status);
                 }
-            });
-            return response;
+
+                return response;
+            } catch (error) {
+                // @ts-ignore
+                console.log(`Error: ${error.message}`);
+            }
+            
         }
 
             console.log('Upload successful');
