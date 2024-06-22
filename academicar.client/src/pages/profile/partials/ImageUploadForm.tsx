@@ -60,13 +60,14 @@ export const ImageUploadForm = () => {
          try {
            const blockBlobClient = new BlockBlobClient(sasUrl);
             const arrayBuffer = await file.arrayBuffer();// Fetch the file as an ArrayBuffer
-           
+             const containerName = 'profile-images';
+             const blobName = `${containerName}/${file.name}`;
 
             // Upload the file
            const response =  await blockBlobClient.uploadData(arrayBuffer, {
                 blobHTTPHeaders: {
                     blobContentType: file.type,
-                    blobContentDisposition: `attachment; filename="${file.name}"`
+                    blobContentDisposition: `attachment; filename="${blobName}"`
                 }
             });
             console.log('Upload successful');
