@@ -4,10 +4,10 @@ import {Card} from "../../../components/Cards.tsx";
 import request, {AxiosResponse} from "axios";
 import {BlockBlobClient} from "@azure/storage-blob";
 import {Textarea} from "@headlessui/react";
-
+/*
 type SasResponse = {
     url: string;
-};
+};*/
 type ListResponse = {
     list: string[];
 };
@@ -43,7 +43,7 @@ export const ImageUploadForm = () => {
         setSasTokenUrl(`${blobUrl}/${container}/${target?.files[0].name}?${sasToken}`);
     };
 
-        const handleFileSasToken = () => {
+      /*  const handleFileSasToken = () => {
 
             const permission = 'w'; //write
             const timerange = 25; //minutes
@@ -65,7 +65,7 @@ export const ImageUploadForm = () => {
                     const {data} = result;
                     const {url} = data;
                     setSasTokenUrl(url);
-                    return url;
+                   
                 })
                 .catch((error: unknown) => {
                     if (error instanceof Error) {
@@ -76,16 +76,16 @@ export const ImageUploadForm = () => {
                         console.error(error as string);
                     }
                 });
-            return "";
+           
         };
-    
+    */
         const handleFileUpload = () => {
-            try {
+           /* try {
                 handleFileSasToken();
             } catch (error) {
                 console.log(`${error as string}`);
             }
-
+*/
             if (sasTokenUrl === '') return;
 
             convertFileToArrayBuffer(selectedFile as File)
@@ -186,22 +186,7 @@ export const ImageUploadForm = () => {
                 
             </form>
         </Card>
-            <Card  className="mt-6">
-                <form aria-label="SAS Token" className="w-full grid grid-cols-12 gap-4" encType="multipart/form-data" method={"POST"}
-                      onSubmit={handleFileSasToken}>
-                    <input type="file" className={"col-span-full"} onChange={handleFileSelection} />
-
-                    <Textarea >{sasTokenUrl}</Textarea>
-                    <Button
-                        variant={"primary"}
-                        text={"Upload Image"}
-                        type={"submit"}
-                        className={"col-span-full"}
-                    />
-
-
-                </form>
-            </Card>
+          
         <li>
         {list.map((item) => (
                 <Card>
