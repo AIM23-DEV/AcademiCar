@@ -6,6 +6,7 @@ using System.Runtime.InteropServices.JavaScript;
 using AcademiCar.Server.Services.Response;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Identity.Client;
+using System.Globalization;
 
 namespace AcademiCar.Server.Controllers;
 
@@ -41,16 +42,44 @@ public class TripController : ControllerBase
             Address? start = addresses.Where(r => r != null && r.ID == trip.FK_StartAddress).First();
             Address? end = addresses.Where(r => r != null && r.ID == trip.FK_EndAddress).First();
             
+            // Calculate the duration
+            TimeSpan difference = trip.EndTime - trip.StartTime;
+            double differenceInMinutes = Math.Round(difference.TotalMinutes, 0);
+
+            if (differenceInMinutes == 1440)
+            {
+                differenceInMinutes = 0;
+            }
+            
+            // Rating
+            List<Rating?> userRatings  = await _globalService.RatingService.Get();
+        
+            if (userRatings.Count == 0)
+            {
+                return NotFound();
+            }; 
+        
+            List<Rating> FilterdUserRatings = userRatings.Where(r => r != null && r.FK_RatedUser == user.Id).ToList();
+            float sumRating = 0;
+            
+            foreach (Rating rating in FilterdUserRatings)
+            {
+                sumRating += rating.Score;
+            }
+            
             ExtendedTrip newTrip = new ExtendedTrip()
             {
                 startPoint = start,
                 startTime = trip.StartTime,
                 endPoint = end,
                 endTime = trip.EndTime,
+                duration = differenceInMinutes,
                 driver = user,
                 seatsAvailable = trip.AvailableSeats,
                 price = trip.Price,
                 additionalStops = Array.Empty<ExtendedTrip>(),
+                rating = sumRating,
+                ratingCount = FilterdUserRatings.Count(),
             };
             
             extendedTrips.Add(newTrip);
@@ -79,14 +108,25 @@ public class TripController : ControllerBase
         => await _globalService.TripService.Create(trip);
 }
 
+class TotalRating
+{
+    public float Rating { get; set; }
+
+}
+
 class ExtendedTrip
 {
     public Address startPoint { get; set; }
     public DateTime startTime { get; set; }
     public Address endPoint { get; set; }
     public DateTime endTime { get; set; }
+    public double duration { get; set; }
     public User driver { get; set; }
     public float seatsAvailable { get; set; }
     public float price { get; set; }
     public ExtendedTrip[] additionalStops { get; set; }
+    public float rating { get; set; }
+    public int ratingCount { get; set; }
 }
+
+

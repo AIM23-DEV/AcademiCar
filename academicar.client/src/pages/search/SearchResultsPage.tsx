@@ -5,7 +5,7 @@ import {SearchResultForm} from "./partials/SearchResultForm.tsx";
 import {BottomNavigationBar} from "../../components/BottomNavigationBar.tsx";
 import {LinkCard} from "../../components/Cards.tsx";
 import {Divider} from "../../components/Divider.tsx";
-import { BiRadioCircleMarked, BiMap, BiUserCircle, /*BiSolidStar*/ } from "react-icons/bi";
+import { BiRadioCircleMarked, BiMap, BiUserCircle, BiSolidStar } from "react-icons/bi";
 import { useLocation } from 'react-router-dom';
 import {useEffect, useState} from "react";
 
@@ -14,10 +14,13 @@ interface ExtendedTrip {
     startTime: Date,
     endPoint: IAddress,
     endTime: Date,
+    duration: number,
     driver: IUser,
     seatsAvailable: number,
     price: number,
     additionalStop: Array<ExtendedTrip>,
+    rating: number,
+    ratingCount: number,
 }
 
 const useQuery = () => {
@@ -81,15 +84,42 @@ export const SearchResultsPage = () => {
             extendedTrips.sort((a, b) => a.price - b.price)
         }
         else if(radioValue == "fastest") {
-            console.log("sort by fastest")
+            extendedTrips.sort((a, b) => a.duration - b.duration)
         }
         else if (radioValue == "best") {
-            console.log("sort by best")
+            // TODO: Testing
+            extendedTrips.sort((a, b) => {
+                let avgRatingA;
+                let avgRatingB;
+                
+                if (a.ratingCount == 0 && b.ratingCount == 0) {
+                    avgRatingA = 0;
+                    avgRatingB = 0;
+                }
+                else if (a.ratingCount == 0) {
+                    avgRatingA = 0;
+                    avgRatingB = b.rating / b.ratingCount;
+                }
+                else if (b.ratingCount == 0) {
+                    avgRatingA = a.rating / a.ratingCount;
+                    avgRatingB = 0;
+                }
+                else {
+                    avgRatingA = a.rating / a.ratingCount;
+                    avgRatingB = b.rating / b.ratingCount;
+                }
+                
+                return avgRatingB - avgRatingA;
+            })
         }
         else if (radioValue == "stops") {
             console.log("sort by stops")
         }
     }
+    
+    extendedTrips.map((a) =>  {
+        console.log(a)
+    })
     
     sortTrips();
     
@@ -103,7 +133,7 @@ export const SearchResultsPage = () => {
                 <div className="w-full mt-6 flex flex-col gap-5">
                     {extendedTrips.map((item) =>
                         <>
-                            {(!startPoint && !destination && !item.startTime && !item.endTime) ||
+                            {(!startPoint && !destination && !time && !date) ||
                             item.startPoint.street === startPoint ||
                             item.startPoint.place === startPoint ||
                             formatTime(item.startTime) === time ||
@@ -126,13 +156,19 @@ export const SearchResultsPage = () => {
                                                 <div>
                                                     <div>{item.driver.firstName} {item.driver.lastName}</div>
                                                     <div className="flex items-center">
-                                                        {/*{Array.from({ length: Math.floor(item.driver.rating) }).map((_, idx) => (
-                                                            <BiSolidStar key={idx} className="icon text-yellow-400" />
-                                                        ))}
-                                                        {Array.from({ length: 5 - Math.floor(item.driver.rating) }).map((_, idx) => (
-                                                            <BiSolidStar key={idx} className="icon text-gray-300" />
-                                                        ))}
-                                                        <span className="ml-2">({item.driver.rating})</span>*/}
+                                                        {(item.ratingCount == 0) ? (
+                                                            <></>
+                                                        ) : (
+                                                            <>
+                                                                {Array.from({ length: Math.floor(item.rating/item.ratingCount) }).map((_, idx) => (
+                                                                    <BiSolidStar key={idx} className="icon text-yellow-400" />
+                                                                ))}
+                                                                {Array.from({ length: 5 - Math.floor(item.rating/item.ratingCount) }).map((_, idx) => (
+                                                                    <BiSolidStar key={idx} className="icon text-gray-300" />
+                                                                ))}
+                                                                <span className="ml-2">({item.rating/item.ratingCount})</span>
+                                                            </>
+                                                        )}
                                                     </div>
                                                 </div>
                                             </div>
