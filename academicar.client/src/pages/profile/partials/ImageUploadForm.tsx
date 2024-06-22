@@ -89,7 +89,7 @@ export const ImageUploadForm = () => {
         var blobName = buildBlobName(file);
         var login = `${url}/${container}/${blobName}?${sasKey}`;
         var blockBlobClient = new BlockBlobClient(login, new AnonymousCredential());
-        blockBlobClient.uploadFile(file.name);
+        blockBlobClient.uploadFile(`${container}/${blobName}`);
     }
   /*
   async function handleUpload(selectedFile:File) {
