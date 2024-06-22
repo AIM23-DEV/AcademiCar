@@ -2,6 +2,7 @@ import {ChangeEvent, useState} from "react";
 import {Button} from "../../../components/Buttons.tsx";
 import {Card} from "../../../components/Cards.tsx";
 import {BlobServiceClient} from "@azure/storage-blob";
+import {DefaultAzureCredential} from "@azure/identity";
 
 export const ImageUploadForm = () => {
     const [selectedFile, setSelectedFile] = useState<File|null>(null);
@@ -74,14 +75,31 @@ export const ImageUploadForm = () => {
 
       console.log(`handleUpload`);
      
-      const connectionString = 'BlobEndpoint=https://academicar.blob.core.windows.net/;QueueEndpoint=https://academicar.queue.core.windows.net/;FileEndpoint=https://academicar.file.core.windows.net/;TableEndpoint=https://academicar.table.core.windows.net/;SharedAccessSignature=sv=2022-11-02&ss=bfqt&srt=c&sp=rwdlacupiytfx&se=2024-06-15T10:04:03Z&st=2024-06-15T02:04:03Z&spr=https&sig=and%2BWbKzZeBXVymd%2FsQQFl7NTqOCPZ%2FcAqYSJ5vz%2BOg%3D';
+     // const connectionString = 'BlobEndpoint=https://academicar.blob.core.windows.net/;QueueEndpoint=https://academicar.queue.core.windows.net/;FileEndpoint=https://academicar.file.core.windows.net/;TableEndpoint=https://academicar.table.core.windows.net/;SharedAccessSignature=sv=2022-11-02&ss=bfqt&srt=c&sp=rwdlacupiytfx&se=2024-06-15T10:04:03Z&st=2024-06-15T02:04:03Z&spr=https&sig=and%2BWbKzZeBXVymd%2FsQQFl7NTqOCPZ%2FcAqYSJ5vz%2BOg%3D';
       const containerName = 'profile-images';
 
       try {
-          const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
+     //     const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
 
-          const containerClient = blobServiceClient.getContainerClient(containerName);
+     //     const containerClient = blobServiceClient.getContainerClient(containerName);
 
+
+          const blobStorageClient = new BlobServiceClient(
+              // this is the blob endpoint of your storage acccount. Available from the portal 
+              // they follow this format: <accountname>.blob.core.windows.net for Azure global
+              // the endpoints may be slightly different from national clouds like US Gov or Azure China
+              "https://academicar.blob.core.windows.net/",
+              new DefaultAzureCredential()
+          );
+
+          // this uses our container we created earlier
+          var containerClient = blobStorageClient.getContainerClient(containerName);
+          let i= 0;
+          let blobs = containerClient.listBlobsFlat();
+          for await (const blob of blobs) {
+             
+              console.log(`Blob ${i++}: ${blob.name}`);
+          }
       //    await createBlobInContainer(containerClient, file);
 
           /*    console.log(`blobServiceClient-accountName: ${blobServiceClient.accountName}`);
