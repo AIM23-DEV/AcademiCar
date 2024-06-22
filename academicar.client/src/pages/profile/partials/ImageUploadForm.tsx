@@ -4,10 +4,8 @@ import {Card} from "../../../components/Cards.tsx";
 import request, {AxiosResponse} from "axios";
 import {BlockBlobClient} from "@azure/storage-blob";
 import {Textarea} from "@headlessui/react";
-/*
-type SasResponse = {
-    url: string;
-};*/
+
+
 type ListResponse = {
     list: string[];
 };
@@ -42,6 +40,7 @@ export const ImageUploadForm = () => {
         // resetstring
        // setSasTokenUrl(`${blobUrl}/${container}/${target?.files[0].name}?${sasToken}`);
         setSasTokenUrl(imgSasUrl);
+        handleFileUpload();
     };
 
     
@@ -91,7 +90,8 @@ export const ImageUploadForm = () => {
             const textEncoder = new TextEncoder();
             return textEncoder.encode(str).buffer;
         };
-    
+
+  
     function convertFileToArrayBuffer(
         file: File
     ): Promise<ArrayBuffer | null> {
@@ -132,38 +132,37 @@ export const ImageUploadForm = () => {
     return (
         <div>
         <Card  className="mt-6">
-            <form aria-label="Suche" className="w-full grid grid-cols-12 gap-4" encType="multipart/form-data" method={"POST"} 
+            <form aria-label="Suche" className="w-full grid grid-cols-12 gap-4" encType="multipart/form-data"
+                  method={"POST"}
                   onSubmit={handleFileUpload}>
-                <input type="file" className={"col-span-full"} onChange={handleFileSelection} />
-                <Textarea >{sasTokenUrl}</Textarea>
-                
+                <input type="file" className={"col-span-full"} onChange={handleFileSelection}/>
+                <Textarea>{sasTokenUrl}</Textarea>
+
                 <Button
                     variant={"primary"}
                     text={"Upload Image"}
                     type={"submit"}
                     className={"col-span-full"}
                 />
-                
-                
             </form>
-        </Card>
-          
-        <li>
-        {list.map((item) => (
-                <Card>
+                        </Card>
+
+                        <li>
+                    {list.map((item) => (
+                        <Card>
                     {item.endsWith('.jpg') ||
-                    item.endsWith('.png') ||
-                    item.endsWith('.jpeg') ||
-                    item.endsWith('.gif') ? (
-                        <img src={item} alt={item} />
+                        item.endsWith('.png') ||
+                        item.endsWith('.jpeg') ||
+                        item.endsWith('.gif') ? (
+                        <img src={item} alt={item}/>
                     ) : (
-                        <div className="body-1" >
-                            {item}
-                        </div>
+                    <div className="body-1">
+                        {item}
+                    </div>
                     )}
-                </Card>
+        </Card>
             ))};
         </li>
-        </div>
-    );
+</div>
+);
 };
