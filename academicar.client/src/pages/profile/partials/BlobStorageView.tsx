@@ -15,7 +15,7 @@ export const BlobStorageView = () => {
     const { extractConnectionStringParts } = require('../../../../utils.js');
     const AZURE_STORAGE_CONNECTION_STRING =
         "DefaultEndpointsProtocol=https;AccountName=academicar;AccountKey=mNaipDioJQ1IoDwVaR7BKDXgm+RYRX6IqlW4dXBvkBA63yOpteGM8jqUWAF4nEMiURmrPf43XphD+AStZeKFtA==;EndpointSuffix=core.windows.net";
-    const permissions = 'c';
+    const permissions = 'profile-images-permissions';
     const container = 'profile-images';
     const handleFileSelection = (event: ChangeEvent<HTMLInputElement>) => {
         console.log('handleFileSelection');
