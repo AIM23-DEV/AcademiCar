@@ -1,10 +1,10 @@
 import {ChangeEvent, useState} from "react";
 import {Button} from "../../../components/Buttons.tsx";
 import {Card} from "../../../components/Cards.tsx";
-import {BlockBlobClient} from "@azure/storage-blob";
+import {BlobServiceClient} from "@azure/storage-blob";
 
 export const ImageUploadForm = () => {
-  //  const [selectedFile, setSelectedFile] = useState<File|null>(null);
+    const [selectedFile, setSelectedFile] = useState<File|null>(null);
     // @ts-ignore
     const [list] = useState<string[]>([]);
         // Other component code...
@@ -13,6 +13,7 @@ export const ImageUploadForm = () => {
         console.log('handleFileSelection');
         const { target } = event;
 
+    
         if (!(target instanceof HTMLInputElement)) return;
         if (
             target?.files === null ||
@@ -20,17 +21,29 @@ export const ImageUploadForm = () => {
             target?.files[0] === null
         )
             return;
+
+        if(target.files.length >=0){
+            setSelectedFile(target.files[0]);
+            console.log(`target: items = ${target.files?.length}`)
+            console.log(`target: name = ${target.files[0]?.name}\ntype = ${target.files[0]?.type}`)
+            handleUpload(target?.files[0]).then(r => {
+                console.log(`promise...`);
+                if (r === null)
+                    return;
+                console.log(`promise: ${r?._response.status}`);
+                console.log(`promise: ${r?._response.request.method}`);
+                console.log(`promise: ${r?._response.headers}`);
+            });
+        }
         
+      //  uploadFileToBlob(target?.files[0]);
+      
         
-        
-        uploadFileToBlob(target?.files[0]);
-      //  handleUpload(target?.files[0]);
-        
-        list.push(target?.files[0].name);
+        list.push(selectedFile?.name as string);
     };
   
     
-     const uploadFileToBlob = async (file:File) => {
+   /*  const uploadFileToBlob = async (file:File) => {
          
          console.log('uploadFileToBlob');
          const sasUrl = "https://academicar.blob.core.windows.net/?sv=2022-11-02&ss=bfqt&srt=c&sp=rwdlacupiytfx&se=2024-06-15T10:04:03Z&st=2024-06-15T02:04:03Z&spr=https&sig=and%2BWbKzZeBXVymd%2FsQQFl7NTqOCPZ%2FcAqYSJ5vz%2BOg%3D";
@@ -55,50 +68,57 @@ export const ImageUploadForm = () => {
         }
     };
 
-  
-/*    async function handleUpload(selectedFile:File) {
+  */
+  async function handleUpload(selectedFile:File) {
 
-        console.log(`handleUpload`);
-        if(!selectedFile)
-            return;
+      console.log(`handleUpload`);
+     
+      const connectionString = 'BlobEndpoint=https://academicar.blob.core.windows.net/;QueueEndpoint=https://academicar.queue.core.windows.net/;FileEndpoint=https://academicar.file.core.windows.net/;TableEndpoint=https://academicar.table.core.windows.net/;SharedAccessSignature=sv=2022-11-02&ss=bfqt&srt=c&sp=rwdlacupiytfx&se=2024-06-15T10:04:03Z&st=2024-06-15T02:04:03Z&spr=https&sig=and%2BWbKzZeBXVymd%2FsQQFl7NTqOCPZ%2FcAqYSJ5vz%2BOg%3D';
+      const containerName = 'profile-images';
 
-        const connectionString = 'BlobEndpoint=https://academicar.blob.core.windows.net/;QueueEndpoint=https://academicar.queue.core.windows.net/;FileEndpoint=https://academicar.file.core.windows.net/;TableEndpoint=https://academicar.table.core.windows.net/;SharedAccessSignature=sv=2022-11-02&ss=bfqt&srt=c&sp=rwdlacupiytfx&se=2024-06-15T10:04:03Z&st=2024-06-15T02:04:03Z&spr=https&sig=and%2BWbKzZeBXVymd%2FsQQFl7NTqOCPZ%2FcAqYSJ5vz%2BOg%3D';
-        const containerName = 'profile-images';
+      try {
+          const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
 
-        const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
-       
-        const containerClient = blobServiceClient.getContainerClient(containerName);
-    /*    console.log(`blobServiceClient-accountName: ${blobServiceClient.accountName}`);
-        console.log(`blobServiceClient-url: ${blobServiceClient.url}`);
-        console.log(`containerClient-accountName: ${containerClient.accountName}`);
-        console.log(`containerClient-containerName: ${containerClient.containerName}`);
-        console.log(`containerClient-url: ${containerClient.url}`);
-*/
-      
+          const containerClient = blobServiceClient.getContainerClient(containerName);
+          /*    console.log(`blobServiceClient-accountName: ${blobServiceClient.accountName}`);
+              console.log(`blobServiceClient-url: ${blobServiceClient.url}`);
+              console.log(`containerClient-accountName: ${containerClient.accountName}`);
+              console.log(`containerClient-containerName: ${containerClient.containerName}`);
+              console.log(`containerClient-url: ${containerClient.url}`);
+      */
+
 // Example for file upload
-   /*        const blobName = `${selectedFile.name}`;
-            console.log(`Uploading with blobname: ${blobName}`);
-            const blockBlobClient = containerClient.getBlockBlobClient(blobName);
-            try {
-                const response = await blockBlobClient.uploadData(selectedFile);
-                if(response._response.status == 200){
-                    console.log(`Response: OK`)
-                }else {
-                    console.error('Error fetching blob:', response.errorCode, response._response.status);
-                }
-            }catch(error){
-                // @ts-ignore
-                console.log(`Error: ${error.message}`);
-            }
-        }
-   const blobUrl = 'https://academicar.blob.core.windows.net/profile-images/test.jpg';
+          const blobName = `profile-images/${selectedFile.name}`;
+          console.log(`Uploading with blobname: ${blobName}`);
+          const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+          try {
+              const response = await blockBlobClient.uploadData(selectedFile);
+              if (response._response.status == 200) {
+                  console.log(`Response: OK`)
+              } else {
+                  console.error('Error fetching blob:', response.errorCode, response._response.status);
+              }
+              return response;
+          } catch (error) {
+              // @ts-ignore
+              console.log(`Error: ${error.message}`);
+          }
+      } catch (error) {
+          console.log(`ERROR creating client`);
+          // @ts-ignore
+          console.log(`Error: ${error.type.toString()}`);
+          // @ts-ignore
+          console.log(`Error: ${error.message}`);
+      }
+//   const blobUrl = 'https://academicar.blob.core.windows.net/profile-images/test.jpg';
 
-*/
+     
+  }
 
 
     return (
         <Card label="Suche" className="mt-6">
-            <form aria-label="Suche" className="w-full grid grid-cols-12 gap-4">
+            <form aria-label="Suche" className="w-full grid grid-cols-12 gap-4" encType="multipart/form-data">
                 <input type="file" className={"col-span-full"} onChange={handleFileSelection} />
                 <Button
                     variant={"primary"}
