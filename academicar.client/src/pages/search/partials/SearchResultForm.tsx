@@ -75,7 +75,7 @@ export const SearchResultForm: React.FC<SearchResultFormProps> = ({ radioValue, 
                                     {value: "price", label: t('pages/search:SearchResultsForm.sort.price')},
                                     {value: "fastest", label: t('pages/search:SearchResultsForm.sort.fast')},
                                     {value: "best", label: t('pages/search:SearchResultsForm.sort.best')},
-                                    {value: "stops", label: t('pages/search:SearchResultsForm.sort.stops')}
+                                    /*{value: "stops", label: t('pages/search:SearchResultsForm.sort.stops')}*/
                                 ]}
                             />
                         </MenuItems>

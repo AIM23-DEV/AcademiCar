@@ -112,9 +112,9 @@ export const SearchResultsPage = () => {
                 return avgRatingB - avgRatingA;
             })
         }
-        else if (radioValue == "stops") {
+        /*else if (radioValue == "stops") {
             console.log("sort by stops")
-        }
+        }*/
     }
     
     extendedTrips.map((a) =>  {
