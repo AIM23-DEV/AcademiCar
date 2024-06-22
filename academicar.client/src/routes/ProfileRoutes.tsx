@@ -10,6 +10,7 @@ import {StatsPage} from "../pages/profile/StatsPage.tsx";
 import {BalancePage} from "../pages/profile/BalancePage.tsx";
 import {BalanceHistoryPage} from "../pages/profile/BalanceHistoryPage.tsx";
 import {BalanceRechargePage} from "../pages/profile/BalanceRechargePage.tsx";
+import {ImageUploadPage} from "../pages/profile/ImageUploadPage.tsx";
 
 export default <Route key="profileRoute" path="/profile/" element={<Outlet/>}>
     <Route key="profileMainRoute" path=":loggedInUserId" element={<IndexProfilePage/>} />
@@ -23,4 +24,6 @@ export default <Route key="profileRoute" path="/profile/" element={<Outlet/>}>
     <Route key="profileBalanceRoute" path=":loggedInUserId/balance" element={<BalancePage/>} />
     <Route key="profileBalanceHistoryRoute" path=":loggedInUserId/balance/history" element={<BalanceHistoryPage/>} />
     <Route key="profileBalanceRechargeRoute" path=":loggedInUserId/balance/recharge" element={<BalanceRechargePage/>} />
+
+    <Route key="profileImageUploadRoute" path="upload" element={<ImageUploadPage/>} />
 </Route>;
