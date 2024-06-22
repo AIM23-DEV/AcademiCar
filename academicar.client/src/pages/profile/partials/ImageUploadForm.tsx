@@ -84,7 +84,7 @@ export const ImageUploadForm = () => {
        //  const sasUrl = "https://academicar.blob.core.windows.net/?sv=2022-11-02&ss=bfqt&srt=c&sp=rwdlacupiytfx&se=2024-06-22T16:09:04Z&st=2024-06-22T08:09:04Z&spr=https&sig=Rvvx00Nlt8pi0QH5CHIY6GNlp0xSjYiperKlEJiUORQ%3D";
          blobUpload(file, sasToken.url, containerName, sasToken.sasKey);
          return sasToken;
-    };
+    }
     function blobUpload (file:File, url:URL, container:String, sasKey:String) {
         var blobName = buildBlobName(file);
         var login = `${url}/${container}/${blobName}?${sasKey}`;
