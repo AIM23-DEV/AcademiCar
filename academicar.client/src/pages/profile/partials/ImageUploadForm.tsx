@@ -30,6 +30,7 @@ export const ImageUploadForm = () => {
                 console.log(`promise...`);
                 if (r === null)
                     return;
+                console.log(`promise: ${typeof (r)}`);
                 console.log(`promise: ${r?._response.status}`);
                 console.log(`promise: ${r?._response.request.method}`);
                 console.log(`promise: ${r?._response.headers}`);
