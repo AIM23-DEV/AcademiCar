@@ -2,7 +2,7 @@ import {ChangeEvent, useState} from "react";
 import {Button} from "../../../components/Buttons.tsx";
 import {Card} from "../../../components/Cards.tsx";
 import {
-    AnonymousCredential,
+    AnonymousCredential, BlobServiceClient,
     BlockBlobClient,
     ContainerSASPermissions,
     generateBlobSASQueryParameters,
@@ -54,6 +54,9 @@ export const ImageUploadForm = () => {
             console.log(`target: name = ${target.files[0]?.name}\ntype = ${target.files[0]?.type}`)
          
             
+            uploadImageToBlob(target?.files[0]).then(value => {
+                console.log(`value = ${value}`);
+            })
             uploadFileToBlob(target?.files[0]).then(r => {
                 console.log(`promise...`);
                 if (r === null)
@@ -92,6 +95,31 @@ export const ImageUploadForm = () => {
         var login = `${url}/${container}/${blobName}?${sasKey}`;
         var blockBlobClient = new BlockBlobClient(login, new AnonymousCredential());
         blockBlobClient.uploadFile(`${container}/${blobName}`);
+    }
+    
+    
+    async function uploadImageToBlob(selectedFile:File){
+        console.log(`uploadImageToBlob ${selectedFile.name}`);
+        try {
+            // Create a unique name for the container
+            const connectionString = 'BlobEndpoint=https://academicar.blob.core.windows.net/;QueueEndpoint=https://academicar.queue.core.windows.net/;FileEndpoint=https://academicar.file.core.windows.net/;TableEndpoint=https://academicar.table.core.windows.net/;SharedAccessSignature=sv=2022-11-02&ss=bfqt&srt=c&sp=rwdlacupiytfx&se=2024-06-15T10:04:03Z&st=2024-06-15T02:04:03Z&spr=https&sig=and%2BWbKzZeBXVymd%2FsQQFl7NTqOCPZ%2FcAqYSJ5vz%2BOg%3D';
+            const containerName = 'profile-images';
+
+            console.log('\nCreating container...');
+            console.log('\t', containerName);
+
+// Get a reference to a container
+            const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
+            const containerClient = blobServiceClient.getContainerClient(containerName);
+// Create the container
+            const createContainerResponse = await containerClient.create();
+            console.log(
+                `Container was created successfully.\n\trequestId:${createContainerResponse.requestId}\n\tURL: ${containerClient.url}`
+            );
+        }catch (error){
+            // @ts-ignore
+            console.error(error.message);
+        }
     }
   /*
   async function handleUpload(selectedFile:File) {
@@ -156,7 +184,7 @@ export const ImageUploadForm = () => {
 
     return (
         <Card label="Suche" className="mt-6">
-            <form aria-label="Suche" className="w-full grid grid-cols-12 gap-4" encType="multipart/form-data" method={"GET"} >
+            <form aria-label="Suche" className="w-full grid grid-cols-12 gap-4" encType="multipart/form-data" method={"POST"} >
                 <input type="file" className={"col-span-full"} onChange={handleFileSelection} />
                 <Button
                     variant={"primary"}
