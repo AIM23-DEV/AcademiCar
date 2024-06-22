@@ -80,6 +80,9 @@ export const ImageUploadForm = () => {
           const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
 
           const containerClient = blobServiceClient.getContainerClient(containerName);
+
+      //    await createBlobInContainer(containerClient, file);
+
           /*    console.log(`blobServiceClient-accountName: ${blobServiceClient.accountName}`);
               console.log(`blobServiceClient-url: ${blobServiceClient.url}`);
               console.log(`containerClient-accountName: ${containerClient.accountName}`);
@@ -90,8 +93,9 @@ export const ImageUploadForm = () => {
 // Example for file upload
           const blobName = `profile-images/${selectedFile.name}`;
           console.log(`Uploading with blobname: ${blobName}`);
-          const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+         
           try {
+              const blockBlobClient = containerClient.getBlockBlobClient(blobName);
               const response = await blockBlobClient.uploadData(selectedFile);
               if (response._response.status == 200) {
                   console.log(`Response: OK`)
