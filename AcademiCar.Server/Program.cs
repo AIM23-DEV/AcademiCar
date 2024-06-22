@@ -111,7 +111,7 @@ if (enableSaml2)
             idp.AllowUnsolicitedAuthnResponse = true;
             idp.WantAuthnRequestsSigned = true;
 
-            options.SPOptions.Logger.WriteVerbose(encryptionCert);
+            options.SPOptions.Logger.WriteVerbose(encryptionCert.ToString());
 
             options.IdentityProviders.Add(idp);
         });
