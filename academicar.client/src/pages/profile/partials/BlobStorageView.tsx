@@ -13,16 +13,15 @@ import {ChangeEvent} from "react";
 export const BlobStorageView = () => {
  
     const { extractConnectionStringParts } = require('../../../../utils.js');
-    const AZURE_STORAGE_CONNECTION_STRING =
-        "DefaultEndpointsProtocol=https;AccountName=academicar;AccountKey=mNaipDioJQ1IoDwVaR7BKDXgm+RYRX6IqlW4dXBvkBA63yOpteGM8jqUWAF4nEMiURmrPf43XphD+AStZeKFtA==;EndpointSuffix=core.windows.net";
+//    const AZURE_STORAGE_CONNECTION_STRING ="DefaultEndpointsProtocol=https;AccountName=academicar;AccountKey=mNaipDioJQ1IoDwVaR7BKDXgm+RYRX6IqlW4dXBvkBA63yOpteGM8jqUWAF4nEMiURmrPf43XphD+AStZeKFtA==;EndpointSuffix=core.windows.net";
     const permissions = 'profile-images-permissions';
     const container = 'profile-images';
     const handleFileSelection = (event: ChangeEvent<HTMLInputElement>) => {
         console.log('handleFileSelection');
         const {target} = event;
 
-        console.log(`Blob-process.env.AzureWebJobsStorage: ${AZURE_STORAGE_CONNECTION_STRING}`);
-        console.log(`process.env.AzureWebJobsStorage: ${process.env.AzureWebJobsStorage}`);
+     //   console.log(`Blob-process.env.AzureWebJobsStorage: ${AZURE_STORAGE_CONNECTION_STRING}`);
+     //   console.log(`process.env.AzureWebJobsStorage: ${process.env.AzureWebJobsStorage}`);
         
         if (!(target instanceof HTMLInputElement)) return;
         if (
