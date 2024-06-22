@@ -83,6 +83,7 @@ export const ImageUploadForm = () => {
                         console.log(error as string);
                     }
                 });
+            console.log(`list = ${list.toString()}`);
         };
 
 
@@ -145,24 +146,8 @@ export const ImageUploadForm = () => {
                     className={"col-span-full"}
                 />
             </form>
-                        </Card>
-
-                        <li>
-                    {list.map((item) => (
-                        <Card>
-                    {item.endsWith('.jpg') ||
-                        item.endsWith('.png') ||
-                        item.endsWith('.jpeg') ||
-                        item.endsWith('.gif') ? (
-                        <img src={item} alt={item}/>
-                    ) : (
-                    <div className="body-1">
-                        {item}
-                    </div>
-                    )}
+                        
         </Card>
-            ))};
-        </li>
 </div>
 );
 };
