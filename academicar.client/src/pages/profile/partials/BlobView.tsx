@@ -7,6 +7,7 @@ import {Button} from "../../../components/Buttons.tsx";
 
 
 
+
 export const BlobView =() => {
    
 
@@ -106,19 +107,12 @@ export const BlobView =() => {
             //   await createBlobInContainer(containerClient, selectedFile);
         
     }
-  //  render()
+
 
     return (
         <div>
-            <table>
-                <thead>
-                <tr>
-                    <th>blob name</th>
-                    <th>blob size</th>
-                    <th>download url</th>
-                </tr>
-                </thead>
-                <tbody>{
+          
+              
                     <form aria-label="Blob" className="w-full grid grid-cols-12 gap-4" encType="multipart/form-data"
                           method={"POST"}>
                         <input type="file" className={"col-span-full"} onChange={handleFileSelection}/>
@@ -130,11 +124,8 @@ export const BlobView =() => {
                         />
 
                     </form>
-                }
-                </tbody>
-            </table>
-
+            
         </div>
 
-    );
+    )
 };
