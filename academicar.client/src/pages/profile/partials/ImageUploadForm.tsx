@@ -17,6 +17,7 @@ export const ImageUploadForm = () => {
     const { extractConnectionStringParts } = require('../../../../utils.js');
 
     function generateSasToken(connectionString:any, container:string, permissions:string) {
+        console.log('generateSasToken');
         const { accountKey, accountName, url } = extractConnectionStringParts(connectionString);
         const sharedKeyCredential = new StorageSharedKeyCredential(accountName, accountKey.toString('base64'));
 
@@ -86,6 +87,7 @@ export const ImageUploadForm = () => {
          return sasToken;
     }
     function blobUpload (file:File, url:URL, container:String, sasKey:String) {
+        console.log('blobUpload');
         var blobName = buildBlobName(file);
         var login = `${url}/${container}/${blobName}?${sasKey}`;
         var blockBlobClient = new BlockBlobClient(login, new AnonymousCredential());
