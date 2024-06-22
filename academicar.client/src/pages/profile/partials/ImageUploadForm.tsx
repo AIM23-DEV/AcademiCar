@@ -18,11 +18,11 @@ export const ImageUploadForm = () => {
  //   const [uploadStatus, setUploadStatus] = useState<string>('');
     const [list, setList] = useState<string[]>([]);
    
-    const blobUrl = "https://academicar.blob.core.windows.net";
-    const container = "upload";
-    const sasToken = "sv=2022-11-02&ss=bfqt&srt=co&sp=rwdlacupiytfx&se=2024-06-23T01:55:32Z&st=2024-06-22T17:55:32Z&spr=https&sig=OO9AQsjqev0DyZwwWtvfPlLoe77m%2BBtSICIqsLOtVZA%3D";
+  //  const blobUrl = "https://academicar.blob.core.windows.net";
+    const container = "profile-images";
+ //   const sasToken = "sv=2022-11-02&ss=bfqt&srt=co&sp=rwdlacupiytfx&se=2024-06-23T01:55:32Z&st=2024-06-22T17:55:32Z&spr=https&sig=OO9AQsjqev0DyZwwWtvfPlLoe77m%2BBtSICIqsLOtVZA%3D";
 
-  //  const imgSasUrl = "https://academicar.blob.core.windows.net/profile-images?si=profile-images-permissions&spr=https&sv=2022-11-02&sr=c&sig=m%2Bfs0w4HEjXOgCoFFik%2B83qUyMCYefu0zXfYsIt9ncY%3D";
+    const imgSasUrl = "https://academicar.blob.core.windows.net/profile-images?si=profile-images-permissions&spr=https&sv=2022-11-02&sr=c&sig=m%2Bfs0w4HEjXOgCoFFik%2B83qUyMCYefu0zXfYsIt9ncY%3D";
  
     const handleFileSelection = (event: ChangeEvent<HTMLInputElement>) => {
         console.log('handleFileSelection');
@@ -40,7 +40,8 @@ export const ImageUploadForm = () => {
         setSelectedFile(target?.files[0]);
 
         // resetstring
-        setSasTokenUrl(`${blobUrl}/${container}/${target?.files[0].name}?${sasToken}`);
+       // setSasTokenUrl(`${blobUrl}/${container}/${target?.files[0].name}?${sasToken}`);
+        setSasTokenUrl(imgSasUrl);
     };
 
     
