@@ -29,14 +29,13 @@ export class BlobView extends React.Component<Props, State> {
             tenantId: "4caa5dc8-1da7-4c89-8c89-dc816e05f20b"
         }
 */
-        const defaultCredentials = new DefaultAzureCredential();
         const blobStorageClient = new BlobServiceClient(
             // this is the blob endpoint of your storage acccount. Available from the portal 
             // they follow this format: <accountname>.blob.core.windows.net for Azure global
             // the endpoints may be slightly different from national clouds like US Gov or Azure China
             "https://academicar.blob.core.windows.net/",
-          //  new DefaultAzureCredential()
-            defaultCredentials
+            new DefaultAzureCredential()
+        
         );
 
        // console.log(`token = ${defaultCredentials.ar()}`)
