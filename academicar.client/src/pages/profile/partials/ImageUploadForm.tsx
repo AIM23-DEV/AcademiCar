@@ -3,8 +3,6 @@ import {Button} from "../../../components/Buttons.tsx";
 import {Card} from "../../../components/Cards.tsx";
 import request, {AxiosResponse} from "axios";
 import {BlockBlobClient} from "@azure/storage-blob";
-import {Textarea} from "@headlessui/react";
-
 
 type ListResponse = {
     list: string[];
@@ -19,9 +17,7 @@ export const ImageUploadForm = () => {
     const blobUrl = "https://academicar.blob.core.windows.net";
     const container = "profile-images";
     const sasToken = "sv=2022-11-02&ss=bfqt&srt=co&sp=rwdlacupiytfx&se=2024-06-23T01:55:32Z&st=2024-06-22T17:55:32Z&spr=https&sig=OO9AQsjqev0DyZwwWtvfPlLoe77m%2BBtSICIqsLOtVZA%3D";
-
-   // const imgSasUrl = "https://academicar.blob.core.windows.net/profile-images?si=profile-images-permissions&spr=https&sv=2022-11-02&sr=c&sig=m%2Bfs0w4HEjXOgCoFFik%2B83qUyMCYefu0zXfYsIt9ncY%3D";
- 
+    
     const handleFileSelection = (event: ChangeEvent<HTMLInputElement>) => {
         console.log('handleFileSelection');
 
@@ -39,13 +35,11 @@ export const ImageUploadForm = () => {
 
         // resetstring
         setSasTokenUrl(`${blobUrl}/${container}/${target?.files[0].name}?${sasToken}`);
-       // setSasTokenUrl(imgSasUrl);
         handleFileUpload();
     };
 
     
         const handleFileUpload = () => {
-
             if (sasTokenUrl === '') return;
         
             convertFileToArrayBuffer(selectedFile as File)
@@ -132,22 +126,13 @@ export const ImageUploadForm = () => {
     
     return (
         <div>
-        <Card  className="mt-6">
-            <form aria-label="Suche" className="w-full grid grid-cols-12 gap-4" encType="multipart/form-data"
-                  method={"POST"}
-                  onSubmit={handleFileUpload}>
-                <input type="file" className={"col-span-full"} onChange={handleFileSelection}/>
-                <Textarea>{sasTokenUrl}</Textarea>
-
-                <Button
-                    variant={"primary"}
-                    text={"Upload Image"}
-                    type={"submit"}
-                    className={"col-span-full"}
-                />
-            </form>
-                        
-        </Card>
-</div>
-);
+            <Card  className="mt-6">
+                <form aria-label="Suche" className="w-full grid grid-cols-12 gap-4" encType="multipart/form-data"
+                    method={"POST"} onSubmit={handleFileUpload}>
+                    <input type="file" className={"col-span-full"} onChange={handleFileSelection}/>
+                    <Button variant={"primary"} text={"Upload Image"} type={"submit"} className={"col-span-full"}/>
+                </form>
+            </Card>
+        </div>
+    );
 };
