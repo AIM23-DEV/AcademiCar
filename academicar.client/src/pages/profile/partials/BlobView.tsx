@@ -45,15 +45,15 @@ export const BlobView =() => {
   
     async function handleUpload(selectedFile:File) {
 
-        const AZURE_STORAGE_CONNECTION_STRING =
-            "DefaultEndpointsProtocol=https;AccountName=academicar;AccountKey=mNaipDioJQ1IoDwVaR7BKDXgm+RYRX6IqlW4dXBvkBA63yOpteGM8jqUWAF4nEMiURmrPf43XphD+AStZeKFtA==;EndpointSuffix=core.windows.net";
-
-        /*  if (!AZURE_STORAGE_CONNECTION_STRING) {
-              throw Error('Azure Storage Connection string not found');
-          }
-  */
+        /*   const AZURE_STORAGE_CONNECTION_STRING =
+              "DefaultEndpointsProtocol=https;AccountName=academicar;AccountKey=mNaipDioJQ1IoDwVaR7BKDXgm+RYRX6IqlW4dXBvkBA63yOpteGM8jqUWAF4nEMiURmrPf43XphD+AStZeKFtA==;EndpointSuffix=core.windows.net";
+  
+       /*  if (!AZURE_STORAGE_CONNECTION_STRING) {
+                throw Error('Azure Storage Connection string not found');
+            }
+    */
 // Create the BlobServiceClient object with connection string
-        const blobServiceClient1 = BlobServiceClient.fromConnectionString(
+    /*    const blobServiceClient1 = BlobServiceClient.fromConnectionString(
             AZURE_STORAGE_CONNECTION_STRING
         );
 
@@ -68,7 +68,7 @@ export const BlobView =() => {
         }
         // ...that we push into our state
 
-
+*/
         console.log(`selectedFile: ${selectedFile.name}`);
         console.log(`handleUpload`);
 
