@@ -24,7 +24,7 @@ export class BlobView extends React.Component<Props, State> {
     async componentDidMount() {
         const signInOptions = {
             // the client id is the application id, from your earlier app registration
-            clientId: "6a88bd44-fb43-4e2e-be79-7df666b70b23",
+            clientId: "2ec06642-8884-44d4-9610-a56dbcbc6c75",
             // this is your tenant id - the id of your azure ad tenant. available from your app registration overview
             tenantId: "4caa5dc8-1da7-4c89-8c89-dc816e05f20b"
         }
