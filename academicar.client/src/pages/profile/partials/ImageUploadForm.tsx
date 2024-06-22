@@ -92,17 +92,21 @@ export const ImageUploadForm = () => {
       */
 
 // Example for file upload
+          const promises = [];
           const blobName = `profile-images/${selectedFile.name}`;
           console.log(`Uploading with blobname: ${blobName}`);
-         
+          const blockBlobClient = containerClient.getBlockBlobClient(blobName);
           try {
-              const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+             
               const response = await blockBlobClient.uploadData(selectedFile);
+            
+              promises.push(response);
               if (response._response.status == 200) {
                   console.log(`Response: OK`)
               } else {
                   console.error('Error fetching blob:', response.errorCode, response._response.status);
               }
+         
               return response;
           } catch (error) {
               // @ts-ignore
