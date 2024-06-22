@@ -73,7 +73,7 @@ export const ImageUploadForm = () => {
         var ext = file.name.substring(file.name.lastIndexOf('.'));
         return filename + '_' + Math.random().toString(16).slice(2) + ext;
     }
-     const uploadFileToBlob = async (file:File) => {
+     async function uploadFileToBlob (file:File)  {
          console.log('uploadFileToBlob');
          const permissions = 'profile-images-permissions';
          const containerName = 'profile-images';
