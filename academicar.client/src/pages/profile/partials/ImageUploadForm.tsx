@@ -76,10 +76,10 @@ export const ImageUploadForm = () => {
     }
      async function uploadFileToBlob (file:File)  {
          console.log('uploadFileToBlob');
-         const permissions = 'profile-images-permissions';
-         const containerName = 'profile-images';
-        // const blobName = `${containerName}/${buildBlobName(file)}`;
-        const sasToken = generateSasToken(process.env.AzureWebJobsStorage, containerName,permissions);
+         const permissions = 'c';
+         const containerName = 'uploads';
+         const blobName = `${containerName}/${buildBlobName(file)}`;
+        const sasToken = generateSasToken(process.env.AzureWebJobsStorage, blobName,permissions);
         
 
        //  const sasUrl = "https://academicar.blob.core.windows.net/?sv=2022-11-02&ss=bfqt&srt=c&sp=rwdlacupiytfx&se=2024-06-22T16:09:04Z&st=2024-06-22T08:09:04Z&spr=https&sig=Rvvx00Nlt8pi0QH5CHIY6GNlp0xSjYiperKlEJiUORQ%3D";
