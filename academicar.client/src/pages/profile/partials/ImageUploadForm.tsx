@@ -43,51 +43,11 @@ export const ImageUploadForm = () => {
         setSasTokenUrl(`${blobUrl}/${container}/${target?.files[0].name}?${sasToken}`);
     };
 
-      /*  const handleFileSasToken = () => {
-
-            const permission = 'w'; //write
-            const timerange = 25; //minutes
-
-            if (!selectedFile) return;
-
-            request
-                .post(
-                    `/api/sas?file=${encodeURIComponent(
-                        selectedFile.name
-                    )}&permission=${permission}&container=${container}&timerange=${timerange}`,
-                    {
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    }
-                )
-                .then((result: AxiosResponse<SasResponse>) => {
-                    const {data} = result;
-                    const {url} = data;
-                    setSasTokenUrl(url);
-                   
-                })
-                .catch((error: unknown) => {
-                    if (error instanceof Error) {
-                        const {message, stack} = error;
-                        setSasTokenUrl(`Error getting sas token: ${message} ${stack || ''}`);
-                    } else {
-                        //  setUploadStatus(error as string);
-                        console.error(error as string);
-                    }
-                });
-           
-        };
-    */
+    
         const handleFileUpload = () => {
-           /* try {
-                handleFileSasToken();
-            } catch (error) {
-                console.log(`${error as string}`);
-            }
-*/
-            if (sasTokenUrl === '') return;
 
+            if (sasTokenUrl === '') return;
+        
             convertFileToArrayBuffer(selectedFile as File)
                 .then((fileArrayBuffer) => {
                     if (
