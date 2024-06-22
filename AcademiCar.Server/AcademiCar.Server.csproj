@@ -53,4 +53,9 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <TrimmerRootAssembly Include="System.Security.Cryptography.Algorithms" />
+    <TrimmerRootAssembly Include="System.Security.Cryptography.Primitives" />
+  </ItemGroup>
+
 </Project>

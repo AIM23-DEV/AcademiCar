@@ -98,20 +98,19 @@ if (enableSaml2)
                     Use = CertificateUse.Signing
                 }
             );
-
+            
             var idp = new IdentityProvider(
                 new EntityId(builder.Configuration["SustainsysSaml2:Idp:EntityId"]),
                 options.SPOptions)
             {
-                MetadataLocation = metadataFilePath
+                MetadataLocation = metadataFilePath,
             };
 
             idp.SigningKeys.AddConfiguredKey(new X509Certificate2(fhcertificate.Cer));
 //            idp.SigningKeys.AddConfiguredKey(new X509Certificate2(fhCertPath));
             idp.AllowUnsolicitedAuthnResponse = true;
             idp.WantAuthnRequestsSigned = true;
-
-            options.SPOptions.Logger.WriteVerbose(encryptionCert.ToString());
+            options.SPOptions.OutboundSigningAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256";
 
             options.IdentityProviders.Add(idp);
         });
