@@ -20,9 +20,7 @@ public class CreateController : ControllerBase
     {
         int idAsInt = int.Parse(id);
         Trip? trip = await _globalService.TripService.Get(idAsInt);
-        
-        if (trip == null)
-            return NotFound();
+        if (trip == null) return NotFound();
         
         return Ok(trip);
     }
@@ -32,14 +30,52 @@ public class CreateController : ControllerBase
     {
         int idAsInt = int.Parse(id);
         Address? address = await _globalService.AddressService.Get(idAsInt);
-        
-        if (address == null)
-            return NotFound();
+        if (address == null) return NotFound();
         
         return Ok(address);
     }
     
+    [HttpGet ("vehicle/{vehicleId}")]
+    public async Task<IActionResult> GetVehicleById(string vehicleId)
+    {
+        int vehicleIdAsInt = int.Parse(vehicleId);
+        Vehicle? vehicle = await _globalService.VehicleService.Get(vehicleIdAsInt);
+        if (vehicle == null) return NotFound();
         
+        return Ok(vehicle);
+    }
+
+    [HttpGet ("vehicles/{driverId}")]
+    public async Task<IActionResult> GetVehiclesByDriverId(string driverId)
+    {
+        List<Vehicle>? vehicles = await _globalService.VehicleService.GetVehiclesByUserId(driverId);
+        if (vehicles == null) return NotFound();
+        
+        return Ok(vehicles);
+    }
+
+    
+    [HttpPost ("address")]
+    public async Task<IActionResult> CreateAddress([FromBody] Address newAddress)
+    {
+        if (newAddress == null) return BadRequest();
+
+        await _globalService.AddressService.Create(newAddress);
+
+        return NoContent();
+    }
+        
+    [HttpPost ("trip")]
+    public async Task<IActionResult> CreateTrip([FromBody] Trip newTrip)
+    {
+        if (newTrip == null) return BadRequest();
+
+        await _globalService.TripService.Create(newTrip);
+
+        return NoContent();
+    }
+    
+    
     [HttpPut ("{id}")]
     public async Task<IActionResult> UpdateTrip(string id, [FromBody] Trip updatedTrip)
     {

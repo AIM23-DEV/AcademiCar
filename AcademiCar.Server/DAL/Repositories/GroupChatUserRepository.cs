@@ -5,7 +5,7 @@ using AcademiCar.Server.DAL.UnitOfWork;
 
 namespace AcademiCar.Server.DAL.Repositories;
 
-public class MessageRepository : PostgresRepository<Message>, IMessageRepository
+public class GroupChatUserRepository : PostgresRepository<GroupChatUser>, IGroupChatUserRepository
 {
-    public MessageRepository(PostgresDbContext dbContext) : base(dbContext) {}
+    public GroupChatUserRepository(PostgresDbContext dbContext) : base(dbContext) {}
 }

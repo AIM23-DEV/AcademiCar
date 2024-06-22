@@ -3,12 +3,12 @@ using AcademiCar.Server.DAL.Entities;
 
 namespace AcademiCar.Server.Services.ServiceImpl;
 
-public class MessageService : Service<Message>
+public class GroupMessageService : Service<GroupMessage>
 {
-    public MessageService(IMessageRepository repo) : base(repo) { }
+    public GroupMessageService(IGroupMessageRepository repo) : base(repo) { }
 
 
-    public override async Task<bool> Validate(Message entity)
+    public override async Task<bool> Validate(GroupMessage entity)
     {
         if (entity == null) validationDictionary.AddError("Empty", "No Message was sent.");
 

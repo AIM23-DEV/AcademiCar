@@ -2,7 +2,7 @@ import {TitleBar} from "../../components/TitleBar";
 import SetPageTitle from "../../hooks/set_page_title";
 import {BottomNavigationBar} from "../../components/BottomNavigationBar";
 import {Button, TextButton} from "../../components/Buttons";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {BiCar, BiChevronRight, BiLogOut, BiStats, BiUser} from "react-icons/bi";
 import {useTranslation} from "react-i18next";
 import {BsPencilSquare} from "react-icons/bs";
@@ -10,6 +10,7 @@ import {TbCurrencyEuro} from "react-icons/tb";
 import {CiTrophy} from "react-icons/ci";
 import {IoSettingsOutline} from "react-icons/io5";
 import {Divider} from "../../components/Divider";
+import {useEffect, useState} from "react";
 
 const BUTTONS = [
     { textKey: "personalData", icon: BiUser, path: "edit" },
@@ -21,36 +22,43 @@ const BUTTONS = [
     { textKey: "settings", icon: IoSettingsOutline, path: "settings" },
 ];
 
-interface IndexProfilePageProps {
-    avatarUrl?: string;
-    userName?: string;
-}
-
-// TODO add content components and follow up pages
-export const IndexProfilePage: React.FC<IndexProfilePageProps> = ({avatarUrl = "/../src/assets/react.svg",
-userName = "Maximilian Bauer"
-}) => {
-    const [t] = useTranslation(['common', 'pages/profile']);
+export const IndexProfilePage = () => {
+    const { loggedInUserId } = useParams();
+    const [user, setUser] = useState<IUser>();
+    const [error, setError] = useState<string | null>();
     const navigate = useNavigate();
 
-    const pageTitle = t("pages/profile:IndexProfilePage.title");
+    useEffect(() => {
+        fetch(`https://localhost:5173/api/admin/users/${loggedInUserId}`)
+            .then(response => response.json())
+            .then((data: IUser) => setUser(data))
+            .catch(e => {
+                setError(`There was an error fetching the user: ${e}`);
+                console.error(error);
+            });
+    }, [loggedInUserId]);
     
+    const [t] = useTranslation(['common', 'pages/profile']);
+    const pageTitle = t("pages/profile:IndexProfilePage.title");
     SetPageTitle(pageTitle);
 
+    if (error) return <div>{error}</div>;
+    if (!user) return <div>Loading user...</div>;
+    
     return (
         <>
             <TitleBar text={pageTitle}/>
 
                 <div className="mt-6">
                     <img
-                        src={avatarUrl}
+                        src={user.pictureSrc}
                         alt="avatar"
                         className="border-gray-600 rounded-full"
                     />
                 </div>
 
 
-                <h1 className="headline-2">{userName}</h1>
+                <h1 className="headline-2">{`${user.firstName} ${user.lastName}`}</h1>
 
                 <Divider className="mt-2"/>
 

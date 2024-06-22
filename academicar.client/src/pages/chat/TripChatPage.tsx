@@ -2,39 +2,54 @@ import {TitleBar} from "../../components/TitleBar";
 import SetPageTitle from "../../hooks/set_page_title.tsx";
 import {useTranslation} from "react-i18next";
 import {ChatMessagesList} from "./partials/ChatMessagesList.tsx";
-import {SendMessageForm} from "./partials/SendMessageForm.tsx";
-
-const DUMMY_DATA = [
-    {
-        id: "1",
-        senderId: "perborgen",
-        text: "who'll win?"
-    },
-    {
-        id: "2",
-        senderId: "janedoe",
-        text: "who'll win?"
-    }
-]
+import {Chat} from "../../components/Chat.tsx";
+import {useParams} from 'react-router-dom';
+import {useEffect, useState} from "react";
 
 export const TripChatPage = () => {
     const [t] = useTranslation(["common", "pages/chat"]);
     const pageTitle = t("pages/chat:TripChatPage.title");
-    const messageFormPlaceholderText = t("pages/chat:TripChatPage.placeholder_message");
-    const messageFormInfoNotMember = t("pages/chat:TripChatPage.info_not_member");
+
+    const { chatId } = useParams();
+    const [messages, setMessages] = useState<IGroupMessage[]>([]);
+    const [filteredMessages, setFilteredMessages] = useState<{ id: string, senderId: string, text: string }[]>([]);
+
+
     SetPageTitle(pageTitle);
+
+    useEffect(() => {
+        fetch('https://localhost:5173/api/chat/GetGroupMessages')
+            .then(response => response.json())
+            .then((fetchedMessages: IGroupMessage[]) => {
+                setMessages(fetchedMessages);
+            });
+    }, []);
+
+    useEffect(() => {
+        filterMessages();
+    }, [messages, chatId]);
+
+    const filterMessages = () => {
+        if (typeof chatId !== 'string') return;
+
+        const filtered = messages
+            .filter(message => message.fK_GroupChat === parseInt(chatId))
+            .map(message => ({
+                id: message.id.toString(),
+                senderId: message.fK_SenderUser,
+                text: message.content
+            }));
+
+        setFilteredMessages(filtered);
+    };
     
     return (
         <>
             <TitleBar text={pageTitle} hasBackAction={true} />
 
-            <ChatMessagesList messages={DUMMY_DATA} />
+            <ChatMessagesList messages={filteredMessages}/>
 
-            <SendMessageForm
-                isMember={true}
-                placeholderText={messageFormPlaceholderText}
-                infoNotMember={messageFormInfoNotMember}
-            />
+            <Chat userId="-999" chatId={chatId}/>
         </>
     );
 }
