@@ -1,8 +1,7 @@
 import {ChangeEvent, useState} from "react";
 import {Button} from "../../../components/Buttons.tsx";
 import {Card} from "../../../components/Cards.tsx";
-import {AxiosResponse} from "axios";
-import request from "axios";
+import request, {AxiosResponse} from "axios";
 import {BlockBlobClient} from "@azure/storage-blob";
 import {Textarea} from "@headlessui/react";
 
@@ -42,20 +41,15 @@ export const ImageUploadForm = () => {
 
         // resetstring
         setSasTokenUrl(`${blobUrl}/${container}/${target?.files[0].name}?${sasToken}`);
-
-       
-             const token = handleFileSasToken();
-               
-            console.log(`token = ${token}`);
-     
     };
-     const handleFileSasToken = () =>  {
-       
+
+        const handleFileSasToken = () => {
+
             const permission = 'w'; //write
             const timerange = 25; //minutes
-         
-         if(!selectedFile) return;
-         
+
+            if (!selectedFile) return;
+
             request
                 .post(
                     `/api/sas?file=${encodeURIComponent(
@@ -84,54 +78,59 @@ export const ImageUploadForm = () => {
                 });
             return "";
         };
- 
-    const handleFileUpload = () => {
-               if (sasTokenUrl === '') return;
+    
+        const handleFileUpload = () => {
+            try {
+                handleFileSasToken();
+            } catch (error) {
+                console.log(`${error as string}`);
+            }
 
-               convertFileToArrayBuffer(selectedFile as File)
-                   .then((fileArrayBuffer) => {
-                       if (
-                           fileArrayBuffer === null ||
-                           fileArrayBuffer.byteLength < 1 ||
-                           fileArrayBuffer.byteLength > 256000
-                       )
-                           return;
+            if (sasTokenUrl === '') return;
 
-                       const blockBlobClient = new BlockBlobClient(sasTokenUrl);
-                       return blockBlobClient.uploadData(fileArrayBuffer);
-                   })
-                   .then(() => {
-                  //     setUploadStatus('Successfully finished upload');
-                       console.log('Successfully finished upload');
-                       return request.get(`/api/list?container=${container}`);
-                   })
-                   .then((result: AxiosResponse<ListResponse>) => {
-                       // Axios response
-                       const { data } = result;
-                       const { list } = data;
-                       setList(list);
-                   })
-                   .catch((error: unknown) => {
-                       if (error instanceof Error) {
-                           const { message, stack } = error;
+            convertFileToArrayBuffer(selectedFile as File)
+                .then((fileArrayBuffer) => {
+                    if (
+                        fileArrayBuffer === null ||
+                        fileArrayBuffer.byteLength < 1 ||
+                        fileArrayBuffer.byteLength > 256000
+                    )
+                        return;
+
+                    const blockBlobClient = new BlockBlobClient(sasTokenUrl);
+                    return blockBlobClient.uploadData(fileArrayBuffer);
+                })
+                .then(() => {
+                    //     setUploadStatus('Successfully finished upload');
+                    console.log('Successfully finished upload');
+                    return request.get(`/api/list?container=${container}`);
+                })
+                .then((result: AxiosResponse<ListResponse>) => {
+                    // Axios response
+                    const {data} = result;
+                    const {list} = data;
+                    setList(list);
+                })
+                .catch((error: unknown) => {
+                    if (error instanceof Error) {
+                        const {message, stack} = error;
                         //   setUploadStatus(
-                           console.log(
-                               `Failed to finish upload with error : ${message} ${stack || ''}`
-                           );
-                       } else {
-                          // setUploadStatus(error as string);
-                           console.log(error as string);
-                       }
-                   });
-           };
+                        console.log(
+                            `Failed to finish upload with error : ${message} ${stack || ''}`
+                        );
+                    } else {
+                        // setUploadStatus(error as string);
+                        console.log(error as string);
+                    }
+                });
+        };
 
 
-
-    const convertStringToArrayBuffer = (str: string) => {
-        const textEncoder = new TextEncoder();
-        return textEncoder.encode(str).buffer;
-    };
-
+        const convertStringToArrayBuffer = (str: string) => {
+            const textEncoder = new TextEncoder();
+            return textEncoder.encode(str).buffer;
+        };
+    
     function convertFileToArrayBuffer(
         file: File
     ): Promise<ArrayBuffer | null> {
@@ -168,14 +167,13 @@ export const ImageUploadForm = () => {
             reader.readAsArrayBuffer(file);
         });
     }
-
+    
     return (
         <div>
         <Card  className="mt-6">
             <form aria-label="Suche" className="w-full grid grid-cols-12 gap-4" encType="multipart/form-data" method={"POST"} 
                   onSubmit={handleFileUpload}>
                 <input type="file" className={"col-span-full"} onChange={handleFileSelection} />
-               
                 <Textarea >{sasTokenUrl}</Textarea>
                 
                 <Button
@@ -188,6 +186,22 @@ export const ImageUploadForm = () => {
                 
             </form>
         </Card>
+            <Card  className="mt-6">
+                <form aria-label="SAS Token" className="w-full grid grid-cols-12 gap-4" encType="multipart/form-data" method={"POST"}
+                      onSubmit={handleFileSasToken}>
+                    <input type="file" className={"col-span-full"} onChange={handleFileSelection} />
+
+                    <Textarea >{sasTokenUrl}</Textarea>
+                    <Button
+                        variant={"primary"}
+                        text={"Upload Image"}
+                        type={"submit"}
+                        className={"col-span-full"}
+                    />
+
+
+                </form>
+            </Card>
         <li>
         {list.map((item) => (
                 <Card>
