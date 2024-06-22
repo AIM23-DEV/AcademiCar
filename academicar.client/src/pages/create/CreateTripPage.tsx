@@ -8,8 +8,8 @@ import {TripRouteCreationForm} from "./partials/TripRouteCreationForm.tsx";
 import {TripVehicleCreationForm} from "./partials/TripVehicleCreationForm.tsx";
 import {TripPricingCreationForm} from "./partials/TripPricingCreationForm.tsx";
 import {TripTimeCreationForm} from "./partials/TripTimeCreationForm.tsx";
-import {Pagination} from "../../components/Pagination.tsx";
 import {BottomNavigationBar} from "../../components/BottomNavigationBar.tsx";
+import {BiChevronLeft, BiChevronRight} from "react-icons/bi";
 
 function getAddress(addressStr: string): IAddress {
     const addressFields = addressStr.split(' ');
@@ -45,13 +45,16 @@ function getDate(dateStr: string, timeStr: string): Date {
 }
 
 export const CreateTripPage = () => {
-    const [t] = useTranslation(["common", "pages/create"]);
+    const [t] = useTranslation(["common", "components/pagination", "pages/create"]);
     const pageTitle = t("pages/create:Common.title_create");
     const createButtonText = t("pages/create:CreateTripPage.button_create");
+    const pageText = t("components/pagination:page");
+    const previousButtonText = t("components/pagination:button_previous");
+    const nextButtonText = t("components/pagination:button_next");
     SetPageTitle(pageTitle);
 
     const { loggedInUserId } = useParams();
-    let currentPage: number = 1;
+    const [currentPage, setCurrentPage] = useState(1);
     const [startAddress, setStartAddress] = useState<IAddress>();
     const [endAddress, setEndAddress] = useState<IAddress>();
     const [startDate, setStartDate] = useState<string>();
@@ -131,59 +134,106 @@ export const CreateTripPage = () => {
 
     if (error) return <div>{`There was an error: ${error}`}</div>
     if (!loggedInUserId) return <div>Invalid user!</div>
+
+    const renderCurrentSection = () => {
+        switch (currentPage) {
+            case 1:
+                return (
+                    <TripRouteCreationForm
+                        startAddress={startAddress}
+                        endAddress={endAddress}
+    
+                        setStartAddress={onChangeStartAddress}
+                        setEndAddress={onChangeEndAddress}
+                    />
+                )                
+            case 2:
+                return (
+                    <TripTimeCreationForm
+                        startDate={startDate}
+                        startTime={startTime}
+                        endDate={endDate}
+                        endTime={endTime}
+
+                        setStartDate={setStartDate}
+                        setStartTime={setStartTime}
+                        setEndDate={setEndDate}
+                        setEndTime={setEndTime}
+                    />
+                );
+            case 3:
+                return (
+                    <TripVehicleCreationForm
+                        driverId={loggedInUserId}
+                        vehicleId={tripVehicleId}
+                        availableSeats={availableSeats}
+
+                        setVehicleId={setTripVehicleId}
+                        setAvailableSeats={setAvailableSeats}
+                    />
+                );
+            case 4:
+                return (
+                    <>
+                        <TripPricingCreationForm
+                            price={price}
+                            setPrice={setPrice}
+                        />
+
+                        <Button
+                            disabled={isDataReady()}
+                            type="submit"
+                            variant="primary"
+                            text={createButtonText}
+                            onClick={createTrip}
+                        />
+                    </>
+                );
+            default:
+                return (
+                    <TripRouteCreationForm
+                        startAddress={startAddress}
+                        endAddress={endAddress}
+
+                        setStartAddress={onChangeStartAddress}
+                        setEndAddress={onChangeEndAddress}
+                    />
+                )
+        }
+    };
     
     // Render
     return (
         <>
-            <TitleBar text={pageTitle} hasBackAction={true} />
+            <TitleBar text={pageTitle} hasBackAction={true}/>
 
-            { currentPage == 1 ?
-                <TripRouteCreationForm
-                    startAddress={startAddress}
-                    endAddress={endAddress}
+            {renderCurrentSection()}
 
-                    setStartAddress={onChangeStartAddress}
-                    setEndAddress={onChangeEndAddress}
-                />
-            : currentPage == 2 ?
-                <TripTimeCreationForm 
-                    startDate={startDate}
-                    startTime={startTime}
-                    endDate={endDate}
-                    endTime={endTime}
-                    
-                    setStartDate={setStartDate}
-                    setStartTime={setStartTime}
-                    setEndDate={setEndDate}
-                    setEndTime={setEndTime}
-                />
-            : currentPage == 3 ?
-                <TripVehicleCreationForm
-                    driverId={loggedInUserId}
-                    vehicleId={tripVehicleId}
-                    availableSeats={availableSeats}
-                    
-                    setVehicleId={setTripVehicleId}
-                    setAvailableSeats={setAvailableSeats}
-                />
-            :
-                <>
-                    <TripPricingCreationForm
-                        price={price}
-                        setPrice={setPrice}
-                    />
-                    
-                    <Button
-                        disabled={isDataReady()}
-                        type="submit"
-                        variant="primary"
-                        text={createButtonText}
-                        onClick={createTrip}
-                    />
-                </>
-            }
-            
-            <Pagination page={currentPage} totalPages={4} showPages={true} />
+            <div className={'w-full flex flex-col items-center justify-center space-y-2 max-w-md text-gray-950'}>
+
+                <span className="w-full text-center">
+                    {pageText}
+                    {<span className="font-bold">{" " + currentPage + " "}</span>}
+                    /
+                    {<span className="font-bold">{" " + 4}</span>}
+                </span>
+
+                <div className="w-full flex flex-row items-center justify-between space-x-3 max-w-md">
+
+                    <Button variant="outline" text={previousButtonText}
+                            fullWidth disabled={currentPage == 1}
+                            onClick={() => setCurrentPage(currentPage == 1 ? 1 : currentPage - 1)}
+                            leading={<BiChevronLeft className="icon-md"/>}/>
+
+                    <Button variant="outline" text={nextButtonText}
+                            fullWidth disabled={currentPage == 4}
+                            onClick={() => setCurrentPage(currentPage == 4 ? 4 : currentPage + 1)}
+                            trailing={<BiChevronRight className="icon-md"/>}/>
+
+                </div>
+
+            </div>
+
             <BottomNavigationBar selected="create"/>
         </>
     );

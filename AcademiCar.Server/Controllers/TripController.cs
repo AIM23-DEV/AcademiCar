@@ -88,7 +88,7 @@ public class TripController : ControllerBase
 
         return Ok(extendedTrips);
     }
-    
+
     [HttpGet("address/{id}")]
     public async Task<ActionResult<Address>> GetAddressByAsync(string id)
     {
@@ -100,6 +100,7 @@ public class TripController : ControllerBase
 
         var entry = entrys.Where(r => r != null && r.ID.ToString() == id).First();
         return Ok(entry);
+    }
 
     [HttpGet("driver/{loggedInUserId}")]
     public async Task<IActionResult> GetDriverTrips(string loggedInUserId)
