@@ -2,7 +2,6 @@ import {ChangeEvent, useState} from "react";
 import {Button} from "../../../components/Buttons.tsx";
 import {Card} from "../../../components/Cards.tsx";
 import {BlobServiceClient} from "@azure/storage-blob";
-import {DefaultAzureCredential} from "@azure/identity";
 
 export const ImageUploadForm = () => {
     const [selectedFile, setSelectedFile] = useState<File|null>(null);
