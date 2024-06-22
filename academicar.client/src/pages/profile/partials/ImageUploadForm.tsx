@@ -1,7 +1,7 @@
 import {ChangeEvent, useState} from "react";
 import {Button} from "../../../components/Buttons.tsx";
 import {Card} from "../../../components/Cards.tsx";
-import {BlobServiceClient} from "@azure/storage-blob";
+import { BlockBlobClient} from "@azure/storage-blob";
 
 export const ImageUploadForm = () => {
     const [selectedFile, setSelectedFile] = useState<File|null>(null);
@@ -11,9 +11,9 @@ export const ImageUploadForm = () => {
     
     const handleFileSelection = (event: ChangeEvent<HTMLInputElement>) => {
         console.log('handleFileSelection');
-        const { target } = event;
+        const {target} = event;
 
-    
+
         if (!(target instanceof HTMLInputElement)) return;
         if (
             target?.files === null ||
@@ -22,11 +22,22 @@ export const ImageUploadForm = () => {
         )
             return;
 
-        if(target.files.length >=0){
+        if (target.files.length >= 0) {
             setSelectedFile(target.files[0]);
             console.log(`target: items = ${target.files?.length}`)
             console.log(`target: name = ${target.files[0]?.name}\ntype = ${target.files[0]?.type}`)
-            handleUpload(target?.files[0]).then(r => {
+            /*     handleUpload(target?.files[0]).then(r => {
+                     console.log(`promise...`);
+                     if (r === null)
+                         return;
+                     console.log(`promise: ${typeof (r)}`);
+                     console.log(`promise: ${r?._response.status}`);
+                     console.log(`promise: ${r?._response.request.method}`);
+                     console.log(`promise: ${r?._response.headers}`);
+                 });
+             }
+             */
+            uploadFileToBlob(target?.files[0]).then(r => {
                 console.log(`promise...`);
                 if (r === null)
                     return;
@@ -35,41 +46,38 @@ export const ImageUploadForm = () => {
                 console.log(`promise: ${r?._response.request.method}`);
                 console.log(`promise: ${r?._response.headers}`);
             });
+
+
+            list.push(selectedFile?.name as string);
         }
-        
-      //  uploadFileToBlob(target?.files[0]);
-      
-        
-        list.push(selectedFile?.name as string);
     };
   
     
-   /*  const uploadFileToBlob = async (file:File) => {
+     const uploadFileToBlob = async (file:File) => {
          
          console.log('uploadFileToBlob');
-         const sasUrl = "https://academicar.blob.core.windows.net/?sv=2022-11-02&ss=bfqt&srt=c&sp=rwdlacupiytfx&se=2024-06-15T10:04:03Z&st=2024-06-15T02:04:03Z&spr=https&sig=and%2BWbKzZeBXVymd%2FsQQFl7NTqOCPZ%2FcAqYSJ5vz%2BOg%3D";
-
+         const sasUrl = "https://academicar.blob.core.windows.net/?sv=2022-11-02&ss=bfqt&srt=c&sp=rwdlacupiytfx&se=2024-06-22T16:09:04Z&st=2024-06-22T08:09:04Z&spr=https&sig=Rvvx00Nlt8pi0QH5CHIY6GNlp0xSjYiperKlEJiUORQ%3D";
          try {
            const blockBlobClient = new BlockBlobClient(sasUrl);
             const arrayBuffer = await file.arrayBuffer();// Fetch the file as an ArrayBuffer
            
 
             // Upload the file
-            await blockBlobClient.uploadData(arrayBuffer, {
+           const response =  await blockBlobClient.uploadData(arrayBuffer, {
                 blobHTTPHeaders: {
                     blobContentType: file.type,
                     blobContentDisposition: `attachment; filename="${file.name}"`
                 }
             });
             console.log('Upload successful');
-            
+            return response;
         } catch (error) {
             // @ts-ignore
             console.error('Error uploading file:', error.message);
         }
     };
 
-  */
+  /*
   async function handleUpload(selectedFile:File) {
 
       console.log(`handleUpload`);
@@ -102,7 +110,7 @@ export const ImageUploadForm = () => {
       */
 
 // Example for file upload
-          const promises = [];
+  /*        const promises = [];
           const blobName = `profile-images/${selectedFile.name}`;
           console.log(`Uploading with blobname: ${blobName}`);
           const blockBlobClient = containerClient.getBlockBlobClient(blobName);
@@ -123,11 +131,11 @@ export const ImageUploadForm = () => {
               // @ts-ignore
               console.log(`Error: ${error.message}`);
           }
-      
+      */
 //   const blobUrl = 'https://academicar.blob.core.windows.net/profile-images/test.jpg';
 
      
-  }
+  //}
 
 
     return (
