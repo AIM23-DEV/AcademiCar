@@ -1,6 +1,6 @@
 import React from 'react';
 // we'll need InteractiveBrowserCredential here to force a user to sign-in through the browser
-import { DefaultAzureCredential  } from "@azure/identity";
+//import { DefaultAzureCredential  } from "@azure/identity";
 // we're using these objects from the storage sdk - there are others for different needs
 import { BlobServiceClient, BlobItem } from "@azure/storage-blob";
 
@@ -28,7 +28,7 @@ export class BlobView extends React.Component<Props, State> {
             // this is your tenant id - the id of your azure ad tenant. available from your app registration overview
             tenantId: "4caa5dc8-1da7-4c89-8c89-dc816e05f20b"
         }
-*/
+
         const blobStorageClient = new BlobServiceClient(
             // this is the blob endpoint of your storage acccount. Available from the portal 
             // they follow this format: <accountname>.blob.core.windows.net for Azure global
@@ -36,11 +36,23 @@ export class BlobView extends React.Component<Props, State> {
             "https://academicar.blob.core.windows.net/",
             new DefaultAzureCredential()
         
+        );*/
+
+        const AZURE_STORAGE_CONNECTION_STRING =
+            process.env.AZURE_STORAGE_CONNECTION_STRING;
+
+        if (!AZURE_STORAGE_CONNECTION_STRING) {
+            throw Error('Azure Storage Connection string not found');
+        }
+
+// Create the BlobServiceClient object with connection string
+        const blobServiceClient = BlobServiceClient.fromConnectionString(
+            AZURE_STORAGE_CONNECTION_STRING
         );
 
        // console.log(`token = ${defaultCredentials.ar()}`)
         // this uses our container we created earlier - I named mine "private"
-        var containerClient = blobStorageClient.getContainerClient("private");
+        var containerClient = blobServiceClient.getContainerClient("private");
         var localBlobList = [];
         // now let's query our container for some blobs!
         for await (const blob of containerClient.listBlobsFlat()) {
