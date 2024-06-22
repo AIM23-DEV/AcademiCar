@@ -20,7 +20,7 @@ namespace AcademiCar.Server.Controllers
             _logger = logger;
         }
 
-        [HttpGet("Acs")]
+        [HttpPost("Acs")]
         public async Task<IActionResult> Acs()
         {
             _logger.LogWarning("Acs endpoint hit. Yessssss!");

@@ -63,12 +63,12 @@ if (enableSaml2)
         .AddSaml2(options =>
         {
             var certificateName = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:CertificateName"];
-            var SigningCert = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:CertificateName"];
-            var EncryptionCert = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:CertificateName"];
+            var signingCert = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:CertificateName"];
+            var encryptionCert = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:CertificateName"];
             var certificateClient = new CertificateClient(vaultUri, new DefaultAzureCredential());
             var fhcertificate = certificateClient.GetCertificateAsync(certificateName).GetAwaiter().GetResult().Value;
-            var signingcertificate = certificateClient.DownloadCertificate(SigningCert);;
-            var enryptioncertificate = certificateClient.DownloadCertificate(EncryptionCert);;
+            var signingcertificate = certificateClient.DownloadCertificate(signingCert);
+            var enryptioncertificate = certificateClient.DownloadCertificate(encryptionCert);
             
             
             options.SPOptions.EntityId = new EntityId(builder.Configuration["SustainsysSaml2:Issuer"]);
@@ -87,10 +87,10 @@ if (enableSaml2)
                 new ServiceCertificate
                 {
                     Certificate = spCert,
-                    Use = CertificateUse.Both
+                    Use = CertificateUse.Encryption
                 }
             );
-/*            
+            
             options.SPOptions.ServiceCertificates.Add(
                 new ServiceCertificate
                 {
@@ -98,7 +98,7 @@ if (enableSaml2)
                     Use = CertificateUse.Signing
                 }
             );
-*/
+
             var idp = new IdentityProvider(
                 new EntityId(builder.Configuration["SustainsysSaml2:Idp:EntityId"]),
                 options.SPOptions)
