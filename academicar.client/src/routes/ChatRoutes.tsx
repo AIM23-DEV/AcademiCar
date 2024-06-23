@@ -8,9 +8,9 @@ import { PersonalChatDetailPage } from "../pages/chat/PersonalChatDetailPage.tsx
 export default <Route key="chatRoute" path="/chat" element={<Outlet/>}>
 
     <Route key="chatMainRoute" path=":loggedInUserId" element={<IndexChatsPage/>} />,
-    <Route key="chatTripRoute" path="trip/:chatId" element={<TripChatPage/>} />,
+    <Route key="chatTripRoute" path=":loggedInUserId/trip/:chatId" element={<TripChatPage/>} />,
     <Route key="chatTripDetailRoute" path="trip/:chatId/detail" element={<TripChatDetailPage/>} />,
-    <Route key="chatPersonalRoute" path="personal/:chatId" element={<PersonalChatPage/>} />,
+    <Route key="chatPersonalRoute" path=":loggedInUserId/personal/:chatId" element={<PersonalChatPage/>} />,
     <Route key="chatPersonalDetailRoute" path="personal/:chatId/detail" element={<PersonalChatDetailPage/>} />,
 
 </Route>;

@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using AcademiCar.Server.DAL.Entities;
 using AcademiCar.Server.Services.Response;
+using AcademiCar.Server.Services.ServiceImpl;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -140,6 +141,7 @@ public class ChatController : ControllerBase
         int idAsInt = int.Parse(id);
         PersonalChat? personalChat = await _globalService.PersonalChatService.Get(idAsInt);
         
+        
         if (personalChat == null)
             return NotFound();
         
@@ -238,6 +240,38 @@ public class ChatController : ControllerBase
         List<PersonalChat> resultList = personalChatList
             .Where(c => tripRequestList.Any(r => r.FK_PotentialPassenger == c.FK_PassengerUser)).ToList();
 
+        foreach (PersonalChat personalChat in resultList)
+        {
+            personalChat.DriverUser = await _globalService.UserService.Get(personalChat.FK_DriverUser ?? "");
+            personalChat.PassengerUser = await _globalService.UserService.Get(personalChat.FK_PassengerUser ?? "");
+        }
+        
         return Ok(resultList);
+    }
+    
+    [HttpGet("GetOpenRequestForTrip/{id}")]
+    public async Task<IActionResult> GetOpenRequestForTrip(int id)
+    {
+        List<TripRequest> tripRequestList = await _globalService.TripRequestService.GetTripRequestsByTripId(id);
+        
+        return Ok(tripRequestList);
+    }
+    
+    [HttpPut("chat/updateRequest")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResultResponseModel))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+    public async Task<IActionResult> UpdateUser([Required] [FromBody] TripRequest tripRequest)
+    {
+        if (!ModelState.IsValid) return ValidationProblem(ModelState);
+
+        ActionResultResponseModel result = await _globalService.TripRequestService.Update(tripRequest);
+        if (!result.IsSuccess)
+        {
+            result.Message = "Failed to update request";
+            return BadRequest(result);
+        }
+
+        result.Message = "Request updated successfully";
+        return Ok(result);
     }
 }

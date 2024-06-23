@@ -13,11 +13,13 @@ export const PersonalChatPage = () => {
     const joinRequestLinkText = t("pages/chat:PersonalChatPage.link_trip");
     const joinRequestDenyText = t("pages/chat:PersonalChatPage.button_deny");
     const joinRequestAcceptText = t("pages/chat:PersonalChatPage.button_accept");
+    const {loggedInUserId} = useParams();
     const {chatId} = useParams();
     const [messages, setMessages] = useState<IPersonalMessage[]>([]);
     const [filteredMessages, setFilteredMessages] = useState<MessageProps[]>([]);
     const [chat, setChat] = useState<IPersonalChat>();
     const [trip, setTrip] = useState<ITrip>();
+    const [tripRequest, setTripRequest] = useState<ITripRequest>();
 
     // Fetch chat and trip
     useEffect(() => {
@@ -31,7 +33,19 @@ export const PersonalChatPage = () => {
                     const tripResponse = await fetch('https://localhost:5173/api/create/' + chatData.fK_Trip);
                     const tripData: ITrip = await tripResponse.json();
                     setTrip(tripData);
+                    
+                    const fetchedTripRequestsResponse = await fetch('https://localhost:5173/api/chat/GetOpenRequestForTrip/' + chatData.fK_Trip);
+                    const fetchedTripRequests: ITripRequest[] = await fetchedTripRequestsResponse.json();
+
+                    console.log("Chatdata: " + chatData)
+                    console.log(chatData)
+                    console.log("reqeust: " + fetchedTripRequests)
+                    console.log(fetchedTripRequests)
+
+                    const matchingTripRequest = fetchedTripRequests.find(request => request.fK_PotentialPassenger === chatData.fK_PassengerUser);
+                    setTripRequest(matchingTripRequest);
                 }
+                
             } catch (error) {
                 console.error("Failed to fetch chat or trip data", error);
             }
@@ -67,7 +81,10 @@ export const PersonalChatPage = () => {
 
         setFilteredMessages(filtered);
     };
-
+    
+    if(!tripRequest)
+        return <div>Loading trip request ...</div>
+    
     return (
         <>
             <TitleBar hasBackAction={true}
@@ -88,8 +105,10 @@ export const PersonalChatPage = () => {
                     driverId={chat?.driverUser?.id}
                     tripId={chat?.fK_Trip}
                     price={trip?.price != null ? trip?.price : 0}
+                    loggedInUserId={loggedInUserId}
+                    tripRequest={tripRequest}
                 />
-                <Chat userId="-999" chatId={chatId} messages={filteredMessages} type="personal"/>
+                <Chat userId={loggedInUserId} chatId={chatId} messages={filteredMessages} type="personal"/>
             </div>
         </>
     );

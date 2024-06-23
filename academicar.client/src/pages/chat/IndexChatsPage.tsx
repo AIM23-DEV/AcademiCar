@@ -4,6 +4,7 @@ import {BottomNavigationBar} from "../../components/BottomNavigationBar.tsx";
 import {useTranslation} from "react-i18next";
 import {Button} from "../../components/Buttons.tsx";
 import {ChatList} from "./partials/ChatList.tsx";
+import {RequestList} from "./partials/RequestList.tsx";
 import {Input} from "../../components/FormFields.tsx";
 import {useEffect, useState} from "react";
 import {Spinner} from "../../components/Spinner.tsx";
@@ -20,9 +21,9 @@ export const IndexChatsPage = () => {
     SetPageTitle(pageTitle);
 
     // General
-    const [openPersonalChats, setOpenPersonalChats] = useState(new Array<IPersonalChat>());
-    const [groupChats, setGroupChats] = useState(new Array<IGroupChat>());
-    const [personalChats, setPersonalChats] = useState(new Array<IPersonalChat>());
+    const [requestChats, setRequestChats] = useState<IPersonalChat[]>([]);
+    const [groupChats, setGroupChats] = useState<IGroupChat[]>([]);
+    const [personalChats, setPersonalChats] = useState<IPersonalChat[]>([]);
     const [chats, setChats] = useState(new Array<IPersonalChat | IGroupChat>());
     const {loggedInUserId} = useParams();
 
@@ -30,7 +31,10 @@ export const IndexChatsPage = () => {
     useEffect(() => {
         fetch('https://localhost:5173/api/chat/GetOpenRequestChatsForDriver/' + loggedInUserId)
             .then(response => response.json())
-            .then((fetchedChats: IPersonalChat[]) => setOpenPersonalChats(fetchedChats))
+            .then((fetchedChats: IPersonalChat[]) => {setRequestChats(fetchedChats)
+            console.log(fetchedChats)
+            
+            })
     }, [loggedInUserId]);
 
     useEffect(() => {
@@ -53,9 +57,10 @@ export const IndexChatsPage = () => {
     if(groupChats.length + personalChats.length > chats.length) {
         const combinedChats = [...groupChats, ...personalChats]
         setChats(combinedChats);
+        console.log(combinedChats)
     }
     
-    if (!openPersonalChats) return <div>{spinner}Loading open requests ...</div>
+    if (!requestChats) return <div>{spinner}Loading open requests ...</div>
     if (!groupChats) return <div>{spinner}Loading group chats ...</div>
     if (!personalChats) return <div>{spinner}Loading personal chats ...</div>
     
@@ -95,8 +100,8 @@ export const IndexChatsPage = () => {
                     setTimeout(() => document.getElementById("chat-search-input")?.focus(), 100);
                 }}/>;
 
-    function isGroupChat(chat: IPersonalChat | IGroupChat): chat is IGroupChat {
-        return "trip" in chat && chat.trip !== undefined && chat.trip !== null;
+    function isPersonalChat(chat: any): chat is IPersonalChat {
+        return (chat as IPersonalChat).fK_PassengerUser != undefined; 
     }
     
     return (
@@ -113,20 +118,18 @@ export const IndexChatsPage = () => {
                     : <></>}
 
                 {/* Open requests */}
-                {!searchActive && openPersonalChats.length > 0 ?
-                    <ChatList className="mt-8 mb-24"
-                              chats={openPersonalChats.filter(c => search === "" || (isGroupChat(c) ?
-                                  c.trip?.title.toLowerCase().includes(search.toLowerCase()) :
-                                  `${c.driverUser?.firstName!} ${c.driverUser?.lastName!}`.toLowerCase().includes(search.toLowerCase())))}
-                              searchActive={searchActive}/> : <></>
+                {!searchActive && requestChats.length > 0 ?
+                    <RequestList className="mt-8 mb-24"
+                              chats={requestChats}
+                              searchActive={searchActive} loggedInUserId={loggedInUserId}/> : <></>
                 }
 
                 {/* Chats or search results */}
                 <ChatList className="mt-8 mb-24"
-                          chats={chats.filter(c => search === "" || (isGroupChat(c) ?
-                              c.trip?.title.toLowerCase().includes(search.toLowerCase()) :
-                              `${c.driverUser?.firstName!} ${c.driverUser?.lastName!}`.toLowerCase().includes(search.toLowerCase())))}
-                          searchActive={searchActive}/>
+                          chats={chats.filter(c => search === "" || (isPersonalChat(c) ?
+                              `${c.driverUser?.firstName!} ${c.driverUser?.lastName!}`.toLowerCase().includes(search.toLowerCase()):
+                              c.trip?.title.toLowerCase().includes(search.toLowerCase())))}
+                          searchActive={searchActive} loggedInUserId={loggedInUserId}/>
             </div>
 
 

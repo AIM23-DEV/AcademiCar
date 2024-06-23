@@ -11,10 +11,9 @@ interface ChatsListProps {
     loggedInUserId: string | undefined
 }
 
-export const ChatList = (props: ChatsListProps) => {
+export const RequestList = (props: ChatsListProps) => {
     const [t] = useTranslation(["common", "pages/chat"]);
-    const chatsListLabelText = t("pages/chat:IndexChatsPage.label_chats");
-    const resultsListLabelText = t("pages/chat:IndexChatsPage.label_results");
+    const requestsListLabelText = t("pages/chat:IndexChatsPage.label_requests");
 
     if (props.chats.length === 0) {
         return <EmptyChat type={props.searchActive ? "searchResult" : "chatResult"} className={props.className}/>;
@@ -22,7 +21,7 @@ export const ChatList = (props: ChatsListProps) => {
 
     return (
         <Card
-            label={props.searchActive ? resultsListLabelText : chatsListLabelText} className={props.className}>
+            label={requestsListLabelText} className={props.className}>
             <ul className="space-y-3" key="ChatList">
                 {props.chats.map((chat, index) => (
                     <div key={`${chat.id}:${index}`}>
