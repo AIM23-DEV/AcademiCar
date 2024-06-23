@@ -7,6 +7,12 @@ import { useNavigate } from "react-router-dom";
 
 export const SearchForm = () => {
     const [t] = useTranslation(['common', 'pages/search']);
+    const startPointPlaceholderText = t("common:trip.start");
+    const destinationPlaceholderText = t("common:trip.destination");
+    const datePlaceholderText = t("common:trip.date");
+    const timePlaceholderText = t("common:trip.time");
+    const searchButtonText = t("common:actions.search")
+    
     const [startPoint, setStartPoint] = useState('');
     const [destination, setDestination] = useState('');
     const [date, setDate] = useState('');
@@ -41,7 +47,7 @@ export const SearchForm = () => {
                 <Input
                     type="text"
                     fullWidth
-                    placeholder="Startpunkt"
+                    placeholder={startPointPlaceholderText}
                     value={startPoint}
                     onChange={(e) => setStartPoint(e.target.value)}
                     className="col-span-full"
@@ -49,7 +55,7 @@ export const SearchForm = () => {
                 <Input
                     type="text"
                     fullWidth
-                    placeholder="Ziel"
+                    placeholder={destinationPlaceholderText}
                     value={destination}
                     onChange={(e) => setDestination(e.target.value)}
                     className="col-span-full"
@@ -57,7 +63,7 @@ export const SearchForm = () => {
                 <Input
                     type="date"
                     fullWidth
-                    placeholder="Datum"
+                    placeholder={datePlaceholderText}
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
                     className="col-span-6"
@@ -65,7 +71,7 @@ export const SearchForm = () => {
                 <Input
                     type="time"
                     fullWidth
-                    placeholder="Uhrzeit"
+                    placeholder={timePlaceholderText}
                     value={time}
                     onChange={(e) => setTime(e.target.value)}
                     className="col-span-6"
@@ -74,7 +80,7 @@ export const SearchForm = () => {
                 <Button
                     variant="primary"
                     fullWidth
-                    text={t("common:actions.search")}
+                    text={searchButtonText}
                     textAlign="center"
                     onClick={handleSearch}
                     className="col-span-full"

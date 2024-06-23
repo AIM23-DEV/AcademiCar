@@ -1,5 +1,5 @@
 ﻿import {useState} from 'react';
-import {useParams} from 'react-router-dom';
+import {useParams, useNavigate } from 'react-router-dom';
 import {useTranslation} from "react-i18next";
 import SetPageTitle from "../../hooks/set_page_title.tsx";
 import {TitleBar} from "../../components/TitleBar";
@@ -9,7 +9,7 @@ import {TripVehicleCreationForm} from "./partials/TripVehicleCreationForm.tsx";
 import {TripPricingCreationForm} from "./partials/TripPricingCreationForm.tsx";
 import {TripTimeCreationForm} from "./partials/TripTimeCreationForm.tsx";
 import {BottomNavigationBar} from "../../components/BottomNavigationBar.tsx";
-import {BiChevronLeft, BiChevronRight} from "react-icons/bi";
+import {Pagination} from "../../components/Pagination.tsx";
 
 function getAddress(addressStr: string): IAddress {
     const addressFields = addressStr.split(' ');
@@ -30,7 +30,7 @@ function getAddress(addressStr: string): IAddress {
     };
 }
 function getDate(dateStr: string, timeStr: string): Date {
-    const dateFields = dateStr.split('.');
+    const dateFields = dateStr.split('/');
     const timeFields = timeStr.split(':');
     if (dateFields.length != 3 || timeFields.length != 2)
         return new Date(2020, 1, 1, 12, 0,0)
@@ -41,71 +41,79 @@ function getDate(dateStr: string, timeStr: string): Date {
     const hours = Number(timeFields[0])
     const minutes = Number(timeFields[1])
     
-    return new Date(year, month, day, hours, minutes, 0);
+    return new Date(year, month-1, day, hours, minutes, 0);
 }
 
 export const CreateTripPage = () => {
     const [t] = useTranslation(["common", "components/pagination", "pages/create"]);
     const pageTitle = t("pages/create:Common.title_create");
     const createButtonText = t("pages/create:CreateTripPage.button_create");
-    const pageText = t("components/pagination:page");
-    const previousButtonText = t("components/pagination:button_previous");
-    const nextButtonText = t("components/pagination:button_next");
     SetPageTitle(pageTitle);
 
     const { loggedInUserId } = useParams();
+    const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(1);
-    const [startAddress, setStartAddress] = useState<IAddress>();
-    const [endAddress, setEndAddress] = useState<IAddress>();
+    const [startAddress, setStartAddress] = useState<string>();
+    const [endAddress, setEndAddress] = useState<string>();
     const [startDate, setStartDate] = useState<string>();
     const [startTime, setStartTime] = useState<string>();
     const [endDate, setEndDate] = useState<string>();
     const [endTime, setEndTime] = useState<string>();
     const [tripVehicleId, setTripVehicleId] = useState<number>();
-    const [availableSeats, setAvailableSeats] = useState<number>();
-    const [price, setPrice] = useState<number>(0);
+    const [availableSeats, setAvailableSeats] = useState(0);
+    const [price, setPrice] = useState(0);
     const [error, setError] = useState<string | null>();
-
-    // Handling change
-    const onChangeStartAddress = (val: string) => setStartAddress(getAddress(val));
-    const onChangeEndAddress = (val: string) => setEndAddress(getAddress(val));
 
     // Buttons
     function isDataReady(): boolean {
-        if (!startAddress || !endAddress) return false;
-        if (!startDate || !startTime || !endDate || !endTime) return false;
-        if (!tripVehicleId || !availableSeats) return false;
-        
-        return true;
+        return !!(startAddress && endAddress && startDate && startTime && endDate && endTime && tripVehicleId);
     }
 
-    const createTrip = async () => {
-        if (!startAddress || !endAddress
-            || !startDate || !startTime || !endDate || !endTime
-            || !tripVehicleId || !availableSeats
-        ) return;
+    const createAddress = async (address: IAddress): Promise<IAddress> => {
+        const response = await fetch(`https://localhost:5173/api/create/address`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(address)
+        });
 
-        const fullStartDate: Date = getDate(startDate, startTime);
-        const fullEndDate: Date = getDate(endDate, endTime);
-        const newTrip: ITrip = {
-            title: `${startAddress?.place} -> ${endAddress?.place}`,
-            fK_Driver: `${loggedInUserId}`,
-            fK_StartAddress: startAddress.id,
-            fK_EndAddress: endAddress.id,
-            startTime: fullStartDate,
-            endTime: fullEndDate,
-            fK_Vehicle: tripVehicleId,
-            availableSeats: availableSeats,
-            price: price,
-            paymentMethod: "None",
-            status: "Open"
+        if (!response.ok) {
+            throw new Error('Failed to create address');
         }
 
+        const data = await response.json();
+        return data;
+    };
+
+    const createTrip = async () => {
         try {
-            await fetch(`https://localhost:5173/api/create/address`, {
+            if (!isDataReady()) return;
+
+            const fullStartAddress: IAddress = getAddress(startAddress as string);
+            const fullEndAddress: IAddress = getAddress(endAddress as string);
+            const createdStartAddress = await createAddress(fullStartAddress);
+            const createdEndAddress = await createAddress(fullEndAddress);
+
+            const fullStartDate: Date = getDate(startDate as string, startTime as string);
+            const fullEndDate: Date = getDate(endDate as string, endTime as string);
+
+            const newTrip: ITrip = {
+                title: `${createdStartAddress.place} -> ${createdEndAddress.place}`,
+                fK_Driver: `${loggedInUserId}`,
+                fK_StartAddress: createdStartAddress.id as number,
+                fK_EndAddress: createdEndAddress.id as number,
+                startTime: fullStartDate,
+                endTime: fullEndDate,
+                fK_Vehicle: tripVehicleId as number,
+                availableSeats: availableSeats,
+                price: price,
+                paymentMethod: "None",
+                status: "Open"
+            };
+
+            await fetch(`https://localhost:5173/api/create/trip`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(startAddress)
+                body: JSON.stringify(newTrip)
             });
 
             await fetch(`https://localhost:5173/api/create/address`, {
@@ -126,18 +134,17 @@ export const CreateTripPage = () => {
                 updatedAt: new Date(),
                 lastMessageContent: ""
             };
+            
+            alert('Trip created successfully!');
+            navigate('/trips/index/' + loggedInUserId);
 
-            await fetch(`https://localhost:5173/api/chat/CreateGroupChat`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(newGroupChat)
-            });
+
         } catch (error) {
-            setError(`There was an error creating the trip!`);
+            setError(`There was an error: ${error}`);
             console.error("Error:", error);
         }
     };
-
+    
     if (error) return <div>{`There was an error: ${error}`}</div>
     if (!loggedInUserId) return <div>Invalid user!</div>
 
@@ -149,8 +156,8 @@ export const CreateTripPage = () => {
                         startAddress={startAddress}
                         endAddress={endAddress}
     
-                        setStartAddress={onChangeStartAddress}
-                        setEndAddress={onChangeEndAddress}
+                        setStartAddress={setStartAddress}
+                        setEndAddress={setEndAddress}
                     />
                 )                
             case 2:
@@ -187,7 +194,7 @@ export const CreateTripPage = () => {
                         />
 
                         <Button
-                            disabled={isDataReady()}
+                            disabled={!isDataReady()}
                             type="submit"
                             variant="primary"
                             text={createButtonText}
@@ -201,8 +208,8 @@ export const CreateTripPage = () => {
                         startAddress={startAddress}
                         endAddress={endAddress}
 
-                        setStartAddress={onChangeStartAddress}
-                        setEndAddress={onChangeEndAddress}
+                        setStartAddress={setStartAddress}
+                        setEndAddress={setEndAddress}
                     />
                 )
         }
@@ -215,30 +222,7 @@ export const CreateTripPage = () => {
 
             {renderCurrentSection()}
 
-            <div className={'w-full flex flex-col items-center justify-center space-y-2 max-w-md text-gray-950'}>
-
-                <span className="w-full text-center">
-                    {pageText}
-                    {<span className="font-bold">{" " + currentPage + " "}</span>}
-                    /
-                    {<span className="font-bold">{" " + 4}</span>}
-                </span>
-
-                <div className="w-full flex flex-row items-center justify-between space-x-3 max-w-md">
-
-                    <Button variant="outline" text={previousButtonText}
-                            fullWidth disabled={currentPage == 1}
-                            onClick={() => setCurrentPage(currentPage == 1 ? 1 : currentPage - 1)}
-                            leading={<BiChevronLeft className="icon-md"/>}/>
-
-                    <Button variant="outline" text={nextButtonText}
-                            fullWidth disabled={currentPage == 4}
-                            onClick={() => setCurrentPage(currentPage == 4 ? 4 : currentPage + 1)}
-                            trailing={<BiChevronRight className="icon-md"/>}/>
-
-                </div>
-
-            </div>
+            <Pagination page={currentPage} setPage={setCurrentPage} totalPages={4} showPages={true} />
 
             <BottomNavigationBar selected="create"/>
         </>

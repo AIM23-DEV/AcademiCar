@@ -9,7 +9,9 @@
     "destination": "Destination",
     "stop": "Stopover",
     "freeSpots": "free Spots",
-    "layover": "Layover"
+    "layover": "Layover",
+    "date": "Date",
+    "time": "Time"
   },
   "time": {
     "time": "o'clock",
