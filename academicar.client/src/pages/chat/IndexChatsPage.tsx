@@ -31,10 +31,7 @@ export const IndexChatsPage = () => {
     useEffect(() => {
         fetch('https://localhost:5173/api/chat/GetOpenRequestChatsForDriver/' + loggedInUserId)
             .then(response => response.json())
-            .then((fetchedChats: IPersonalChat[]) => {setRequestChats(fetchedChats)
-            console.log(fetchedChats)
-            
-            })
+            .then((fetchedChats: IPersonalChat[]) => setRequestChats(fetchedChats))
     }, [loggedInUserId]);
 
     useEffect(() => {
@@ -57,7 +54,6 @@ export const IndexChatsPage = () => {
     if(groupChats.length + personalChats.length > chats.length) {
         const combinedChats = [...groupChats, ...personalChats]
         setChats(combinedChats);
-        console.log(combinedChats)
     }
     
     if (!requestChats) return <div>{spinner}Loading open requests ...</div>
@@ -128,7 +124,7 @@ export const IndexChatsPage = () => {
                 <ChatList className="mt-8 mb-24"
                           chats={chats.filter(c => search === "" || (isPersonalChat(c) ?
                               `${c.driverUser?.firstName!} ${c.driverUser?.lastName!}`.toLowerCase().includes(search.toLowerCase()):
-                              c.trip?.title.toLowerCase().includes(search.toLowerCase())))}
+                              c.tripTitle.toLowerCase().includes(search.toLowerCase())))}
                           searchActive={searchActive} loggedInUserId={loggedInUserId}/>
             </div>
 

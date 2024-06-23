@@ -110,35 +110,34 @@ export const CreateTripPage = () => {
                 status: "Open"
             };
 
-            await fetch(`https://localhost:5173/api/create/trip`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(newTrip)
-            });
-
-            await fetch(`https://localhost:5173/api/create/address`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(endAddress)
-            });
-
             const tripResponse = await fetch(`https://localhost:5173/api/create/trip`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newTrip)
             });
+            
+            // Create GroupChat
             const createdTrip = await tripResponse.json();
             const newGroupChat: IGroupChat = {
                 fK_Trip: createdTrip.id,
-                trip: createdTrip,
+                tripTitle: createdTrip.title,
                 updatedAt: new Date(),
                 lastMessageContent: ""
             };
+
+            const groupChatResponse = await fetch(`https://localhost:5173/api/create/groupchat`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newGroupChat)
+            });
+            const createdGroupChat = await groupChatResponse.json();
+            if (createdGroupChat.id == createdTrip.id)
+            {
+                // finish
+                alert('Trip created successfully!');
+                navigate('/trips/index/' + loggedInUserId);
+            }
             
-            alert('Trip created successfully!');
-            navigate('/trips/index/' + loggedInUserId);
-
-
         } catch (error) {
             setError(`There was an error: ${error}`);
             console.error("Error:", error);

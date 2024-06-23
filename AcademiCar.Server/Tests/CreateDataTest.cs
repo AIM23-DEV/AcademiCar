@@ -413,6 +413,8 @@ public class CreateDataTest : BaseUnitTest
         {
             ID = -999,
             FK_Trip = -999,
+            TripTitle = "Test Drive",
+            LastMessageContent = "Test Message",
             UpdatedAt = DateTime.UtcNow.AddHours(-2).AddMinutes(-24)
         };
         
@@ -420,6 +422,8 @@ public class CreateDataTest : BaseUnitTest
         {
             ID = -998,
             FK_Trip = -998,
+            TripTitle = "Graz -> Graz",
+            LastMessageContent = "Hello World",
             UpdatedAt = DateTime.UtcNow.AddHours(-2).AddMinutes(-24)
         };
 

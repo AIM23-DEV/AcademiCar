@@ -1,4 +1,5 @@
 ﻿using AcademiCar.Server.DAL.Entities;
+using AcademiCar.Server.Services.Response;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AcademiCar.Server.Controllers;
@@ -74,7 +75,22 @@ public class CreateController : ControllerBase
 
         await _globalService.TripService.Create(newTrip);
 
-        return NoContent();
+        Trip? insertedTrip = _globalService.TripService.GetByTitleAndDriverAndStatus(newTrip.Title, newTrip.FK_Driver, newTrip.Status);
+        if (insertedTrip == null) return Conflict();
+        
+        return Ok(insertedTrip);
+    }
+    
+    [HttpPost("groupchat")]
+    public async Task<IActionResult> CreateGroupChat([FromBody] GroupChat groupChat)
+    {
+        ActionResultResponseModel result = await _globalService.GroupChatService.Create(groupChat);
+        if (!result.IsSuccess) return Conflict(groupChat);
+        
+        GroupChat? insertedGroupChat = await _globalService.GroupChatService.Get(groupChat.ID);
+        if (insertedGroupChat == null) return Forbid();
+        
+        return Ok(insertedGroupChat);
     }
     
     

@@ -22,4 +22,11 @@ public class TripService : Service<Trip>
     
     public async Task<List<Trip>> GetTripsByDriverId(string id)
         => await _repo.GetTripsByUserId(id);
+    
+    public Trip? GetByTitleAndDriverAndStatus(string title, string driverId, string status)
+        => _repo
+            .FilterBy(t => t.Title.Contains(title)
+                           && t.FK_Driver.Contains(driverId)
+                           && t.Status.Contains(status))
+            .FirstOrDefault();
 }

@@ -1,8 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using AcademiCar.Server.DAL.Entities;
 using AcademiCar.Server.Services.Response;
-using AcademiCar.Server.Services.ServiceImpl;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AcademiCar.Server.Controllers;
@@ -12,17 +10,18 @@ namespace AcademiCar.Server.Controllers;
 public class ChatController : ControllerBase
 {
     private IGlobalService _globalService;
-    
     public ChatController(IGlobalService globals)
     {
         _globalService = globals;
     }
-    
+
+
     [HttpPost("CreatePersonalMessage")]
-    [Authorize]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResultResponseModel))]
-    public async Task<Services.Response.ActionResultResponseModel> CreatePersonalMessage([Required][FromBody] PersonalMessage personalMessage)
-        => await _globalService.PersonalMessageService.Create(personalMessage);
+    public async Task<IActionResult> CreatePersonalMessage([FromBody] PersonalMessage personalMessage)
+    {
+        await _globalService.PersonalMessageService.Create(personalMessage);
+        return Ok();
+    }
     
     [HttpGet("GetPersonalMessageById")]
     public async Task<IActionResult> GetPersonalMessageById(string id)
@@ -46,12 +45,13 @@ public class ChatController : ControllerBase
         
         return Ok(personalMessageList);
     }
-    
-  [HttpPost("CreateGroupMessage")]
-    [Authorize]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResultResponseModel))]
-    public async Task<Services.Response.ActionResultResponseModel> CreateGroupMessage([Required][FromBody] GroupMessage groupMessage)
-        => await _globalService.GroupMessageService.Create(groupMessage);
+
+    [HttpPost("CreateGroupMessage")]
+    public async Task<IActionResult> CreateGroupMessage([FromBody] GroupMessage groupMessage)
+    {
+        await _globalService.GroupMessageService.Create(groupMessage);
+        return Ok();
+    }
     
     [HttpGet("GetGroupMessageById")]
     public async Task<IActionResult> GetGroupMessageById(string id)
@@ -76,12 +76,6 @@ public class ChatController : ControllerBase
         return Ok(groupMessageList);
     }
     
-    [HttpPost("CreateGroupChat")]
-    [Authorize]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResultResponseModel))]
-    public async Task<Services.Response.ActionResultResponseModel> CreateGroupChat([Required][FromBody] GroupChat groupChat)
-        => await _globalService.GroupChatService.Create(groupChat);
-    
     [HttpGet("GetGroupChatById")]
     public async Task<IActionResult> GetGroupChatById(string id)
     {
@@ -90,8 +84,6 @@ public class ChatController : ControllerBase
         
         if (groupChat == null)
             return NotFound();
-        
-        groupChat.Trip = await _globalService.TripService.Get(groupChat.FK_Trip);
         
         return Ok(groupChat);
     }
@@ -119,21 +111,28 @@ public class ChatController : ControllerBase
             return NotFound();
         
         groupChatList.Sort((a, b) => a.UpdatedAt.CompareTo(b.UpdatedAt));
-        foreach (var groupChat in groupChatList)
+        foreach (GroupChat? groupChat in groupChatList)
         {
             if (groupChat == null) break;
-            groupChat.Trip = await _globalService.TripService.Get(groupChat.FK_Trip);
-            groupChat.LastMessageContent = _globalService.UnitOfWork.GroupMessages.FilterBy(message => message.FK_GroupChat == groupChat.ID).Last().Content;
+            
+            IEnumerable<GroupMessage> messages =
+                _globalService.UnitOfWork.GroupMessages.FilterBy(message => message.FK_GroupChat == groupChat.ID);
+
+            IEnumerable<GroupMessage> groupMessages = messages as GroupMessage[] ?? messages.ToArray();
+            if (!groupMessages.Any()) break;
+            
+            groupChat.LastMessageContent = groupMessages.Last().Content ?? "";
         }
         
         return Ok(groupChatList);
     }
-    
+
     [HttpPost("CreatePersonalChat")]
-    [Authorize]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResultResponseModel))]
-    public async Task<Services.Response.ActionResultResponseModel> CreatePersonalChat([Required][FromBody] PersonalChat personalChat)
-        => await _globalService.PersonalChatService.Create(personalChat);
+    public async Task<IActionResult> CreatePersonalChat([FromBody] PersonalChat personalChat)
+    {
+        await _globalService.PersonalChatService.Create(personalChat);
+        return NoContent();
+    }
     
     [HttpGet("GetPersonalChatById")]
     public async Task<IActionResult> GetPersonalChatById(string id)
@@ -181,12 +180,13 @@ public class ChatController : ControllerBase
         
         return Ok(personalChatList);
     }
-    
+
     [HttpPost("CreateGroupChatUser")]
-    [Authorize]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResultResponseModel))]
-    public async Task<Services.Response.ActionResultResponseModel> CreateGroupChatUser([Required][FromBody] GroupChatUser groupChatUser)
-        => await _globalService.GroupChatUserService.Create(groupChatUser);
+    public async Task<IActionResult> CreateGroupChatUser([FromBody] GroupChatUser groupChatUser)
+    {
+        await _globalService.GroupChatUserService.Create(groupChatUser);
+        return NoContent();
+    }
     
     [HttpGet("GetGroupChatUserById")]
     public async Task<IActionResult> GetGroupChatUserById(string id)

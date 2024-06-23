@@ -25,10 +25,9 @@ export const ChatListTile = (props: ChatListTileProps) => {
                         alt="avatar"
                         className="mr-4"/>
                     <div className="flex flex-col w-full">
-                        {/* Todo correct user or chat name */}
                         <div className="flex flex-row justify-between">
                             <span className="subtitle">
-                                {isPersonalChat(props.chat) ? `${props.chat?.driverUser?.firstName!} ${props.chat.driverUser?.lastName!}` : props.chat.trip?.title}
+                                {isPersonalChat(props.chat) ? `${props.chat?.driverUser?.firstName!} ${props.chat.driverUser?.lastName!}` : props.chat.tripTitle}
                             </span>
                             <div className="body-2 text-gray-500">
                                 {formatDate(props.chat.updatedAt)}
