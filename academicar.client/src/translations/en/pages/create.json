@@ -45,5 +45,11 @@
     "tab_vehicle": "Vehicle",
     "tab_pricing": "Pricing",
     "button_update": "Save"
+  },
+
+  "Pagination": {
+    "page": "Page",
+    "button_previous": "Previous",
+    "button_next": "Next"
   }
 }

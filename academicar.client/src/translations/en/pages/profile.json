@@ -50,7 +50,8 @@
     "animals": "Animals",
     "other": "Other",
     "createcar": "Create car",
-    "updatecar": "Save changes"
+    "update_car": "Save changes",
+    "delete_car": "Delete car"
   },
   "EditProfilePage": {
     "title": "Edit My Profile",

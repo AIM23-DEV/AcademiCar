@@ -6,11 +6,11 @@ namespace AcademiCar.Server.Services.ServiceImpl;
 public class TripRequestService : Service<TripRequest>
 {
     private ITripRequestRepository _repo;
-
     public TripRequestService(ITripRequestRepository repo) : base(repo)
     {
         _repo = repo;
     }
+    
     
     public override async Task<bool> Validate(TripRequest entity)
     {

@@ -20,10 +20,28 @@ export const TripPricingCreationForm = (props: TripPricingCreationFormProps) => 
     return (
         <div className="w-full flex flex-col items-center">
             <Card label={pricingLabelText}>
-                <p>TODO Radio Collection, option 1 {noCostRadioText}</p>
-                <Divider/>
-                <div>TODO Radio Collection, option 2 {fixedCostRadioText} <Input/></div>
-                <div>{recommendedPriceLabelText} <Input value={props.price} onChange={(e) => props.setPrice(Number(e.target.value))} /> €</div>
+                {/* Todos disabled for now */}
+                <>
+                    {
+                        false ?
+                            <>
+                                <p>TODO Radio Collection, option 1 {noCostRadioText}</p>
+                                <Divider/>
+                                <div>TODO Radio Collection, option 2 {fixedCostRadioText} <Input/></div>
+                            </>
+                            : ''
+                    }
+                </>
+
+                <div>
+                    <Input
+                        value={props.price}
+                        onChange={(e) => props.setPrice(Number(e.target.value))}
+                        leading="€"
+                    />
+                </div>
+
+                <p>{recommendedPriceLabelText} 13 €</p>
                 <p>{kilometreAllowanceLabelText} 0.06 €/km</p>
             </Card>
         </div>

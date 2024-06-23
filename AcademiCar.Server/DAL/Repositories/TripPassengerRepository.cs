@@ -13,6 +13,7 @@ public class TripPassengerRepository : PostgresRepository<TripPassenger>, ITripP
         _dbContext = dbContext;
     }
     
+    
     public async Task<List<TripPassenger>> GetConnectionByPassengerID(string id)
         => _dbContext.TripPassengers.Where(v => v.FK_PassengerUser == id).ToList();
 }

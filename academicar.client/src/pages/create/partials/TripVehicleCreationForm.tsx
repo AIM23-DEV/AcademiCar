@@ -46,7 +46,11 @@ export const TripVehicleCreationForm = (props: TripVehicleCreationFormProps) => 
 
     return (
         <div className="w-full flex flex-col items-center">
-            <Card label={vehicleLabelText} outsideLink={createVehicleLinkText}>
+            <Card
+                label={vehicleLabelText}
+                outsideLinkText={createVehicleLinkText}
+                outsideLink={`../profile/${props.driverId}/cars/${props.vehicleId}`}
+            >
                 <Select
                     options={vehicleOptions}
                     onChange={(e) => props.setVehicleId(Number(e.target.value))}
@@ -60,14 +64,21 @@ export const TripVehicleCreationForm = (props: TripVehicleCreationFormProps) => 
                 </span>
             </Card>
 
-            <Card label={extrasLabelText}>
-                <div><Checkmark label={luggageExtraText}/> <Input/> {extrasUnitText} </div>
-                <div><Checkmark label={suitcaseExtraText}/> <Input/> {extrasUnitText} </div>
-                <Checkmark label={bicycleExtraText}/>
-                <Checkmark label={skiExtraText}/>
-                <Checkmark label={miscExtraText}/>
-                <Input/>
-            </Card>
+            {/* Extras disabled for now */}
+            <>
+                {
+                    false ?
+                        <Card label={extrasLabelText}>
+                            <div><Checkmark label={luggageExtraText}/> <Input/> {extrasUnitText} </div>
+                            <div><Checkmark label={suitcaseExtraText}/> <Input/> {extrasUnitText} </div>
+                            <Checkmark label={bicycleExtraText}/>
+                            <Checkmark label={skiExtraText}/>
+                            <Checkmark label={miscExtraText}/>
+                            <Input/>
+                        </Card>
+                        : ''
+                }
+            </>
         </div>
     );
 };
