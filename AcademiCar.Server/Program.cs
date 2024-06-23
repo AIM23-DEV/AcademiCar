@@ -85,7 +85,15 @@ if (enableSaml2)
                 new ServiceCertificate
                 {
                     Certificate = fhCert,
-                    Use = CertificateUse.Both
+                    Use = CertificateUse.Encryption
+                }
+            );
+            
+            options.SPOptions.ServiceCertificates.Add(
+                new ServiceCertificate
+                {
+                    Certificate = spCert,
+                    Use = CertificateUse.Signing
                 }
             );
             
@@ -96,8 +104,6 @@ if (enableSaml2)
                 MetadataLocation = metadataFilePath,
             };
 
-//            idp.SigningKeys.AddConfiguredKey(spCert);
-//            idp.SigningKeys.AddConfiguredKey(new X509Certificate2(fhCertPath));
             idp.AllowUnsolicitedAuthnResponse = true;
             idp.WantAuthnRequestsSigned = true;
             options.SPOptions.OutboundSigningAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256";
