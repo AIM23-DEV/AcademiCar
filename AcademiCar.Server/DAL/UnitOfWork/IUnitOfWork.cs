@@ -26,6 +26,8 @@ namespace AcademiCar.Server.DAL.UnitOfWork
         ITripStopRepository TripStops { get; }
         IUserRepository Users { get; }
         IVehicleRepository Vehicles { get; }
+        IBalanceRepository Balances { get; }
+        ITransactionRepository Transactions { get; }
 
         Task<int> SaveChangesAsync();
     }

@@ -32,6 +32,8 @@ public class UnitOfWork : IUnitOfWork
     public ITripStopRepository TripStops => new TripStopRepository(Context);
     public IUserRepository Users => new UserRepository(Context);
     public IVehicleRepository Vehicles => new VehicleRepository(Context);
+    public IBalanceRepository Balances => new BalanceRepository(Context);
+    public ITransactionRepository Transactions => new TransactionRepository(Context);
         
     public async Task<int> SaveChangesAsync() => await Context.SaveChangesAsync();
 }
