@@ -60,6 +60,7 @@
     "phone_number": "Phone number",
     "email": "E-Mail Address",
     "birthdate": "Birth date",
+    "gender": "Gender",
     "gender_male": "Male",
     "gender_female": "Female",
     "gender_diverse": "Divers",

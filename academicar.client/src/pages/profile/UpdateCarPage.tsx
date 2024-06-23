@@ -3,7 +3,6 @@ import {CheckmarkHandler, Input, Select} from "../../components/FormFields.tsx";
 import {Button} from "../../components/Buttons.tsx";
 import {useTranslation} from "react-i18next";
 import {TitleBar} from "../../components/TitleBar.tsx";
-import {BottomNavigationBar} from "../../components/BottomNavigationBar.tsx";
 import {Card} from "../../components/Cards.tsx";
 import {useNavigate} from "react-router-dom";
 import {useParams} from 'react-router-dom';
@@ -119,7 +118,7 @@ export const UpdateCarPage = () => {
     }, [vehicleId]);
 
     if (!vehicle) return <div>Loading vehicle...</div>
-    
+
     const pageTitle_create = t("pages/profile:CarPage.title_create");
     const pageTitle_update = t("pages/profile:CarPage.title_update");
     const brand_placeholder = t("pages/profile:CarPage.brand_placeholder");
@@ -156,17 +155,17 @@ export const UpdateCarPage = () => {
     const updatecar = t("pages/profile:CarPage.updatecar");
 
     return (
-        <div className="pb-24 w-full">
+        <div className="pb-40 w-full">
             <TitleBar text={vehicleId ? pageTitle_update : pageTitle_create} hasBackAction/>
-            <div className="flex justify-center">
+            <div className="flex justify-center my-6">
                 <img
                     src="/../src/assets/react.svg"
                     alt="avatar"
-                    className="rounded-full w-32 h-32"
+                    className="rounded-full icon-2xl"
                 />
             </div>
 
-            <form className="mt-4 w-full grid grid-cols-12 gap-4">
+            <form className="w-full grid grid-cols-12 gap-6">
                 <Input
                     label={brand}
                     type="text"
@@ -177,8 +176,6 @@ export const UpdateCarPage = () => {
                     id="brand_Model"
                     className="col-span-full"
                 />
-            </form>
-            <form className="mt-4 w-full grid grid-cols-12 gap-4">
                 <Input
                     label={economy}
                     type="number"
@@ -189,8 +186,6 @@ export const UpdateCarPage = () => {
                     id="fuel_Consumption"
                     className="col-span-full"
                 />
-            </form>
-            <form className="mt-4 w-full grid grid-cols-12 gap-4">
                 <Input
                     label={plate}
                     type="text"
@@ -201,8 +196,6 @@ export const UpdateCarPage = () => {
                     onChange={handleInputChange}
                     className="col-span-full"
                 />
-            </form>
-            <form className="mt-4 w-full grid grid-cols-12 gap-4">
                 <Select
                     label={cartype}
                     fullWidth
@@ -213,8 +206,6 @@ export const UpdateCarPage = () => {
                     id="type"
                     className="col-span-full"
                 />
-            </form>
-            <form className="mt-4 w-full grid grid-cols-12 gap-4">
                 <Select
                     label={color}
                     fullWidth
@@ -225,8 +216,6 @@ export const UpdateCarPage = () => {
                     id={"color"}
                     className="col-span-full"
                 />
-            </form>
-            <form className="mt-4 w-full grid grid-cols-12 gap-4">
                 <Select
                     label={fuel}
                     fullWidth
@@ -237,8 +226,6 @@ export const UpdateCarPage = () => {
                     id="fuel_Consumption"
                     className="col-span-full"
                 />
-            </form>
-            <form>
                 <Select
                     label={seats}
                     fullWidth
@@ -249,150 +236,148 @@ export const UpdateCarPage = () => {
                     id="seats"
                     className="col-span-full"
                 />
+
+                <Card label={car_details} className="col-span-full">
+                    <div className="grid grid-cols-2 gap-4">
+                        <CheckmarkHandler
+                            label={ac}
+                            checked={vehicle?.hasAC ?? false}
+                            onChange={(checked) => handleCheckboxChange('ac', checked)}
+                            id="ac"
+                            className="flex items-center gap-1"
+                        />
+                        <CheckmarkHandler
+                            label={seat_heating}
+                            checked={vehicle?.hasSeatHeating ?? false}
+                            onChange={(checked) => handleCheckboxChange('seat_Heating', checked)}
+                            id="seat_Heating"
+                            className="flex items-center gap-1"
+                        />
+                        <CheckmarkHandler
+                            label={led}
+                            checked={vehicle?.hasLed ?? false}
+                            onChange={(checked) => handleCheckboxChange('led', checked)}
+                            id="led"
+                            className="flex items-center gap-1"
+                        />
+                        <CheckmarkHandler
+                            label={ski_bag}
+                            checked={vehicle?.hasSkiBag ?? false}
+                            onChange={(checked) => handleCheckboxChange('ski_Bag', checked)}
+                            id="ski_Bag"
+                            className="flex items-center gap-1"
+                        />
+                        <CheckmarkHandler
+                            label={inspection}
+                            checked={vehicle?.hasVehicleInspection ?? false}
+                            onChange={(checked) => handleCheckboxChange('vehicle_Inspection', checked)}
+                            id="vehicle_Inspection"
+                            className="flex items-center gap-1"
+                        />
+                        <CheckmarkHandler
+                            label={leather}
+                            checked={vehicle?.hasLeather ?? false}
+                            onChange={(checked) => handleCheckboxChange('leather', checked)}
+                            id="leather"
+                            className="flex items-center gap-1"
+                        />
+                        <CheckmarkHandler
+                            label={automatic}
+                            checked={vehicle?.hasAutomatic ?? false}
+                            onChange={(checked) => handleCheckboxChange('automatic', checked)}
+                            id="automatic"
+                            className="flex items-center gap-1"
+                        />
+                        <CheckmarkHandler
+                            label={cruise_control}
+                            checked={vehicle?.hasCruiseControl ?? false}
+                            onChange={(checked) => handleCheckboxChange('cruise_Control', checked)}
+                            id="cruise_Control"
+                            className="flex items-center gap-1"
+                        />
+                    </div>
+                </Card>
+                <Card label={storage} className="col-span-full">
+                    <div className="grid grid-cols-2 gap-4">
+                        <CheckmarkHandler
+                            label={bike_rack}
+                            checked={vehicle?.hasBikeRack ?? false}
+                            onChange={(checked) => handleCheckboxChange('bike_Rack', checked)}
+                            id="bike_Rack"
+                            className="flex items-center gap-1"
+                        />
+                        <CheckmarkHandler
+                            label={suitcase}
+                            checked={vehicle?.hasSuitcaseSpace ?? false}
+                            onChange={(checked) => handleCheckboxChange('suitcase', checked)}
+                            id="suitcase"
+                            className="flex items-center gap-1"
+                        />
+                        <CheckmarkHandler
+                            label={hand_luggage}
+                            checked={vehicle?.hasHandLuggageSpace ?? false}
+                            onChange={(checked) => handleCheckboxChange('hand_luggage', checked)}
+                            id="hand_luggage"
+                            className="flex items-center gap-1"
+                        />
+                        <CheckmarkHandler
+                            label={ski}
+                            checked={vehicle?.hasSkiSpace ?? false}
+                            onChange={(checked) => handleCheckboxChange('ski', checked)}
+                            id="ski"
+                            className="flex items-center gap-1"
+                        />
+                        <CheckmarkHandler
+                            label={roof_mounting}
+                            checked={vehicle?.hasMountingOnRoof ?? false}
+                            onChange={(checked) => handleCheckboxChange('nounting_Roof', checked)}
+                            id="nounting_Roof"
+                            className="flex items-center gap-1"
+                        />
+                        <CheckmarkHandler
+                            label={plants}
+                            checked={vehicle?.hasPlantSpace ?? false}
+                            onChange={(checked) => handleCheckboxChange('plants', checked)}
+                            id="plantsplants"
+                            className="flex items-center gap-1"
+                        />
+                        <CheckmarkHandler
+                            label={animals}
+                            checked={vehicle?.hasAnimalSpace ?? false}
+                            onChange={(checked) => handleCheckboxChange('animals', checked)}
+                            id="animals"
+                            className="flex items-center gap-1"
+                        />
+                        <CheckmarkHandler
+                            label={other}
+                            checked={vehicle?.hasOtherSpace ?? false}
+                            onChange={(checked) => handleCheckboxChange('other', checked)}
+                            id="other"
+                            className="flex items-center gap-1"
+                        />
+                    </div>
+                </Card>
             </form>
 
-            <Card label={car_details} className="mt-4 w-full">
-                <div className="grid grid-cols-2 gap-4">
-                    <CheckmarkHandler
-                        label={ac}
-                        checked={vehicle?.hasAC ?? false}
-                        onChange={(checked) => handleCheckboxChange('ac', checked)}
-                        id="ac"
-                        className="flex items-center gap-1"
-                    />
-                    <CheckmarkHandler
-                        label={seat_heating}
-                        checked={vehicle?.hasSeatHeating ?? false}
-                        onChange={(checked) => handleCheckboxChange('seat_Heating', checked)}
-                        id="seat_Heating"
-                        className="flex items-center gap-1"
-                    />
-                    <CheckmarkHandler
-                        label={led}
-                        checked={vehicle?.hasLed ?? false}
-                        onChange={(checked) => handleCheckboxChange('led', checked)}
-                        id="led"
-                        className="flex items-center gap-1"
-                    />
-                    <CheckmarkHandler
-                        label={ski_bag}
-                        checked={vehicle?.hasSkiBag ?? false}
-                        onChange={(checked) => handleCheckboxChange('ski_Bag', checked)}
-                        id="ski_Bag"
-                        className="flex items-center gap-1"
-                    />
-                    <CheckmarkHandler
-                        label={inspection}
-                        checked={vehicle?.hasVehicleInspection ?? false}
-                        onChange={(checked) => handleCheckboxChange('vehicle_Inspection', checked)}
-                        id="vehicle_Inspection"
-                        className="flex items-center gap-1"
-                    />
-                    <CheckmarkHandler
-                        label={leather}
-                        checked={vehicle?.hasLeather ?? false}
-                        onChange={(checked) => handleCheckboxChange('leather', checked)}
-                        id="leather"
-                        className="flex items-center gap-1"
-                    />
-                    <CheckmarkHandler
-                        label={automatic}
-                        checked={vehicle?.hasAutomatic ?? false}
-                        onChange={(checked) => handleCheckboxChange('automatic', checked)}
-                        id="automatic"
-                        className="flex items-center gap-1"
-                    />
-                    <CheckmarkHandler
-                        label={cruise_control}
-                        checked={vehicle?.hasCruiseControl ?? false}
-                        onChange={(checked) => handleCheckboxChange('cruise_Control', checked)}
-                        id="cruise_Control"
-                        className="flex items-center gap-1"
-                    />
-                </div>
-            </Card>
-            <Card label={storage} className="mt-4 w-full">
-                <div className="grid grid-cols-2 gap-4">
-                    <CheckmarkHandler
-                        label={bike_rack}
-                        checked={vehicle?.hasBikeRack ?? false}
-                        onChange={(checked) => handleCheckboxChange('bike_Rack', checked)}
-                        id="bike_Rack"
-                        className="flex items-center gap-1"
-                    />
-                    <CheckmarkHandler
-                        label={suitcase}
-                        checked={vehicle?.hasSuitcaseSpace ?? false}
-                        onChange={(checked) => handleCheckboxChange('suitcase', checked)}
-                        id="suitcase"
-                        className="flex items-center gap-1"
-                    />
-                    <CheckmarkHandler
-                        label={hand_luggage}
-                        checked={vehicle?.hasHandLuggageSpace ?? false}
-                        onChange={(checked) => handleCheckboxChange('hand_luggage', checked)}
-                        id="hand_luggage"
-                        className="flex items-center gap-1"
-                    />
-                    <CheckmarkHandler
-                        label={ski}
-                        checked={vehicle?.hasSkiSpace ?? false}
-                        onChange={(checked) => handleCheckboxChange('ski', checked)}
-                        id="ski"
-                        className="flex items-center gap-1"
-                    />
-                    <CheckmarkHandler
-                        label={roof_mounting}
-                        checked={vehicle?.hasMountingOnRoof ?? false}
-                        onChange={(checked) => handleCheckboxChange('nounting_Roof', checked)}
-                        id="nounting_Roof"
-                        className="flex items-center gap-1"
-                    />
-                    <CheckmarkHandler
-                        label={plants}
-                        checked={vehicle?.hasPlantSpace ?? false}
-                        onChange={(checked) => handleCheckboxChange('plants', checked)}
-                        id="plantsplants"
-                        className="flex items-center gap-1"
-                    />
-                    <CheckmarkHandler
-                        label={animals}
-                        checked={vehicle?.hasAnimalSpace ?? false}
-                        onChange={(checked) => handleCheckboxChange('animals', checked)}
-                        id="animals"
-                        className="flex items-center gap-1"
-                    />
-                    <CheckmarkHandler
-                        label={other}
-                        checked={vehicle?.hasOtherSpace ?? false}
-                        onChange={(checked) => handleCheckboxChange('other', checked)}
-                        id="other"
-                        className="flex items-center gap-1"
-                    />
-                </div>
-            </Card>
-
-            <Button
-                variant="primary"
-                fullWidth
-                text={updatecar}
-                textAlign="center"
-                onClick={handleSubmit}
-                className="col-span-full mt-8"
-            />
-
-            {vehicleId && (
+            <div className="fixed bottom-6 inset-x-6 space-y-2">
                 <Button
-                    variant="secondary"
+                    variant="primary"
                     fullWidth
-                    text={t('Delete Car')}
+                    text={updatecar}
                     textAlign="center"
-                    onClick={handleDelete}
-                    className="col-span-full mt-4"
+                    onClick={handleSubmit}
                 />
-            )}
 
-            <BottomNavigationBar selected="profile"/>
+                {vehicleId && (
+                    <Button
+                        variant="accent"
+                        fullWidth
+                        text="Fahrzeug löschen"
+                        textAlign="center"
+                        onClick={handleDelete}
+                    />
+                )}
+            </div>
         </div>
     );
 };
