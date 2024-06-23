@@ -62,7 +62,7 @@ if (enableSaml2)
         .AddCookie()
         .AddSaml2(options =>
         {
-            var fhCertName = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:CertificateName"];
+            var fhCertName = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:FhCert"];
             var encryptionCert = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:EncryptionCert"];
             var certificateClient = new CertificateClient(vaultUri, new DefaultAzureCredential());
             var fhCertificate = certificateClient.DownloadCertificate(fhCertName);
@@ -96,7 +96,7 @@ if (enableSaml2)
                 MetadataLocation = metadataFilePath,
             };
 
-            idp.SigningKeys.AddConfiguredKey(spCert);
+//            idp.SigningKeys.AddConfiguredKey(spCert);
 //            idp.SigningKeys.AddConfiguredKey(new X509Certificate2(fhCertPath));
             idp.AllowUnsolicitedAuthnResponse = true;
             idp.WantAuthnRequestsSigned = true;
