@@ -63,7 +63,7 @@ if (enableSaml2)
         .AddSaml2(options =>
         {
             var fhCertName = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:FhCert"];
-            var encryptionCert = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:EncryptionCert"];
+            var encryptionCert = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:SigningCert"];
             var certificateClient = new CertificateClient(vaultUri, new DefaultAzureCredential());
             var fhCertificate = certificateClient.DownloadCertificate(fhCertName);
             var encryptionCertificate = certificateClient.DownloadCertificate(encryptionCert);
