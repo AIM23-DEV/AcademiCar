@@ -105,14 +105,16 @@
   },
   "BalancePage": {
     "title": "Mein Guthaben",
-    "balance": "AkademiCar-Guthaben",
+    "balance": "AcademiCar-Guthaben",
     "recharge": "Aufladen",
-    "activities": "Letzte Aktivitäten",
-    "history": "Archiv"
+    "activities": "Letzte Transaktionen",
+    "history": "Archiv",
+    "payment": "Aufladung",
+    "trip:": "Reise"
   },
   "BalanceHistoryPage": {
     "title": "Mein Guthaben",
-    "delete": "Alle Aktivitäten löschen"
+    "delete": "Alle Transaktionen löschen"
   },
   "BalanceRechargePage": {
     "title": "Konto aufladen",
