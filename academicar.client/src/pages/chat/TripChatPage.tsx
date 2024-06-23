@@ -58,7 +58,7 @@ export const TripChatPage = () => {
     return (
         <>
             <TitleBar hasBackAction={true}
-                      text={chat?.trip?.title ?? ""}
+                      text={chat?.tripTitle ?? ""}
                       className="fixed bg-gray-100 px-4"
                       trailing={
                           <TextLink className="mb-3" variant="outline" link={`${chatId}/detail`} leading={

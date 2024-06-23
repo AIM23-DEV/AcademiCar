@@ -13,15 +13,15 @@ import {Card} from "../../components/Cards.tsx";
 
 export const IndexTripsPage = () => {
     const [t] = useTranslation(["common", "pages/trips"]);
-    const navigate = useNavigate();
     const pageTitle = t("pages/trips:IndexTripsPage.title");
-    const [driverTrips, setDriverTrips] = useState<ITrip[]>([]);
-    const [passengersTrips, setPassengerTrips] = useState<ITrip[]>([]);
-    const {loggedInUserId} = useParams();
     const driverLabel: string = t('pages/trips:IndexTripsPage.myTrips');
     const passengerLabel: string = t('pages/trips:IndexTripsPage.passenger');
-    
     SetPageTitle(pageTitle);
+    
+    const {loggedInUserId} = useParams();
+    const [driverTrips, setDriverTrips] = useState<ITrip[]>([]);
+    const [passengersTrips, setPassengerTrips] = useState<ITrip[]>([]);
+    const navigate = useNavigate();
 
     // Fetch trips from API
     useEffect(() => {
@@ -42,32 +42,56 @@ export const IndexTripsPage = () => {
 
     return (
         <>
-            <TitleBar text={pageTitle}/>
+            <TitleBar text={pageTitle} />
+            
             <div className="w-full flex flex-col items-center pb-24">
                 <Card
                     label={driverTrips ? driverLabel : ""}
                     outsideLinkText={t('pages/trips:IndexTripsPage.archive')}
-                    outsideLink={"/trips/history/driver"}>
+                    outsideLink={"/trips/history/driver"}
+                >
                     {driverTrips.map((trip, index) => (
                         (trip.id && trip.fK_Driver) ?
-                        <TripCard tripId={trip.id} cardIndex={index} driverId={trip.fK_Driver} price={trip.price}/> : <></>
+                        <TripCard
+                            key={trip.id}
+                            tripId={trip.id}
+                            cardIndex={index}
+                            driverId={trip.fK_Driver}
+                            price={trip.price}
+                        /> : <></>
                     ))}
                 </Card>
-                <div className="mt-8"/>
+                
+                <div className="mt-8" />
+                
                 <Card
                     label={passengersTrips ? passengerLabel : ""}
                     outsideLinkText={t('pages/trips:IndexTripsPage.archive')}
-                    outsideLink={"/trips/history/passenger"}>
+                    outsideLink={"/trips/history/passenger"}
+                >
                     {passengersTrips.map((trip, index) => (
                         (trip.id && trip.fK_Driver) ?
-                        <TripCard tripId={trip.id} cardIndex={index} driverId={trip.fK_Driver} price={trip.price}/> : <></>
+                        <TripCard
+                            key={trip.id}
+                            tripId={trip.id}
+                            cardIndex={index}
+                            driverId={trip.fK_Driver}
+                            price={trip.price}
+                        /> : <></>
                     ))}
                 </Card>
             </div>
+            
             <div className="fixed bottom-20 flex flex-row items-center justify-end w-full z-50 max-w-5xl px-6">
-                <IconButton variant="primary" icon={<BiPlus className="icon-md"/>} type="button" className="mr-4"
-                            onClick={() => navigate("/trips/create")}/>
+                <IconButton
+                    variant="primary"
+                    icon={<BiPlus className="icon-md"/>}
+                    type="button"
+                    className="mr-4"
+                    onClick={() => navigate(`/create/${loggedInUserId}`)}
+                />
             </div>
+            
             <BottomNavigationBar selected="trips"/>
         </>
     );

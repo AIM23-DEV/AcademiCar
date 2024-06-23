@@ -29,22 +29,21 @@ export const SearchHistory = () => {
             label={t("pages/search:SearchTripsPage.latest")}
             className="mt-8"
         >
-            <div className="w-full grid grid-cols-1 gap-5">
+            <div key="search-history-card-container" className="w-full grid grid-cols-1 gap-5">
                 {DATA.map((entry, index) =>
-                    <>
-                        <a href="" className="flex justify-between items-center">
-                            <div className="flex flex-col gap-2">
-                                <div className="flex items-center gap-2">
-                                    {entry.startPoint} <BiRightArrowAlt
-                                    className="icon-md"/> {entry.endPoint}
+                    <div key={`search-history-card-${index}`}>
+                        <a href="" key={`a-center-flex-${index}`} className="flex justify-between items-center">
+                            <div key={`gap2-${index}`} className="flex flex-col gap-2">
+                                <div key={`center-items-${index}`} className="flex items-center gap-2">
+                                    {entry.startPoint} <BiRightArrowAlt key={`RightArrow-${index}`} className="icon-md"/> {entry.endPoint}
                                 </div>
-                                <div className="flex items-center gap-5 text-gray-500">
-                        <span className="flex items-center gap-1">
-                            <BiCalendar className="icon-md"/>{entry.date}
-                        </span>
-                                    <span className="flex items-center gap-1">
-                            <BiTimeFive className="icon-md"/>{entry.time} {t("common:time.time")}
-                        </span>
+                                <div key={`date-container-${index}`} className="flex items-center gap-5 text-gray-500">
+                                    <span key={`date-${index}`} className="flex items-center gap-1">
+                                        <BiCalendar className="icon-md"/>{entry.date}
+                                    </span>
+                                    <span key={`time-${index}`} className="flex items-center gap-1">
+                                        <BiTimeFive className="icon-md"/>{entry.time} {t("common:time.time")}
+                                    </span>
                                 </div>
                             </div>
 
@@ -56,7 +55,7 @@ export const SearchHistory = () => {
                         {index != DATA.length - 1 ? (
                             <Divider/>
                         ) : null}
-                    </>
+                    </div>
                 )}
             </div>
 

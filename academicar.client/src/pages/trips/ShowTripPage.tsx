@@ -52,6 +52,7 @@ interface RouteProps {
 
 const Route: React.FC<RouteProps> = ({startPoint, endPoint, stops, duration, distance, price}) => {
     const [t] = useTranslation(["common", "pages/trips"]);
+    
     return (
         <div>
             <div className="flex gap-4">
@@ -147,6 +148,7 @@ const Route: React.FC<RouteProps> = ({startPoint, endPoint, stops, duration, dis
 
 const Req: React.FC<RequestProps> = ({requests}) => {
     const [t] = useTranslation(["common", "pages/trips"]);
+    
     return (
         <div>
             {requests.map((request, index) => (
@@ -268,11 +270,13 @@ export const Pas: React.FC<PassengerProps> = ({passengers}) => {
         </div>
     );
 };
+
 export const ShowTripPage = () => {
     const [t] = useTranslation(["common", "pages/trips"]);
-    const {id} = useParams();
-    const pageTitle = t("pages/trips:ShowTripPage.title", {id: id});
+    const { loggedInUserId, tripId } = useParams();
+    const pageTitle = t("pages/trips:ShowTripPage.title", {id: tripId});
     SetPageTitle(pageTitle);
+
     const navigate = useNavigate();
 
     const requests = [
@@ -406,7 +410,7 @@ export const ShowTripPage = () => {
                     leading={<BiEdit className="icon"/>}
                     type="button"
                     disabled={false}
-                    onClick={() => navigate("/create/createUpdateRoute")}
+                    onClick={() => navigate(`/create/${loggedInUserId}/update/${tripId}`)}
                 />
                 <TextButton
                     variant="secondary"
@@ -430,8 +434,7 @@ export const ShowTripPage = () => {
                     type="button"
                     disabled={false}
                     className="mt-2"
-                    onClick={() => navigate("trips/tripsMainRoute")}
-
+                    onClick={() => navigate(`/trips/${loggedInUserId}`)}
                 />
             </Card>
             <BottomNavigationBar selected="trips"/>

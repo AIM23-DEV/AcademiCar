@@ -8,8 +8,8 @@ import { PassengerDetailsPage } from "../pages/trips/PassengerDetailsPage.tsx";
 
 export default <Route key="tripsRoute" path="/trips" element={<Outlet/>}>
 
-    <Route key="tripsMainRoute" path="index/:loggedInUserId" element={<IndexTripsPage/>} />,
-    <Route key="tripsShowRoute" path=":id" element={<ShowTripPage/>} />,
+    <Route key="tripsMainRoute" path=":loggedInUserId" element={<IndexTripsPage/>} />,
+    <Route key="tripsShowRoute" path=":loggedInUserId/:tripId" element={<ShowTripPage/>} />,
     <Route key="tripsDriverHistoryRoute" path="history/driver" element={<DriverTripHistoryPage/>} />,
     <Route key="tripsPassengerHistoryRoute" path="history/passenger" element={<PassengerTripHistoryPage/>} />,
     <Route key="tripsDriverDetailRoute" path="details/driver" element={<DriverDetailsPage/>} />,

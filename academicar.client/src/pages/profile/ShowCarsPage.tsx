@@ -1,6 +1,6 @@
 import {TitleBar} from "../../components/TitleBar";
 import SetPageTitle from "../../hooks/set_page_title.tsx";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {Button} from "../../components/Buttons.tsx";
 import {BiCar} from "react-icons/bi";
@@ -9,8 +9,14 @@ import {EmptyState} from "../../components/EmptyState.tsx";
 import {VehicleListTile} from "./partials/VehicleListTile.tsx";
 
 export const ShowCarsPage = () => {
-    const [vehicles, setVehicle] = useState<IVehicle[]>();
     const [t] = useTranslation(['common', 'pages/profile']);
+    const pageTitle = t("pages/profile:ShowCarsPage.title");
+    const newCar: string = t("pages/profile:ShowCarsPage.newcar")
+    SetPageTitle(pageTitle);
+    
+    const {loggedInUserId} = useParams();
+    const [vehicles, setVehicle] = useState<IVehicle[]>();
+    const [createVehicleId, setCreateVehicleId] = useState<number>();
     const navigate = useNavigate();
     //const {user} = useAuth()
 
@@ -21,9 +27,10 @@ export const ShowCarsPage = () => {
         //}
         // /api/vehicle/vehicles/${user.id}
 
-        fetch('/api/profile/vehicles/-999')
+        fetch(`/api/profile/vehicles/${loggedInUserId}`)
             .then(response => {
                 if (response.status === 404) {
+                    setCreateVehicleId(undefined)
                     return [];
                 }
                 return response.json();
@@ -32,9 +39,7 @@ export const ShowCarsPage = () => {
             .catch((error) => console.error('Error fetching vehicle data:', error));
     }, []);
 
-    const pageTitle = t("pages/profile:ShowCarsPage.title");
-    const newCar: string = t("pages/profile:ShowCarsPage.newcar")
-    SetPageTitle(pageTitle);
+
 
     return (
         <>
@@ -57,7 +62,7 @@ export const ShowCarsPage = () => {
                 textAlign="center"
                 type="submit"
                 className="fixed bottom-6 inset-x-6 !w-auto"
-                onClick={() => navigate("update")}
+                onClick={() => navigate(`${createVehicleId}`)}
             />
         </>
     );

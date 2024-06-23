@@ -60,11 +60,22 @@ public class CreateController : ControllerBase
     {
         if (newAddress == null) return BadRequest();
 
-        await _globalService.AddressService.Create(newAddress);
+        if (newAddress.ID != null || newAddress.ID > 0)
+        {
+            Address? existingAddress = await _globalService.AddressService.Get(newAddress.ID);
+            if (existingAddress != null)
+            {
+                await _globalService.AddressService.Update(newAddress);
+            }
+        }
+        else
+        {
+            await _globalService.AddressService.Create(newAddress);
+        }
 
         Address? insertedAddress = _globalService.AddressService.GetByStreetAndPlace(newAddress.Street, newAddress.Place);
         if (insertedAddress == null) return Conflict();
-        
+            
         return Ok(insertedAddress);
     }
         

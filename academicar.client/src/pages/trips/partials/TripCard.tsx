@@ -145,8 +145,7 @@ export const TripCard: React.FC<TripCardProps> = (props:TripCardProps) => {
     }, [props.tripId]);
     
     return (
-        <LinkCard
-            key={props.cardIndex}>
+        <LinkCard key={props.cardIndex} link={`${props.driverId}/${props.tripId}`}>
             <div>
                 <div className="flex justify-between items-center">
                     <div className="flex flex-row gap-4">
@@ -161,10 +160,10 @@ export const TripCard: React.FC<TripCardProps> = (props:TripCardProps) => {
                             <div>{driver?.firstName} {driver?.lastName}</div>
                             <div className="flex items-center">
                                 {Array.from({length: Math.floor(5)}).map((_, idx) => (
-                                    <BiSolidStar key={idx} className="icon text-yellow-400"/>
+                                    <BiSolidStar key={idx} className="icon text-yellow-400" />
                                 ))}
                                 {Array.from({length: 5 - Math.floor(5)}).map((_, idx) => (
-                                    <BiSolidStar key={idx} className="icon text-gray-300"/>
+                                    <BiSolidStar key={idx} className="icon text-gray-300" />
                                 ))}
                                 <span className="ml-2">({5})</span>
                             </div>
@@ -175,7 +174,11 @@ export const TripCard: React.FC<TripCardProps> = (props:TripCardProps) => {
 
                 <Divider/>
 
-                <Route startPoint={startAddress ? startAddress : defaultStop } endPoint={endAddress ? endAddress : defaultStop } stops={stops ? stops : [defaultStop] }/>
+                <Route
+                    startPoint={startAddress ? startAddress : defaultStop }
+                    endPoint={endAddress ? endAddress : defaultStop }
+                    stops={stops ? stops : [defaultStop] }
+                />
             </div>
         </LinkCard>
     );

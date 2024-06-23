@@ -1,4 +1,6 @@
 using AcademiCar.Server.DAL.Entities;
+using AcademiCar.Server.DAL.Enums;
+using AcademiCar.Server.Services.Response;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AcademiCar.Server.Controllers;
@@ -175,6 +177,77 @@ public class AdminController : ControllerBase
             return BadRequest();
         }
     }
+    
+    
+    // Balance Page
+    [HttpGet("balance/{userId}")]
+    public async Task<IActionResult> GetBalanceByUserId(string userId)
+    {
+        Balance? balance = await _globalService.BalanceService.GetBalanceByUserId(userId);
+        if (balance == null)
+        {
+            balance = new Balance();
+            balance.FK_User = userId;
+            balance.Amount = 0;
+        }
+
+        return Ok(balance);
+    }
+
+    [HttpGet("balance/transactions/{userId}")]
+    public async Task<IActionResult> GetTransactionByUserId(string userId)
+    {
+        List<Transaction> transactions = await _globalService.TransactionService.GetTransactionByUserId(userId);
+        // if (transactions.Count == 0) return NotFound("User has no transactions");
+        // It's ok if there's no transactions.
+        
+        return Ok(transactions);
+    }
+
+    [HttpPost("balance/charge")]
+    public async Task<IActionResult> ChargeBalance([FromBody] TransactionRequest request)
+    {
+        var response = await _globalService.BalanceService.ChargeBalanceAsync(request.FK_User, request.Amount);
+        var responseTransaction =
+            await _globalService.TransactionService.CreateTransactionAsync(request.FK_User, request.Amount,
+                TransactionType.Charge, request.transactionSource);
+        if (response.IsSuccess && responseTransaction.IsSuccess)
+        {
+            return Ok();
+        }
+
+        return BadRequest("Failed to charge balance or save Transaction.");
+    }
+
+    [HttpPost("balance/ook")]
+    public async Task<IActionResult> Book([FromBody] TransactionRequest request)
+    {
+        var response = await _globalService.BalanceService.BookAsync(request.FK_User, request.Amount);
+        var responseTransaction =
+            await _globalService.TransactionService.CreateTransactionAsync(request.FK_User, request.Amount,
+                TransactionType.Book,
+                request.transactionSource);
+        if (response.IsSuccess && responseTransaction.IsSuccess)
+        {
+            return Ok();
+        }
+
+        return BadRequest("Insufficient balance.");
+    }
+
+    [HttpDelete("balance/transactions/{userId}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResultResponseModel))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+    public async Task<IActionResult> DeleteTransactionsForUser(string userId)
+    {
+        ActionResultResponseModel result = await _globalService.TransactionService.DeleteAllForUser(userId);
+        if (!result.IsSuccess)
+        {
+            return BadRequest(result);
+        }
+
+        return Ok(result);
+    }
 }
 
 public class RatingData
@@ -188,4 +261,11 @@ public class PrefsData
     public string MusicPrefs { get; set; }
     public string Interests { get; set; }
     public string TravelPrefs { get; set; }
+}
+
+public class TransactionRequest
+{
+    public string FK_User { get; set; }
+    public decimal Amount { get; set; }
+    public TransactionSource transactionSource { get; set; }
 }

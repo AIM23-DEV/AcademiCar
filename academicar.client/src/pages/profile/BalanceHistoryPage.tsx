@@ -9,16 +9,19 @@ import {RiDeleteBinLine} from "react-icons/ri";
 import {TextButton} from "../../components/Buttons.tsx";
 import {useEffect, useState} from 'react';
 import {ITransaction, TransactionSource, TransactionType} from "../../enums.tsx";
+import {useParams} from "react-router-dom";
 
 export const BalanceHistoryPage = () => {
     const [t] = useTranslation();
     const pageTitle = t("pages/profile:BalanceHistoryPage.title");
-    const [transactions, setTransactions] = useState<ITransaction[]>();
     SetPageTitle(pageTitle);
 
+    const { loggedInUserId } = useParams();
+    const [transactions, setTransactions] = useState<ITransaction[]>();
+    
     const fetchTransactions = async () => {
         try {
-            const response = await fetch(`/api/Balance/transactions/${userid}`);
+            const response = await fetch(`/api/admin/balance/transactions/${loggedInUserId}`);
             if (response.status === 404) {
                 setTransactions([]);
             } else {
@@ -30,10 +33,9 @@ export const BalanceHistoryPage = () => {
         }
     };
 
-    const userid = 1 //TODO must be replaced with real user id
     const handleDelete = async () => {
         try {
-            const response = await fetch(`/api/Balance/transactions/${userid}`, {
+            const response = await fetch(`/api/admin/balance/transactions/${loggedInUserId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -56,7 +58,8 @@ export const BalanceHistoryPage = () => {
 
     return (
         <>
-            <TitleBar hasBackAction={true} text={pageTitle}/>
+            <TitleBar hasBackAction={true} text={pageTitle} />
+            
             <div className="w-full flex flex-col items-center pb-6 gap-10">
                 {transactions && transactions.length > 0 ? (
                     <Card>

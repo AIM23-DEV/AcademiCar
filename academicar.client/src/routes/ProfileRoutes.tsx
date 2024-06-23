@@ -13,6 +13,7 @@ import {BalanceRechargePage} from "../pages/profile/BalanceRechargePage.tsx";
 import {ImageUploadPage} from "../pages/profile/ImageUploadPage.tsx";
 
 export default <Route key="profileRoute" path="/profile/" element={<Outlet/>}>
+    
     <Route key="profileMainRoute" path=":loggedInUserId" element={<IndexProfilePage/>} />
     <Route key="profileEditRoute" path=":loggedInUserId/edit" element={<EditProfilePage/>} />
     <Route key="profileFacesheetRoute" path=":loggedInUserId/facesheet" element={<FaceSheetPage/>} />
@@ -26,4 +27,5 @@ export default <Route key="profileRoute" path="/profile/" element={<Outlet/>}>
     <Route key="profileBalanceRechargeRoute" path=":loggedInUserId/balance/recharge" element={<BalanceRechargePage/>} />
 
     <Route key="profileImageUploadRoute" path="upload" element={<ImageUploadPage/>} />
+    
 </Route>;

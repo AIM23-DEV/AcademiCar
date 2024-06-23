@@ -1,5 +1,5 @@
 ﻿import {useState} from 'react';
-import {useParams, useNavigate } from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import {useTranslation} from "react-i18next";
 import SetPageTitle from "../../hooks/set_page_title.tsx";
 import {TitleBar} from "../../components/TitleBar";
@@ -83,8 +83,7 @@ export const CreateTripPage = () => {
             throw new Error('Failed to create address');
         }
 
-        const data = await response.json();
-        return data;
+        return await response.json();
     };
 
     const createTrip = async () => {
@@ -148,8 +147,8 @@ export const CreateTripPage = () => {
     };
     
     if (error) return <div>{`There was an error: ${error}`}</div>
-    if (!loggedInUserId) return <div>Invalid user!</div>
-
+    if (!loggedInUserId || (loggedInUserId && loggedInUserId == "undefined")) return <div>Invalid user!</div>
+    
     const renderCurrentSection = () => {
         switch (currentPage) {
             case 1:
