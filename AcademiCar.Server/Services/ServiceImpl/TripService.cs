@@ -5,8 +5,12 @@ namespace AcademiCar.Server.Services.ServiceImpl;
 
 public class TripService : Service<Trip>
 {
-    public TripService(ITripRepository repo) : base(repo) { }
+    private ITripRepository _repo;
 
+    public TripService(ITripRepository repo) : base(repo)
+    {
+        _repo = repo;
+    }
 
     public override async Task<bool> Validate(Trip entity)
     {
@@ -15,4 +19,7 @@ public class TripService : Service<Trip>
 
         return validationDictionary.IsValid;
     }
+    
+    public async Task<List<Trip>> GetTripsByDriverId(string id)
+        => await _repo.GetTripsByUserId(id);
 }

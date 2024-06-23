@@ -67,12 +67,6 @@ export const TripChatPage = () => {
             />
 
             <div className="w-full flex flex-col items-center mt-20">
-                {/*<JoinRequestCard*/}
-                {/*    labelText={joinRequestLabelText}*/}
-                {/*    linkText={joinRequestLinkText}*/}
-                {/*    denyButtonText={joinRequestDenyText}*/}
-                {/*    acceptButtonText={joinRequestAcceptText}*/}
-                {/*/>*/}
                 <Chat userId="-999" chatId={chatId} messages={filteredMessages} type="group"/>
             </div>
         </>

@@ -75,20 +75,20 @@ export const CreateTripPage = () => {
         
         return true;
     }
-    
-    const createTrip = () => {
+
+    const createTrip = async () => {
         if (!startAddress || !endAddress
-        || !startDate || !startTime || !endDate || !endTime
-        || !tripVehicleId || !availableSeats
+            || !startDate || !startTime || !endDate || !endTime
+            || !tripVehicleId || !availableSeats
         ) return;
-        
+
         const fullStartDate: Date = getDate(startDate, startTime);
         const fullEndDate: Date = getDate(endDate, endTime);
         const newTrip: ITrip = {
             title: `${startAddress?.place} -> ${endAddress?.place}`,
             fK_Driver: `${loggedInUserId}`,
             fK_StartAddress: startAddress.id,
-            fK_EndAddress: startAddress.id,
+            fK_EndAddress: endAddress.id,
             startTime: fullStartDate,
             endTime: fullEndDate,
             fK_Vehicle: tripVehicleId,
@@ -98,35 +98,41 @@ export const CreateTripPage = () => {
             status: "Open"
         }
 
-        fetch(`https://localhost:5173/api/create/address`, {
+        try {
+            await fetch(`https://localhost:5173/api/create/address`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(startAddress)
-        })
-            .catch(error => {
-                setError(`There was an error saving the start address!`);
-                console.error("Error:", error);
             });
 
-        fetch(`https://localhost:5173/api/create/address`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(endAddress)
-        })
-            .catch(error => {
-                setError(`There was an error saving the start address!`);
-                console.error("Error:", error);
+            await fetch(`https://localhost:5173/api/create/address`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(endAddress)
             });
 
-        fetch(`https://localhost:5173/api/create/trip`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(newTrip)
-        })
-            .catch(error => {
-                setError(`There was an error creating the trip!`);
-                console.error("Error:", error);
+            const tripResponse = await fetch(`https://localhost:5173/api/create/trip`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newTrip)
             });
+            const createdTrip = await tripResponse.json();
+            const newGroupChat: IGroupChat = {
+                fK_Trip: createdTrip.id,
+                trip: createdTrip,
+                updatedAt: new Date(),
+                lastMessageContent: ""
+            };
+
+            await fetch(`https://localhost:5173/api/chat/CreateGroupChat`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newGroupChat)
+            });
+        } catch (error) {
+            setError(`There was an error creating the trip!`);
+            console.error("Error:", error);
+        }
     };
 
     if (error) return <div>{`There was an error: ${error}`}</div>

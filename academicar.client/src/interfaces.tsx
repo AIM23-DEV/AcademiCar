@@ -15,7 +15,7 @@ interface ICarlos {
 }
 
 interface IGroupChat {
-    id: number;
+    id?: number;
     fK_Trip: number;
     trip: ITrip | undefined;
     lastMessageContent?: string;

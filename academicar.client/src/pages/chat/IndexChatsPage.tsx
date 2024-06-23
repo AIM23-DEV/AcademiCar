@@ -3,60 +3,62 @@ import SetPageTitle from "../../hooks/set_page_title.tsx";
 import {BottomNavigationBar} from "../../components/BottomNavigationBar.tsx";
 import {useTranslation} from "react-i18next";
 import {Button} from "../../components/Buttons.tsx";
-import {OpenRequestsList} from "./partials/OpenRequestsList.tsx";
 import {ChatList} from "./partials/ChatList.tsx";
 import {Input} from "../../components/FormFields.tsx";
 import {useEffect, useState} from "react";
 import {Spinner} from "../../components/Spinner.tsx";
 import {BiSearch, BiX} from "react-icons/bi";
 import * as signalR from '@microsoft/signalr';
+import {useParams} from 'react-router-dom';
 
 export const IndexChatsPage = () => {
-    // General
-    const [loading, setLoading] = useState(true);
-
     // Translations
     const [t] = useTranslation(["common", "pages/chat"]);
     const pageTitle = t("pages/chat:IndexChatsPage.title");
-    const requestsListLabelText = t("pages/chat:IndexChatsPage.label_requests");
+    //const requestsListLabelText = t("pages/chat:IndexChatsPage.label_requests");
     const searchPlaceholderText = t("pages/chat:IndexChatsPage.search_placeholder");
     SetPageTitle(pageTitle);
 
-    // Requests
-    const [requests, setRequests] = useState(new Array<ITripRequest>());
-    useEffect(() => {
-        setTimeout(() => setRequests(new Array<ITripRequest>()), 0);
-        // Todo fetch open requests
-    }, []);
-
-    // Chat
+    // General
+    const [openPersonalChats, setOpenPersonalChats] = useState(new Array<IPersonalChat>());
+    const [groupChats, setGroupChats] = useState(new Array<IGroupChat>());
+    const [personalChats, setPersonalChats] = useState(new Array<IPersonalChat>());
     const [chats, setChats] = useState(new Array<IPersonalChat | IGroupChat>());
+    const {loggedInUserId} = useParams();
 
-    function fetchAllChats() {
-        let allChats = new Array<IPersonalChat | IGroupChat>();
-        fetch('https://localhost:5173/api/chat/GetPersonalChats')
+    // Requests
+    useEffect(() => {
+        fetch('https://localhost:5173/api/chat/GetOpenRequestChatsForDriver/' + loggedInUserId)
             .then(response => response.json())
-            .then((personalChats: IPersonalChat[]) => {
-                allChats = personalChats;
-                return fetch('https://localhost:5173/api/chat/GetGroupChats');
-            })
-            .then(response => response.json())
-            .then((groupChats: IGroupChat[]) => {
-                allChats = allChats.concat(groupChats)
-                    .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
-                setChats(allChats);
-                setLoading(false);
-            })
-            .catch(error => {
-                setLoading(false);
-                console.error(error);
-            });
-    }
+            .then((fetchedChats: IPersonalChat[]) => setOpenPersonalChats(fetchedChats))
+    }, [loggedInUserId]);
 
     useEffect(() => {
-        fetchAllChats();
-    }, []);
+        fetch('https://localhost:5173/api/chat/GetPersonalChats/' + loggedInUserId)
+            .then(response => response.json())
+            .then((fetchedChats: IPersonalChat[]) => setPersonalChats(fetchedChats))
+    }, [loggedInUserId]);
 
+    useEffect(() => {
+        fetch('https://localhost:5173/api/chat/GetGroupChats/' + loggedInUserId)
+            .then(response => response.json())
+            .then((fetchedChats: IGroupChat[]) => setGroupChats(fetchedChats))
+    }, [loggedInUserId]);
+
+    const spinner = <div className="w-full flex flex-col items-center space-y-6 mt-8">
+        <Spinner className="icon-lg text-primary-600"/>
+    </div>
+    
+    
+    if(groupChats.length + personalChats.length > chats.length) {
+        const combinedChats = [...groupChats, ...personalChats]
+        setChats(combinedChats);
+    }
+    
+    if (!openPersonalChats) return <div>{spinner}Loading open requests ...</div>
+    if (!groupChats) return <div>{spinner}Loading group chats ...</div>
+    if (!personalChats) return <div>{spinner}Loading personal chats ...</div>
+    
     // SignalR
     const [connection, setConnection] = useState<signalR.HubConnection | null>(null);
     useEffect(() => {
@@ -74,7 +76,7 @@ export const IndexChatsPage = () => {
                     console.debug('Connected!');
 
                     connection.on('ReceiveMessage', () => {
-                        fetchAllChats();
+                        location.reload();
                     });
                 })
                 .catch((e: any) => console.log('Connection failed: ', e));
@@ -96,41 +98,37 @@ export const IndexChatsPage = () => {
     function isGroupChat(chat: IPersonalChat | IGroupChat): chat is IGroupChat {
         return "trip" in chat && chat.trip !== undefined && chat.trip !== null;
     }
-
-    // Todo websocket connection for live updates of all chats
-
+    
     return (
         <>
             <TitleBar text={pageTitle} trailing={SearchButton}/>
 
-            {loading ?
-                <div className="w-full flex flex-col items-center space-y-6 mt-8">
-                    <Spinner className="icon-lg text-primary-600"/>
-                </div> :
-                <div className="w-full flex flex-col items-center space-y-6">
-                    {/* Search input field if searching */}
-                    {searchActive ?
-                        <Input id="chat-search-input" fullWidth leading={<BiSearch className="icon-md"/>}
-                               className="mt-6"
-                               placeholder={searchPlaceholderText} value={search}
-                               onChange={(val) => setSearch(val.target.value)}/>
-                        : <></>}
+            <div className="w-full flex flex-col items-center space-y-6">
+                {/* Search input field if searching */}
+                {searchActive ?
+                    <Input id="chat-search-input" fullWidth leading={<BiSearch className="icon-md"/>}
+                           className="mt-6"
+                           placeholder={searchPlaceholderText} value={search}
+                           onChange={(val) => setSearch(val.target.value)}/>
+                    : <></>}
 
-                    {/* Open requests */}
-                    {!searchActive && requests.length > 0 ?
-                        <OpenRequestsList
-                            requests={[]}
-                            labelText={requestsListLabelText}
-                        /> : <></>}
-
-                    {/* Chats or search results */}
+                {/* Open requests */}
+                {!searchActive && openPersonalChats.length > 0 ?
                     <ChatList className="mt-8 mb-24"
-                              chats={chats.filter(c => search === "" || (isGroupChat(c) ?
+                              chats={openPersonalChats.filter(c => search === "" || (isGroupChat(c) ?
                                   c.trip?.title.toLowerCase().includes(search.toLowerCase()) :
                                   `${c.driverUser?.firstName!} ${c.driverUser?.lastName!}`.toLowerCase().includes(search.toLowerCase())))}
-                              searchActive={searchActive}/>
-                </div>
-            }
+                              searchActive={searchActive}/> : <></>
+                }
+
+                {/* Chats or search results */}
+                <ChatList className="mt-8 mb-24"
+                          chats={chats.filter(c => search === "" || (isGroupChat(c) ?
+                              c.trip?.title.toLowerCase().includes(search.toLowerCase()) :
+                              `${c.driverUser?.firstName!} ${c.driverUser?.lastName!}`.toLowerCase().includes(search.toLowerCase())))}
+                          searchActive={searchActive}/>
+            </div>
+
 
             <BottomNavigationBar selected="chat"/>
         </>

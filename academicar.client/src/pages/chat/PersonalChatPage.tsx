@@ -1,5 +1,5 @@
-// import {useTranslation} from "react-i18next";
-// import {JoinRequestCard} from "./partials/JoinRequestCard.tsx";
+import {useTranslation} from "react-i18next";
+import {JoinRequestCard} from "./partials/JoinRequestCard.tsx";
 import {TitleBar} from "../../components/TitleBar.tsx";
 import {useParams} from 'react-router-dom';
 import {useEffect, useState} from "react";
@@ -8,24 +8,37 @@ import {TextLink} from "../../components/Buttons.tsx";
 import {BiDotsVerticalRounded} from "react-icons/bi";
 
 export const PersonalChatPage = () => {
-    // const [t] = useTranslation(["common", "pages/chat"]);
-    // const joinRequestLabelText = t("pages/chat:PersonalChatPage.label_join_request");
-    // const joinRequestLinkText = t("pages/chat:PersonalChatPage.link_trip");
-    // const joinRequestDenyText = t("pages/chat:PersonalChatPage.button_deny");
-    // const joinRequestAcceptText = t("pages/chat:PersonalChatPage.button_accept");
+    const [t] = useTranslation(["common", "pages/chat"]);
+    const joinRequestLabelText = t("pages/chat:PersonalChatPage.label_join_request");
+    const joinRequestLinkText = t("pages/chat:PersonalChatPage.link_trip");
+    const joinRequestDenyText = t("pages/chat:PersonalChatPage.button_deny");
+    const joinRequestAcceptText = t("pages/chat:PersonalChatPage.button_accept");
     const {chatId} = useParams();
     const [messages, setMessages] = useState<IPersonalMessage[]>([]);
     const [filteredMessages, setFilteredMessages] = useState<MessageProps[]>([]);
     const [chat, setChat] = useState<IPersonalChat>();
+    const [trip, setTrip] = useState<ITrip>();
 
-    // Fetch chat
+    // Fetch chat and trip
     useEffect(() => {
-        fetch('https://localhost:5173/api/chat/GetPersonalChatById?id=' + chatId)
-            .then(response => response.json())
-            .then((c: IPersonalChat) => {
-                setChat(c);
-            });
-    }, []);
+        const fetchChatAndTrip = async () => {
+            try {
+                const chatResponse = await fetch('https://localhost:5173/api/chat/GetPersonalChatById?id=' + chatId);
+                const chatData: IPersonalChat = await chatResponse.json();
+                setChat(chatData);
+
+                if (chatData.fK_Trip) {
+                    const tripResponse = await fetch('https://localhost:5173/api/create/' + chatData.fK_Trip);
+                    const tripData: ITrip = await tripResponse.json();
+                    setTrip(tripData);
+                }
+            } catch (error) {
+                console.error("Failed to fetch chat or trip data", error);
+            }
+        };
+
+        fetchChatAndTrip();
+    }, [chatId]);
 
     // Fetch messages
     useEffect(() => {
@@ -67,12 +80,15 @@ export const PersonalChatPage = () => {
             />
 
             <div className="w-full flex flex-col items-center mt-20">
-                {/*<JoinRequestCard*/}
-                {/*    labelText={joinRequestLabelText}*/}
-                {/*    linkText={joinRequestLinkText}*/}
-                {/*    denyButtonText={joinRequestDenyText}*/}
-                {/*    acceptButtonText={joinRequestAcceptText}*/}
-                {/*/>*/}
+                <JoinRequestCard
+                    labelText={joinRequestLabelText}
+                    linkText={joinRequestLinkText}
+                    denyButtonText={joinRequestDenyText}
+                    acceptButtonText={joinRequestAcceptText}
+                    driverId={chat?.driverUser?.id}
+                    tripId={chat?.fK_Trip}
+                    price={trip?.price != null ? trip?.price : 0}
+                />
                 <Chat userId="-999" chatId={chatId} messages={filteredMessages} type="personal"/>
             </div>
         </>

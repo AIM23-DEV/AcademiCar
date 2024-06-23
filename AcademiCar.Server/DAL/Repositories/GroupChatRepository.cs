@@ -7,5 +7,13 @@ namespace AcademiCar.Server.DAL.Repositories;
 
 public class GroupChatRepository : PostgresRepository<GroupChat>, IGroupChatRepository
 {
-    public GroupChatRepository(PostgresDbContext dbContext) : base(dbContext) {}
+    private readonly PostgresDbContext _dbContext;
+    public GroupChatRepository(PostgresDbContext dbContext) : base(dbContext)
+    {
+        _dbContext = dbContext;
+    }
+    
+    
+    public async Task<List<GroupChat>> GetGroupChatsByTripId(int id)
+        => _dbContext.GroupChats.Where(v => v.FK_Trip == id).ToList();
 }

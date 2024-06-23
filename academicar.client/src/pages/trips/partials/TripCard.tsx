@@ -6,9 +6,9 @@ import {useTranslation} from "react-i18next";
 
 interface TripCardProps {
     cardIndex: number;
-    driverId: string;
-    tripId: number;
-    price: number;
+    driverId: string | undefined
+    tripId: number | undefined
+    price: number | undefined
 }
 
 interface Stop {
@@ -101,6 +101,9 @@ export const TripCard: React.FC<TripCardProps> = (props:TripCardProps) => {
     const defaultStop : Stop = {location : "", time : "", freeSeats : 0};
     
     useEffect(() => {
+        if (!props.driverId)
+            return;
+        
         fetch(`https://localhost:5173/api/trip/tripCard/driver/${props.driverId}`)
             .then(response => response.json())
             .then((fetchedDriver: IUser) => {
@@ -109,6 +112,9 @@ export const TripCard: React.FC<TripCardProps> = (props:TripCardProps) => {
     }, [props.driverId]);
 
     useEffect(() => {
+        if (!props.tripId)
+            return;
+        
         fetch(`https://localhost:5173/api/trip/tripCard/stops/${props.tripId}`)
             .then(response => response.json())
             .then((fetchedStops: Stop[]) => {
@@ -117,6 +123,9 @@ export const TripCard: React.FC<TripCardProps> = (props:TripCardProps) => {
     }, [props.tripId]);
 
     useEffect(() => {
+        if (!props.tripId)
+            return;
+        
         fetch(`https://localhost:5173/api/trip/tripCard/start/${props.tripId}`)
             .then(response => response.json())
             .then((fetchedStops: Stop) => {
@@ -125,6 +134,9 @@ export const TripCard: React.FC<TripCardProps> = (props:TripCardProps) => {
     }, [props.tripId]);
 
     useEffect(() => {
+        if (!props.tripId)
+            return;
+        
         fetch(`https://localhost:5173/api/trip/tripCard/end/${props.tripId}`)
             .then(response => response.json())
             .then((fetchedStops: Stop) => {
@@ -158,7 +170,7 @@ export const TripCard: React.FC<TripCardProps> = (props:TripCardProps) => {
                             </div>
                         </div>
                     </div>
-                    <div className="subtitle">€ {props.price.toFixed(2)}</div>
+                    <div className="subtitle">€ {props.price?.toFixed(2)}</div>
                 </div>
 
                 <Divider/>

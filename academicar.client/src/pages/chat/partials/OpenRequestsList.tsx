@@ -1,12 +1,8 @@
 import {Card} from "../../../components/Cards.tsx";
 import {Link} from "react-router-dom";
 
-interface Chat {
-    // TODO implement Chat type globally...
-}
-
 interface OpenRequestsListProps {
-    requests: Chat[],
+    requests: IPersonalChat[],
     labelText: string
 }
 
@@ -22,5 +18,7 @@ export const OpenRequestsList = (props: OpenRequestsListProps) => {
                 ))}
             </ul>
         </Card>
+        
+        
     )
 }

@@ -29,6 +29,7 @@ export const ChatList = (props: ChatsListProps) => {
                         {index < props.chats.length - 1 ? <Divider/> : <></>}
                     </div>
                 ))}
+               
             </ul>
         </Card>
     );
