@@ -85,7 +85,7 @@ if (enableSaml2)
                 new ServiceCertificate
                 {
                     Certificate = fhCert,
-                    Use = CertificateUse.Encryption
+                    Use = CertificateUse.Signing
                 }
             );
             
@@ -93,7 +93,7 @@ if (enableSaml2)
                 new ServiceCertificate
                 {
                     Certificate = spCert,
-                    Use = CertificateUse.Signing
+                    Use = CertificateUse.Encryption
                 }
             );
             
