@@ -8,9 +8,11 @@ import {useNavigate} from "react-router-dom";
 import {useParams} from 'react-router-dom';
 
 export const UpdateCarPage = () => {
-    const {vehicleId} = useParams();
     const [t] = useTranslation(['common', 'pages/profile']);
     const [vehicle, setVehicle] = useState<IVehicle>();
+
+    const {loggedInUserId} = useParams();
+    const {vehicleId} = useParams();
     const navigate = useNavigate();
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -81,14 +83,14 @@ export const UpdateCarPage = () => {
     };
 
     useEffect(() => {
-        if (vehicleId) {
+        if ((vehicleId as string).length > 0 && (vehicleId as string) != "undefined") {
             fetch(`/api/profile/vehicle/${vehicleId}`)
                 .then(response => response.json())
                 .then((data) => setVehicle(data))
                 .catch((error) => console.error('Error fetching vehicle data:', error));
         } else {
             setVehicle({
-                fK_OwnerUser: '-999',  //TODO replace with logged in user id
+                fK_OwnerUser: loggedInUserId,  //TODO replace with logged in user id
                 type: '',
                 seats: 0,
                 color: '',
@@ -152,7 +154,8 @@ export const UpdateCarPage = () => {
     const plants = t("pages/profile:CarPage.plants");
     const animals = t("pages/profile:CarPage.animals");
     const other = t("pages/profile:CarPage.other");
-    const updatecar = t("pages/profile:CarPage.updatecar");
+    const updatecar = t("pages/profile:CarPage.update_car");
+    const deleteCarActionText = t("pages/profile:CarPage.delete_car");
 
     return (
         <div className="pb-40 w-full">
@@ -372,7 +375,7 @@ export const UpdateCarPage = () => {
                     <Button
                         variant="accent"
                         fullWidth
-                        text="Fahrzeug löschen"
+                        text={deleteCarActionText}
                         textAlign="center"
                         onClick={handleDelete}
                     />

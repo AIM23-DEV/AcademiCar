@@ -50,7 +50,8 @@
     "animals": "Tiere",
     "other": "Sonstige",
     "createcar": "Fahrzeug erstellen",
-    "updatecar": "Änderungen speichern"
+    "update_car": "Änderungen speichern",
+    "delete_car": "Fahrzeug löschen"
   },
   "EditProfilePage": {
     "title": "Mein Profil bearbeiten",

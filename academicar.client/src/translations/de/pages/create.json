@@ -45,5 +45,11 @@
     "tab_vehicle": "Fahrzeug",
     "tab_pricing": "Preis",
     "button_update": "Speichern"
+  },
+  
+  "Pagination": {
+    "page": "Seite",
+    "button_previous": "Zurück",
+    "button_next": "Weiter"
   }
 }

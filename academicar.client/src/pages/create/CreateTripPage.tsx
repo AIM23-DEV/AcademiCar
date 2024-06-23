@@ -45,9 +45,12 @@ function getDate(dateStr: string, timeStr: string): Date {
 }
 
 export const CreateTripPage = () => {
-    const [t] = useTranslation(["common", "components/pagination", "pages/create"]);
+    const [t] = useTranslation(["common", "pages/create"]);
     const pageTitle = t("pages/create:Common.title_create");
     const createButtonText = t("pages/create:CreateTripPage.button_create");
+    const paginationPageText = t("pages/create:Pagination.page");
+    const paginationPreviousButtonText = t("pages/create:Pagination.button_previous");
+    const paginationNextButtonText = t("pages/create:Pagination.button_next");
     SetPageTitle(pageTitle);
 
     const { loggedInUserId } = useParams();
@@ -221,7 +224,16 @@ export const CreateTripPage = () => {
 
             {renderCurrentSection()}
 
-            <Pagination page={currentPage} setPage={setCurrentPage} totalPages={4} showPages={true} />
+            <Pagination
+                page={currentPage}
+                setPage={setCurrentPage}
+                totalPages={4}
+                showPages={true}
+                
+                textPage={paginationPageText}
+                textPrev={paginationPreviousButtonText}
+                textNext={paginationNextButtonText}
+            />
 
             <BottomNavigationBar selected="create"/>
         </>

@@ -165,7 +165,7 @@ interface IVehicle {
     seats: number;
     color: string;
     pictureSrc: string;
-    fK_OwnerUser: string;
+    fK_OwnerUser?: string;
     brandModel: string;
     fuelConsumption: string;
     licensePlate: string;

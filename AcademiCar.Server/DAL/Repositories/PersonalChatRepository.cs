@@ -13,6 +13,7 @@ public class PersonalChatRepository : PostgresRepository<PersonalChat>, IPersona
         _dbContext = dbContext;
     }
     
+    
     public async Task<List<PersonalChat>> GetPersonalChatsByDriverId(string id)
         => _dbContext.PersonalChats.Where(v => v.FK_DriverUser == id).ToList();
     
