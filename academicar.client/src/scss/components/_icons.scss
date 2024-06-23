@@ -1,23 +1,27 @@
 ﻿@layer components {
 
   .icon-sm {
-    @apply h-4 w-4;
+    @apply h-4 w-4 min-h-4 min-w-4;
   }
 
   .icon {
-    @apply h-5 w-5;
+    @apply h-5 w-5 min-h-5 min-w-5;
   }
 
   .icon-md {
-    @apply h-6 w-6;
+    @apply h-6 w-6 min-h-6 min-w-6;
   }
 
   .icon-lg {
-    @apply h-8 w-8;
+    @apply h-8 w-8 min-h-8 min-w-8;
   }
-  
+
   .icon-xl {
-    @apply h-14 w-14;
+    @apply h-14 w-14 min-h-14 min-w-14;
+  }
+
+  .icon-2xl {
+    @apply h-16 w-16 min-h-16 min-w-16;
   }
 
   .icon-2xl {

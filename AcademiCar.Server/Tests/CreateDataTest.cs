@@ -413,6 +413,8 @@ public class CreateDataTest : BaseUnitTest
         {
             ID = -999,
             FK_Trip = -999,
+            TripTitle = "Test Drive",
+            LastMessageContent = "Test Message",
             UpdatedAt = DateTime.UtcNow.AddHours(-2).AddMinutes(-24)
         };
         
@@ -420,6 +422,8 @@ public class CreateDataTest : BaseUnitTest
         {
             ID = -998,
             FK_Trip = -998,
+            TripTitle = "Graz -> Graz",
+            LastMessageContent = "Hello World",
             UpdatedAt = DateTime.UtcNow.AddHours(-2).AddMinutes(-24)
         };
 
@@ -503,8 +507,8 @@ public class CreateDataTest : BaseUnitTest
         {
             ID = -999,
             FK_Trip = -999,
-            FK_PassengerUser = "-999",
-            FK_DriverUser = "-998",
+            FK_PassengerUser = "-998",
+            FK_DriverUser = "-999",
             UpdatedAt = DateTime.UtcNow.AddHours(-2).AddMinutes(-24)
         };
         
@@ -512,8 +516,8 @@ public class CreateDataTest : BaseUnitTest
         {
             ID = -998,
             FK_Trip = -998,
-            FK_PassengerUser = "-998",
-            FK_DriverUser = "-997",
+            FK_PassengerUser = "-997",
+            FK_DriverUser = "-996",
             UpdatedAt = DateTime.UtcNow.AddHours(-2).AddMinutes(-24)
         };
 
@@ -812,7 +816,7 @@ public class CreateDataTest : BaseUnitTest
             FK_Trip = -999,
             FK_PotentialPassenger = "-998",
             Comment = "Test",
-            Status = "Accepted"
+            Status = "Open"
         };
         
         TripRequest testTripRequest2 = new()
@@ -821,7 +825,7 @@ public class CreateDataTest : BaseUnitTest
             FK_Trip = -998,
             FK_PotentialPassenger = "-997",
             Comment = "Hey...",
-            Status = "Accepted"
+            Status = "Open"
         };
         
         TripRequest testTripRequest3 = new()
@@ -839,7 +843,7 @@ public class CreateDataTest : BaseUnitTest
             FK_Trip = -996,
             FK_PotentialPassenger = "-998",
             Comment = "Hello!",
-            Status = "Accepted"
+            Status = "Open"
         };
 
         return [testTripRequest1, testTripRequest2, testTripRequest3, testTripRequest4];

@@ -1,4 +1,4 @@
-import {ChangeEventHandler, ReactNode} from "react";
+import {ChangeEventHandler, KeyboardEventHandler, ReactNode} from "react";
 import {Switch, Checkbox, RadioGroup, Field, Radio, Label} from '@headlessui/react'
 import {Divider} from "./Divider.tsx";
 import React from "react";
@@ -17,6 +17,7 @@ interface InputProps {
     className?: string
     value?: string | number | readonly string[] | undefined
     onChange?: React.ChangeEventHandler<HTMLInputElement> | undefined
+    onKeyDown?: KeyboardEventHandler<HTMLInputElement> | undefined
 }
 
 export const Input = (props: InputProps) => {
@@ -44,6 +45,7 @@ export const Input = (props: InputProps) => {
                     readOnly={props.readonly && props.readonly}
                     value={props.value}
                     onChange={props.onChange}
+                    onKeyDown={props.onKeyDown}
                 />
                 {props.trailing ? (
                     <div className="form-icon end-0 pe-3">

@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using AcademiCar.Server.DAL.Entities;
 using AcademiCar.Server.Services.Response;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AcademiCar.Server.Controllers;
@@ -11,17 +10,18 @@ namespace AcademiCar.Server.Controllers;
 public class ChatController : ControllerBase
 {
     private IGlobalService _globalService;
-    
     public ChatController(IGlobalService globals)
     {
         _globalService = globals;
     }
-    
+
+
     [HttpPost("CreatePersonalMessage")]
-    [Authorize]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResultResponseModel))]
-    public async Task<Services.Response.ActionResultResponseModel> CreatePersonalMessage([Required][FromBody] PersonalMessage personalMessage)
-        => await _globalService.PersonalMessageService.Create(personalMessage);
+    public async Task<IActionResult> CreatePersonalMessage([FromBody] PersonalMessage personalMessage)
+    {
+        await _globalService.PersonalMessageService.Create(personalMessage);
+        return Ok();
+    }
     
     [HttpGet("GetPersonalMessageById")]
     public async Task<IActionResult> GetPersonalMessageById(string id)
@@ -45,12 +45,13 @@ public class ChatController : ControllerBase
         
         return Ok(personalMessageList);
     }
-    
-  [HttpPost("CreateGroupMessage")]
-    [Authorize]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResultResponseModel))]
-    public async Task<Services.Response.ActionResultResponseModel> CreateGroupMessage([Required][FromBody] GroupMessage groupMessage)
-        => await _globalService.GroupMessageService.Create(groupMessage);
+
+    [HttpPost("CreateGroupMessage")]
+    public async Task<IActionResult> CreateGroupMessage([FromBody] GroupMessage groupMessage)
+    {
+        await _globalService.GroupMessageService.Create(groupMessage);
+        return Ok();
+    }
     
     [HttpGet("GetGroupMessageById")]
     public async Task<IActionResult> GetGroupMessageById(string id)
@@ -75,12 +76,6 @@ public class ChatController : ControllerBase
         return Ok(groupMessageList);
     }
     
-    [HttpPost("CreateGroupChat")]
-    [Authorize]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResultResponseModel))]
-    public async Task<Services.Response.ActionResultResponseModel> CreateGroupChat([Required][FromBody] GroupChat groupChat)
-        => await _globalService.GroupChatService.Create(groupChat);
-    
     [HttpGet("GetGroupChatById")]
     public async Task<IActionResult> GetGroupChatById(string id)
     {
@@ -93,22 +88,51 @@ public class ChatController : ControllerBase
         return Ok(groupChat);
     }
     
-    [HttpGet("GetGroupChats")]
-    public async Task<IActionResult> GetGroupChats()
+    [HttpGet("GetGroupChats/{id}")]
+    public async Task<IActionResult> GetGroupChats(string id)
     {
-        List<GroupChat?> groupChatList = await _globalService.GroupChatService.Get();
+        List<GroupChat?> groupChatList = new List<GroupChat>();
+        List<Trip> tripList = await _globalService.TripService.GetTripsByDriverId(id);
+        
+        foreach (Trip trip in tripList)
+        {
+            List<GroupChat> groupChatsForTrip = await _globalService.GroupChatService.GetGroupChatsByTripId(trip.ID);
+            groupChatList.AddRange(groupChatsForTrip);
+        }
+        
+        List<TripPassenger> passengerTripList = await _globalService.TripPassengerService.GetConnectionByPassengerID(id);
+        foreach (TripPassenger tripPassenger in passengerTripList)
+        {
+            List<GroupChat> groupChatsForTrip = await _globalService.GroupChatService.GetGroupChatsByTripId(tripPassenger.FK_Trip);
+            groupChatList.AddRange(groupChatsForTrip);
+        }
         
         if (!groupChatList.Any())
             return NotFound();
         
+        groupChatList.Sort((a, b) => a.UpdatedAt.CompareTo(b.UpdatedAt));
+        foreach (GroupChat? groupChat in groupChatList)
+        {
+            if (groupChat == null) break;
+            
+            IEnumerable<GroupMessage> messages =
+                _globalService.UnitOfWork.GroupMessages.FilterBy(message => message.FK_GroupChat == groupChat.ID);
+
+            IEnumerable<GroupMessage> groupMessages = messages as GroupMessage[] ?? messages.ToArray();
+            if (!groupMessages.Any()) break;
+            
+            groupChat.LastMessageContent = groupMessages.Last().Content ?? "";
+        }
+        
         return Ok(groupChatList);
     }
-    
+
     [HttpPost("CreatePersonalChat")]
-    [Authorize]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResultResponseModel))]
-    public async Task<Services.Response.ActionResultResponseModel> CreatePersonalChat([Required][FromBody] PersonalChat personalChat)
-        => await _globalService.PersonalChatService.Create(personalChat);
+    public async Task<IActionResult> CreatePersonalChat([FromBody] PersonalChat personalChat)
+    {
+        await _globalService.PersonalChatService.Create(personalChat);
+        return NoContent();
+    }
     
     [HttpGet("GetPersonalChatById")]
     public async Task<IActionResult> GetPersonalChatById(string id)
@@ -116,28 +140,53 @@ public class ChatController : ControllerBase
         int idAsInt = int.Parse(id);
         PersonalChat? personalChat = await _globalService.PersonalChatService.Get(idAsInt);
         
+        
         if (personalChat == null)
             return NotFound();
+        
+        personalChat.DriverUser = await _globalService.UserService.Get(personalChat.FK_DriverUser ?? "");
+        personalChat.PassengerUser = await _globalService.UserService.Get(personalChat.FK_PassengerUser ?? "");
         
         return Ok(personalChat);
     }
     
-    [HttpGet("GetPersonalChats")]
-    public async Task<IActionResult> GetPersonalChats()
+    [HttpGet("GetPersonalChats/{id}")]
+    public async Task<IActionResult> GetPersonalChats(string id)
     {
-        List<PersonalChat?> personalChatList = await _globalService.PersonalChatService.Get();
+        List<PersonalChat> personalChatList = new List<PersonalChat>();
+        List<PersonalChat> driverPersonalChatList = await _globalService.PersonalChatService.GetPersonalChatsByDriverId(id);
+        List<PersonalChat> passengerPersonalChatList = await _globalService.PersonalChatService.GetPersonalChatsByPassengerId(id);
+        
+        personalChatList.AddRange(driverPersonalChatList);
+        personalChatList.AddRange(passengerPersonalChatList);
         
         if (!personalChatList.Any())
-            return NotFound();
+            return Ok(personalChatList);
+
+        personalChatList.Sort((a, b) => a.UpdatedAt.CompareTo(b.UpdatedAt));
+        foreach (var personalChat in personalChatList)
+        {
+            if (personalChat == null) break;
+            personalChat.DriverUser = await _globalService.UserService.Get(personalChat.FK_DriverUser ?? "");
+            personalChat.PassengerUser = await _globalService.UserService.Get(personalChat.FK_PassengerUser ?? "");
+
+            List<PersonalMessage> personalMessageList = _globalService.UnitOfWork.PersonalMessages.FilterBy(message => message.FK_PersonalChat == personalChat.ID).ToList();
+            if(personalMessageList.Any())
+                personalChat.LastMessageContent = personalMessageList.OrderBy(message => message.SentAt).Last()?.Content;
+            else
+                personalChat.LastMessageContent = "";
+            
+        }
         
         return Ok(personalChatList);
     }
-    
+
     [HttpPost("CreateGroupChatUser")]
-    [Authorize]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResultResponseModel))]
-    public async Task<Services.Response.ActionResultResponseModel> CreateGroupChatUser([Required][FromBody] GroupChatUser groupChatUser)
-        => await _globalService.GroupChatUserService.Create(groupChatUser);
+    public async Task<IActionResult> CreateGroupChatUser([FromBody] GroupChatUser groupChatUser)
+    {
+        await _globalService.GroupChatUserService.Create(groupChatUser);
+        return NoContent();
+    }
     
     [HttpGet("GetGroupChatUserById")]
     public async Task<IActionResult> GetGroupChatUserById(string id)
@@ -167,5 +216,62 @@ public class ChatController : ControllerBase
     {
         int idAsInt = int.Parse(id);
         await _globalService.GroupChatUserService.Delete(idAsInt);
+    }
+    
+    [HttpGet("GetOpenRequestChatsForDriver/{id}")]
+    public async Task<IActionResult> GetOpenRequestChatsForDriver(string id)
+    {
+        List<TripRequest> tripRequestList = new List<TripRequest>();
+        List<PersonalChat> personalChatList = await _globalService.PersonalChatService.GetPersonalChatsByDriverId(id);
+        List<Trip> tripList = await _globalService.TripService.GetTripsByDriverId(id);
+
+        if (personalChatList.Count == 0 || tripList.Count == 0)
+            return Ok(personalChatList);
+        
+        foreach(Trip trip in tripList)
+        {
+            List<TripRequest> currentTripRequests =
+                await _globalService.TripRequestService.GetTripRequestsByTripId(trip.ID);
+            tripRequestList.AddRange(currentTripRequests);
+        }
+
+        tripRequestList = tripRequestList.Where(t => t.Status.ToLower() == "open").ToList();
+
+        List<PersonalChat> resultList = personalChatList
+            .Where(c => tripRequestList.Any(r => r.FK_PotentialPassenger == c.FK_PassengerUser)).ToList();
+
+        foreach (PersonalChat personalChat in resultList)
+        {
+            personalChat.DriverUser = await _globalService.UserService.Get(personalChat.FK_DriverUser ?? "");
+            personalChat.PassengerUser = await _globalService.UserService.Get(personalChat.FK_PassengerUser ?? "");
+        }
+        
+        return Ok(resultList);
+    }
+    
+    [HttpGet("GetOpenRequestForTrip/{id}")]
+    public async Task<IActionResult> GetOpenRequestForTrip(int id)
+    {
+        List<TripRequest> tripRequestList = await _globalService.TripRequestService.GetTripRequestsByTripId(id);
+        
+        return Ok(tripRequestList);
+    }
+    
+    [HttpPut("chat/updateRequest")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResultResponseModel))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+    public async Task<IActionResult> UpdateUser([Required] [FromBody] TripRequest tripRequest)
+    {
+        if (!ModelState.IsValid) return ValidationProblem(ModelState);
+
+        ActionResultResponseModel result = await _globalService.TripRequestService.Update(tripRequest);
+        if (!result.IsSuccess)
+        {
+            result.Message = "Failed to update request";
+            return BadRequest(result);
+        }
+
+        result.Message = "Request updated successfully";
+        return Ok(result);
     }
 }
