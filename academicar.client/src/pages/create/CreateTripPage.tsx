@@ -9,7 +9,7 @@ import {TripVehicleCreationForm} from "./partials/TripVehicleCreationForm.tsx";
 import {TripPricingCreationForm} from "./partials/TripPricingCreationForm.tsx";
 import {TripTimeCreationForm} from "./partials/TripTimeCreationForm.tsx";
 import {BottomNavigationBar} from "../../components/BottomNavigationBar.tsx";
-import {BiChevronLeft, BiChevronRight} from "react-icons/bi";
+import {Pagination} from "../../components/Pagination.tsx";
 
 function getAddress(addressStr: string): IAddress {
     const addressFields = addressStr.split(' ');
@@ -48,9 +48,6 @@ export const CreateTripPage = () => {
     const [t] = useTranslation(["common", "components/pagination", "pages/create"]);
     const pageTitle = t("pages/create:Common.title_create");
     const createButtonText = t("pages/create:CreateTripPage.button_create");
-    const pageText = t("components/pagination:page");
-    const previousButtonText = t("components/pagination:button_previous");
-    const nextButtonText = t("components/pagination:button_next");
     SetPageTitle(pageTitle);
 
     const { loggedInUserId } = useParams();
@@ -209,30 +206,7 @@ export const CreateTripPage = () => {
 
             {renderCurrentSection()}
 
-            <div className={'w-full flex flex-col items-center justify-center space-y-2 max-w-md text-gray-950'}>
-
-                <span className="w-full text-center">
-                    {pageText}
-                    {<span className="font-bold">{" " + currentPage + " "}</span>}
-                    /
-                    {<span className="font-bold">{" " + 4}</span>}
-                </span>
-
-                <div className="w-full flex flex-row items-center justify-between space-x-3 max-w-md">
-
-                    <Button variant="outline" text={previousButtonText}
-                            fullWidth disabled={currentPage == 1}
-                            onClick={() => setCurrentPage(currentPage == 1 ? 1 : currentPage - 1)}
-                            leading={<BiChevronLeft className="icon-md"/>}/>
-
-                    <Button variant="outline" text={nextButtonText}
-                            fullWidth disabled={currentPage == 4}
-                            onClick={() => setCurrentPage(currentPage == 4 ? 4 : currentPage + 1)}
-                            trailing={<BiChevronRight className="icon-md"/>}/>
-
-                </div>
-
-            </div>
+            <Pagination page={currentPage} setPage={setCurrentPage} totalPages={4} showPages={true} />
 
             <BottomNavigationBar selected="create"/>
         </>
