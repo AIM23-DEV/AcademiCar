@@ -30,4 +30,5 @@ public interface IGlobalService
     public UserService UserService { get; set; }
     public VehicleService VehicleService { get; set; }
     public BalanceService BalanceService { get; set; }
+    public TransactionService TransactionService { get; set; }
 }

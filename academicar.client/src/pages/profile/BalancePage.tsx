@@ -6,89 +6,95 @@ import {Card} from "../../components/Cards.tsx";
 import {Button} from "../../components/Buttons.tsx";
 import {BiPlus} from "react-icons/bi";
 import {Divider} from "../../components/Divider.tsx";
-
-// @ts-ignore
-import DOMPurify from 'dompurify';
+import {useEffect, useState} from 'react';
 import {FaArrowRight} from "react-icons/fa";
 import {useNavigate} from "react-router-dom";
+import {IBalance, ITransaction, TransactionSource, TransactionType} from "../../enums.tsx";
 
-const DATA = {
-    balance: 177.4,
-    purchases: [
-        {
-            start: "Graz",
-            destination: "Wien",
-            amount: 12
-        },
-        {
-            start: "Wolfsberg",
-            destination: "Salzburg",
-            amount: -8
-        },
-        {
-            start: "Linz",
-            destination: "Wien",
-            amount: 14
-        }
-    ]
-}
 
 export const BalancePage = () => {
     const [t] = useTranslation();
     const pageTitle = t("pages/profile:BalancePage.title");
     SetPageTitle(pageTitle);
     const navigate = useNavigate();
+    const [balance, setBalance] = useState<IBalance>();
+    const [transactions, setTransactions] = useState<ITransaction[]>();
+
+    useEffect(() => {
+
+        const userid = 1 //TODO must be replaced with real user id
+
+        fetch(`/api/Balance/transactions/${userid}`)
+            .then(response => {
+                if (response.status === 404) {
+                    return [];
+                }
+                return response.json();
+            })
+            .then((data) => setTransactions(data))
+            .catch((error) => console.error('Error fetching transaction data:', error));
+
+        fetch(`/api/Balance/${userid}`)
+            .then(response => {
+                if (response.status === 404) {
+                    return [];
+                }
+                return response.json();
+            })
+            .then((data) => setBalance(data))
+            .catch((error) => console.error('Error fetching balance:', error));
+    }, []);
 
     return (
         <>
             <TitleBar hasBackAction={true} text={pageTitle}/>
 
             <div className="w-full flex flex-col items-center pb-24 gap-10">
-                {DATA.balance != null ? (
+                {balance != null ? (
                     <Card
                         label={t("pages/profile:BalancePage.balance")}
                         labelPosition="outside">
                         <div className="flex flex-col items-center justify-center gap-5">
                             <div className="flex justify-center headline-1 text-primary-600">
-                                {DATA.balance} €
+                                {balance.amount} €
                             </div>
                             <Button
                                 variant="outline"
                                 text={t("pages/profile:BalancePage.recharge")}
                                 trailing={<BiPlus className="icon"/>}
-                                onClick={() => navigate("recharge/")}   
+                                onClick={() => navigate("recharge/")}
                             />
                         </div>
                     </Card>
                 ) : null}
 
-                {DATA.purchases != null ? (
+                {transactions && transactions.length > 0 ? (
                     <Card
                         label={t("pages/profile:BalancePage.activities")}
                         labelPosition="outside"
                         outsideLinkText={t('pages/profile:BalancePage.history')}
-                        outsideLink={"/profile/balance/history"}>
+                        outsideLink={`${location.pathname}/history`}>
                         <div className="w-full grid grid-cols-1 gap-5">
-                            {DATA.purchases.map((purchase, index) =>
-                                <>
+                            {transactions.slice(0, 3).map((transaction, index) =>
+                                <div key={index}>
                                     <div className="w-full flex justify-between items-center gap-2">
                                         <div className="subtitle flex items-center">
-                                            <span>{purchase.start}</span>
-                                            <FaArrowRight className="icon mx-2" />
-                                            <span>{purchase.destination}</span>
+                                            <span>{transaction.transactionSource == TransactionSource.Trip ? t("pages/profile:BalancePage.trip") : t("pages/profile:BalancePage.payment")}</span>
+                                            <FaArrowRight className="icon mx-2"/>
+                                            <span>{new Date(transaction.transactionDate).toDateString()}</span>
                                         </div>
                                         <div
                                             className={`flex justify-center headline-1 ${
-                                                purchase.amount < 0 ? 'text-red-600' : 'text-primary-600'
+                                                transaction.transactionType == TransactionType.Book ? 'text-red-600' : 'text-primary-600'
                                             }`}>
-                                            {purchase.amount > 0 ? '+' + purchase.amount : purchase.amount} €
+                                            {transaction.transactionType == TransactionType.Book ? '-' + transaction.amount : '+' + transaction.amount} €
                                         </div>
                                     </div>
 
-                                    {index != DATA.purchases.length - 1 ? (
+                                    {index !== transactions.length - 1 ? (
                                         <Divider/>
                                     ) : null}
-                                </>
+                                </div>
                             )}
                         </div>
                     </Card>

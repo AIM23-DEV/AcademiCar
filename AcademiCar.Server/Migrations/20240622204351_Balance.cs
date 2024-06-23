@@ -35,7 +35,8 @@ namespace AcademiCar.Server.Migrations
                     ID = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     FK_User = table.Column<string>(type: "text", nullable: false),
-                    TransactionType = table.Column<string>(type: "text", nullable: false),
+                    TransactionType = table.Column<int>(type: "integer", nullable: false),
+                    TransactionSource = table.Column<int>(type: "integer", nullable: false),
                     Amount = table.Column<decimal>(type: "numeric", nullable: false),
                     TransactionDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },

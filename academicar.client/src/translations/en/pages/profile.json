@@ -104,14 +104,16 @@
   },
   "BalancePage": {
     "title": "My Balance",
-    "balance": "AkademiCar-Balance",
+    "balance": "AcademiCar-Balance",
     "recharge": "Recharge",
-    "activities": "Latest activities",
-    "history": "Archive"
+    "activities": "Latest transactions",
+    "history": "Archive",
+    "payment": "Payment",
+    "trip:": "Trip"
   },
   "BalanceHistoryPage": {
     "title": "My Balance",
-    "delete": "Delete all activities"
+    "delete": "Delete all transactions"
   },
   "BalanceRechargePage": {
     "title": "Recharge account",

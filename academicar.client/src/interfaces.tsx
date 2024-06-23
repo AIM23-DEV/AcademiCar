@@ -25,6 +25,7 @@ interface IGroupChatUser {
     fK_GroupChat: number;
     fK_User: string;
 }
+
 interface IGroupMessage {
     id: number;
     fK_SenderUser: string;

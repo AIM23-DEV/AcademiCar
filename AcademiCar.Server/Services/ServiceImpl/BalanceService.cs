@@ -24,6 +24,8 @@ namespace AcademiCar.Server.Services.ServiceImpl
 
             return true;
         }
+        
+        //TODO add this function call to trip service, when trip was accepted to drivers * passenger
 
         public async Task<ActionResultResponseModel> ChargeBalanceAsync(string userId, decimal amount)
         {
@@ -60,6 +62,7 @@ namespace AcademiCar.Server.Services.ServiceImpl
             return model;
         }
 
+        //TODO add this function call to trip service, when trip was accepted to passenggers
         public async Task<ActionResultResponseModel> BookAsync(string userId, decimal amount)
         {
             ActionResultResponseModel model = new();
@@ -88,5 +91,8 @@ namespace AcademiCar.Server.Services.ServiceImpl
 
             return model;
         }
+
+        public async Task<Balance> GetBalanceByUserId(string id)
+            => await _balanceRepository.GetBalanceByUserIdAsync(id);
     }
 }

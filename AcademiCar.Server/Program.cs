@@ -26,9 +26,6 @@ builder.Services.AddScoped<IGlobalService, GlobalService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IBalanceRepository, BalanceRepository>();
-
-builder.Services.AddScoped<BalanceService>(); //TODO Find net wo ich es no hinzufügen muss das ohne des geht
 builder.Services.AddHttpContextAccessor(); 
 
 builder.Logging.ClearProviders();

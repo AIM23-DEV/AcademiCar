@@ -6,7 +6,9 @@ namespace AcademiCar.Server.DAL.UnitOfWork
 {
     public class PostgresDbContext : IdentityDbContext<User>
     {
-        public PostgresDbContext(DbContextOptions<PostgresDbContext> options) : base(options) { }
+        public PostgresDbContext(DbContextOptions<PostgresDbContext> options) : base(options)
+        {
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -16,11 +18,11 @@ namespace AcademiCar.Server.DAL.UnitOfWork
             modelBuilder.Entity<FavoriteUser>(entity =>
             {
                 entity.HasOne(fu => fu.FavUser)
-                      .WithMany()
-                      .HasForeignKey(fu => fu.FK_FavUserId)
-                      .OnDelete(DeleteBehavior.Restrict);
+                    .WithMany()
+                    .HasForeignKey(fu => fu.FK_FavUserId)
+                    .OnDelete(DeleteBehavior.Restrict);
             });
-            
+
             modelBuilder.Entity<Address>().ToTable("Address", schema: "academicar");
             modelBuilder.Entity<Carlos>().ToTable("Carlos", schema: "academicar");
             modelBuilder.Entity<GroupChat>().ToTable("GroupChat", schema: "academicar");
@@ -41,9 +43,8 @@ namespace AcademiCar.Server.DAL.UnitOfWork
             modelBuilder.Entity<TripStop>().ToTable("TripStop", schema: "academicar");
             modelBuilder.Entity<User>().ToTable("User", schema: "academicar");
             modelBuilder.Entity<Vehicle>().ToTable("Vehicle", schema: "academicar");
-                        modelBuilder.Entity<User>().ToTable("User", schema: "academicar");
-                        modelBuilder.Entity<Balance>().ToTable("Balance", schema: "academicar");            modelBuilder.Entity<User>().ToTable("User", schema: "academicar");
-                        modelBuilder.Entity<Transaction>().ToTable("Transaction", schema: "academicar");
+            modelBuilder.Entity<Balance>().ToTable("Balance", schema: "academicar");
+            modelBuilder.Entity<Transaction>().ToTable("Transaction", schema: "academicar");
         }
 
         // Your DbSets

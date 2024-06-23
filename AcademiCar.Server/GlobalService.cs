@@ -27,8 +27,8 @@ public class GlobalService : IGlobalService
     public TripStopService TripStopService { get; set; }
     public UserService UserService { get; set; }
     public VehicleService VehicleService { get; set; }
-    
     public BalanceService BalanceService { get; set; }
+    public TransactionService TransactionService { get; set; }
 
     public GlobalService(IUnitOfWork uow)
     {
@@ -55,5 +55,6 @@ public class GlobalService : IGlobalService
         VehicleService = new VehicleService(UnitOfWork.Vehicles);
         UserService = new UserService(UnitOfWork.Users);
         BalanceService = new BalanceService(UnitOfWork.Balances);
+        TransactionService = new TransactionService(UnitOfWork.Transactions);
     }
 }

@@ -405,9 +405,11 @@ namespace AcademiCar.Server.Migrations
                     b.Property<DateTime>("TransactionDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("TransactionType")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("TransactionSource")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TransactionType")
+                        .HasColumnType("integer");
 
                     b.HasKey("ID");
 
