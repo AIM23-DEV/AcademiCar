@@ -11,8 +11,7 @@ export const UpdateCarPage = () => {
     const [t] = useTranslation(['common', 'pages/profile']);
     const [vehicle, setVehicle] = useState<IVehicle>();
 
-    const {loggedInUserId} = useParams();
-    const {vehicleId} = useParams();
+    const {loggedInUserId, vehicleId} = useParams();
     const navigate = useNavigate();
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {

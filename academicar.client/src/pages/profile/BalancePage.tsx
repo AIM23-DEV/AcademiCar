@@ -8,7 +8,7 @@ import {BiPlus} from "react-icons/bi";
 import {Divider} from "../../components/Divider.tsx";
 import {useEffect, useState} from 'react';
 import {FaArrowRight} from "react-icons/fa";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {IBalance, ITransaction, TransactionSource, TransactionType} from "../../enums.tsx";
 
 
@@ -16,34 +16,23 @@ export const BalancePage = () => {
     const [t] = useTranslation();
     const pageTitle = t("pages/profile:BalancePage.title");
     SetPageTitle(pageTitle);
-    const navigate = useNavigate();
+
+    const { loggedInUserId } = useParams();
     const [balance, setBalance] = useState<IBalance>();
     const [transactions, setTransactions] = useState<ITransaction[]>();
+    const navigate = useNavigate();
 
     useEffect(() => {
-
-        const userid = 1 //TODO must be replaced with real user id
-
-        fetch(`/api/Balance/transactions/${userid}`)
-            .then(response => {
-                if (response.status === 404) {
-                    return [];
-                }
-                return response.json();
-            })
+        fetch(`/api/admin/balance/transactions/${loggedInUserId}`)
+            .then(response => response.json())
             .then((data) => setTransactions(data))
             .catch((error) => console.error('Error fetching transaction data:', error));
 
-        fetch(`/api/Balance/${userid}`)
-            .then(response => {
-                if (response.status === 404) {
-                    return [];
-                }
-                return response.json();
-            })
+        fetch(`/api/admin/balance/${loggedInUserId}`)
+            .then(response => response.json())
             .then((data) => setBalance(data))
             .catch((error) => console.error('Error fetching balance:', error));
-    }, []);
+    }, [loggedInUserId]);
 
     return (
         <>
@@ -53,11 +42,13 @@ export const BalancePage = () => {
                 {balance != null ? (
                     <Card
                         label={t("pages/profile:BalancePage.balance")}
-                        labelPosition="outside">
+                        labelPosition="outside"
+                    >
                         <div className="flex flex-col items-center justify-center gap-5">
                             <div className="flex justify-center headline-1 text-primary-600">
                                 {balance.amount} €
                             </div>
+                            
                             <Button
                                 variant="outline"
                                 text={t("pages/profile:BalancePage.recharge")}
@@ -73,7 +64,8 @@ export const BalancePage = () => {
                         label={t("pages/profile:BalancePage.activities")}
                         labelPosition="outside"
                         outsideLinkText={t('pages/profile:BalancePage.history')}
-                        outsideLink={`${location.pathname}/history`}>
+                        outsideLink={`${location.pathname}/history`}
+                    >
                         <div className="w-full grid grid-cols-1 gap-5">
                             {transactions.slice(0, 3).map((transaction, index) =>
                                 <div key={index}>

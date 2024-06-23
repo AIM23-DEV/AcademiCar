@@ -109,12 +109,12 @@ public class ProfileController : ControllerBase
         return Ok(result);
     }
     
-    [HttpDelete("vehicles/{id}")]
+    [HttpDelete("vehicles/{vehicleId}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResultResponseModel))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-    public async Task<IActionResult> DeleteVehicle(int id)
+    public async Task<IActionResult> DeleteVehicle(int vehicleId)
     {
-        ActionResultResponseModel result = await _globalService.VehicleService.Delete(id);
+        ActionResultResponseModel result = await _globalService.VehicleService.Delete(vehicleId);
         if (!result.IsSuccess)
         {
             result.Message = "Failed to delete vehicle";

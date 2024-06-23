@@ -10,8 +10,9 @@ import {ITransaction, TransactionSource, TransactionType} from "../../enums.tsx"
 export const BalanceRechargePage = () => {
     const [t] = useTranslation();
     const pageTitle = t("pages/profile:BalanceRechargePage.title");
-    const [radioValue, setRadioValue] = useState<number>(1);
     const recharge_btn = t("pages/profile:BalanceRechargePage.recharge_btn");
+    
+    const [radioValue, setRadioValue] = useState<number>(1);
     const amounts = [10, 20, 30, 50, 80, 100];
     const values = amounts.map((amount, index) => ({
         value: index + 1,
@@ -29,7 +30,7 @@ export const BalanceRechargePage = () => {
             transactionSource: TransactionSource.Payment
         };
 
-        const response = await fetch('/api/Balance/charge', {
+        const response = await fetch('/api/admin/balance/charge', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -54,8 +55,13 @@ export const BalanceRechargePage = () => {
                     label={t("pages/profile:BalanceRechargePage.amount_subtitle")}
                     labelPosition="outside">
                     <div className="flex flex-col items-center justify-center gap-5">
-                        <RadioCollection value={radioValue} setValue={setRadioValue} items={values} useDivider
-                                         columns={2}/>
+                        <RadioCollection
+                            value={radioValue}
+                            setValue={setRadioValue}
+                            items={values}
+                            useDivider
+                            columns={2}
+                        />
                     </div>
                 </Card>
 
@@ -71,7 +77,8 @@ export const BalanceRechargePage = () => {
 
                 <Card
                     label={t("pages/profile:BalanceRechargePage.creditcard")}
-                    labelPosition="outside">
+                    labelPosition="outside"
+                >
                     <div className="flex flex-col items-center justify-center gap-5">
                         <Input
                             id="eine-id"
