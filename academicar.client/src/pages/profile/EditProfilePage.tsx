@@ -1,12 +1,10 @@
-import { TitleBar } from "../../components/TitleBar";
-import { BottomNavigationBar } from "../../components/BottomNavigationBar";
+import {TitleBar} from "../../components/TitleBar";
 import {Button} from "../../components/Buttons";
 import SetPageTitle from "../../hooks/set_page_title";
-import { useTranslation } from "react-i18next";
-import { Card } from "../../components/Cards";
+import {useTranslation} from "react-i18next";
 import {ImageUploadForm} from "./partials/ImageUploadForm.tsx";
 import {useParams} from "react-router-dom";
-import {Input} from "../../components/FormFields.tsx";
+import {Input, RadioCollection, Select} from "../../components/FormFields.tsx";
 import {ChangeEvent, useEffect, useState} from "react";
 
 export const EditProfilePage: React.FC = () => {
@@ -19,11 +17,12 @@ export const EditProfilePage: React.FC = () => {
     const labelEmail = t('pages/profile:EditProfilePage.email');
     const saveButtonText = t('pages/profile:EditProfilePage.save_changes');
     SetPageTitle(pageTitle);
-    
-    const { loggedInUserId } = useParams();
+
+    const {loggedInUserId} = useParams();
     const [user, setUser] = useState<IUser>();
     const [address, setAddress] = useState<IAddress>();
     const [error, setError] = useState<string | null>();
+    const [sex, setSex] = useState<string>("male");
 
     useEffect(() => {
         fetch(`https://localhost:5173/api/admin/users/${loggedInUserId}`)
@@ -64,11 +63,11 @@ export const EditProfilePage: React.FC = () => {
             [id]: value,
         }) : undefined);
     };
-    
+
     const handleSave = () => {
         fetch(`https://localhost:5173/api/profile/user/update`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(user)
         })
             .catch(e => {
@@ -78,7 +77,7 @@ export const EditProfilePage: React.FC = () => {
 
         fetch(`https://localhost:5173/api/profile/address/update`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(address)
         })
             .catch(e => {
@@ -86,127 +85,137 @@ export const EditProfilePage: React.FC = () => {
                 console.error(error);
             });
     }
-    
+
     return (
-        <div className="pb-24 w-full">
-            <TitleBar text={pageTitle} hasBackAction />
+        <>
+            <TitleBar text={pageTitle} hasBackAction/>
+
             <div className="flex justify-center">
                 <img
-                    src="https://academicar.blob.core.windows.net/profile-images/test.jpg"
+                    src={user.pictureSrc ?? "https://academicar.blob.core.windows.net/profile-images/test.jpg"}
                     alt="Profile Avatar"
-                    className="rounded-full w-32 h-32"
+                    className="rounded-full icon-3xl"
                 />
             </div>
 
-            <ImageUploadForm />
-            
-            <Card label={t('pages/profile:EditProfilePage.title')} className="mt-4 w-full">
-                <form className="mt-4 w-full grid grid-cols-12 gap-4">
-                    <Input
-                        label={labelFirstName}
-                        type="text"
-                        value={user.firstName}
-                        onChange={handleUserInputChange}
+            {/* Todo merge upload logic into the image above and save it with other data. */}
+            <ImageUploadForm/>
+
+            <form onSubmit={handleSave} className="mt-4 w-full grid grid-cols-12 gap-6 mb-24">
+                <Input
+                    label={labelFirstName}
+                    type="text"
+                    value={user.firstName}
+                    onChange={handleUserInputChange}
+                    fullWidth
+                    className="col-span-full"
+                />
+
+                <Input
+                    label={labelLastName}
+                    type="text"
+                    value={user.lastName}
+                    onChange={handleUserInputChange}
+                    fullWidth
+                    className="col-span-full"
+                />
+
+                <Input
+                    label={labelAddress}
+                    type="text"
+                    value={address.street}
+                    onChange={handleAddressInputChange}
+                    fullWidth
+                    className="col-span-full"
+                />
+
+                <Input
+                    type="text"
+                    value={address.zip}
+                    onChange={handleAddressInputChange}
+                    fullWidth
+                    className="col-span-4"
+                />
+
+                <Input
+                    type="text"
+                    value={address.place}
+                    onChange={handleAddressInputChange}
+                    fullWidth
+                    className="col-span-8"
+                />
+
+                <Input
+                    label={labelPhoneNumber}
+                    type="text"
+                    value={user.phoneNumber}
+                    onChange={handleUserInputChange}
+                    fullWidth
+                    className="col-span-full"
+                />
+
+                <Input
+                    label={labelEmail}
+                    type="text"
+                    value={user.email}
+                    onChange={handleUserInputChange}
+                    fullWidth
+                    className="col-span-full"
+                />
+
+                {/*TODO expand user entity and interface to support birthdate, gender, nationality (new table), language (new table), study, driver license since*/}
+                <Input
+                    label={t('pages/profile:EditProfilePage.birthdate')}
+                    type="date"
+                    // value={DateTime.now().getTime()}
+                    onChange={handleUserInputChange}
+                    fullWidth
+                    className="col-span-full"
+                />
+
+                <div className="col-span-full w-full space-y-3">
+                    <RadioCollection value={sex} setValue={setSex} label={t('pages/profile:EditProfilePage.gender')}
+                                     items={[
+                                         {value: "male", label: t('pages/profile:EditProfilePage.gender_male')},
+                                         {value: "female", label: t('pages/profile:EditProfilePage.gender_female')},
+                                         {value: "divers", label: t('pages/profile:EditProfilePage.gender_diverse')},
+                                     ]}
+                                     columns={3} className="place-items-center"
                     />
-                    <div className="col-span-full">
-                        <Input
-                            label={labelLastName}
-                            type="text"
-                            value={user.lastName}
-                            onChange={handleUserInputChange}
-                        />
-                    </div>
-                    <div className="col-span-full">
-                        <Input
-                            label={labelAddress}
-                            type="text"
-                            value={address.street}
-                            onChange={handleAddressInputChange}
-                        />
-                        <Input
-                            type="text"
-                            value={address.zip}
-                            onChange={handleAddressInputChange}
-                        />
-                        <Input
-                            type="text"
-                            value={address.place}
-                            onChange={handleAddressInputChange}
-                        />
-                    </div>
-                    <div className="col-span-full">
-                        <Input
-                            label={labelPhoneNumber}
-                            type="text"
-                            value={user.phoneNumber}
-                            onChange={handleUserInputChange}
-                        />
-                    </div>
-                    <div className="col-span-full">
-                        <Input
-                            label={labelEmail}
-                            type="text"
-                            value={user.email}
-                            onChange={handleUserInputChange}
-                        />
-                    </div>
+                </div>
 
-                    {/*TODO expand user entity and interface to support birthdate, gender, nationality (new table), language (new table), study, driver license since*/}
-                    {/*<div className="col-span-full">*/}
-                    {/*    <label>{t('pages/profile:EditProfilePage.birthdate')}</label>*/}
-                    {/*    <input type="date" defaultValue="2000-01-01" className="w-full p-2 border border-gray-300 rounded" />*/}
-                    {/*</div>*/}
-                    {/*<div className="col-span-full flex justify-between">*/}
-                    {/*    <label className="flex items-center">*/}
-                    {/*        <input type="radio" name="gender" value="male" defaultChecked className="mr-2" />*/}
-                    {/*        {t('pages/profile:EditProfilePage.gender_male')}*/}
-                    {/*    </label>*/}
-                    {/*    <label className="flex items-center">*/}
-                    {/*        <input type="radio" name="gender" value="female" className="mr-2" />*/}
-                    {/*        {t('pages/profile:EditProfilePage.gender_female')}*/}
-                    {/*    </label>*/}
-                    {/*    <label className="flex items-center">*/}
-                    {/*        <input type="radio" name="gender" value="divers" className="mr-2" />*/}
-                    {/*        {t('pages/profile:EditProfilePage.gender_diverse')}*/}
-                    {/*    </label>*/}
-                    {/*</div>*/}
-                    {/*<div className="col-span-full">*/}
-                    {/*    <label>{t('pages/profile:EditProfilePage.nationality')}</label>*/}
-                    {/*    <select className="w-full p-2 border border-gray-300 rounded">*/}
-                    {/*        <option>{t('pages/profile:EditProfilePage.nationality')}</option>*/}
-                    {/*        /!* Add more options here *!/*/}
-                    {/*    </select>*/}
-                    {/*</div>*/}
-                    {/*<div className="col-span-full">*/}
-                    {/*    <label>{t('pages/profile:EditProfilePage.languages')}</label>*/}
-                    {/*    <select className="w-full p-2 border border-gray-300 rounded">*/}
-                    {/*        <option>{t('pages/profile:EditProfilePage.languages')}</option>*/}
-                    {/*        /!* Add more options here *!/*/}
-                    {/*    </select>*/}
-                    {/*</div>*/}
-                    {/*<div className="col-span-full">*/}
-                    {/*    <label>{t('pages/profile:EditProfilePage.study_program')}</label>*/}
-                    {/*    <input type="text" defaultValue="Wirtschaftsinformatik Master" className="w-full p-2 border border-gray-300 rounded" />*/}
-                    {/*</div>*/}
-                    {/*<div className="col-span-full">*/}
-                    {/*    <label>{t('pages/profile:EditProfilePage.drivers_license_since')}</label>*/}
-                    {/*    <input type="date" defaultValue="2019-10-27" className="w-full p-2 border border-gray-300 rounded" />*/}
-                    {/*</div>*/}
-                    
-                    <div className="col-span-full">
-                        <Button
-                            variant="primary"
-                            fullWidth
-                            text={saveButtonText}
-                            textAlign="center"
-                            onClick={handleSave}
-                            className="mt-4"
-                        />
-                    </div>
-                </form>
-            </Card>
+                {/* Todo: ddd options */}
+                <Select label={t('pages/profile:EditProfilePage.nationality')} fullWidth className="col-span-full"/>
 
-            <BottomNavigationBar selected="profile" />
-        </div>
+                {/* Todo: ddd options */}
+                <Select label={t('pages/profile:EditProfilePage.languages')} fullWidth className="col-span-full"/>
+
+                <Input
+                    label={t('pages/profile:EditProfilePage.study_program')}
+                    type="text"
+                    value="Wirtschaftsinformatik Master"
+                    onChange={handleUserInputChange}
+                    fullWidth
+                    className="col-span-full"
+                />
+
+                <Input
+                    label={t('pages/profile:EditProfilePage.drivers_license_since')}
+                    type="date"
+                    value="2019-10-27"
+                    onChange={handleUserInputChange}
+                    fullWidth
+                    className="col-span-full"
+                />
+
+                <Button
+                    variant="primary"
+                    text={saveButtonText}
+                    textAlign="center"
+                    type="submit"
+                    className="fixed bottom-6 inset-x-6 !w-auto"
+                />
+            </form>
+        </>
     );
 };

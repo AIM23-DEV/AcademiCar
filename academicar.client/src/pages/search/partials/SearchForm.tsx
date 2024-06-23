@@ -3,6 +3,7 @@ import {Input} from "../../../components/FormFields.tsx";
 import {Button} from "../../../components/Buttons.tsx";
 import {Card} from "../../../components/Cards.tsx";
 import {useTranslation} from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 export const SearchForm = () => {
     const [t] = useTranslation(['common', 'pages/search']);
@@ -11,8 +12,27 @@ export const SearchForm = () => {
     const [date, setDate] = useState('');
     const [time, setTime] = useState('');
 
+    const navigate = useNavigate();
+
     const handleSearch = () => {
-        // TODO search logic
+        // build searchquery
+        let searchString = "/search/result?";
+        if (startPoint.trim()) {
+            searchString += `start=${encodeURIComponent(startPoint)}&`
+        }
+        if (destination.trim()) {
+            searchString += `end=${encodeURIComponent(destination)}&`
+        }
+        if (date.trim()) {
+            searchString += `date=${encodeURIComponent(date)}&`
+        }
+        if (time.trim()) {
+            searchString += `time=${encodeURIComponent(time)}`
+        }
+        
+        if (searchString.trim()) {
+            navigate(searchString)
+        }
     };
 
     return (
