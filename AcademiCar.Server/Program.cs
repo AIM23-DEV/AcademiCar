@@ -62,14 +62,11 @@ if (enableSaml2)
         .AddCookie()
         .AddSaml2(options =>
         {
-            var certificateName = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:CertificateName"];
             var signingCert = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:CertificateName"];
             var encryptionCert = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:CertificateName"];
             var certificateClient = new CertificateClient(vaultUri, new DefaultAzureCredential());
-            var fhcertificate = certificateClient.GetCertificateAsync(certificateName).GetAwaiter().GetResult().Value;
             var signingcertificate = certificateClient.DownloadCertificate(signingCert);
             var enryptioncertificate = certificateClient.DownloadCertificate(encryptionCert);
-            
             
             options.SPOptions.EntityId = new EntityId(builder.Configuration["SustainsysSaml2:Issuer"]);
 
