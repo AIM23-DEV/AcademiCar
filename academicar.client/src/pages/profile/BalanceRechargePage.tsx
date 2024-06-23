@@ -87,7 +87,7 @@ export const BalanceRechargePage = () => {
                 textAlign="center"
                 type="submit"
                 onClick={() => alert("TODO")}
-                className="fixed bottom-6 inset-x-6 w-auto"
+                className="fixed bottom-6 inset-x-6 !w-auto"
             />
         </>
     )

@@ -213,7 +213,7 @@ export const EditProfilePage: React.FC = () => {
                     text={saveButtonText}
                     textAlign="center"
                     type="submit"
-                    className="fixed bottom-6 inset-x-6 w-auto"
+                    className="fixed bottom-6 inset-x-6 !w-auto"
                 />
             </form>
         </>

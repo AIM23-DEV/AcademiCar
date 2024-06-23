@@ -56,7 +56,7 @@ export const ShowCarsPage = () => {
                 text={newCar}
                 textAlign="center"
                 type="submit"
-                className="fixed bottom-6 inset-x-6 w-auto"
+                className="fixed bottom-6 inset-x-6 !w-auto"
                 onClick={() => navigate("update")}
             />
         </>

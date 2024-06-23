@@ -91,7 +91,7 @@ export const BalancePage = () => {
                 textAlign="center"
                 onClick={() => navigate("recharge/")}
                 trailing={<BiPlus className="icon-md"/>}
-                className="fixed bottom-6 inset-x-6 w-auto"
+                className="fixed bottom-6 inset-x-6 !w-auto"
             />
         </>
     )
