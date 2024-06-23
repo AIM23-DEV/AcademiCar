@@ -1,36 +1,73 @@
 ﻿import {useTranslation} from "react-i18next";
-import SetPageTitle from "../../hooks/set_page_title.tsx";
 import {TitleBar} from "../../components/TitleBar.tsx";
 import {BottomNavigationBar} from "../../components/BottomNavigationBar.tsx";
 import {Card} from "../../components/Cards.tsx";
-
-// @ts-ignore
-import DOMPurify from 'dompurify';
 import {Input, RadioCollection} from "../../components/FormFields.tsx";
 import {useState} from "react";
 import {Button} from "../../components/Buttons.tsx";
+import {ITransaction, TransactionSource, TransactionType} from "../../enums.tsx";
 
 export const BalanceRechargePage = () => {
     const [t] = useTranslation();
     const pageTitle = t("pages/profile:BalanceRechargePage.title");
-    const ten_euro = t("pages/profile:BalanceRechargePage.ten_euro");
-    const twenty_euro = t("pages/profile:BalanceRechargePage.twenty_euro");
-    const thirty_euro = t("pages/profile:BalanceRechargePage.thirty_euro");
-    const fifty_euro = t("pages/profile:BalanceRechargePage.fifty_euro");
-    const eighty_euro = t("pages/profile:BalanceRechargePage.eighty_euro");
-    const hundred_euro = t("pages/profile:BalanceRechargePage.hundred_euro");
-    const euro_suffix = t("pages/profile:BalanceRechargePage.euro_suffix");
+    const [radioValue, setRadioValue] = useState<number>(1);
     const recharge_btn = t("pages/profile:BalanceRechargePage.recharge_btn");
-    const [radioValue, setRadioValue] = useState('');
+    const amounts = [10, 20, 30, 50, 80, 100];
+    const values = amounts.map((amount, index) => ({
+        value: index + 1,
+        label: amount + t("pages/profile:BalanceRechargePage.euro_suffix")
+    }));
 
+    const handleSubmit = async () => {
+        const amount = amounts[radioValue - 1]; // Convert radioValue to the corresponding amount
+        const transaction: ITransaction = {
+            id: 0,
+            fK_User: "1", // Replace with the actual user ID
+            transactionType: TransactionType.Charge,
+            amount: amount,
+            transactionDate: new Date(),
+            transactionSource: TransactionSource.Payment
+        };
 
-    SetPageTitle(pageTitle);
+        const response = await fetch('/api/Balance/charge', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(transaction)
+        });
+
+        if (response.ok) {
+            alert('Balance charged successfully');
+        } else {
+            alert('Failed to charge balance');
+        }
+    };
 
     return (
         <>
             <TitleBar hasBackAction={true} text={pageTitle}/>
 
             <div className="w-full flex flex-col items-center pb-24 gap-10">
+
+                <Card
+                    label={t("pages/profile:BalanceRechargePage.amount_subtitle")}
+                    labelPosition="outside">
+                    <div className="flex flex-col items-center justify-center gap-5">
+                        <RadioCollection value={radioValue} setValue={setRadioValue} items={values} useDivider
+                                         columns={2}/>
+                    </div>
+                </Card>
+
+
+                <Button
+                    variant="primary"
+                    fullWidth
+                    text={recharge_btn}
+                    textAlign="center"
+                    onClick={handleSubmit}
+                    className="col-span-full mt-8"
+                />
 
                 <Card
                     label={t("pages/profile:BalanceRechargePage.creditcard")}
@@ -72,29 +109,7 @@ export const BalanceRechargePage = () => {
                         </form>
                     </div>
                 </Card>
-                <Card
-                    label={t("pages/profile:BalanceRechargePage.amount_subtitle")}
-                    labelPosition="outside">
-                    <div className="flex flex-col items-center justify-center gap-5">
-                        <RadioCollection value={radioValue} setValue={setRadioValue} items={[
-                            {value: 1, label: ten_euro + euro_suffix},
-                            {value: 2, label: twenty_euro + euro_suffix},
-                            {value: 3, label: thirty_euro + euro_suffix},
-                            {value: 4, label: fifty_euro + euro_suffix},
-                            {value: 5, label: eighty_euro + euro_suffix},
-                            {value: 6, label: hundred_euro + euro_suffix},
-                        ]} useDivider columns={2}/>
-                    </div>
-                </Card>
 
-                <Button
-                    variant="primary"
-                    fullWidth
-                    text={recharge_btn}
-                    textAlign="center"
-                    onClick={() => alert("TODO")}
-                    className="col-span-full mt-8"
-                />
             </div>
 
             <BottomNavigationBar selected="profile"/>

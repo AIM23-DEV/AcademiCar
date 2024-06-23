@@ -5,7 +5,12 @@ namespace AcademiCar.Server.Services.ServiceImpl;
 
 public class MusicPreferenceService : Service<MusicPreference>
 {
-    public MusicPreferenceService(IMusicPreferenceRepository repo) : base(repo) { }
+    private IMusicPreferenceRepository _repo;
+
+    public MusicPreferenceService(IMusicPreferenceRepository repo) : base(repo)
+    {
+        _repo = repo;
+    }
 
 
     public override async Task<bool> Validate(MusicPreference entity)
@@ -15,4 +20,7 @@ public class MusicPreferenceService : Service<MusicPreference>
 
         return validationDictionary.IsValid;
     }
+    
+    public async Task<List<MusicPreference>> GetByPreferenceId(int id)
+        => await _repo.GetByPreferencesId(id);
 }

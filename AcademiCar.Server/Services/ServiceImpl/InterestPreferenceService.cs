@@ -5,7 +5,12 @@ namespace AcademiCar.Server.Services.ServiceImpl;
 
 public class InterestPreferenceService : Service<InterestPreference>
 {
-    public InterestPreferenceService(IInterestPreferenceRepository repo) : base(repo) { }
+    private IInterestPreferenceRepository _repo;
+
+    public InterestPreferenceService(IInterestPreferenceRepository repo) : base(repo)
+    {
+        _repo = repo;
+    }
 
 
     public override async Task<bool> Validate(InterestPreference entity)
@@ -15,4 +20,7 @@ public class InterestPreferenceService : Service<InterestPreference>
 
         return validationDictionary.IsValid;
     }
+    
+    public async Task<List<InterestPreference>> GetByPreferenceId(int id)
+        => await _repo.GetByPreferencesId(id);
 }
