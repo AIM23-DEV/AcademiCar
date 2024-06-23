@@ -62,13 +62,11 @@ if (enableSaml2)
         .AddCookie()
         .AddSaml2(options =>
         {
-            var certificateName = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:CertificateName"];
-            var signingCert = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:SigningCert"];
+            var fhCertName = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:CertificateName"];
             var encryptionCert = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:EncryptionCert"];
             var certificateClient = new CertificateClient(vaultUri, new DefaultAzureCredential());
-            var fhcertificate = certificateClient.GetCertificateAsync(certificateName).GetAwaiter().GetResult().Value;
-            var signingcertificate = certificateClient.DownloadCertificate(signingCert);
-            var enryptioncertificate = certificateClient.DownloadCertificate(encryptionCert);
+            var fhCertificate = certificateClient.DownloadCertificate(fhCertName);
+            var encryptionCertificate = certificateClient.DownloadCertificate(encryptionCert);
             
             
             options.SPOptions.EntityId = new EntityId(builder.Configuration["SustainsysSaml2:Issuer"]);
@@ -80,22 +78,14 @@ if (enableSaml2)
             var signCertPassword = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:SignPassword"];
 //            var spCert = new X509Certificate2(spCertPath, certPassword);
 //            var spSignCert = new X509Certificate2(spSignCertPath, signCertPassword);
-            var spCert = new X509Certificate2(enryptioncertificate);
-            var spSignCert = new X509Certificate2(signingcertificate);
+            var fhCert = new X509Certificate2(fhCertificate);
+            var spCert = new X509Certificate2(encryptionCertificate);
             
             options.SPOptions.ServiceCertificates.Add(
                 new ServiceCertificate
                 {
-                    Certificate = spCert,
-                    Use = CertificateUse.Encryption
-                }
-            );
-            
-            options.SPOptions.ServiceCertificates.Add(
-                new ServiceCertificate
-                {
-                    Certificate = spSignCert,
-                    Use = CertificateUse.Signing
+                    Certificate = fhCert,
+                    Use = CertificateUse.Both
                 }
             );
             
