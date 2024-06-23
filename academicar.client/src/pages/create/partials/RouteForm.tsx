@@ -1,18 +1,19 @@
 import { Input } from "../../../components/FormFields.tsx";
 import { Card } from "../../../components/Cards.tsx";
+import {Dispatch, SetStateAction} from "react";
 
 interface RouteFormProps {
-    label: string,
-    fromLabelText: string,
-    fromPlaceholderText: string,
-    toLabelText: string,
-    toPlaceholderText: string,
+    label: string;
+    fromLabelText: string;
+    fromPlaceholderText: string;
+    toLabelText: string;
+    toPlaceholderText: string;
     
-    fromValue?: string,
-    toValue?: string,
+    fromValue?: string;
+    toValue?: string;
 
-    setFromValue: (val: string) => void,
-    setToValue: (val: string) => void,
+    setFromValue: Dispatch<SetStateAction<string | undefined>>;
+    setToValue: Dispatch<SetStateAction<string | undefined>>;
 }
 
 export const RouteForm = (props: RouteFormProps) => {

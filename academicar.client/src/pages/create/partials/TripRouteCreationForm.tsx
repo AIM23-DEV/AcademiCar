@@ -1,13 +1,14 @@
 import { useTranslation } from "react-i18next";
 import { RouteForm } from "./RouteForm.tsx";
 import { StopsList } from "./StopsList.tsx";
+import {Dispatch, SetStateAction} from "react";
 
 interface TripRouteCreationFormProps {
-    startAddress?: IAddress;
-    endAddress?: IAddress;
+    startAddress?: string;
+    endAddress?: string;
 
-    setStartAddress: (val: string) => void;
-    setEndAddress: (val: string) => void;
+    setStartAddress: Dispatch<SetStateAction<string | undefined>>;
+    setEndAddress: Dispatch<SetStateAction<string | undefined>>;
 }
 
 export const TripRouteCreationForm = (props: TripRouteCreationFormProps) => {
@@ -32,22 +33,29 @@ export const TripRouteCreationForm = (props: TripRouteCreationFormProps) => {
                 fromPlaceholderText={fromInputPlaceholderText}
                 toLabelText={toInputLabelText}
                 toPlaceholderText={toInputPlaceholderText}
-                
-                fromValue={`${props.startAddress != undefined ? (props.startAddress.street) + ' ' + (props.startAddress.number) + ' ' + (props.startAddress.zip) + ' ' + (props.startAddress.place) : ''}`}
-                toValue={`${props.endAddress != undefined ? (props.endAddress.street) + ' ' + (props.endAddress.number) + ' ' + (props.endAddress.zip) + ' ' + (props.endAddress.place) : ''}`}
+
+                fromValue={props.startAddress}
+                toValue={props.endAddress}
 
                 setFromValue={props.setStartAddress}
                 setToValue={props.setEndAddress}
             />
 
-            <StopsList
-                label={stopListLabelText}
-                addStopActionText={addStopActionText}
-                stopInputLabelText={stopInputLabelText}
-                stayInputLabelText={stayInputLabelText}
-                stayInputUnitText={stayInputUnitText}
-                enableStopsToggleText={enableStopsToggleText}
-            />
+            {/* Stops disabled for now */}
+            <>
+                {
+                    false ?
+                        <StopsList
+                            label={stopListLabelText}
+                            addStopActionText={addStopActionText}
+                            stopInputLabelText={stopInputLabelText}
+                            stayInputLabelText={stayInputLabelText}
+                            stayInputUnitText={stayInputUnitText}
+                            enableStopsToggleText={enableStopsToggleText}
+                        />
+                        : ''
+                }
+            </>
         </div>
     );
 };
