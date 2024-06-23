@@ -1,14 +1,13 @@
 import {TitleBar} from "../../components/TitleBar";
 import SetPageTitle from "../../hooks/set_page_title.tsx";
-import {BottomNavigationBar} from "../../components/BottomNavigationBar.tsx";
-import {Card} from "../../components/Cards.tsx";
 import {useNavigate} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {Button} from "../../components/Buttons.tsx";
-import {BiBriefcaseAlt, BiCar, BiChevronRight, BiGroup, BiPalette} from "react-icons/bi";
+import {BiCar} from "react-icons/bi";
 import {useEffect, useState} from 'react';
+import {EmptyState} from "../../components/EmptyState.tsx";
+import {VehicleListTile} from "./partials/VehicleListTile.tsx";
 
-// TODO add content components and follow up pages
 export const ShowCarsPage = () => {
     const [vehicles, setVehicle] = useState<IVehicle[]>();
     const [t] = useTranslation(['common', 'pages/profile']);
@@ -22,7 +21,7 @@ export const ShowCarsPage = () => {
         //}
         // /api/vehicle/vehicles/${user.id}
 
-        fetch('/api/vehicle/vehicles/-999')
+        fetch('/api/profile/vehicles/-999')
             .then(response => {
                 if (response.status === 404) {
                     return [];
@@ -37,62 +36,29 @@ export const ShowCarsPage = () => {
     const newCar: string = t("pages/profile:ShowCarsPage.newcar")
     SetPageTitle(pageTitle);
 
-
     return (
         <>
             <TitleBar text={pageTitle} hasBackAction/>
-            {vehicles?.length === 0 ? (
-                <p>User has no vehicles</p>
-            ) : (
-                vehicles?.map((vehicle) => (
-                    <div key={vehicle.id} onClick={() => navigate(`update/${vehicle.id}`)}>
-                        <Card key={vehicle.id} label={vehicle.brandModel} className="mt-4 w-full">
-                            <div className="grid grid-cols-3 gap-4">
-                                <div className="flex justify-left">
-                                    <img
-                                        src="/../src/assets/react.svg"
-                                        alt="avatar"
-                                        className="rounded-full w-24 h-24"
-                                    />
-                                </div>
-                                <div>
-                                    <div className="flex">
-                                        <BiCar className="icon-md mr-2"/>
-                                        <p>{vehicle.licensePlate}</p>
-                                    </div>
-                                    <div className="flex">
-                                        <BiPalette className="icon-md mr-2"/>
-                                        <p>{vehicle.color}</p>
-                                    </div>
-                                    <div className="flex">
-                                        <BiGroup className="icon-md mr-2"/>
-                                        <p>{vehicle.seats}</p>
-                                    </div>
-                                    <div className="flex">
-                                        <BiBriefcaseAlt className="icon-md mr-2"/>
-                                        <p>{vehicle.type}</p>
-                                    </div>
-                                </div>
-                                <div className="flex justify-end items-center"><BiChevronRight className="icon-md"/>
-                                </div>
-                            </div>
-                        </Card>
-                    </div>
-                )))}
+
+            <ul className="w-full mt-6 mb-24">
+
+                {vehicles?.length === 0 ? (
+                    <EmptyState icon={<BiCar className="icon-xl"/>} title="Keine Fahrzeuge"
+                                subtitle="Du hast noch keine Fahrzeuge hinzugefügt." asCard className="mt-6"/>
+                ) : (
+                    vehicles?.map((vehicle) =>
+                        <VehicleListTile vehicle={vehicle} key={vehicle.id}/>
+                    ))}
+            </ul>
 
             <Button
                 variant="primary"
-                fullWidth
                 text={newCar}
                 textAlign="center"
-                textFullWidth
-                type="button"
-                className="mt-8"
+                type="submit"
+                className="fixed bottom-6 inset-x-6 !w-auto"
                 onClick={() => navigate("update")}
             />
-
-            <BottomNavigationBar selected="profile"/>
         </>
-    )
-        ;
+    );
 };
