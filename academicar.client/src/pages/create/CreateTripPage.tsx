@@ -1,5 +1,5 @@
 ﻿import {useState} from 'react';
-import {useParams} from 'react-router-dom';
+import {useParams, useNavigate } from 'react-router-dom';
 import {useTranslation} from "react-i18next";
 import SetPageTitle from "../../hooks/set_page_title.tsx";
 import {TitleBar} from "../../components/TitleBar";
@@ -30,7 +30,7 @@ function getAddress(addressStr: string): IAddress {
     };
 }
 function getDate(dateStr: string, timeStr: string): Date {
-    const dateFields = dateStr.split('.');
+    const dateFields = dateStr.split('/');
     const timeFields = timeStr.split(':');
     if (dateFields.length != 3 || timeFields.length != 2)
         return new Date(2020, 1, 1, 12, 0,0)
@@ -41,7 +41,7 @@ function getDate(dateStr: string, timeStr: string): Date {
     const hours = Number(timeFields[0])
     const minutes = Number(timeFields[1])
     
-    return new Date(year, month, day, hours, minutes, 0);
+    return new Date(year, month-1, day, hours, minutes, 0);
 }
 
 export const CreateTripPage = () => {
@@ -51,84 +51,81 @@ export const CreateTripPage = () => {
     SetPageTitle(pageTitle);
 
     const { loggedInUserId } = useParams();
+    const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(1);
-    const [startAddress, setStartAddress] = useState<IAddress>();
-    const [endAddress, setEndAddress] = useState<IAddress>();
+    const [startAddress, setStartAddress] = useState<string>();
+    const [endAddress, setEndAddress] = useState<string>();
     const [startDate, setStartDate] = useState<string>();
     const [startTime, setStartTime] = useState<string>();
     const [endDate, setEndDate] = useState<string>();
     const [endTime, setEndTime] = useState<string>();
     const [tripVehicleId, setTripVehicleId] = useState<number>();
-    const [availableSeats, setAvailableSeats] = useState<number>();
-    const [price, setPrice] = useState<number>(0);
+    const [availableSeats, setAvailableSeats] = useState(0);
+    const [price, setPrice] = useState(0);
     const [error, setError] = useState<string | null>();
-
-    // Handling change
-    const onChangeStartAddress = (val: string) => setStartAddress(getAddress(val));
-    const onChangeEndAddress = (val: string) => setEndAddress(getAddress(val));
 
     // Buttons
     function isDataReady(): boolean {
-        if (!startAddress || !endAddress) return false;
-        if (!startDate || !startTime || !endDate || !endTime) return false;
-        if (!tripVehicleId || !availableSeats) return false;
-        
-        return true;
+        return !!(startAddress && endAddress && startDate && startTime && endDate && endTime && tripVehicleId);
     }
-    
-    const createTrip = () => {
-        if (!startAddress || !endAddress
-        || !startDate || !startTime || !endDate || !endTime
-        || !tripVehicleId || !availableSeats
-        ) return;
-        
-        const fullStartDate: Date = getDate(startDate, startTime);
-        const fullEndDate: Date = getDate(endDate, endTime);
-        const newTrip: ITrip = {
-            title: `${startAddress?.place} -> ${endAddress?.place}`,
-            fK_Driver: `${loggedInUserId}`,
-            fK_StartAddress: startAddress.id,
-            fK_EndAddress: startAddress.id,
-            startTime: fullStartDate,
-            endTime: fullEndDate,
-            fK_Vehicle: tripVehicleId,
-            availableSeats: availableSeats,
-            price: price,
-            paymentMethod: "None",
-            status: "Open"
+
+    const createAddress = async (address: IAddress): Promise<IAddress> => {
+        const response = await fetch(`https://localhost:5173/api/create/address`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(address)
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to create address');
         }
 
-        fetch(`https://localhost:5173/api/create/address`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(startAddress)
-        })
-            .catch(error => {
-                setError(`There was an error saving the start address!`);
-                console.error("Error:", error);
-            });
-
-        fetch(`https://localhost:5173/api/create/address`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(endAddress)
-        })
-            .catch(error => {
-                setError(`There was an error saving the start address!`);
-                console.error("Error:", error);
-            });
-
-        fetch(`https://localhost:5173/api/create/trip`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(newTrip)
-        })
-            .catch(error => {
-                setError(`There was an error creating the trip!`);
-                console.error("Error:", error);
-            });
+        const data = await response.json();
+        return data;
     };
 
+    const createTrip = async () => {
+        try {
+            if (!isDataReady()) return;
+
+            const fullStartAddress: IAddress = getAddress(startAddress as string);
+            const fullEndAddress: IAddress = getAddress(endAddress as string);
+            const createdStartAddress = await createAddress(fullStartAddress);
+            const createdEndAddress = await createAddress(fullEndAddress);
+
+            const fullStartDate: Date = getDate(startDate as string, startTime as string);
+            const fullEndDate: Date = getDate(endDate as string, endTime as string);
+
+            const newTrip: ITrip = {
+                title: `${createdStartAddress.place} -> ${createdEndAddress.place}`,
+                fK_Driver: `${loggedInUserId}`,
+                fK_StartAddress: createdStartAddress.id as number,
+                fK_EndAddress: createdEndAddress.id as number,
+                startTime: fullStartDate,
+                endTime: fullEndDate,
+                fK_Vehicle: tripVehicleId as number,
+                availableSeats: availableSeats,
+                price: price,
+                paymentMethod: "None",
+                status: "Open"
+            };
+
+            await fetch(`https://localhost:5173/api/create/trip`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newTrip)
+            });
+
+            alert('Trip created successfully!');
+            navigate('/trips/index/' + loggedInUserId);
+
+
+        } catch (error) {
+            setError(`There was an error: ${error}`);
+            console.error("Error:", error);
+        }
+    };
+    
     if (error) return <div>{`There was an error: ${error}`}</div>
     if (!loggedInUserId) return <div>Invalid user!</div>
 
@@ -140,8 +137,8 @@ export const CreateTripPage = () => {
                         startAddress={startAddress}
                         endAddress={endAddress}
     
-                        setStartAddress={onChangeStartAddress}
-                        setEndAddress={onChangeEndAddress}
+                        setStartAddress={setStartAddress}
+                        setEndAddress={setEndAddress}
                     />
                 )                
             case 2:
@@ -178,7 +175,7 @@ export const CreateTripPage = () => {
                         />
 
                         <Button
-                            disabled={isDataReady()}
+                            disabled={!isDataReady()}
                             type="submit"
                             variant="primary"
                             text={createButtonText}
@@ -192,8 +189,8 @@ export const CreateTripPage = () => {
                         startAddress={startAddress}
                         endAddress={endAddress}
 
-                        setStartAddress={onChangeStartAddress}
-                        setEndAddress={onChangeEndAddress}
+                        setStartAddress={setStartAddress}
+                        setEndAddress={setEndAddress}
                     />
                 )
         }

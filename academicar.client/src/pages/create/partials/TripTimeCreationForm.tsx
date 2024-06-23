@@ -28,32 +28,43 @@ export const TripTimeCreationForm = (props: TripTimeCreationFormProps) => {
         <div className="w-full flex flex-col items-center">
             <Card label={startTimeLabelText}>
                 <Input
+                    type="date"
                     label={dateInputLabelText}
                     value={props.startDate}
                     onChange={(e) => props.setStartDate(e.target.value)}
                 />
                 
                 <Input
+                    type="time"
                     label={timeInputLabelText}
                     value={props.startTime}
                     onChange={(e) => props.setStartTime(e.target.value)}
                 />
             </Card>
 
-            <StopsTimeInputCardList
-                label={"Test Stop"}
-                stopReachedInputLabelText={stopReachedInputLabelText}
-                stopContinueInputLabelText={stopContinueInputLabelText}
-            />
+            {/* Stops disabled for now */}
+            <>
+            {
+                false ? 
+                    <StopsTimeInputCardList
+                        label={"Test Stop"}
+                        stopReachedInputLabelText={stopReachedInputLabelText}
+                        stopContinueInputLabelText={stopContinueInputLabelText}
+                    />
+                : ''
+            }
+            </>
 
             <Card label={arrivalTimeLabelText}>
                 <Input
+                    type="date"
                     label={dateInputLabelText}
                     value={props.endDate}
                     onChange={(e) => props.setEndDate(e.target.value)}
                 />
 
                 <Input
+                    type="time"
                     label={timeInputLabelText}
                     value={props.endTime}
                     onChange={(e) => props.setEndTime(e.target.value)}

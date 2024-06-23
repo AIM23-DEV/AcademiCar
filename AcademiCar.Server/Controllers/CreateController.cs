@@ -8,7 +8,6 @@ namespace AcademiCar.Server.Controllers;
 public class CreateController : ControllerBase
 {
     private readonly IGlobalService _globalService;
-    
     public CreateController(IGlobalService globals)
     {
         _globalService = globals;
@@ -62,7 +61,10 @@ public class CreateController : ControllerBase
 
         await _globalService.AddressService.Create(newAddress);
 
-        return NoContent();
+        Address? insertedAddress = _globalService.AddressService.GetByStreetAndPlace(newAddress.Street, newAddress.Place);
+        if (insertedAddress == null) return Conflict();
+        
+        return Ok(insertedAddress);
     }
         
     [HttpPost ("trip")]
@@ -80,7 +82,7 @@ public class CreateController : ControllerBase
     public async Task<IActionResult> UpdateTrip(string id, [FromBody] Trip updatedTrip)
     {
         int idAsInt = int.Parse(id);
-        if (updatedTrip?.ID != idAsInt)  return BadRequest();
+        if (updatedTrip?.ID != idAsInt) return BadRequest();
 
         Trip? existingTrip = await _globalService.TripService.Get(idAsInt);
         if (existingTrip == null) return NotFound();

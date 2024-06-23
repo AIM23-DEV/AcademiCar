@@ -5,7 +5,11 @@ namespace AcademiCar.Server.Services.ServiceImpl;
 
 public class AddressService : Service<Address>
 {
-    public AddressService(IAddressRepository repo) : base(repo) { }
+    private IAddressRepository _repo;
+    public AddressService(IAddressRepository repo) : base(repo)
+    {
+        _repo = repo;
+    }
 
 
     public override async Task<bool> Validate(Address entity)
@@ -15,4 +19,8 @@ public class AddressService : Service<Address>
 
         return validationDictionary.IsValid;
     }
+    
+    
+    public Address? GetByStreetAndPlace(string street, string place)
+        => _repo.FilterBy(a => a.Street.Contains(street) && a.Place.Contains(place)).FirstOrDefault();
 }
