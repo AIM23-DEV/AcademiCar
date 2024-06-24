@@ -84,16 +84,8 @@ if (enableSaml2)
             options.SPOptions.ServiceCertificates.Add(
                 new ServiceCertificate
                 {
-                    Certificate = fhCert,
-                    Use = CertificateUse.Signing
-                }
-            );
-            
-            options.SPOptions.ServiceCertificates.Add(
-                new ServiceCertificate
-                {
                     Certificate = spCert,
-                    Use = CertificateUse.Encryption
+                    Use = CertificateUse.Both
                 }
             );
             
