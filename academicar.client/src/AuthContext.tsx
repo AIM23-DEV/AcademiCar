@@ -6,7 +6,7 @@ interface AuthContextProps {
     login: () => void;
     logout: () => void;
     selectIdP: () => void;
-    adminLogin: (username: string, password: string) => Promise<void>; // Add adminLogin method
+    adminLogin: (username: string, password: string) => Promise<void>;
 }
 
 interface User {
@@ -48,8 +48,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }): ReactElemen
     const adminLogin = async (username: string, password: string) => {
         try {
             const response = await axios.post('/api/User/AdminLogin', { username, password });
-            setUser(response.data); // Ensure this sets UserName and FirstName
-        } catch (error) { 
+            console.log("login: ", response.data)
+            localStorage.setItem('userID', response.data.userID);
+            setUser(response.data);
+        } catch (error) {
             throw new Error('Admin login failed');
         }
     };
@@ -64,6 +66,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }): ReactElemen
             {children}
         </AuthContext.Provider>
     );
+};
+
+
+export const getUserId = (): string => {
+    const userId = localStorage.getItem('userID');
+    console.log(userId);
+    return userId !== null ? userId : '-999';
 };
 
 export const useAuth = (): AuthContextProps => {

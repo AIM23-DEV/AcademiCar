@@ -1,6 +1,7 @@
 ﻿import { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import {BiSearch, BiCar, BiPlus, BiChat, BiUser} from "react-icons/bi";
+import {getUserId} from "../AuthContext.tsx";
 
 interface BottomNavigationBarProps {
     selected?: 'search' | 'trips' | 'create' | 'chat' | 'profile'
@@ -10,6 +11,7 @@ interface BottomNavigationBarProps {
 // Todo proper routes
 // TODO replace -999 with loggedInUserId
 export const BottomNavigationBar = (props: BottomNavigationBarProps) => {
+    const userId = getUserId();
     return (
         <nav id="bottom-navigation-bar"
              className={"fixed bottom-0 inset-x-0 h-16 z-20" + (props.className ? (' ' + props.className) : '')}>
@@ -19,16 +21,16 @@ export const BottomNavigationBar = (props: BottomNavigationBarProps) => {
                 <BottomNavigationBarItem link="/search" active={props.selected == 'search'}
                                          icon={<BiSearch className="icon-lg"/>}/>
 
-                <BottomNavigationBarItem link="/trips/-999" active={props.selected == 'trips'}
+                <BottomNavigationBarItem link={`/trips/${userId}`} active={props.selected == 'trips'}
                                          icon={<BiCar className="icon-lg"/>}/>
 
-                <BottomNavigationBarItem link="/create/-999" active={props.selected == 'create'}
+                <BottomNavigationBarItem link={`/create/${userId}`} active={props.selected == 'create'}
                                          icon={<BiPlus className="icon-lg"/>}/>
                 
-                <BottomNavigationBarItem link="/chat/-999" active={props.selected == 'chat'}
+                <BottomNavigationBarItem link={`chat/${userId}`} active={props.selected == 'chat'}
                                          icon={<BiChat className="icon-lg"/>}/>
 
-                <BottomNavigationBarItem link="/profile/-999" active={props.selected == 'profile'}
+                <BottomNavigationBarItem link={`profile/${userId}`} active={props.selected == 'profile'}
                                          icon={<BiUser className="icon-lg"/>}/>
                 
             </ul>
