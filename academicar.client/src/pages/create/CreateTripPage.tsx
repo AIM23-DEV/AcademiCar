@@ -29,20 +29,21 @@ function getAddress(addressStr: string): IAddress {
         latitude: "",
     };
 }
+
 function getDate(dateStr: string, timeStr: string): Date {
     const dateFields = dateStr.split('-');
     const timeFields = timeStr.split(':');
 
     if (dateFields.length != 3 || timeFields.length != 2)
-        return new Date(2020, 1, 1, 12, 0,0)
+        return new Date(2020, 1, 1, 12, 0, 0)
 
     const year = Number(dateFields[0])
     const month = Number(dateFields[1])
     const day = Number(dateFields[2])
     const hours = Number(timeFields[0])
     const minutes = Number(timeFields[1])
-    
-    return new Date(year, month-1, day, hours, minutes, 0);
+
+    return new Date(year, month - 1, day, hours, minutes, 0);
 }
 
 export const CreateTripPage = () => {
@@ -54,7 +55,7 @@ export const CreateTripPage = () => {
     const paginationNextButtonText = t("pages/create:Pagination.button_next");
     SetPageTitle(pageTitle);
 
-    const { loggedInUserId } = useParams();
+    const {loggedInUserId} = useParams();
     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(1);
     const [startAddress, setStartAddress] = useState<string>();
@@ -76,7 +77,7 @@ export const CreateTripPage = () => {
     const createAddress = async (address: IAddress): Promise<IAddress> => {
         const response = await fetch(`https://localhost:5173/api/create/address`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(address)
         });
 
@@ -115,10 +116,10 @@ export const CreateTripPage = () => {
 
             const tripResponse = await fetch(`https://localhost:5173/api/create/trip`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(newTrip)
             });
-            
+
             // Create GroupChat
             const createdTrip = await tripResponse.json();
             const newGroupChat: IGroupChat = {
@@ -131,26 +132,25 @@ export const CreateTripPage = () => {
 
             const groupChatResponse = await fetch(`https://localhost:5173/api/create/groupchat`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(newGroupChat)
             });
             const createdGroupChat = await groupChatResponse.json();
-            if (createdGroupChat.id == createdTrip.id)
-            {
+            if (createdGroupChat.id == createdTrip.id) {
                 // finish
                 alert('Trip created successfully!');
                 navigate('/trips/index/' + loggedInUserId);
             }
-            
+
         } catch (error) {
             setError(`There was an error: ${error}`);
             console.error("Error:", error);
         }
     };
-    
+
     if (error) return <div>{`There was an error: ${error}`}</div>
     if (!loggedInUserId || (loggedInUserId && loggedInUserId == "undefined")) return <div>Invalid user!</div>
-    
+
     const renderCurrentSection = () => {
         switch (currentPage) {
             case 1:
@@ -158,11 +158,11 @@ export const CreateTripPage = () => {
                     <TripRouteCreationForm
                         startAddress={startAddress}
                         endAddress={endAddress}
-    
+
                         setStartAddress={setStartAddress}
                         setEndAddress={setEndAddress}
                     />
-                )                
+                )
             case 2:
                 return (
                     <TripTimeCreationForm
@@ -217,26 +217,29 @@ export const CreateTripPage = () => {
                 )
         }
     };
-    
+
     // Render
     return (
         <>
             <TitleBar text={pageTitle} hasBackAction={true}/>
 
-            {renderCurrentSection()}
+            <div className="w-full flex flex-col space-y-6 mt-6 mb-24">
+                {renderCurrentSection()}
 
-            <Pagination
-                page={currentPage}
-                setPage={setCurrentPage}
-                totalPages={4}
-                showPages={true}
-                
-                textPage={paginationPageText}
-                textPrev={paginationPreviousButtonText}
-                textNext={paginationNextButtonText}
-            />
+                <Pagination
+                    page={currentPage}
+                    setPage={setCurrentPage}
+                    totalPages={4}
+                    showPages={true}
+
+                    textPage={paginationPageText}
+                    textPrev={paginationPreviousButtonText}
+                    textNext={paginationNextButtonText}
+                />
+            </div>
 
             <BottomNavigationBar selected="create"/>
         </>
-    );
+    )
+        ;
 };

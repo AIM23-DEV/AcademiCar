@@ -1,6 +1,7 @@
-import { Input } from "../../../components/FormFields.tsx";
-import { Card } from "../../../components/Cards.tsx";
+import {Input} from "../../../components/FormFields.tsx";
+import {Card} from "../../../components/Cards.tsx";
 import {Dispatch, SetStateAction} from "react";
+import {BiFlag, BiMap} from "react-icons/bi";
 
 interface RouteFormProps {
     label: string;
@@ -8,7 +9,7 @@ interface RouteFormProps {
     fromPlaceholderText: string;
     toLabelText: string;
     toPlaceholderText: string;
-    
+
     fromValue?: string;
     toValue?: string;
 
@@ -20,19 +21,25 @@ export const RouteForm = (props: RouteFormProps) => {
     return (
         <>
             <Card label={props.label}>
-                <Input label={props.fromLabelText}
-                       placeholder={props.fromPlaceholderText}
-                       value={props.fromValue}
-                       onChange={(e) => props.setFromValue(e.target.value)}
-                       required={true}
-                />
-                
-                <Input label={props.toLabelText}
-                       placeholder={props.toPlaceholderText}
-                       value={props.toValue}
-                       onChange={(e) => props.setToValue(e.target.value)}
-                       required={true}
-                />
+                <div className="w-full flex flex-col space-y-4">
+                    <Input label={props.fromLabelText}
+                           placeholder={props.fromPlaceholderText}
+                           value={props.fromValue}
+                           onChange={(e) => props.setFromValue(e.target.value)}
+                           leading={<BiMap className="icon-md"/>}
+                           required
+                           fullWidth
+                    />
+
+                    <Input label={props.toLabelText}
+                           placeholder={props.toPlaceholderText}
+                           value={props.toValue}
+                           onChange={(e) => props.setToValue(e.target.value)}
+                           leading={<BiFlag className="icon-md"/>}
+                           required
+                           fullWidth
+                    />
+                </div>
             </Card>
         </>
     )
