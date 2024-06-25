@@ -17,6 +17,7 @@ import {
 import {useTranslation} from "react-i18next";
 import {Divider} from "../../components/Divider";
 import {useEffect, useState} from "react";
+import {useAuth} from "../../AuthContext.tsx";
 
 const BUTTONS = [
     {textKey: "personalData", icon: BiUser, path: "edit"},
@@ -33,6 +34,7 @@ export const IndexProfilePage = () => {
     const [user, setUser] = useState<IUser>();
     const [error, setError] = useState<string | null>();
     const navigate = useNavigate();
+    const auth = useAuth();
 
     useEffect(() => {
         fetch(`https://localhost:5173/api/admin/users/${loggedInUserId}`)
@@ -90,7 +92,7 @@ export const IndexProfilePage = () => {
                 fullWidth
                 textAlign="center"
                 variant="accent"
-                onClick={() => navigate("/auth/login")}
+                onClick={() => auth.adminLogout().then(() => navigate("/auth/login"))}
                 leading={<BiLogOut className="icon-md"/>}
                 className="mt-6 mb-24"
             />

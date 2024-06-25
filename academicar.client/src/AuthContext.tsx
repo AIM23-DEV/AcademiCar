@@ -1,5 +1,6 @@
-﻿import { createContext, ReactElement, ReactNode, useEffect, useContext, useState } from 'react';
+﻿import {createContext, ReactElement, ReactNode, useEffect, useContext, useState} from 'react';
 import axios from 'axios';
+import {useNavigate} from 'react-router-dom';
 
 interface AuthContextProps {
     user: User | null;
@@ -7,6 +8,7 @@ interface AuthContextProps {
     logout: () => void;
     selectIdP: () => void;
     adminLogin: (username: string, password: string) => Promise<void>;
+    adminLogout: () => Promise<void>;
 }
 
 interface User {
@@ -20,16 +22,20 @@ interface User {
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
-export const AuthProvider = ({ children }: { children: ReactNode }): ReactElement => {
+export const AuthProvider = ({children}: { children: ReactNode }): ReactElement => {
     const [user, setUser] = useState<User | null>(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const checkAuth = async () => {
             try {
-                const response = await axios.get('/api/user', { withCredentials: true });
+                const response = await axios.get('/api/user', {withCredentials: true});
                 setUser(response.data);
             } catch (error) {
-                setUser(null);
+                if (window.location.pathname !== "/auth/login") {
+                    navigate("/auth/login");
+                    await adminLogout();
+                }
             }
         };
         checkAuth();
@@ -56,13 +62,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }): ReactElemen
         }
     };
 
+    const adminLogout = async () => {
+        try {
+            const response = await axios.get('/api/User/Logout');
+            console.log("logout: ", response.data)
+            localStorage.removeItem('userID');
+            setUser(null);
+        } catch (error) {
+            throw new Error('Admin logout failed');
+        }
+    };
+
     const logout = async () => {
         await axios.get('/Saml2/Logout', { withCredentials: true });
         setUser(null);
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, logout, selectIdP, adminLogin }}>
+        <AuthContext.Provider value={{ user, login, logout, selectIdP, adminLogin, adminLogout }}>
             {children}
         </AuthContext.Provider>
     );
