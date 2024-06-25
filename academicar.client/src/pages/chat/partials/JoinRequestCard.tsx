@@ -58,7 +58,7 @@ export const JoinRequestCard = (props: JoinRequestCardProps) => {
             fK_PassengerUser: props.tripRequest?.fK_PotentialPassenger
         };
 
-        fetch(`https://localhost:5173/api/create/tripPassenger`, {
+        fetch(`/api/create/tripPassenger`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(newTripPassenger)
