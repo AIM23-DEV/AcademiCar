@@ -270,6 +270,11 @@ public class ChatController : ControllerBase
             result.Message = "Failed to update request";
             return BadRequest(result);
         }
+        
+        if (tripRequest.Status == "Accepted")
+        {
+            
+        }
 
         result.Message = "Request updated successfully";
         return Ok(result);
