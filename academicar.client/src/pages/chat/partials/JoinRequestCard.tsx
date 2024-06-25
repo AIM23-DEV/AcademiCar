@@ -51,7 +51,19 @@ export const JoinRequestCard = (props: JoinRequestCardProps) => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newGroupChatUser)
             }).then(()=> console.log(newGroupChatUser));
-            
+
+        // Create GroupChatUser
+        const newTripPassenger: ITripPassenger = {
+            fK_Trip: props?.tripId,
+            fK_PassengerUser: props.tripRequest?.fK_PotentialPassenger
+        };
+
+        fetch(`/api/create/tripPassenger`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newTripPassenger)
+        }).then(()=> console.log(newTripPassenger));
+        
         setIsRequestHandled(true);
     }
 
