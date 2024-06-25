@@ -4,7 +4,7 @@ import {useNavigate} from 'react-router-dom';
 
 interface AuthContextProps {
     user: User | null;
-    login: () => void;
+//    login: () => void;
     logout: () => void;
     selectIdP: () => void;
     adminLogin: (username: string, password: string) => Promise<void>;
@@ -41,14 +41,15 @@ export const AuthProvider = ({children}: { children: ReactNode }): ReactElement 
         checkAuth();
     }, []);
 
+    /*
     const login = () => {
         window.location.href = '/Saml2/Login';
     };
-
+    */
     const selectIdP = () => {
         // Optionally, you can add the current URL as a return URL parameter
         const returnUrl = encodeURIComponent(window.location.href);
-        window.location.href = `/api/Account/login?returnUrl=${returnUrl}`;
+        window.location.href = `/saml2/login?returnUrl=${returnUrl}`;
     };
 
     const adminLogin = async (username: string, password: string) => {
@@ -74,12 +75,16 @@ export const AuthProvider = ({children}: { children: ReactNode }): ReactElement 
     };
 
     const logout = async () => {
-        await axios.get('/Saml2/Logout', { withCredentials: true });
-        setUser(null);
+        try {
+            await axios.post('/Saml2/logout', {}, { withCredentials: true });
+            setUser(null);
+        } catch (error) {
+            console.error('Logout failed:', error);
+        }
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, logout, selectIdP, adminLogin, adminLogout }}>
+        <AuthContext.Provider value={{ user, logout, selectIdP, adminLogin }}>
             {children}
         </AuthContext.Provider>
     );

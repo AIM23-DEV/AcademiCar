@@ -14,7 +14,8 @@ namespace AcademiCar.Server.Controllers
         public IActionResult Login()
         {
             // RedirectUri is the URL to redirect to after login, typically the homepage or dashboard
-            return Challenge(new AuthenticationProperties { RedirectUri = "http://localhost:3000" }, Saml2Defaults.Scheme);
+            return Challenge(new AuthenticationProperties { RedirectUri = "https://academicar.net" },
+                Saml2Defaults.Scheme);
         }
 
         // Handles the logout process
@@ -23,7 +24,7 @@ namespace AcademiCar.Server.Controllers
         {
             // Sign out the user from the application
             await HttpContext.SignOutAsync();
-            return Redirect("http://localhost:3000");
+            return Redirect("https://academicar.net");
         }
 
         // Returns information about the authenticated user
@@ -38,6 +39,7 @@ namespace AcademiCar.Server.Controllers
                     Claims = User.Claims.Select(c => new { c.Type, c.Value })
                 });
             }
+
             return Unauthorized();
         }
 
@@ -51,7 +53,7 @@ namespace AcademiCar.Server.Controllers
             {
                 // Authentication was successful
                 // Redirect to the appropriate page
-                return Redirect("http://localhost:3000");
+                return Redirect("https://academicar.net");
             }
 
             // Authentication failed
