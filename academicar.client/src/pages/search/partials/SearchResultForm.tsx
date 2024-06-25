@@ -3,7 +3,7 @@ import {Card} from "../../../components/Cards.tsx";
 import {useTranslation} from "react-i18next";
 import {Divider} from "../../../components/Divider.tsx";
 import {TextLink} from "../../../components/Buttons.tsx";
-import { BiFilter, BiSortAlt2 } from "react-icons/bi";
+import { BiSortAlt2 } from "react-icons/bi";
 import { Menu, MenuButton, MenuItems } from '@headlessui/react'
 
 type SearchResultFormProps = {
@@ -28,7 +28,15 @@ export const SearchResultForm: React.FC<SearchResultFormProps> = ({ radioValue, 
                         type="text"
                         fullWidth
                         placeholder="Strecke"
-                        value={startPoint + " - " + destination}
+                        value={
+                        startPoint && destination
+                            ? `${startPoint} - ${destination}`
+                            : startPoint
+                            ? startPoint
+                            : destination
+                            ? destination
+                            : ''
+                        }
                         className="col-span-full"
                     />
                     <Input
@@ -51,13 +59,13 @@ export const SearchResultForm: React.FC<SearchResultFormProps> = ({ radioValue, 
                 
                 <Divider className="my-5" />
                 
-                <div className="grid grid-cols-2 justify-center items-center">
-                    <TextLink
+                <div className="flex justify-center">
+                    {/*<TextLink
                         link="/search/filter"
                         leading={<BiFilter className="icon"/>}
                         text={t('pages/search:SearchResultsForm.filter')}
                         className="w-full"
-                    />
+                    />*/}
 
                     <Menu>
                         <MenuButton className="text-secondary-600">

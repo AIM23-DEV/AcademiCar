@@ -10,6 +10,7 @@ import { useLocation } from 'react-router-dom';
 import {useEffect, useState} from "react";
 
 interface ExtendedTrip {
+    tripId: number
     startPoint: IAddress,
     startTime: Date,
     endPoint: IAddress,
@@ -117,10 +118,6 @@ export const SearchResultsPage = () => {
         }*/
     }
     
-    extendedTrips.map((a) =>  {
-        console.log(a)
-    })
-    
     sortTrips();
     
     return(
@@ -134,15 +131,17 @@ export const SearchResultsPage = () => {
                     {extendedTrips.map((item) =>
                         <>
                             {(!startPoint && !destination && !time && !date) ||
-                            item.startPoint.street === startPoint ||
-                            item.startPoint.place === startPoint ||
+                            item.startPoint.street.toLowerCase().includes(startPoint.toLowerCase()) ||
+                            item.startPoint.place.toLowerCase().includes(startPoint.toLowerCase()) ||
                             formatTime(item.startTime) === time ||
                             formatDate(item.startTime) === date ||
-                            item.endPoint.street === destination ||
-                            item.endPoint.place === destination ||
+                            item.endPoint.street.toLowerCase().includes(destination.toLowerCase()) ||
+                            item.endPoint.place.toLowerCase().includes(destination.toLowerCase()) ||
                             formatTime(item.endTime) === time ||
                             formatDate(item.endTime) === date ? (
-                                <LinkCard>
+                                <LinkCard
+                                    link={"/trips/" + item.driver.id + "/" + item.tripId}
+                                >
                                     <div>
                                         <div className="flex justify-between items-center">
                                             <div className="flex flex-row gap-4">
