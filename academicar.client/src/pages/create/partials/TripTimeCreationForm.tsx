@@ -2,6 +2,7 @@ import {useTranslation} from "react-i18next";
 import {Card} from "../../../components/Cards.tsx";
 import {Input} from "../../../components/FormFields.tsx";
 import {StopsTimeInputCardList} from "./StopsTimeInputCardList.tsx";
+import {BiCalendar, BiTime} from "react-icons/bi";
 
 interface TripTimeCreationFormProps {
     startDate?: string;
@@ -25,50 +26,62 @@ export const TripTimeCreationForm = (props: TripTimeCreationFormProps) => {
     const arrivalTimeLabelText = t("pages/create:CreateTripPage.label_arrival_time");
 
     return (
-        <div className="w-full flex flex-col items-center">
+        <div className="w-full flex flex-col items-center space-y-6">
             <Card label={startTimeLabelText}>
-                <Input
-                    type="date"
-                    label={dateInputLabelText}
-                    value={props.startDate}
-                    onChange={(e) => props.setStartDate(e.target.value)}
-                />
-                
-                <Input
-                    type="time"
-                    label={timeInputLabelText}
-                    value={props.startTime}
-                    onChange={(e) => props.setStartTime(e.target.value)}
-                />
+                <div className="w-full flex flex-col space-y-4">
+                    <Input
+                        type="date"
+                        label={dateInputLabelText}
+                        value={props.startDate}
+                        leading={<BiCalendar className="icon-md"/>}
+                        fullWidth
+                        onChange={(e) => props.setStartDate(e.target.value)}
+                    />
+
+                    <Input
+                        type="time"
+                        label={timeInputLabelText}
+                        value={props.startTime}
+                        leading={<BiTime className="icon-md"/>}
+                        fullWidth
+                        onChange={(e) => props.setStartTime(e.target.value)}
+                    />
+                </div>
             </Card>
 
             {/* Stops disabled for now */}
             <>
-            {
-                false ? 
-                    <StopsTimeInputCardList
-                        label={"Test Stop"}
-                        stopReachedInputLabelText={stopReachedInputLabelText}
-                        stopContinueInputLabelText={stopContinueInputLabelText}
-                    />
-                : ''
-            }
+                {
+                    false ?
+                        <StopsTimeInputCardList
+                            label={"Test Stop"}
+                            stopReachedInputLabelText={stopReachedInputLabelText}
+                            stopContinueInputLabelText={stopContinueInputLabelText}
+                        />
+                        : ''
+                }
             </>
 
             <Card label={arrivalTimeLabelText}>
-                <Input
-                    type="date"
-                    label={dateInputLabelText}
-                    value={props.endDate}
-                    onChange={(e) => props.setEndDate(e.target.value)}
-                />
+                <div className="w-full flex flex-col space-y-4">
+                    <Input
+                        type="date"
+                        label={dateInputLabelText}
+                        value={props.endDate}
+                        leading={<BiCalendar className="icon-md"/>}
+                        fullWidth
+                        onChange={(e) => props.setEndDate(e.target.value)}
+                    />
 
-                <Input
-                    type="time"
-                    label={timeInputLabelText}
-                    value={props.endTime}
-                    onChange={(e) => props.setEndTime(e.target.value)}
-                />
+                    <Input
+                        type="time"
+                        label={timeInputLabelText}
+                        value={props.endTime}
+                        leading={<BiTime className="icon-md"/>}
+                        fullWidth
+                        onChange={(e) => props.setEndTime(e.target.value)}
+                    />
+                </div>
             </Card>
         </div>
     );

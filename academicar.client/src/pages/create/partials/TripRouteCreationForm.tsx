@@ -7,8 +7,8 @@ interface TripRouteCreationFormProps {
     startAddress?: string;
     endAddress?: string;
 
-    setStartAddress: Dispatch<SetStateAction<string | undefined>>;
-    setEndAddress: Dispatch<SetStateAction<string | undefined>>;
+    setStartAddress: Dispatch<SetStateAction<string>>;
+    setEndAddress: Dispatch<SetStateAction<string>>;
 }
 
 export const TripRouteCreationForm = (props: TripRouteCreationFormProps) => {

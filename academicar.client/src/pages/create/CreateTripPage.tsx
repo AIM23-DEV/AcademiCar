@@ -1,4 +1,4 @@
-﻿import {useState} from 'react';
+﻿import {useEffect, useState} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
 import {useTranslation} from "react-i18next";
 import SetPageTitle from "../../hooks/set_page_title.tsx";
@@ -10,6 +10,10 @@ import {TripPricingCreationForm} from "./partials/TripPricingCreationForm.tsx";
 import {TripTimeCreationForm} from "./partials/TripTimeCreationForm.tsx";
 import {BottomNavigationBar} from "../../components/BottomNavigationBar.tsx";
 import {Pagination} from "../../components/Pagination.tsx";
+
+export type VehicleOptions = {
+    [key: number]: string;
+}
 
 function getAddress(addressStr: string): IAddress {
     const addressFields = addressStr.split(' ');
@@ -58,16 +62,31 @@ export const CreateTripPage = () => {
     const {loggedInUserId} = useParams();
     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(1);
-    const [startAddress, setStartAddress] = useState<string>();
-    const [endAddress, setEndAddress] = useState<string>();
-    const [startDate, setStartDate] = useState<string>();
-    const [startTime, setStartTime] = useState<string>();
-    const [endDate, setEndDate] = useState<string>();
-    const [endTime, setEndTime] = useState<string>();
-    const [tripVehicleId, setTripVehicleId] = useState<number>();
-    const [availableSeats, setAvailableSeats] = useState(0);
-    const [price, setPrice] = useState(0);
+    const [startAddress, setStartAddress] = useState<string>("");
+    const [endAddress, setEndAddress] = useState<string>("");
+    const [startDate, setStartDate] = useState<string>("");
+    const [startTime, setStartTime] = useState<string>("");
+    const [endDate, setEndDate] = useState<string>("");
+    const [endTime, setEndTime] = useState<string>("");
+    const [tripVehicleId, setTripVehicleId] = useState<number | undefined>();
+    const [availableSeats, setAvailableSeats] = useState<number>(0);
+    const [price, setPrice] = useState<number>(0);
     const [error, setError] = useState<string | null>();
+    const [vehicleOptions, setVehicleOptions] = useState<VehicleOptions>({});
+
+    useEffect(() => {
+        fetch(`https://localhost:5173/api/create/vehicles/${loggedInUserId}`)
+            .then(response => response.json())
+            .then((fetchedVehicles: IVehicle[]) => {
+                const options = fetchedVehicles.reduce((options: VehicleOptions, vehicle) => {
+                    const key = vehicle.id ?? -999
+                    options[key] = vehicle.type;
+                    return options;
+                }, {});
+                setVehicleOptions(options);
+            })
+            .catch(error => console.error(error));
+    }, []);
 
     // Buttons
     function isDataReady(): boolean {
@@ -153,16 +172,6 @@ export const CreateTripPage = () => {
 
     const renderCurrentSection = () => {
         switch (currentPage) {
-            case 1:
-                return (
-                    <TripRouteCreationForm
-                        startAddress={startAddress}
-                        endAddress={endAddress}
-
-                        setStartAddress={setStartAddress}
-                        setEndAddress={setEndAddress}
-                    />
-                )
             case 2:
                 return (
                     <TripTimeCreationForm
@@ -182,6 +191,7 @@ export const CreateTripPage = () => {
                     <TripVehicleCreationForm
                         driverId={loggedInUserId}
                         vehicleId={tripVehicleId}
+                        vehicleOptions={vehicleOptions}
                         availableSeats={availableSeats}
 
                         setVehicleId={setTripVehicleId}
@@ -194,14 +204,6 @@ export const CreateTripPage = () => {
                         <TripPricingCreationForm
                             price={price}
                             setPrice={setPrice}
-                        />
-
-                        <Button
-                            disabled={!isDataReady()}
-                            type="submit"
-                            variant="primary"
-                            text={createButtonText}
-                            onClick={createTrip}
                         />
                     </>
                 );
@@ -225,7 +227,9 @@ export const CreateTripPage = () => {
 
             <div className="w-full flex flex-col space-y-6 mt-6 mb-24">
                 {renderCurrentSection()}
+            </div>
 
+            <div className="fixed bottom-20 inset-x-6 space-y-2">
                 <Pagination
                     page={currentPage}
                     setPage={setCurrentPage}
@@ -235,6 +239,17 @@ export const CreateTripPage = () => {
                     textPage={paginationPageText}
                     textPrev={paginationPreviousButtonText}
                     textNext={paginationNextButtonText}
+                    button={currentPage === 4 ?
+                        <Button
+                            disabled={!isDataReady()}
+                            type="submit"
+                            variant="primary"
+                            text={createButtonText}
+                            onClick={createTrip}
+                            fullWidth
+                            className="p-3"
+                        />
+                        : undefined}
                 />
             </div>
 

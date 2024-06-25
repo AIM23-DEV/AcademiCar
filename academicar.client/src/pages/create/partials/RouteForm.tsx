@@ -13,8 +13,8 @@ interface RouteFormProps {
     fromValue?: string;
     toValue?: string;
 
-    setFromValue: Dispatch<SetStateAction<string | undefined>>;
-    setToValue: Dispatch<SetStateAction<string | undefined>>;
+    setFromValue: Dispatch<SetStateAction<string>>;
+    setToValue: Dispatch<SetStateAction<string>>;
 }
 
 export const RouteForm = (props: RouteFormProps) => {

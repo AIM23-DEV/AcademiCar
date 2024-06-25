@@ -10,6 +10,7 @@ import {TripRouteCreationForm} from "./partials/TripRouteCreationForm.tsx";
 import {TripVehicleCreationForm} from "./partials/TripVehicleCreationForm.tsx";
 import {TripPricingCreationForm} from "./partials/TripPricingCreationForm.tsx";
 import {TripTimeCreationForm} from "./partials/TripTimeCreationForm.tsx";
+import {VehicleOptions} from "./CreateTripPage.tsx";
 
 function getAddressString(address: IAddress): string {
     return `${address.street} ${address.number} ${address.zip} ${address.place}`;
@@ -84,38 +85,53 @@ export const UpdateTripPage = () => {
     // consts
     const { loggedInUserId, tripId } = useParams();
     const [trip, setTrip] = useState<ITrip>();
-    const [startAddress, setStartAddress] = useState<string>();
-    const [endAddress, setEndAddress] = useState<string>();
-    const [startDate, setStartDate] = useState<string>();
-    const [startTime, setStartTime] = useState<string>();
-    const [endDate, setEndDate] = useState<string>();
-    const [endTime, setEndTime] = useState<string>();
-    const [tripVehicleId, setTripVehicleId] = useState<number>();
+    const [startAddress, setStartAddress] = useState<string>("");
+    const [endAddress, setEndAddress] = useState<string>("");
+    const [startDate, setStartDate] = useState<string>("");
+    const [startTime, setStartTime] = useState<string>("");
+    const [endDate, setEndDate] = useState<string>("");
+    const [endTime, setEndTime] = useState<string>("");
+    const [tripVehicleId, setTripVehicleId] = useState<number | undefined>();
     const [availableSeats, setAvailableSeats] = useState(0);
     const [price, setPrice] = useState(0);
     const [error, setError] = useState<string | null>();
+    const [vehicleOptions, setVehicleOptions] = useState<VehicleOptions>({});
+
+    useEffect(() => {
+        fetch(`https://localhost:5173/api/create/vehicles/${loggedInUserId}`)
+            .then(response => response.json())
+            .then((fetchedVehicles: IVehicle[]) => {
+                const options = fetchedVehicles.reduce((options: VehicleOptions, vehicle) => {
+                    const key = vehicle.id ?? -999
+                    options[key] = vehicle.type;
+                    return options;
+                }, {});
+                setVehicleOptions(options);
+            })
+            .catch(error => console.error(error));
+    }, []);
 
     // Loading
     useEffect(() => {
         fetch(`https://localhost:5173/api/create/${tripId}`)
-        .then(response => response.json())
-        .then(data => {
-            setTrip(data);
-            if (trip)
-            {
-                setStartDate(getDateString(trip.startTime))
-                setStartTime(getTimeString(trip.startTime))
-                setEndDate(getDateString(trip.endTime))
-                setEndTime(getTimeString(trip.endTime))
-                setTripVehicleId(trip.fK_Vehicle);
-                setAvailableSeats(trip.availableSeats);
-                setPrice(trip.price);
-            }
-        })
-        .catch(error => {
-            setError("There was an error fetching the trip details!");
-            console.error(error);
-        });
+            .then(response => response.json())
+            .then(data => {
+                setTrip(data);
+                if (trip)
+                {
+                    setStartDate(getDateString(trip.startTime))
+                    setStartTime(getTimeString(trip.startTime))
+                    setEndDate(getDateString(trip.endTime))
+                    setEndTime(getTimeString(trip.endTime))
+                    setTripVehicleId(trip.fK_Vehicle);
+                    setAvailableSeats(trip.availableSeats);
+                    setPrice(trip.price);
+                }
+            })
+            .catch(error => {
+                setError("There was an error fetching the trip details!");
+                console.error(error);
+            });
     }, [tripId]);
 
     if (!loggedInUserId) return <div>Invalid user!</div>
@@ -129,7 +145,7 @@ export const UpdateTripPage = () => {
             .catch(error => {
                 setError("There was an error fetching the start address!");
                 console.error(error);
-        });
+            });
     }
     if (trip && !endAddress) {
         fetch(`https://localhost:5173/api/create/address/${trip?.fK_EndAddress}`)
@@ -138,9 +154,9 @@ export const UpdateTripPage = () => {
             .catch(error => {
                 setError("There was an error fetching the end address!");
                 console.error(error);
-        });
+            });
     }
-    
+
     // Buttons
     function isDataReady(): boolean {
         return !!(startAddress && endAddress && startDate && startTime && endDate && endTime && tripVehicleId);
@@ -199,68 +215,78 @@ export const UpdateTripPage = () => {
             history.back();
         }
     };
-    
+
     // Render
     return (
         <>
-            <TitleBar text={pageTitle} hasBackAction={true} />
-            
-            <Tabs
-                items={[
-                    {name: routeTabText},
-                    {name: timeTabText},
-                    {name: vehicleTabText},
-                    {name: pricingTabText}
-                ]}
-                children={            
-                    <TabPanels>
-                        <TabPanel>
-                            <TripRouteCreationForm
-                                startAddress={startAddress}
-                                endAddress={endAddress}
+            <TitleBar text={pageTitle} hasBackAction={true}/>
 
-                                setStartAddress={setStartAddress}
-                                setEndAddress={setEndAddress}
-                            />
-                        </TabPanel>
-                        
-                        <TabPanel>
-                            <TripTimeCreationForm
-                                startDate={startDate}
-                                startTime={startTime}
-                                endDate={endDate}
-                                endTime={endTime}
-                                
-                                setStartDate={setStartDate}
-                                setStartTime={setStartTime}
-                                setEndDate={setEndDate}
-                                setEndTime={setEndTime}
-                            />
-                        </TabPanel>
-                        
-                        <TabPanel>
-                            <TripVehicleCreationForm
-                                driverId={loggedInUserId}
-                                vehicleId={trip.fK_Vehicle}
-                                availableSeats={trip.availableSeats}
-                                
-                                setVehicleId={setTripVehicleId}
-                                setAvailableSeats={setAvailableSeats}
-                            />
-                        </TabPanel>
-                        
-                        <TabPanel>
-                            <TripPricingCreationForm
-                                price={price}
-                                
-                                setPrice={setPrice}
-                            />
-                        </TabPanel>
-                    </TabPanels>
-                }
-            />
-            
-            <Button type="submit" variant="primary" text={updateButtonText} onClick={updateTrip} />
+            <div className="w-full flex flex-col space-y-6 mt-6 mb-24">
+                <Tabs
+                    items={[
+                        {name: routeTabText},
+                        {name: timeTabText},
+                        {name: vehicleTabText},
+                        {name: pricingTabText}
+                    ]}
+                    children={
+                        <TabPanels>
+                            <TabPanel>
+                                <TripRouteCreationForm
+                                    startAddress={startAddress}
+                                    endAddress={endAddress}
+
+                                    setStartAddress={setStartAddress}
+                                    setEndAddress={setEndAddress}
+                                />
+                            </TabPanel>
+
+                            <TabPanel>
+                                <TripTimeCreationForm
+                                    startDate={startDate}
+                                    startTime={startTime}
+                                    endDate={endDate}
+                                    endTime={endTime}
+
+                                    setStartDate={setStartDate}
+                                    setStartTime={setStartTime}
+                                    setEndDate={setEndDate}
+                                    setEndTime={setEndTime}
+                                />
+                            </TabPanel>
+
+                            <TabPanel>
+                                <TripVehicleCreationForm
+                                    driverId={loggedInUserId}
+                                    vehicleId={trip.fK_Vehicle}
+                                    vehicleOptions={vehicleOptions}
+                                    availableSeats={trip.availableSeats}
+
+                                    setVehicleId={setTripVehicleId}
+                                    setAvailableSeats={setAvailableSeats}
+                                />
+                            </TabPanel>
+
+                            <TabPanel>
+                                <TripPricingCreationForm
+                                    price={price}
+
+                                    setPrice={setPrice}
+                                />
+                            </TabPanel>
+                        </TabPanels>
+                    }
+                />
+            </div>
+
+            <div className="fixed bottom-6 inset-x-6 space-y-2">
+                <Button type="submit"
+                        disabled={!isDataReady()}
+                        variant="primary" 
+                        text={updateButtonText} 
+                        onClick={updateTrip} 
+                        fullWidth/>
+            </div>
         </>
     );
 };
