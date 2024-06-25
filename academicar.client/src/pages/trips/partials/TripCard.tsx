@@ -130,7 +130,7 @@ export const TripCard: React.FC<TripCardProps> = (props:TripCardProps) => {
         if (!props.driverId)
             return;
         
-        fetch(`https://localhost:5173/api/trip/tripCard/driver/${props.driverId}`)
+        fetch(`/api/trip/tripCard/driver/${props.driverId}`)
             .then(response => response.json())
             .then((fetchedDriver: IUser) => {
                 setDriver(fetchedDriver);
@@ -141,7 +141,7 @@ export const TripCard: React.FC<TripCardProps> = (props:TripCardProps) => {
         if (!props.tripId)
             return;
         
-        fetch(`https://localhost:5173/api/trip/tripCard/stops/${props.tripId}`)
+        fetch(`/api/trip/tripCard/stops/${props.tripId}`)
             .then(response => response.json())
             .then((fetchedStops: Stop[]) => {
                 setStops(fetchedStops);
@@ -152,7 +152,7 @@ export const TripCard: React.FC<TripCardProps> = (props:TripCardProps) => {
         if (!props.tripId)
             return;
         
-        fetch(`https://localhost:5173/api/trip/tripCard/start/${props.tripId}`)
+        fetch(`/api/trip/tripCard/start/${props.tripId}`)
             .then(response => response.json())
             .then((fetchedStops: Stop) => {
                 setStartAddress(fetchedStops);
@@ -163,7 +163,7 @@ export const TripCard: React.FC<TripCardProps> = (props:TripCardProps) => {
         if (!props.tripId)
             return;
         
-        fetch(`https://localhost:5173/api/trip/tripCard/end/${props.tripId}`)
+        fetch(`/api/trip/tripCard/end/${props.tripId}`)
             .then(response => response.json())
             .then((fetchedStops: Stop) => {
                 setEndAddress(fetchedStops);

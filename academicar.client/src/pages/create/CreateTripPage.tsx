@@ -74,7 +74,7 @@ export const CreateTripPage = () => {
     }
 
     const createAddress = async (address: IAddress): Promise<IAddress> => {
-        const response = await fetch(`https://localhost:5173/api/create/address`, {
+        const response = await fetch(`/api/create/address`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(address)
@@ -113,7 +113,7 @@ export const CreateTripPage = () => {
                 status: "Open"
             };
 
-            const tripResponse = await fetch(`https://localhost:5173/api/create/trip`, {
+            const tripResponse = await fetch(`/api/create/trip`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newTrip)
@@ -129,7 +129,7 @@ export const CreateTripPage = () => {
                 lastMessageContent: ""
             };
 
-            const groupChatResponse = await fetch(`https://localhost:5173/api/create/groupchat`, {
+            const groupChatResponse = await fetch(`/api/create/groupchat`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newGroupChat)

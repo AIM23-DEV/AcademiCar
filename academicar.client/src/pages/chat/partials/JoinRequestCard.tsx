@@ -23,7 +23,7 @@ export const JoinRequestCard = (props: JoinRequestCardProps) => {
         if (props.tripRequest)
             props.tripRequest.status = "Accepted";
         
-        fetch(`https://localhost:5173/api/chat/chat/updateRequest`, {
+        fetch(`/api/chat/chat/updateRequest`, {
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(props.tripRequest)
@@ -38,7 +38,7 @@ export const JoinRequestCard = (props: JoinRequestCardProps) => {
         if (props.tripRequest)
             props.tripRequest.status = "Declined";
 
-        fetch(`https://localhost:5173/api/chat/chat/updateRequest`, {
+        fetch(`/api/chat/chat/updateRequest`, {
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(props.tripRequest)
