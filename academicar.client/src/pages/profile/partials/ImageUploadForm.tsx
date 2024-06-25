@@ -38,7 +38,7 @@ export const ImageUploadForm = () => {
     };
 
     
-        async function handleFileUpload() {
+        const handleFileUpload = () => {
             if (sasTokenUrl === '') return;
         
             convertFileToArrayBuffer(selectedFile as File)
@@ -80,27 +80,21 @@ export const ImageUploadForm = () => {
                 });
             console.log(`list = ${list.toString()}`);
         }
-
-
+        
         const convertStringToArrayBuffer = (str: string) => {
             const textEncoder = new TextEncoder();
             return textEncoder.encode(str).buffer;
         };
-
   
-    function convertFileToArrayBuffer(
-        file: File
-    ): Promise<ArrayBuffer | null> {
+    function convertFileToArrayBuffer(file: File): Promise<ArrayBuffer | null> {
         return new Promise((resolve, reject) => {
             if (!file || !file.name) {
                 reject(new Error('Invalid or missing file.'));
             }
-
             const reader = new FileReader();
 
             reader.onload = () => {
                 const arrayBuffer: ArrayBuffer | null | string = reader.result;
-
                 if (arrayBuffer === null) {
                     resolve(null);
                     return;
@@ -113,14 +107,11 @@ export const ImageUploadForm = () => {
                     reject(new Error('Failed to read file into ArrayBuffer.'));
                     return;
                 }
-
                 resolve(arrayBuffer);
             };
-
             reader.onerror = () => {
                 reject(new Error('Error reading file.'));
             };
-
             reader.readAsArrayBuffer(file);
         });
     }
