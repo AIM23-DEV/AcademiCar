@@ -13,6 +13,7 @@ import {TextButton} from "../../components/Buttons.tsx";
 import React, {useEffect, useState} from "react";
 import {Divider} from "../../components/Divider.tsx";
 import {useNavigate} from "react-router-dom";
+import {useAuth} from "../../AuthContext.tsx";
 
 
 interface RouteProps {
@@ -331,6 +332,7 @@ export const ShowTripPage = () => {
     SetPageTitle(pageTitle);
 
     const navigate = useNavigate();
+    const auth = useAuth();
     const [trip, setTrip] = useState<ITrip>();
     const [startAddress, setStartAddress] = useState<IAddress>();
     const [endAddress, setEndAddress] = useState<IAddress>();
@@ -367,7 +369,7 @@ export const ShowTripPage = () => {
             });
     }, [tripId]);
 
-    if (!loggedInUserId) return <div>Invalid user!</div>;
+    if (!auth.user?.id && !loggedInUserId) return <div>Invalid user!</div>;
     if (error) return <div>{`There was an error: ${error}`}</div>;
     if (!trip) return <div>Loading trip information...</div>;
 
@@ -422,7 +424,7 @@ export const ShowTripPage = () => {
     }
 
     const sendTripRequest = () => {
-        fetch(`/api/chat/CreateTripRequest/${loggedInUserId}/${tripId}`, {method: 'POST'})
+        fetch(`/api/chat/CreateTripRequest/${auth.user?.id}/${tripId}`, {method: 'POST'})
             .then(response => {
                 if (response)
                     alert(tripBookedButtonText);
@@ -451,7 +453,7 @@ export const ShowTripPage = () => {
             </Card>
 
             {
-                trip.fK_Driver == loggedInUserId
+                trip.fK_Driver == auth.user?.id
                     ? <>
                         <Card
                             id="showTripPage_requestsCard"
@@ -560,7 +562,7 @@ export const ShowTripPage = () => {
             </Card>
 
             {
-                trip.fK_Driver == loggedInUserId
+                trip.fK_Driver == auth.user?.id
                     ? <>
                         <Card
                             id="showTripPage_actionsCard"
@@ -580,7 +582,7 @@ export const ShowTripPage = () => {
                                 leading={<BiEdit className="icon"/>}
                                 type="button"
                                 disabled={false}
-                                onClick={() => navigate(`/create/${loggedInUserId}/update/${tripId}`)}
+                                onClick={() => navigate(`/create/${auth.user?.id}/update/${tripId}`)}
                             />
 
                             {
