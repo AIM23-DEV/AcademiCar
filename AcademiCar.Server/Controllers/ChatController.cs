@@ -280,7 +280,8 @@ public class ChatController : ControllerBase
         
         if (tripRequest.Status == "Accepted")
         {
-            
+            var trip = _globalService.TripService.Get(tripRequest.FK_Trip);
+            _globalService.BalanceService.BookAsync(trip.Result.FK_Driver, (decimal)trip.Result.Price);
         }
 
         result.Message = "Request updated successfully";
