@@ -5,6 +5,7 @@ import {Button} from "../../components/Buttons";
 import {Input} from "../../components/FormFields";
 import {useAuth} from "../../AuthContext.tsx";
 import {Toast} from "../../components/Toast.tsx";
+import {useParams} from "react-router-dom";
 
 interface PrefsData {
     musicPrefs?: string;
@@ -20,6 +21,7 @@ export const FaceSheetPage = () => {
     const travelLabelText = t('pages/profile:PersonalDataFaceSheet.communication');
     const saveChangesButtonText = t('pages/profile:PersonalDataFaceSheet.save_changes');
 
+    const { loggedInUserId } = useParams();
     const auth = useAuth();
     const [mPrefs, setMPrefs] = useState<string>("");
     const [iPrefs, setIPrefs] = useState<string>("");
@@ -29,7 +31,7 @@ export const FaceSheetPage = () => {
 
     useEffect(() => {
         if (auth.user?.id ?? null) {
-            fetch(`/api/admin/prefs/${auth.user?.id}`)
+            fetch(`/api/admin/prefs/${loggedInUserId}`)
                 .then(response => response.json())
                 .then((fetchedPrefs: PrefsData) => {
                     setMPrefs(fetchedPrefs?.musicPrefs ?? "");
@@ -53,7 +55,7 @@ export const FaceSheetPage = () => {
             travelPrefs: tPrefs
         }
 
-        fetch(`/api/admin/prefs/update/${auth.user?.id}`, {
+        fetch(`/api/admin/prefs/update/${loggedInUserId}`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(newPrefs)
