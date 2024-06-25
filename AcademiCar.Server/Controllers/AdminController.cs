@@ -12,7 +12,6 @@ namespace AcademiCar.Server.Controllers;
 public class AdminController : ControllerBase
 {
     private readonly IGlobalService _globalService;
-
     public AdminController(IGlobalService globals)
     {
         _globalService = globals;
@@ -290,6 +289,26 @@ public class AdminController : ControllerBase
         }
 
         return Ok(result);
+    }
+    
+    // Trip Detail Page
+    [HttpGet("preferences/travel/{driverId}")]
+    public async Task<IActionResult> GetTravelPreferencesByDriverId(string driverId)
+    {
+        List<TravelPreference?> travelPreferences = new();
+
+        List<Preferences> prefs = await _globalService.PreferencesService.GetByUserId(driverId);
+        if (!prefs.Any()) return Ok(travelPreferences);
+
+        foreach (Preferences pref in prefs)
+        {
+            List<TravelPreference> travelPrefs =
+                await _globalService.TravelPreferenceService.GetByPreferenceId(pref.ID);
+            
+            travelPreferences.AddRange(travelPrefs);
+        }
+        
+        return Ok(travelPreferences);
     }
 }
 

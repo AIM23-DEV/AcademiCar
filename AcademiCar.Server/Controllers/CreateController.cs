@@ -38,6 +38,24 @@ public class CreateController : ControllerBase
         return await _GetNewTripID();
     }
     
+    private async Task<int> _GetNewGroupChatUserID()
+    {
+        int newId = _random.Next(1, 999999999);
+        GroupChatUser? gcu = await _globalService.GroupChatUserService.Get(newId);
+        if (gcu == null) return newId;
+        
+        return await _GetNewGroupChatUserID();
+    }
+    
+    private async Task<int> _GetNewTripPassengerID()
+    {
+        int newId = _random.Next(1, 999999999);
+        TripPassenger? tripPassenger = await _globalService.TripPassengerService.Get(newId);
+        if (tripPassenger == null) return newId;
+        
+        return await _GetNewTripPassengerID();
+    }
+    
     #endregion
     
     
@@ -147,21 +165,22 @@ public class CreateController : ControllerBase
     [HttpPost("groupchatUser")]
     public async Task<IActionResult> CreateGroupChatUser([FromBody] GroupChatUser groupChatUser)
     {
+        GroupChatUser? existingGroupChatUser = _globalService.GroupChatUserService.GetByCorrelation(groupChatUser.FK_User, groupChatUser.FK_GroupChat);
+        if (existingGroupChatUser != null) return NoContent();
+
+        groupChatUser.ID = await _GetNewGroupChatUserID();
         ActionResultResponseModel result = await _globalService.GroupChatUserService.Create(groupChatUser);
-        if (!result.IsSuccess) return Conflict(groupChatUser);
-        
-        GroupChat? insertedGroupChat = await _globalService.GroupChatService.Get(groupChatUser.ID);
-        if (insertedGroupChat == null) return Forbid();
-        
-        return Ok(insertedGroupChat);
+        return Ok(result);
     }
     
     [HttpPost("tripPassenger")]
     public async Task<IActionResult> CreateTripPassenger([FromBody] TripPassenger tripPassenger)
     {
+        TripPassenger? existingTripPassenger = _globalService.TripPassengerService.GetByCorrelation(tripPassenger.FK_PassengerUser, tripPassenger.FK_Trip);
+        if (existingTripPassenger != null) return NoContent();
+
+        tripPassenger.ID = await _GetNewTripPassengerID();
         ActionResultResponseModel result = await _globalService.TripPassengerService.Create(tripPassenger);
-        if (!result.IsSuccess) return Conflict(tripPassenger);
-        
         return Ok(result);
     }
     

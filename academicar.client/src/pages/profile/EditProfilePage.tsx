@@ -4,7 +4,7 @@ import SetPageTitle from "../../hooks/set_page_title";
 import {useTranslation} from "react-i18next";
 import {ImageUploadForm} from "./partials/ImageUploadForm.tsx";
 import {useParams} from "react-router-dom";
-import {Input, RadioCollection, Select} from "../../components/FormFields.tsx";
+import {Input/*/!*, RadioCollection*!/, Select*/} from "../../components/FormFields.tsx";
 import {ChangeEvent, useEffect, useState} from "react";
 
 export const EditProfilePage: React.FC = () => {
@@ -21,8 +21,9 @@ export const EditProfilePage: React.FC = () => {
     const {loggedInUserId} = useParams();
     const [user, setUser] = useState<IUser>();
     const [address, setAddress] = useState<IAddress>();
+    const [stats, setStats] = useState<IStats>();
     const [error, setError] = useState<string | null>();
-    const [sex, setSex] = useState<string>("male");
+    /*const [sex, setSex] = useState<string>("male");*/
 
     useEffect(() => {
         fetch(`/api/admin/users/${loggedInUserId}`)
@@ -39,7 +40,17 @@ export const EditProfilePage: React.FC = () => {
             .then(response => response.json())
             .then((data: IAddress) => setAddress(data))
             .catch(e => {
-                setError(`There was an error fetching the user details: ${e}`);
+                setError(`There was an error fetching the user address: ${e}`);
+                console.error(error);
+            });
+    }
+
+    if (user && !stats) {
+        fetch(`/api/admin/users/stats/${loggedInUserId}`)
+            .then(response => response.json())
+            .then((data: IStats) => setStats(data))
+            .catch(e => {
+                setError(`There was an error fetching the user stats: ${e}`);
                 console.error(error);
             });
     }
@@ -47,6 +58,7 @@ export const EditProfilePage: React.FC = () => {
     if (error) return <div>{error}</div>;
     if (!user) return <div>Loading user...</div>;
     if (!address) return <div>Loading address...</div>;
+    if (!stats) return <div>Loading stats...</div>;
 
     const handleUserInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         const {id, value} = e.target;
@@ -64,18 +76,21 @@ export const EditProfilePage: React.FC = () => {
         }) : undefined);
     };
 
-    const handleSave = () => {
-        fetch(`/api/profile/user/update`, {
+    const handleSave = async (event: any) => {
+        event.preventDefault();
+        // hacky way to get address and stats into user so the request is not denied.
+        let data = {...user, address: address, stats: stats};
+        await fetch(`/api/profile/user/update`, {
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(user)
+            body: JSON.stringify(data)
         })
             .catch(e => {
                 setError(`There was an error saving the user details: ${e}`);
                 console.error(error);
             });
 
-        fetch(`/api/profile/address/update`, {
+        await fetch(`/api/profile/address/update`, {
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(address)
@@ -107,6 +122,7 @@ export const EditProfilePage: React.FC = () => {
                     type="text"
                     value={user.firstName}
                     onChange={handleUserInputChange}
+                    id="firstName"
                     fullWidth
                     className="col-span-full"
                 />
@@ -116,6 +132,7 @@ export const EditProfilePage: React.FC = () => {
                     type="text"
                     value={user.lastName}
                     onChange={handleUserInputChange}
+                    id="lastName"
                     fullWidth
                     className="col-span-full"
                 />
@@ -125,6 +142,7 @@ export const EditProfilePage: React.FC = () => {
                     type="text"
                     value={address.street}
                     onChange={handleAddressInputChange}
+                    id="street"
                     fullWidth
                     className="col-span-full"
                 />
@@ -133,6 +151,7 @@ export const EditProfilePage: React.FC = () => {
                     type="text"
                     value={address.zip}
                     onChange={handleAddressInputChange}
+                    id="zip"
                     fullWidth
                     className="col-span-4"
                 />
@@ -141,6 +160,7 @@ export const EditProfilePage: React.FC = () => {
                     type="text"
                     value={address.place}
                     onChange={handleAddressInputChange}
+                    id="place"
                     fullWidth
                     className="col-span-8"
                 />
@@ -150,6 +170,7 @@ export const EditProfilePage: React.FC = () => {
                     type="text"
                     value={user.phoneNumber}
                     onChange={handleUserInputChange}
+                    id="phoneNumber"
                     fullWidth
                     className="col-span-full"
                 />
@@ -159,21 +180,22 @@ export const EditProfilePage: React.FC = () => {
                     type="text"
                     value={user.email}
                     onChange={handleUserInputChange}
+                    id="email"
                     fullWidth
                     className="col-span-full"
                 />
 
                 {/*TODO expand user entity and interface to support birthdate, gender, nationality (new table), language (new table), study, driver license since*/}
-                <Input
+                {/*<Input
                     label={t('pages/profile:EditProfilePage.birthdate')}
                     type="date"
                     // value={DateTime.now().getTime()}
                     onChange={handleUserInputChange}
                     fullWidth
                     className="col-span-full"
-                />
+                />*/}
 
-                <div className="col-span-full w-full space-y-3">
+                {/*<div className="col-span-full w-full space-y-3">
                     <RadioCollection value={sex} setValue={setSex} label={t('pages/profile:EditProfilePage.gender')}
                                      items={[
                                          {value: "male", label: t('pages/profile:EditProfilePage.gender_male')},
@@ -182,31 +204,31 @@ export const EditProfilePage: React.FC = () => {
                                      ]}
                                      columns={3} className="place-items-center"
                     />
-                </div>
+                </div>*/}
 
                 {/* Todo: ddd options */}
-                <Select label={t('pages/profile:EditProfilePage.nationality')} fullWidth className="col-span-full"/>
+                {/*<Select label={t('pages/profile:EditProfilePage.nationality')} fullWidth className="col-span-full"/>*/}
 
                 {/* Todo: ddd options */}
-                <Select label={t('pages/profile:EditProfilePage.languages')} fullWidth className="col-span-full"/>
+                {/*<Select label={t('pages/profile:EditProfilePage.languages')} fullWidth className="col-span-full"/>*/}
 
-                <Input
+                {/*<Input
                     label={t('pages/profile:EditProfilePage.study_program')}
                     type="text"
                     value="Wirtschaftsinformatik Master"
                     onChange={handleUserInputChange}
                     fullWidth
                     className="col-span-full"
-                />
+                />*/}
 
-                <Input
+                {/*<Input
                     label={t('pages/profile:EditProfilePage.drivers_license_since')}
                     type="date"
                     value="2019-10-27"
                     onChange={handleUserInputChange}
                     fullWidth
                     className="col-span-full"
-                />
+                />*/}
 
                 <Button
                     variant="primary"

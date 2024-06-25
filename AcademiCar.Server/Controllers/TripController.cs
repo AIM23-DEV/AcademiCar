@@ -15,7 +15,6 @@ namespace AcademiCar.Server.Controllers;
 public class TripController : ControllerBase
 {
     private readonly IGlobalService _globalService;
-
     public TripController(IGlobalService globals)
     {
         _globalService = globals;
@@ -110,6 +109,38 @@ public class TripController : ControllerBase
         trips = trips.Where(trip => trip != null && trip.FK_Driver == loggedInUserId && trip.Status == "Open").ToList();
         return Ok(trips);
     }
+
+    [HttpGet("requestUsers/{tripId}")]
+    public async Task<IActionResult> GetRequestUsersByTripId(string tripId)
+    {
+        List<User?> requestUsers = new();
+        List<TripRequest?> tripRequests = await _globalService.TripRequestService.Get();
+        if (!tripRequests.Any()) return Ok(requestUsers);
+        
+        int tripIdAsInt = int.Parse(tripId);
+        tripRequests = tripRequests.Where(tr => tr != null && tr.FK_Trip == tripIdAsInt).ToList();
+        if (!tripRequests.Any()) return Ok(requestUsers);
+
+        foreach (TripRequest request in tripRequests)
+        {
+            User? user = await _globalService.UserService.Get(request.FK_PotentialPassenger);
+            requestUsers.Add(user);
+        }
+
+        return Ok(requestUsers);
+    }
+    
+    [HttpGet("passengers/{tripId}")]
+    public async Task<IActionResult> GetPassengersByTripId(string tripId)
+    {
+        List<TripPassenger?> passengers = await _globalService.TripPassengerService.Get();
+        if (!passengers.Any()) return Ok(passengers);
+        
+        int tripIdAsInt = int.Parse(tripId);
+        passengers = passengers.Where(p => p != null && p.FK_Trip == tripIdAsInt).ToList();
+
+        return Ok(passengers);
+    }
     
     [HttpGet("passenger/{loggedInUserId}")]
     public async Task<IActionResult> GetPassengerTrips(string loggedInUserId)
@@ -187,7 +218,6 @@ public class TripController : ControllerBase
         newStop.FreeSeats = trip.AvailableSeats.ToString();
         
         return Ok(newStop);
-
     }
 
     [HttpPost("Create")]
