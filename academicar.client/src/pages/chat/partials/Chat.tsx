@@ -30,7 +30,7 @@ export const Chat = (props: ChatProps) => {
 
     useEffect(() => {
         const newConnection = new signalR.HubConnectionBuilder()
-            .withUrl("https://localhost:7194/chat/chathub")
+            .withUrl("/chat/chathub")
             .withAutomaticReconnect()
             .build();
 
