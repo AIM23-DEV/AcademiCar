@@ -59,13 +59,13 @@ export const SearchResultForm: React.FC<SearchResultFormProps> = ({ radioValue, 
                 
                 <Divider className="my-5" />
                 
-                <div className="grid grid-cols-2 justify-center items-center">
-                    <TextLink
+                <div className="flex justify-center">
+                    {/*<TextLink
                         link="/search/filter"
                         leading={<BiFilter className="icon"/>}
                         text={t('pages/search:SearchResultsForm.filter')}
                         className="w-full"
-                    />
+                    />*/}
 
                     <Menu>
                         <MenuButton className="text-secondary-600">
