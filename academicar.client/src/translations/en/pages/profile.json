@@ -92,7 +92,11 @@
     "discount": "Discount",
     "discounts": "Discounts",
     "receiveDiscount": "Receive discount",
-    "booking": "Booking"
+    "booking": "Booking",
+    "wheel": "Reifentechnik 24",
+    "car": "Autoservice 1234",
+    "tech": "Laptops 485",
+    "discountText": "Show this voucher on your next visit and you will receive the discount shown below!"
   },
   "StatsPage": {
     "title": "My statistics",

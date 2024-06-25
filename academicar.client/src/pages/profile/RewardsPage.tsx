@@ -2,24 +2,25 @@ import {useTranslation} from "react-i18next";
 import SetPageTitle from "../../hooks/set_page_title.tsx";
 import {TitleBar} from "../../components/TitleBar.tsx";
 import {Card} from "../../components/Cards.tsx";
-import {Button, IconButton} from "../../components/Buttons.tsx";
-import {BiLeaf, BiChevronRight} from "react-icons/bi";
+import {/*Button,*/ IconButton} from "../../components/Buttons.tsx";
+import {BiLeaf, /*BiChevronRight*/} from "react-icons/bi";
 import {Divider} from "../../components/Divider.tsx";
-import React from "react";
+import React, {useState} from "react";
+import {Modal} from "../../components/Modal.tsx";
 
 const DATA = {
     parking: 4,
     discounts: [
         {
-            from: "Reifentechnik 24",
+            modal: "wheel",
             amount: 10
         },
         {
-            from: "Autoservice 1234",
+            modal: "car",
             amount: 15
         },
         {
-            from: "Laptops 485",
+            modal: "tech",
             amount: 30
         }
     ]
@@ -35,6 +36,10 @@ function SafeHtml({html}) {
 export const RewardsPage = () => {
     const [t] = useTranslation();
     const pageTitle = t("pages/profile:RewardsPage.title");
+    const [showModal1, setShowModal1] = useState(false);
+    const [showModal2, setShowModal2] = useState(false);
+    const [showModal3, setShowModal3] = useState(false);
+
     SetPageTitle(pageTitle);
 
     const amount = 4;
@@ -55,12 +60,12 @@ export const RewardsPage = () => {
                             <div className="flex text-left subtitle">
                                 {t("pages/profile:RewardsPage.parking.text", {amount: amount})}
                             </div>
-                            <Button
+                            {/*<Button
                                 variant="outline"
                                 text={t("pages/profile:RewardsPage.booking")}
                                 trailing={<BiChevronRight className="icon"/>}
                                 onClick={() => alert("TODO")}
-                            />
+                            />*/}
                         </div>
                     </Card>
                 ) : null}
@@ -75,12 +80,22 @@ export const RewardsPage = () => {
                                 <React.Fragment key={index}>
                                     <div className="w-full flex justify-between items-center gap-2">
                                         <div className="subtitle">
-                                            {discount.from} - {discount.amount}% {t("pages/profile:RewardsPage.discount")}
+                                            {t("pages/profile:RewardsPage." + discount.modal)} - {discount.amount}% {t("pages/profile:RewardsPage.discount")}
                                         </div>
                                         <IconButton
                                             variant="primary"
                                             icon={<BiLeaf className="icon-md"/>}
-                                            onClick={() => alert(t("pages/profile:RewardsPage.receiveDiscount"))}
+                                            onClick={() => {
+                                                if (discount.modal == "wheel") {
+                                                    setShowModal1(true)
+                                                }
+                                                else if (discount.modal == "car") {
+                                                    setShowModal2(true)
+                                                }
+                                                else if (discount.modal == "tech") {
+                                                    setShowModal3(true)
+                                                }
+                                            }}
                                         />
                                     </div>
 
@@ -93,6 +108,42 @@ export const RewardsPage = () => {
                     </Card>
                 ) : null}
             </div>
+
+            <Modal open={showModal1} setOpen={setShowModal1}>
+                <div className="text-center">
+                    <div className="headline-2 pb-5">{t("pages/profile:RewardsPage.wheel")}</div>
+                    <div>
+                        {t("pages/profile:RewardsPage.discountText")}
+                    </div>
+                    <div className="text-2xl font-bold text-primary-600 pt-10">
+                        {DATA.discounts[0].amount} % {t("pages/profile:RewardsPage.discount")}
+                    </div>
+                </div>
+            </Modal>
+
+            <Modal open={showModal2} setOpen={setShowModal2}>
+                <div className="text-center">
+                    <div className="headline-2 pb-5">{t("pages/profile:RewardsPage.car")}</div>
+                    <div>
+                        {t("pages/profile:RewardsPage.discountText")}
+                    </div>
+                    <div className="text-2xl font-bold text-primary-600 pt-10">
+                        {DATA.discounts[1].amount} % {t("pages/profile:RewardsPage.discount")}
+                    </div>
+                </div>
+            </Modal>
+
+            <Modal open={showModal3} setOpen={setShowModal3}>
+                <div className="text-center">
+                    <div className="headline-2 pb-5">{t("pages/profile:RewardsPage.tech")}</div>
+                    <div>
+                        {t("pages/profile:RewardsPage.discountText")}
+                    </div>
+                    <div className="text-2xl font-bold text-primary-600 pt-10">
+                        {DATA.discounts[2].amount} % {t("pages/profile:RewardsPage.discount")}
+                    </div>
+                </div>
+            </Modal>
         </>
     )
 }
