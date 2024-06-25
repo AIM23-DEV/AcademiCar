@@ -17,6 +17,7 @@ export const TripChatPage = () => {
     const [messages, setMessages] = useState<IGroupMessage[]>([]);
     const [filteredMessages, setFilteredMessages] = useState<MessageProps[]>([]);
     const [chat, setChat] = useState<IGroupChat>();
+    const {loggedInUserId} = useParams();
 
     // Fetch chat
     useEffect(() => {
@@ -67,7 +68,7 @@ export const TripChatPage = () => {
             />
 
             <div className="w-full flex flex-col items-center mt-24">
-                <Chat userId="-999" chatId={chatId} messages={filteredMessages} type="group"/>
+                <Chat userId={loggedInUserId} chatId={chatId} messages={filteredMessages} type="group"/>
             </div>
         </>
     );
