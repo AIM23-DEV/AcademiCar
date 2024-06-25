@@ -5,7 +5,7 @@ import {BottomNavigationBar} from "../../components/BottomNavigationBar.tsx";
 import {useTranslation} from 'react-i18next';
 import {Card} from "../../components/Cards.tsx";
 import {
-    BiCar, BiChevronRight, BiEdit, BiErrorAlt, BiGroup,
+    BiCar, BiEdit, BiErrorAlt, BiGroup,
     BiMap, BiMessageCheck, BiMessageX, BiPalette, BiRadioCircleMarked, BiShare, BiShieldX, BiShoppingBag,
     BiUserCircle
 } from "react-icons/bi";
@@ -25,6 +25,7 @@ interface RouteProps {
     price: number;
 }
 interface RequestProps {
+    tripId: string | undefined;
     requestUsers: IUser[] | undefined;
 }
 interface PassengerProps {
@@ -140,7 +141,62 @@ export const Req = (props: RequestProps) => {
     const [t] = useTranslation(["common", "pages/trips"]);
     const cancelText = t('pages/trips:RequestCard.cancel');
     const acceptText = t('pages/trips:RequestCard.accept');
+    
+    const declineTripRequest = (userId: string) => {
+        fetch(`/api/chat/GetTripRequest/${userId}/${props.tripId}`)
+            .then(response => response.json())
+            .then(tripRequest => {
+                if (tripRequest) {
+                    tripRequest.status = "Declined";
+            
+                    fetch(`/api/chat/chat/updateRequest`, {
+                        method: 'PUT',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(tripRequest)
+                    });
+                }
+            });
+    }
+    const acceptTripRequest = (userId: string) => {
+        fetch(`/api/chat/GetTripRequest/${userId}/${props.tripId}`)
+            .then(response => response.json())
+            .then(tripRequest => {
+                if (tripRequest) {
+                    tripRequest.status = "Accepted";
 
+                    fetch(`/api/chat/chat/updateRequest`, {
+                        method: 'PUT',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(tripRequest)
+                    });
+
+                    // Create GroupChatUser
+                    const newGroupChatUser: IGroupChatUser = {
+                        fK_User: tripRequest?.fK_PotentialPassenger,
+                        fK_GroupChat: tripRequest.fK_Trip
+                    };
+
+                    fetch(`/api/create/groupchatUser`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(newGroupChatUser)
+                    });
+
+                    // Create TripPassenger
+                    const newTripPassenger: ITripPassenger = {
+                        fK_Trip: tripRequest?.fK_Trip,
+                        fK_PassengerUser: tripRequest?.fK_PotentialPassenger
+                    };
+
+                    fetch(`/api/create/tripPassenger`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(newTripPassenger)
+                    });
+                }
+            });
+    }
+    
     return (
         <div>
             {props.requestUsers?.map((requestUser, index) => (
@@ -163,10 +219,6 @@ export const Req = (props: RequestProps) => {
                             <div className="w-full">
                                 <div>{`${requestUser.firstName} ${requestUser.lastName}`}</div>
                             </div>
-                            
-                            <div className="flex items-center">
-                                <span><BiChevronRight className="icon" /></span>
-                            </div>
                         </div>
                     </a>
                     
@@ -183,7 +235,7 @@ export const Req = (props: RequestProps) => {
                                     type="button"
                                     disabled={false}
                                     className="mt-2"
-                                    onClick={() => alert("Test")}
+                                    onClick={() => declineTripRequest(requestUser.id)}
                                 />
                             </a>
                         </div>
@@ -200,6 +252,7 @@ export const Req = (props: RequestProps) => {
                                     type="button"
                                     disabled={false}
                                     className="mt-2"
+                                    onClick={() => acceptTripRequest(requestUser.id)}
                                 />
                             </a>
                         </div>
@@ -234,7 +287,7 @@ export const Pas = (props: PassengerProps) => {
                         </div>
                         
                         <div className="flex items-center justify-end w-full">
-                            <span><BiChevronRight className="icon" /></span>
+                            <span></span>
                         </div>
                     </div>
                 </React.Fragment>
@@ -397,7 +450,7 @@ export const ShowTripPage = () => {
                             padding="base"
                             className="mt-8"
                         >
-                            <Req requestUsers={requestUsers} />
+                            <Req requestUsers={requestUsers} tripId={tripId} />
                         </Card>
                     </>
                     : <>

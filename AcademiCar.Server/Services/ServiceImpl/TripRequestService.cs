@@ -22,4 +22,7 @@ public class TripRequestService : Service<TripRequest>
     
     public async Task<List<TripRequest>> GetTripRequestsByTripId(int id)
         => await _repo.GetTripRequestsByTripId(id);
+
+    public TripRequest? GetByCorrelation(string passengerId, int tripId)
+        => _repo.FilterBy(tp => tp.FK_PotentialPassenger == passengerId && tp.FK_Trip == tripId).FirstOrDefault();
 }

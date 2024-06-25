@@ -24,4 +24,7 @@ public class PersonalChatService : Service<PersonalChat>
     
     public async Task<List<PersonalChat>> GetPersonalChatsByPassengerId(string id)
         => await _repo.GetPersonalChatsByPassengerId(id);
+    
+    public PersonalChat? GetByCorrelation(string userId, int tripId)
+        => _repo.FilterBy(pc => pc.FK_PassengerUser == userId && pc.FK_Trip == tripId).FirstOrDefault();
 }

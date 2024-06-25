@@ -22,4 +22,6 @@ public class TripPassengerService : Service<TripPassenger>
     
     public async Task<List<TripPassenger>> GetConnectionByPassengerID(string id)
         => await _repo.GetConnectionByPassengerID(id);
+    public TripPassenger? GetByCorrelation(string userId, int tripId)
+        => _repo.FilterBy(tp => tp.FK_PassengerUser == userId && tp.FK_Trip == tripId).FirstOrDefault();
 }
