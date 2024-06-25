@@ -14,6 +14,29 @@ import {TripTimeCreationForm} from "./partials/TripTimeCreationForm.tsx";
 function getAddressString(address: IAddress): string {
     return `${address.street} ${address.number} ${address.zip} ${address.place}`;
 }
+function getDateString(timestamp: any): string {
+    const date = (timestamp instanceof Date) ? timestamp : new Date(timestamp);
+    
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+
+    const dayString = day < 10 ? `0${day}` : day.toString();
+    const monthString = month < 10 ? `0${month}` : month.toString();
+
+    return `${year}-${monthString}-${dayString}`;
+}
+function getTimeString(timestamp: any): string {
+    const date = (timestamp instanceof Date) ? timestamp : new Date(timestamp);
+
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+
+    const hoursString = hours < 10 ? `0${hours}` : hours.toString();
+    const minutesString = minutes < 10 ? `0${minutes}` : minutes.toString();
+
+    return `${hoursString}:${minutesString}`;
+}
 function getAddress(addressStr: string): IAddress {
     const addressFields = addressStr.split(' ');
     return addressFields.length == 4 ? {
@@ -27,7 +50,7 @@ function getAddress(addressStr: string): IAddress {
         street: addressStr,
         number: 0,
         zip: 0,
-        place: addressStr,
+        place: "",
         longitude: "",
         latitude: "",
     };
@@ -76,7 +99,19 @@ export const UpdateTripPage = () => {
     useEffect(() => {
         fetch(`https://localhost:5173/api/create/${tripId}`)
         .then(response => response.json())
-        .then(data => setTrip(data))
+        .then(data => {
+            setTrip(data);
+            if (trip)
+            {
+                setStartDate(getDateString(trip.startTime))
+                setStartTime(getTimeString(trip.startTime))
+                setEndDate(getDateString(trip.endTime))
+                setEndTime(getTimeString(trip.endTime))
+                setTripVehicleId(trip.fK_Vehicle);
+                setAvailableSeats(trip.availableSeats);
+                setPrice(trip.price);
+            }
+        })
         .catch(error => {
             setError("There was an error fetching the trip details!");
             console.error(error);
@@ -137,6 +172,7 @@ export const UpdateTripPage = () => {
         const fullEndDate: Date = getDate(endDate as string, endTime as string);
 
         const updatedTrip: ITrip = {
+            id: tripId as unknown as number,
             title: `${createdStartAddress?.place} -> ${createdEndAddress?.place}`,
             fK_Driver: `${loggedInUserId}`,
             fK_StartAddress: createdStartAddress.id as number,
@@ -159,8 +195,8 @@ export const UpdateTripPage = () => {
         const updatedTripJson = await tripResponse.json();
         if (updatedTripJson.id == trip.id)
         {
-            // finish
             alert('Trip updated successfully!');
+            history.back();
         }
     };
     

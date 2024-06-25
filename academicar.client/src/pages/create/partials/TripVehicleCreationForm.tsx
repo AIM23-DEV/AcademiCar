@@ -49,7 +49,7 @@ export const TripVehicleCreationForm = (props: TripVehicleCreationFormProps) => 
             <Card
                 label={vehicleLabelText}
                 outsideLinkText={createVehicleLinkText}
-                outsideLink={`../profile/${props.driverId}/cars/${props.vehicleId}`}
+                outsideLink={`/profile/${props.driverId}/cars/${props.vehicleId}`}
             >
                 <Select
                     options={vehicleOptions}
