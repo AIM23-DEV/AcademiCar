@@ -147,7 +147,7 @@ export const Chat = (props: ChatProps) => {
             setTimeout(() => window.scrollTo({
                 top: (document.scrollingElement?.scrollHeight ?? 0) + 96,
                 behavior: document.scrollingElement?.scrollTop === 0 ? 'instant' : 'smooth'
-            }), 0)
+            }), 50)
         }
     }
 

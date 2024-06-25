@@ -8,4 +8,8 @@
   .card-sm {
     @apply w-full bg-white rounded-xl p-4 shadow-sm inline-flex flex-col
   }
+  
+  .card-none {
+    @apply w-full bg-white rounded-xl p-0 shadow-sm inline-flex flex-col
+  }
 }

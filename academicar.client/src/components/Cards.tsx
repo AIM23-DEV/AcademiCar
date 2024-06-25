@@ -8,7 +8,7 @@ interface CardProps {
     labelPosition?: 'outside' | 'inside'
     outsideLink?: string
     outsideLinkText?: string
-    padding?: 'base' | 'sm' // Use sm only if the card does not use the full screen width. Only use sm with inside label
+    padding?: 'base' | 'sm' | 'none' // Use sm only if the card does not use the full screen width. Only use sm with inside label
     children?: ReactNode
     className?: string
 }
@@ -32,10 +32,10 @@ export const Card = (props: CardProps) => {
                 <div className="flex flex-row justify-between items-end">
                     {outsideLabel ? outsideLabel : ''}
                     {outsideLink ? outsideLink : ''}
-                </div> : ''}
+                </div> : <></>}
 
             <div
-                className={(props.padding == 'sm' ? 'card-sm' : 'card')}>
+                className={(props.padding == 'sm' ? 'card-sm' : (props.padding == 'none' ? 'card-none' : 'card'))}>
 
                 {props.labelPosition == 'inside' ?
                     <label htmlFor={props.id ? props.id : ''} className="form-label px-0">
@@ -80,7 +80,7 @@ export const LinkCard = (props: LinkCardProps) => {
                 <div className="flex flex-row justify-between items-end">
                     {outsideLabel ? outsideLabel : ''}
                     {outsideLink ? outsideLink : ''}
-                </div> : ''}
+                </div> : <></>}
 
             <a href={props.link ?? '#'}
                className={(props.padding == 'sm' ? 'card-sm' : 'card')}>

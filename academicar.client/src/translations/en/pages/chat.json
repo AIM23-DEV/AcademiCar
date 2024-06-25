@@ -19,7 +19,7 @@
 
   "TripChatDetailPage": {
     "title": "{{driver_name}}'s Trip",
-    "button_to_trip": "To Trip >",
+    "button_to_trip": "To Trip",
     "label_members": "Members",
     "label_actions": "Actions",
     "action_leave_trip": "Leave Trip",
@@ -38,13 +38,13 @@
   "PersonalChatPage": {
     "placeholder_message": "Message...",
     "label_join_request": "Join Request",
-    "link_trip": "Trip >",
+    "link_trip": "Trip",
     "button_deny": "Deny",
     "button_accept": "Accept"
   },
 
   "PersonalChatDetailPage": {
-    "button_to_profile": "To Profile >",
+    "button_to_profile": "To Profile",
     "label_actions": "Actions",
     "action_report_user": "Report Person",
     "action_delete_chat": "Delete Chat"

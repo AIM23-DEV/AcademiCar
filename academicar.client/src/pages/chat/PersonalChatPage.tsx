@@ -96,7 +96,7 @@ export const PersonalChatPage = () => {
                           }/>}
             />
 
-            <div className="w-full flex flex-col items-center mt-20">
+            <div className="w-full flex flex-col items-center mt-24 space-y-4">
                 <JoinRequestCard
                     labelText={joinRequestLabelText}
                     linkText={joinRequestLinkText}

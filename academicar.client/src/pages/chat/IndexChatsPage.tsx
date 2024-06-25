@@ -104,30 +104,28 @@ export const IndexChatsPage = () => {
         <>
             <TitleBar text={pageTitle} trailing={SearchButton}/>
 
-            <div className="w-full flex flex-col items-center space-y-6">
+            <div className="w-full flex flex-col items-center space-y-6 mt-6 mb-24">
                 {/* Search input field if searching */}
                 {searchActive ?
                     <Input id="chat-search-input" fullWidth leading={<BiSearch className="icon-md"/>}
-                           className="mt-6"
                            placeholder={searchPlaceholderText} value={search}
                            onChange={(val) => setSearch(val.target.value)}/>
                     : <></>}
 
                 {/* Open requests */}
                 {!searchActive && requestChats.length > 0 ?
-                    <RequestList className="mt-8 mb-24"
+                    <RequestList
                               chats={requestChats}
                               searchActive={searchActive} loggedInUserId={loggedInUserId}/> : <></>
                 }
 
                 {/* Chats or search results */}
-                <ChatList className="mt-8 mb-24"
+                <ChatList
                           chats={chats.filter(c => search === "" || (isPersonalChat(c) ?
                               `${c.driverUser?.firstName!} ${c.driverUser?.lastName!}`.toLowerCase().includes(search.toLowerCase()):
                               c.tripTitle.toLowerCase().includes(search.toLowerCase())))}
                           searchActive={searchActive} loggedInUserId={loggedInUserId}/>
             </div>
-
 
             <BottomNavigationBar selected="chat"/>
         </>

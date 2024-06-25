@@ -3,17 +3,19 @@ import {Divider} from "../../../components/Divider.tsx";
 import {LinkCard} from "../../../components/Cards.tsx";
 import React, {useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
+import {CurrentLocale} from "../../../hooks/react_i18next.tsx";
 
 interface TripCardProps {
     cardIndex: number;
     driverId: string | undefined
     tripId: number | undefined
     price: number | undefined
+    hideShadow?: boolean
 }
 
 interface Stop {
     location: string;
-    time: string;
+    time: string; // This time string has to be ISO 8601
     freeSeats: number;
 }
 
@@ -45,7 +47,15 @@ const Route: React.FC<RouteProps> = ({ startPoint, endPoint, stops }) => {
                         <div className="text-gray-400 text-xs">{t('common:trip.start')}</div>
                         <div className="body-1">{startPoint.location}</div>
                     </div>
-                    <div className="body-2 text-sm">{startPoint.time} {t('common:time.time')}</div>
+                    <div className="body-2 text-sm text-right">{new Date(startPoint.time).toLocaleDateString(CurrentLocale(),
+                        {
+                            day: 'numeric',
+                            month: 'numeric',
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        }
+                    )} {t('common:time.time')}</div>
                 </div>
                 <div className="flex flex-row items-center gap-2">
                     <span className="flex">
@@ -65,7 +75,15 @@ const Route: React.FC<RouteProps> = ({ startPoint, endPoint, stops }) => {
                                 <div className="text-gray-400 text-xs">{t('common:trip.stop')}</div>
                                 <div className="body-1">{stop.location}</div>
                             </div>
-                            <div className="body-2 text-sm">{stop.time} {t('common:time.time')}</div>
+                            <div className="body-2 text-sm text-right">{new Date(stop.time).toLocaleDateString(CurrentLocale(),
+                                {
+                                    day: 'numeric',
+                                    month: 'numeric',
+                                    year: 'numeric',
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                }
+                            )} {t('common:time.time')}</div>
                         </div>
                         <div className="flex flex-row items-center gap-2">
                             <span className="flex">
@@ -86,7 +104,15 @@ const Route: React.FC<RouteProps> = ({ startPoint, endPoint, stops }) => {
                         <div className="text-gray-400 text-xs">{t('common:trip.destination')}</div>
                         <div className="body-1">{endPoint.location}</div>
                     </div>
-                    <div className="body-2 text-sm">{endPoint.time} {t('common:time.time')}</div>
+                    <div className="body-2 text-sm text-right">{new Date(endPoint.time).toLocaleDateString(CurrentLocale(),
+                        {
+                            day: 'numeric',
+                            month: 'numeric',
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        }
+                        )} {t('common:time.time')}</div>
                 </div>
             </div>
         </div>
@@ -145,7 +171,7 @@ export const TripCard: React.FC<TripCardProps> = (props:TripCardProps) => {
     }, [props.tripId]);
     
     return (
-        <LinkCard key={props.cardIndex} link={`${props.driverId}/${props.tripId}`}>
+        <LinkCard key={props.cardIndex} link={`${props.driverId}/${props.tripId}`} className={props.hideShadow ? "overflow-hidden" : ""} padding="sm" labelPosition="inside">
             <div>
                 <div className="flex justify-between items-center">
                     <div className="flex flex-row gap-4">
@@ -153,7 +179,7 @@ export const TripCard: React.FC<TripCardProps> = (props:TripCardProps) => {
                             <img
                                 src={driver?.pictureSrc}
                                 alt="avatar"
-                                className="border-gray-600 rounded-full w-14 h-14"
+                                className="border-gray-600 rounded-full w-14 h-14 object-cover"
                             />
                         </div>
                         <div>
