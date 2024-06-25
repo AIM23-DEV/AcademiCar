@@ -71,7 +71,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }): ReactElemen
 
 export const getUserId = (): string => {
     const userId = localStorage.getItem('userID');
-    console.log(userId);
     return userId !== null ? userId : '-999';
 };
 

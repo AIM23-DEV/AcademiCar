@@ -9,10 +9,36 @@ namespace AcademiCar.Server.Controllers;
 public class CreateController : ControllerBase
 {
     private readonly IGlobalService _globalService;
+    private readonly Random _random;
+
     public CreateController(IGlobalService globals)
     {
         _globalService = globals;
+        _random = new Random();
     }
+
+
+    #region Helper Functions
+
+    private async Task<int> _GetNewAddressID()
+    {
+        int newId = _random.Next(1, 999999999);
+        Address? address = await _globalService.AddressService.Get(newId);
+        if (address == null) return newId;
+        
+        return await _GetNewAddressID();
+    }
+
+    private async Task<int> _GetNewTripID()
+    {
+        int newId = _random.Next(1, 999999999);
+        Trip? address = await _globalService.TripService.Get(newId);
+        if (address == null) return newId;
+        
+        return await _GetNewTripID();
+    }
+    
+    #endregion
     
     
     [HttpGet ("{id}")]
@@ -60,36 +86,38 @@ public class CreateController : ControllerBase
     {
         if (newAddress == null) return BadRequest();
 
-        if (newAddress.ID != null || newAddress.ID > 0)
+        try
         {
-            Address? existingAddress = await _globalService.AddressService.Get(newAddress.ID);
-            if (existingAddress != null)
-            {
-                await _globalService.AddressService.Update(newAddress);
-            }
-        }
-        else
-        {
-            await _globalService.AddressService.Create(newAddress);
-        }
+            Address? existingAddress =
+                _globalService.AddressService.GetByStreetAndPlace(newAddress.Street, newAddress.Place);
+            if (existingAddress != null) return Ok(existingAddress);
 
-        Address? insertedAddress = _globalService.AddressService.GetByStreetAndPlace(newAddress.Street, newAddress.Place);
-        if (insertedAddress == null) return Conflict();
-            
-        return Ok(insertedAddress);
+            newAddress.ID = await _GetNewAddressID();
+            await _globalService.AddressService.Create(newAddress);
+            return Ok(newAddress);
+        }
+        catch (Exception e)
+        {
+            return BadRequest();
+        }
     }
-        
+       
     [HttpPost ("trip")]
     public async Task<IActionResult> CreateTrip([FromBody] Trip newTrip)
     {
         if (newTrip == null) return BadRequest();
 
-        await _globalService.TripService.Create(newTrip);
+        try
+        {
+            newTrip.ID = await _GetNewTripID();
+            await _globalService.TripService.Create(newTrip);
 
-        Trip? insertedTrip = _globalService.TripService.GetByTitleAndDriverAndStatus(newTrip.Title, newTrip.FK_Driver, newTrip.Status);
-        if (insertedTrip == null) return Conflict();
-        
-        return Ok(insertedTrip);
+            return Ok(newTrip);
+        }
+        catch (Exception e)
+        {
+            return BadRequest();
+        }
     }
     
     [HttpPost("groupchat")]
@@ -104,6 +132,17 @@ public class CreateController : ControllerBase
         return Ok(insertedGroupChat);
     }
     
+    [HttpPut("groupchat")]
+    public async Task<IActionResult> UpdateGroupChat([FromBody] GroupChat groupChat)
+    {
+        ActionResultResponseModel result = await _globalService.GroupChatService.Create(groupChat);
+        if (!result.IsSuccess) return Conflict(groupChat);
+        
+        GroupChat? insertedGroupChat = await _globalService.GroupChatService.Get(groupChat.ID);
+        if (insertedGroupChat == null) return Forbid();
+        
+        return Ok(insertedGroupChat);
+    }
     
     [HttpPut ("{id}")]
     public async Task<IActionResult> UpdateTrip(string id, [FromBody] Trip updatedTrip)
@@ -114,10 +153,13 @@ public class CreateController : ControllerBase
         Trip? existingTrip = await _globalService.TripService.Get(idAsInt);
         if (existingTrip == null) return NotFound();
 
-        // TODO also update FKs of addresses and vehicle...
         existingTrip.Title = updatedTrip.Title;
+        existingTrip.FK_Driver = updatedTrip.FK_Driver;
+        existingTrip.FK_StartAddress = updatedTrip.FK_StartAddress;
+        existingTrip.FK_EndAddress = updatedTrip.FK_EndAddress;
         existingTrip.StartTime = updatedTrip.StartTime;
         existingTrip.EndTime = updatedTrip.EndTime;
+        existingTrip.FK_Vehicle = updatedTrip.FK_Vehicle;
         existingTrip.AvailableSeats = updatedTrip.AvailableSeats;
         existingTrip.Price = updatedTrip.Price;
         existingTrip.PaymentMethod = updatedTrip.PaymentMethod;
@@ -125,6 +167,6 @@ public class CreateController : ControllerBase
 
         await _globalService.TripService.Update(existingTrip);
 
-        return NoContent();
+        return Ok(existingTrip);
     }
 }

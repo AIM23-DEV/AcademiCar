@@ -30,14 +30,15 @@ function getAddress(addressStr: string): IAddress {
     };
 }
 function getDate(dateStr: string, timeStr: string): Date {
-    const dateFields = dateStr.split('/');
+    const dateFields = dateStr.split('-');
     const timeFields = timeStr.split(':');
+
     if (dateFields.length != 3 || timeFields.length != 2)
         return new Date(2020, 1, 1, 12, 0,0)
 
-    const day = Number(dateFields[0])
+    const year = Number(dateFields[0])
     const month = Number(dateFields[1])
-    const year = Number(dateFields[2])
+    const day = Number(dateFields[2])
     const hours = Number(timeFields[0])
     const minutes = Number(timeFields[1])
     
@@ -121,6 +122,7 @@ export const CreateTripPage = () => {
             // Create GroupChat
             const createdTrip = await tripResponse.json();
             const newGroupChat: IGroupChat = {
+                id: createdTrip.id,
                 fK_Trip: createdTrip.id,
                 tripTitle: createdTrip.title,
                 updatedAt: new Date(),
