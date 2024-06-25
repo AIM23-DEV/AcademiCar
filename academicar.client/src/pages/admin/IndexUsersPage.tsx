@@ -6,7 +6,7 @@ import SetPageTitle from "../../hooks/set_page_title.tsx";
 import { useTranslation } from "react-i18next";
 import { BiChevronRight } from "react-icons/bi";
 import { Card } from "../../components/Cards.tsx";
-//import { RxAvatar } from "react-icons/rx";
+import { RxAvatar } from "react-icons/rx";
 import { Divider } from "../../components/Divider.tsx";
 import { useNavigate } from "react-router-dom";
 import { IoIosSearch } from "react-icons/io";
@@ -39,7 +39,7 @@ export const IndexUsersPage = () => {
                 setFilteredUsers(fetchedUsers);
             });
     }, []);
-
+    
     // Filter and sort users
     useEffect(() => {
         filterAndSortUsers();
@@ -73,12 +73,12 @@ export const IndexUsersPage = () => {
         <>
             <TitleBar text={"Account"} hasBackAction />
 
-            <div className="grid grid-cols-2 gap-6 my-8">
+            <div className="grid grid-cols-2 gap-6 my-6">
                 <Input
                     id="search"
                     type="text"
                     placeholder={search}
-                    leading={<IoIosSearch />}
+                    leading={<IoIosSearch className="icon-md" />}
                     required={true}
                     label={search}
                     value={searchQuery}
@@ -100,7 +100,7 @@ export const IndexUsersPage = () => {
                 />
             </div>
 
-            <div className="w-full flex flex-col items-center">
+            <div className="w-full flex flex-col items-center mb-24">
                 <Card
                     id="1"
                     label={persons}
@@ -108,7 +108,7 @@ export const IndexUsersPage = () => {
                     padding="base"
                     className="mt-1"
                 >
-                    {filteredUsers.map((user) => (
+                    {filteredUsers.map((user, index) => (
                         <div key={user.id}>
                             <Button
                                 variant="outline"
@@ -116,21 +116,15 @@ export const IndexUsersPage = () => {
                                 text={`${user.firstName} ${user.lastName}`}
                                 textAlign="left"
                                 textFullWidth
-                                
-                                //TODO Wenn DB Fotos speichern kann  
-                                //leading={user.picture? <img src={user.picture} alt="User Picture" className="rounded-full w-12 h-12" /> : <RxAvatar />}
-                                leading={<img
-                                    src="https://academicar.blob.core.windows.net/profile-images/test.jpg"
-                                    alt="Profile Avatar"
-                                    className="rounded-full w-12 h-12"
-                                />}
+                                leading={user.pictureSrc? <img src={user.pictureSrc} alt="User Picture" className="rounded-full w-12 h-12" /> : <RxAvatar />}
                                 trailing={<BiChevronRight className="icon"/>}
                                 type="button"
                                 disabled={false}
                                 className="mt-1"
                                 onClick={() => navigate(`/admin/users/${user.id}`)}
                             />
-                            <Divider className="my-2" />
+                            {index !== filteredUsers.length - 1 ? <Divider className="my-2" /> : <></>}
+                            
                         </div>
                     ))}
                 </Card>

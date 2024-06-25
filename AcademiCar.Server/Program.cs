@@ -17,7 +17,7 @@ using AcademiCar.Server.DAL.BaseInterfaces;
 using AcademiCar.Server.DAL.Entities;
 using AcademiCar.Server.DAL.Hub;
 using Microsoft.AspNetCore.Identity;
-
+using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();

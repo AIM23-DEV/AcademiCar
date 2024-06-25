@@ -1,3 +1,5 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using AcademiCar.Server.DAL.Entities;
 using AcademiCar.Server.DAL.Enums;
 using AcademiCar.Server.Services.Response;
@@ -44,6 +46,31 @@ public class AdminController : ControllerBase
 
         return Ok(userAddress);
     }
+
+    [HttpDelete ("users/deleteUser/{id}")]
+    public async Task<IActionResult> DeleteUser(string id)
+    {
+        User? user  = await _globalService.UserService.Get(id);
+        if (user == null)
+        {
+            return NotFound();
+        }
+        await _globalService.UserService.Delete(id);
+        return Ok();
+    }
+    
+    [HttpPut ("users/blockUser/{id}")]
+    public async Task<IActionResult> BlockUser(string id)
+    {
+        User? user  = await _globalService.UserService.Get(id);
+        if (user == null)
+        {
+            return BadRequest();
+        }
+        user.PasswordHash = "BLOCKED";
+        await _globalService.UserService.Update(user);
+        return Ok();
+    }
     
     [HttpGet("users/stats/{id}")]
     public async Task<IActionResult> GetUserStats(string id)
@@ -63,12 +90,28 @@ public class AdminController : ControllerBase
         float scoreSum = userRatings.Sum(rating => rating.Score);
         
         RatingData ratingData = new(); 
-        ratingData.TotalScore = scoreSum / userRatings.Count;
+        ratingData.TotalScore = scoreSum == 0 || userRatings.Count == 0 ? 0.0f : scoreSum / userRatings.Count;
         ratingData.RatingCount = userRatings.Count;
         
         return Ok(ratingData);
     }
-    
+
+    [HttpGet("users/review/{id}")]
+    public async Task<ActionResult<User>> GetUserReviews(string id)
+    {
+        
+        List<Rating?> userRatings  = await _globalService.RatingService.Get();
+        
+        if (userRatings.Count == 0)
+        {
+            return NotFound();
+        }; 
+        
+        List<Rating> FilterdUserRatings = userRatings.Where(r => r != null && r.FK_RatedUser == id).ToList();
+        
+        return Ok(FilterdUserRatings.Count());
+        
+    }
         
     // FaceSheet Page
     [HttpGet("prefs/{id}")]
