@@ -32,7 +32,7 @@ export const TripVehicleCreationForm = (props: TripVehicleCreationFormProps) => 
     const [vehicleOptions, setVehicleOptions] = useState<VehicleOptions>({});
 
     useEffect(() => {
-        fetch(`https://localhost:5173/api/create/vehicles/${props.driverId}`)
+        fetch(`/api/create/vehicles/${props.driverId}`)
             .then(response => response.json())
             .then((fetchedVehicles: IVehicle[]) => {
                 const options = fetchedVehicles.reduce((options: VehicleOptions, vehicle) => {

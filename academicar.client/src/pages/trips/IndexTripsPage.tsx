@@ -26,7 +26,7 @@ export const IndexTripsPage = () => {
 
     // Fetch trips from API
     useEffect(() => {
-        fetch(`https://localhost:5173/api/trip/driver/${loggedInUserId}`)
+        fetch(`/api/trip/driver/${loggedInUserId}`)
             .then(response => response.json())
             .then((fetchedTrips: ITrip[]) => {
                 setDriverTrips(fetchedTrips);
@@ -34,7 +34,7 @@ export const IndexTripsPage = () => {
     }, []);
 
     useEffect(() => {
-        fetch(`https://localhost:5173/api/trip/passenger/${loggedInUserId}`)
+        fetch(`/api/trip/passenger/${loggedInUserId}`)
             .then(response => response.json())
             .then((fetchedTrips: ITrip[]) => {
                 setPassengerTrips(fetchedTrips);

@@ -29,19 +29,19 @@ export const IndexChatsPage = () => {
 
     // Requests
     useEffect(() => {
-        fetch('https://localhost:5173/api/chat/GetOpenRequestChatsForDriver/' + loggedInUserId)
+        fetch('/api/chat/GetOpenRequestChatsForDriver/' + loggedInUserId)
             .then(response => response.json())
             .then((fetchedChats: IPersonalChat[]) => setRequestChats(fetchedChats))
     }, [loggedInUserId]);
 
     useEffect(() => {
-        fetch('https://localhost:5173/api/chat/GetPersonalChats/' + loggedInUserId)
+        fetch('/api/chat/GetPersonalChats/' + loggedInUserId)
             .then(response => response.json())
             .then((fetchedChats: IPersonalChat[]) => setPersonalChats(fetchedChats))
     }, [loggedInUserId]);
 
     useEffect(() => {
-        fetch('https://localhost:5173/api/chat/GetGroupChats/' + loggedInUserId)
+        fetch('/api/chat/GetGroupChats/' + loggedInUserId)
             .then(response => response.json())
             .then((fetchedChats: IGroupChat[]) => setGroupChats(fetchedChats))
     }, [loggedInUserId]);
