@@ -1,6 +1,6 @@
 import {BiMap, BiRadioCircleMarked, BiSolidStar, BiUserCircle} from "react-icons/bi";
 import {Divider} from "../../../components/Divider.tsx";
-import {LinkCard} from "../../../components/Cards.tsx";
+import {Card, LinkCard} from "../../../components/Cards.tsx";
 import React, {useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {CurrentLocale} from "../../../hooks/react_i18next.tsx";
@@ -11,6 +11,7 @@ interface TripCardProps {
     tripId: number | undefined
     price: number | undefined
     hideShadow?: boolean
+    isNotLink?: boolean
 }
 
 interface Stop {
@@ -130,7 +131,7 @@ export const TripCard: React.FC<TripCardProps> = (props:TripCardProps) => {
         if (!props.driverId)
             return;
         
-        fetch(`https://localhost:5173/api/trip/tripCard/driver/${props.driverId}`)
+        fetch(`/api/trip/tripCard/driver/${props.driverId}`)
             .then(response => response.json())
             .then((fetchedDriver: IUser) => {
                 setDriver(fetchedDriver);
@@ -141,7 +142,7 @@ export const TripCard: React.FC<TripCardProps> = (props:TripCardProps) => {
         if (!props.tripId)
             return;
         
-        fetch(`https://localhost:5173/api/trip/tripCard/stops/${props.tripId}`)
+        fetch(`/api/trip/tripCard/stops/${props.tripId}`)
             .then(response => response.json())
             .then((fetchedStops: Stop[]) => {
                 setStops(fetchedStops);
@@ -152,7 +153,7 @@ export const TripCard: React.FC<TripCardProps> = (props:TripCardProps) => {
         if (!props.tripId)
             return;
         
-        fetch(`https://localhost:5173/api/trip/tripCard/start/${props.tripId}`)
+        fetch(`/api/trip/tripCard/start/${props.tripId}`)
             .then(response => response.json())
             .then((fetchedStops: Stop) => {
                 setStartAddress(fetchedStops);
@@ -163,7 +164,7 @@ export const TripCard: React.FC<TripCardProps> = (props:TripCardProps) => {
         if (!props.tripId)
             return;
         
-        fetch(`https://localhost:5173/api/trip/tripCard/end/${props.tripId}`)
+        fetch(`/api/trip/tripCard/end/${props.tripId}`)
             .then(response => response.json())
             .then((fetchedStops: Stop) => {
                 setEndAddress(fetchedStops);
@@ -171,41 +172,79 @@ export const TripCard: React.FC<TripCardProps> = (props:TripCardProps) => {
     }, [props.tripId]);
     
     return (
-        <LinkCard key={props.cardIndex} link={`${props.driverId}/${props.tripId}`} className={props.hideShadow ? "overflow-hidden" : ""} padding="sm" labelPosition="inside">
-            <div>
-                <div className="flex justify-between items-center">
-                    <div className="flex flex-row gap-4">
-                        <div className="flex justify-center">
-                            <img
-                                src={driver?.pictureSrc}
-                                alt="avatar"
-                                className="border-gray-600 rounded-full w-14 h-14 object-cover"
-                            />
-                        </div>
-                        <div>
-                            <div>{driver?.firstName} {driver?.lastName}</div>
-                            <div className="flex items-center">
-                                {Array.from({length: Math.floor(5)}).map((_, idx) => (
-                                    <BiSolidStar key={idx} className="icon text-yellow-400" />
-                                ))}
-                                {Array.from({length: 5 - Math.floor(5)}).map((_, idx) => (
-                                    <BiSolidStar key={idx} className="icon text-gray-300" />
-                                ))}
-                                <span className="ml-2">({5})</span>
+        props.isNotLink ?
+            <Card key={props.cardIndex} className={props.hideShadow ? "overflow-hidden" : ""} padding="sm" labelPosition="inside">
+                <div>
+                    <div className="flex justify-between items-center">
+                        <div className="flex flex-row gap-4">
+                            <div className="flex justify-center">
+                                <img
+                                    src={driver?.pictureSrc}
+                                    alt="avatar"
+                                    className="border-gray-600 rounded-full w-14 h-14 object-cover"
+                                />
+                            </div>
+                            <div>
+                                <div>{driver?.firstName} {driver?.lastName}</div>
+                                <div className="flex items-center">
+                                    {Array.from({length: Math.floor(5)}).map((_, idx) => (
+                                        <BiSolidStar key={idx} className="icon text-yellow-400" />
+                                    ))}
+                                    {Array.from({length: 5 - Math.floor(5)}).map((_, idx) => (
+                                        <BiSolidStar key={idx} className="icon text-gray-300" />
+                                    ))}
+                                    <span className="ml-2">({5})</span>
+                                </div>
                             </div>
                         </div>
+                        <div className="subtitle">€ {props.price?.toFixed(2)}</div>
                     </div>
-                    <div className="subtitle">€ {props.price?.toFixed(2)}</div>
+
+                    <Divider/>
+
+                    <Route
+                        startPoint={startAddress ? startAddress : defaultStop }
+                        endPoint={endAddress ? endAddress : defaultStop }
+                        stops={stops ? stops : [defaultStop] }
+                    />
                 </div>
+            </Card>
+            :
+            <LinkCard key={props.cardIndex} link={`${props.driverId}/${props.tripId}`} className={props.hideShadow ? "overflow-hidden" : ""} padding="sm" labelPosition="inside">
+                <div>
+                    <div className="flex justify-between items-center">
+                        <div className="flex flex-row gap-4">
+                            <div className="flex justify-center">
+                                <img
+                                    src={driver?.pictureSrc}
+                                    alt="avatar"
+                                    className="border-gray-600 rounded-full w-14 h-14 object-cover"
+                                />
+                            </div>
+                            <div>
+                                <div>{driver?.firstName} {driver?.lastName}</div>
+                                <div className="flex items-center">
+                                    {Array.from({length: Math.floor(5)}).map((_, idx) => (
+                                        <BiSolidStar key={idx} className="icon text-yellow-400" />
+                                    ))}
+                                    {Array.from({length: 5 - Math.floor(5)}).map((_, idx) => (
+                                        <BiSolidStar key={idx} className="icon text-gray-300" />
+                                    ))}
+                                    <span className="ml-2">({5})</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="subtitle">€ {props.price?.toFixed(2)}</div>
+                    </div>
 
-                <Divider/>
+                    <Divider/>
 
-                <Route
-                    startPoint={startAddress ? startAddress : defaultStop }
-                    endPoint={endAddress ? endAddress : defaultStop }
-                    stops={stops ? stops : [defaultStop] }
-                />
-            </div>
-        </LinkCard>
+                    <Route
+                        startPoint={startAddress ? startAddress : defaultStop }
+                        endPoint={endAddress ? endAddress : defaultStop }
+                        stops={stops ? stops : [defaultStop] }
+                    />
+                </div>
+            </LinkCard>
     );
 };

@@ -5,6 +5,7 @@ import {Button} from "../../../components/Buttons.tsx";
 import {useState, useEffect} from 'react';
 import {BiSend} from 'react-icons/bi';
 import {ChatMessage} from "./ChatMessage.tsx";
+import {useParams} from "react-router-dom";
 
 interface ChatProps {
     userId: string | undefined;
@@ -21,10 +22,11 @@ export interface MessageProps {
 }
 
 export const Chat = (props: ChatProps) => {
-    const [messages, setMessages] = useState<MessageProps[]>(props.messages);
+    const [messages, setMessages] = useState<MessageProps[]>([]);
     const [connection, setConnection] = useState<signalR.HubConnection | null>(null);
     const [message, setMessage] = useState<string>('');
     const [users, setUsers] = useState<IUser[]>([]);
+    const {loggedInUserId} = useParams();
 
     useEffect(() => {
         const newConnection = new signalR.HubConnectionBuilder()
@@ -33,6 +35,12 @@ export const Chat = (props: ChatProps) => {
             .build();
 
         setConnection(newConnection);
+
+        return () => {
+            if (connection) {
+                connection.stop();
+            }
+        };
     }, []);
 
     useEffect(() => {
@@ -57,9 +65,17 @@ export const Chat = (props: ChatProps) => {
         }
     }, [connection]);
 
+    useEffect(() => {
+        if (props.messages.length > 0 && users.length === 0) {
+            setMessages(props.messages);
+            fetchUsers();
+            updateChatScroll();
+        }
+    }, [props.messages]);
+
     const sendMessage = async () => {
         if (message === "") return;
-        
+
         if (connection?.state === signalR.HubConnectionState.Connected) {
             try {
                 await connection.send(props.type == "group" ? 'SendGroupMessage' : 'SendPersonalMessage', props.userId, message, props.chatId, Date.now());
@@ -114,13 +130,53 @@ export const Chat = (props: ChatProps) => {
             fK_Stats: -996,
             phoneNumber: "1234 123 12 12",
         };
+        const user1: IUser = {
+            id: "1",
+            email: "max.mueller@academi.car",
+            firstName: "Max",
+            lastName: "Müller",
+            pictureSrc: "https://fastly.picsum.photos/id/1012/200/200.jpg?hmac=kENwT0f1ecqbPzBGAw3ITKIrm1xoJdF0oh5tq6nosuM",
+            fK_Address: 1,
+            fK_Stats: 1,
+            phoneNumber: "+43 (0) 650 123 22 33",
+        };
+        const user2: IUser = {
+            id: "2",
+            email: "anna.schmidt@academi.car",
+            firstName: "Anna",
+            lastName: "Schmidt",
+            pictureSrc: "https://fastly.picsum.photos/id/996/200/200.jpg?hmac=nRtkfqKyD3p2uHiFO5LmGt31UcH3NKWg80H5yUkZ8_k",
+            fK_Address: 2,
+            fK_Stats: 2,
+            phoneNumber: "+43 (0) 664 123 34 56",
+        };
+        const user3: IUser = {
+            id: "3",
+            email: "jane.smith@academi.car",
+            firstName: "Jane",
+            lastName: "Smith",
+            pictureSrc: "https://fastly.picsum.photos/id/633/200/200.jpg?hmac=3ZyIOtFWRly1tYi_sTXjhSKzDlB-94qs6KCeIdeiCJo",
+            fK_Address: 3,
+            fK_Stats: 3,
+            phoneNumber: "0600 321 21 21",
+        };
+        const user4: IUser = {
+            id: "4",
+            email: "john.doe@academi.car",
+            firstName: "John",
+            lastName: "Doe",
+            pictureSrc: "https://fastly.picsum.photos/id/338/200/200.jpg?hmac=5S5SeR5xW8mbN3Ml7wTTJPePX392JafhcFMGm7IFNy0",
+            fK_Address: 4,
+            fK_Stats: 4,
+            phoneNumber: "1234 123 12 12",
+        };
 
-        const userList = [user999, user998, user997, user996];
+        const userList = [user1, user2, user3, user4, user999, user998, user997, user996];
 
         // Todo get actual users from db once UserManager is fixed
         // props.messages.forEach(async (m) => {
         //     if (userList.find((u: IUser) => u.id == m.senderId) === undefined) {
-        //         fetch('https://localhost:5173/api/user/GetUserbyId?id=' + m.senderId)
+        //         fetch('/api/user/GetUserbyId?id=' + m.senderId)
         //             .then(response => console.log(response))
         //             // .then(response => response.json())
         //             // .then((user: IUser) => {
@@ -133,14 +189,6 @@ export const Chat = (props: ChatProps) => {
 
         setUsers(userList);
     };
-
-    useEffect(() => {
-        if (props.messages.length > 0 && users.length === 0) {
-            setMessages(messages => [...messages, ...props.messages]);
-            fetchUsers();
-            updateChatScroll();
-        }
-    }, [props.messages]);
 
     const updateChatScroll = () => {
         if (document?.scrollingElement?.scrollTop !== document?.scrollingElement?.scrollHeight) {
@@ -156,7 +204,7 @@ export const Chat = (props: ChatProps) => {
             <ul className="flex flex-col w-full space-y-4">
                 {messages.map((msg, index) => {
                     return (
-                        <ChatMessage key={index} text={msg.text} type={msg.senderId === "-999" ? "sent" : "received"}
+                        <ChatMessage key={index} text={msg.text} type={msg.senderId === loggedInUserId ? "sent" : "received"}
                                      sentAt={msg.sentAt} sender={users.find(u => u.id == msg.senderId)!}
                                      showSender={props.type === "group"}/>
                     );

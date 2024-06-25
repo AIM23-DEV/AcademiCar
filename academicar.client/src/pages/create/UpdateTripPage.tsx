@@ -115,7 +115,7 @@ export const UpdateTripPage = () => {
 
     // Loading
     useEffect(() => {
-        fetch(`https://localhost:5173/api/create/${tripId}`)
+        fetch(`/api/create/${tripId}`)
             .then(response => response.json())
             .then(data => {
                 setTrip(data);
@@ -140,7 +140,7 @@ export const UpdateTripPage = () => {
     if (!trip) return <div>Loading trip information...</div>;
 
     if (trip && !startAddress) {
-        fetch(`https://localhost:5173/api/create/address/${trip?.fK_StartAddress}`)
+        fetch(`/api/create/address/${trip?.fK_StartAddress}`)
             .then(response => response.json())
             .then(fetchedAddress => setStartAddress(getAddressString(fetchedAddress)))
             .catch(error => {
@@ -149,7 +149,7 @@ export const UpdateTripPage = () => {
             });
     }
     if (trip && !endAddress) {
-        fetch(`https://localhost:5173/api/create/address/${trip?.fK_EndAddress}`)
+        fetch(`/api/create/address/${trip?.fK_EndAddress}`)
             .then(response => response.json())
             .then(fetchedAddress => setEndAddress(getAddressString(fetchedAddress)))
             .catch(error => {
@@ -164,7 +164,7 @@ export const UpdateTripPage = () => {
     }
 
     const createAddress = async (address: IAddress): Promise<IAddress> => {
-        const response = await fetch(`https://localhost:5173/api/create/address`, {
+        const response = await fetch(`/api/create/address`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(address)
@@ -203,7 +203,7 @@ export const UpdateTripPage = () => {
             status: trip.status
         }
 
-        const tripResponse = await fetch(`https://localhost:5173/api/create/${tripId}`, {
+        const tripResponse = await fetch(`/api/create/${tripId}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(updatedTrip)

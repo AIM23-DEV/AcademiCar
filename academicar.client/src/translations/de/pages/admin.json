@@ -8,7 +8,7 @@
     "adress": "Adresse",
     "phonenumber": "Telefonnumer",
     "email": "E-Mail",
-    "actions": "Actionen",
+    "actions": "Aktionen",
     "blockaccount": "Konto sperren",
     "deleteaccount": "Konto löschen",
     "sortFirstName": "Vorname",
@@ -21,8 +21,10 @@
     "adress": "Adresse",
     "phonenumber": "Telefonnumer",
     "email": "E-Mail",
-    "actions": "Actionen",
+    "actions": "Aktionen",
     "blockaccount": "Konto sperren",
-    "deleteaccount": "Konto löschen"
+    "deleteaccount": "Konto löschen",
+    "messageBlock": "Möchtest du dieses Konto wirklich blockieren?",
+    "messageDelete": "Möchtest du diesen Account wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden."
   }
 }
