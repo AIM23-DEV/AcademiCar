@@ -34,8 +34,8 @@ export const UpdateCarPage = () => {
     const handleSubmit = async () => {
         if (vehicle) {
             try {
-                const response = await fetch(vehicleId ? `/api/profile/vehicles/update` : `/api/profile/vehicles/add`, {
-                    method: vehicleId ? 'PUT' : 'POST',
+                const response = await fetch(vehicleId && vehicleId !== "undefined" ? `/api/profile/vehicles/update` : `/api/profile/vehicles/add`, {
+                    method: vehicleId && vehicleId !== "undefined" ? 'PUT' : 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
@@ -91,7 +91,7 @@ export const UpdateCarPage = () => {
                 .catch((error) => console.error('Error fetching vehicle data:', error));
         } else {
             setVehicle({
-                fK_OwnerUser: loggedInUserId,  //TODO replace with logged in user id
+                fK_OwnerUser: loggedInUserId,
                 type: '',
                 seats: 0,
                 color: '',
@@ -160,7 +160,8 @@ export const UpdateCarPage = () => {
 
     return (
         <div className="pb-40 w-full">
-            <TitleBar text={vehicleId ? pageTitle_update : pageTitle_create} hasBackAction/>
+            <TitleBar text={vehicleId && vehicleId !== "undefined" ? pageTitle_update : pageTitle_create}
+                      hasBackAction/>
             <div className="flex justify-center my-6">
                 <img
                     src={vehicle?.pictureSrc}
@@ -268,7 +269,7 @@ export const UpdateCarPage = () => {
                             label={ski_bag}
                             checked={vehicle?.hasSkiBag ?? false}
                             onChange={(checked) => handleCheckboxChange('hasSkiBag', checked)}
-                            id="shasSkiBagkiBag"
+                            id="hasSkiBag"
                             className="flex items-center gap-1"
                         />
                         <CheckmarkHandler
@@ -372,7 +373,7 @@ export const UpdateCarPage = () => {
                     onClick={handleSubmit}
                 />
 
-                {vehicleId && (
+                {vehicleId && vehicleId !== "undefined" && (
                     <Button
                         variant="accent"
                         fullWidth
