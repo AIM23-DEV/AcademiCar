@@ -135,6 +135,19 @@ export const CreateTripPage = () => {
                 body: JSON.stringify(newGroupChat)
             });
             const createdGroupChat = await groupChatResponse.json();
+            
+            // Create GroupChatUser
+            const newGroupChatUser: IGroupChatUser = {
+                fK_User: loggedInUserId,
+                fK_GroupChat: createdGroupChat.id
+            };
+
+            await fetch(`https://localhost:5173/api/create/groupchatUser`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newGroupChatUser)
+            });
+
             if (createdGroupChat.id == createdTrip.id)
             {
                 // finish

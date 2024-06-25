@@ -13,6 +13,7 @@ interface JoinRequestCardProps {
     price?: number | undefined
     loggedInUserId: string | undefined
     tripRequest?: ITripRequest
+    chatId?: string | undefined
 }
 
 export const JoinRequestCard = (props: JoinRequestCardProps) => {
@@ -38,6 +39,19 @@ export const JoinRequestCard = (props: JoinRequestCardProps) => {
                 setError(`There was an error saving the user details: ${e}`);
                 console.error(error);
             });
+        
+        // Create GroupChatUser
+            const newGroupChatUser: IGroupChatUser = {
+                                fK_User: props.tripRequest?.fK_PotentialPassenger,
+                fK_GroupChat: props.tripId
+            };
+            
+            fetch(`https://localhost:5173/api/create/groupchatUser`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newGroupChatUser)
+            }).then(()=> console.log(newGroupChatUser));
+        
     }
 
     const getIsTripRequestHandled = async () => {
@@ -77,7 +91,7 @@ export const JoinRequestCard = (props: JoinRequestCardProps) => {
                 outsideLinkText={props.linkText}
                 padding="none">
 
-                <TripCard tripId={props.tripId} cardIndex={0} driverId={props.driverId} price={props.price} hideShadow/>
+                <TripCard tripId={props.tripId} isNotLink cardIndex={0} driverId={props.driverId} price={props.price} hideShadow/>
             </Card>
         )
     } else
@@ -90,7 +104,7 @@ export const JoinRequestCard = (props: JoinRequestCardProps) => {
             outsideLinkText={props.linkText}
             padding="none">
 
-            <TripCard tripId={props.tripId} cardIndex={0} driverId={props.driverId} price={props.price} hideShadow/>
+            <TripCard tripId={props.tripId} isNotLink cardIndex={0} driverId={props.driverId} price={props.price} hideShadow/>
             {!isRequestHandled && (
                 <div className="grid grid-cols-2 gap-2 px-4 pb-4">
                     <Button fullWidth text={props.denyButtonText} variant={"accent"} onClick={handleUpdateDeclined} />

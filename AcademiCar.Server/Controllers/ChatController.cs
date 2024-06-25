@@ -134,6 +134,13 @@ public class ChatController : ControllerBase
         return NoContent();
     }
     
+    [HttpPost("CreateTripRequest")]
+    public async Task<IActionResult> CreateTripRequest([FromBody] TripRequest tripRequest)
+    {
+        await _globalService.TripRequestService.Create(tripRequest);
+        return NoContent();
+    }
+    
     [HttpGet("GetPersonalChatById")]
     public async Task<IActionResult> GetPersonalChatById(string id)
     {

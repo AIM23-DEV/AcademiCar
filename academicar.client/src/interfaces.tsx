@@ -23,9 +23,9 @@ interface IGroupChat {
 }
 
 interface IGroupChatUser {
-    id: number;
-    fK_GroupChat: number;
-    fK_User: string;
+    id?: number;
+    fK_GroupChat?: number;
+    fK_User?: string;
 }
 
 interface IGroupMessage {

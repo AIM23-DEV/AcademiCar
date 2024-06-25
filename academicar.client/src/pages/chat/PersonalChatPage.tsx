@@ -102,6 +102,7 @@ export const PersonalChatPage = () => {
                     price={trip?.price != null ? trip?.price : 0}
                     loggedInUserId={loggedInUserId}
                     tripRequest={tripRequest}
+                    chatId={chatId}
                 />
                 <Chat userId={loggedInUserId} chatId={chatId} messages={filteredMessages} type="personal"/>
             </div>
