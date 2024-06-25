@@ -3,7 +3,7 @@ import {Card} from "../../../components/Cards.tsx";
 import {useTranslation} from "react-i18next";
 import {Divider} from "../../../components/Divider.tsx";
 import {TextLink} from "../../../components/Buttons.tsx";
-import { BiFilter, BiSortAlt2 } from "react-icons/bi";
+import { BiSortAlt2 } from "react-icons/bi";
 import { Menu, MenuButton, MenuItems } from '@headlessui/react'
 
 type SearchResultFormProps = {

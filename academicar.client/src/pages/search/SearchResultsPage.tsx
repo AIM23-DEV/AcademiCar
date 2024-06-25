@@ -10,6 +10,7 @@ import { useLocation } from 'react-router-dom';
 import {useEffect, useState} from "react";
 
 interface ExtendedTrip {
+    tripId: number
     startPoint: IAddress,
     startTime: Date,
     endPoint: IAddress,
@@ -142,7 +143,9 @@ export const SearchResultsPage = () => {
                             item.endPoint.place === destination ||
                             formatTime(item.endTime) === time ||
                             formatDate(item.endTime) === date ? (
-                                <LinkCard>
+                                <LinkCard
+                                    link={"/trips/" + item.driver.id + "/" + item.tripId}
+                                >
                                     <div>
                                         <div className="flex justify-between items-center">
                                             <div className="flex flex-row gap-4">

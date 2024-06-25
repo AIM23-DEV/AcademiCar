@@ -70,6 +70,7 @@ public class TripController : ControllerBase
             
             ExtendedTrip newTrip = new ExtendedTrip()
             {
+                tripId = trip.ID,
                 startPoint = start,
                 startTime = trip.StartTime,
                 endPoint = end,
@@ -205,6 +206,7 @@ class TotalRating
 
 class ExtendedTrip
 {
+    public int tripId { get; set; }
     public Address startPoint { get; set; }
     public DateTime startTime { get; set; }
     public Address endPoint { get; set; }
