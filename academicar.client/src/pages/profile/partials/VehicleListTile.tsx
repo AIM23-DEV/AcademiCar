@@ -1,14 +1,17 @@
 ﻿import {BiBriefcaseAlt, BiCar, BiPalette, BiGroup, BiChevronRight} from "react-icons/bi";
 import {LinkCard} from "../../../components/Cards.tsx";
+import {useAuth} from "../../../AuthContext.tsx";
 
 interface VehicleListTileProps {
     vehicle: IVehicle,
 }
 
 export const VehicleListTile = (props: VehicleListTileProps) => {
+    const auth = useAuth();
+    
     return (
         <li key={props.vehicle.id} className="w-full">
-            <LinkCard link={`cars/${props.vehicle.id}`} label={props.vehicle.brandModel}
+            <LinkCard link={`/profile/${auth.user?.id}/cars/${props.vehicle.id}`} label={props.vehicle.brandModel}
                       className="relative w-full h-full">
                 <div className="flex flex-row w-full items-center">
                     <img
