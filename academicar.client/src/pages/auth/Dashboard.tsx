@@ -1,13 +1,11 @@
 ﻿import React from 'react';
-import { useAuth } from '../../AuthContext';
+import {useAuth} from '../../AuthContext';
 
 const Dashboard: React.FC = () => {
-    const { user } = useAuth();
-
-    console.log("Logged-in user:", user); // Add this line for debugging
+    const {user} = useAuth();
 
     if (!user) {
-        return <p>Loading...</p>; // or redirect to login if not authenticated
+        return <p>Loading...</p>;
     }
 
     return (
