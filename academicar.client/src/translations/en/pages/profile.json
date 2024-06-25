@@ -16,7 +16,8 @@
     "newcar": "Add new car"
   },
   "CarPage": {
-    "title": "Create Car",
+    "title_create": "Create Car",
+    "title_update": "Update Car",
     "brand_placeholder": "Vehicle",
     "brand": "Brand and Model",
     "economy_placeholder": "Fuel consumption l / km",
@@ -49,7 +50,8 @@
     "animals": "Animals",
     "other": "Other",
     "createcar": "Create car",
-    "updatecar": "Save changes"
+    "update_car": "Save changes",
+    "delete_car": "Delete car"
   },
   "EditProfilePage": {
     "title": "Edit My Profile",
@@ -59,6 +61,7 @@
     "phone_number": "Phone number",
     "email": "E-Mail Address",
     "birthdate": "Birth date",
+    "gender": "Gender",
     "gender_male": "Male",
     "gender_female": "Female",
     "gender_diverse": "Divers",
@@ -84,11 +87,16 @@
     "title": "My rewards",
     "parking": {
       "title": "Car parks",
-      "text": "You are entitled to <span class=\"text-primary-600\">{{amount}}</span> days a parking space at your training centre."
+      "text": "You are entitled to {{amount}} days a parking space at your training centre."
     },
     "discount": "Discount",
     "discounts": "Discounts",
-    "booking": "Booking"
+    "receiveDiscount": "Receive discount",
+    "booking": "Booking",
+    "wheel": "Reifentechnik 24",
+    "car": "Autoservice 1234",
+    "tech": "Laptops 485",
+    "discountText": "Show this voucher on your next visit and you will receive the discount shown below!"
   },
   "StatsPage": {
     "title": "My statistics",
@@ -102,14 +110,16 @@
   },
   "BalancePage": {
     "title": "My Balance",
-    "balance": "AkademiCar-Balance",
+    "balance": "AcademiCar-Balance",
     "recharge": "Recharge",
-    "activities": "Latest activities",
-    "history": "Archive"
+    "activities": "Latest transactions",
+    "history": "Archive",
+    "payment": "Payment",
+    "trip:": "Trip"
   },
   "BalanceHistoryPage": {
     "title": "My Balance",
-    "delete": "Delete all activities"
+    "delete": "Delete all transactions"
   },
   "BalanceRechargePage": {
     "title": "Recharge account",

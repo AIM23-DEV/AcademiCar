@@ -4,8 +4,7 @@ using NUnit.Framework;
 
 namespace AcademiCar.Server.Tests;
 
-[TestFixture]
-[Order(1)]
+[TestFixture, Order(1)]
 public class CreateDataTest : BaseUnitTest
 {
     [Test (ExpectedResult = true)]
@@ -28,8 +27,27 @@ public class CreateDataTest : BaseUnitTest
         }
     }
 
-    [Test (ExpectedResult = true)]
-    [Order(1)]
+    [TestCase(ExpectedResult = true), Order(1)]
+    public async Task<bool> CreateTestAddress()
+    {
+        try
+        {
+            Address? existingTestAddress = await _unitOfWork.Addresses.FindByIdAsync(-999);
+            if (existingTestAddress != null) return true;
+            
+            foreach (Address address in _GetAddresses())
+                await _unitOfWork.Addresses.InsertAsync(address);
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Address creation failed: {e}");
+            return false;
+        }
+    }
+    
+    [Test (ExpectedResult = true), Order(2)]
     public async Task<bool> CreateTestStatsAndUser()
     {
         try
@@ -57,13 +75,11 @@ public class CreateDataTest : BaseUnitTest
     {
         try
         {
-            /* TODO - Favorites need to be be set on the actual user, or this results in error
             FavoriteUser? existingTestFavUser = await _unitOfWork.FavoriteUsers.FindByIdAsync(-999);
             if (existingTestFavUser != null) return true;
             
             foreach (FavoriteUser favoriteUser in _GetFavoriteUsers())
                 await _unitOfWork.FavoriteUsers.InsertAsync(favoriteUser);
-            */
 
             return true;
         }
@@ -74,8 +90,7 @@ public class CreateDataTest : BaseUnitTest
         }
     }
 
-    [Test (ExpectedResult = true)]
-    [Order(2)]
+    [Test (ExpectedResult = true), Order(3)]
     public async Task<bool> CreateTestVehicle()
     {
         try
@@ -95,35 +110,33 @@ public class CreateDataTest : BaseUnitTest
         }
     }
 
-    [TestCase(ExpectedResult = true)]
-    [Order(3)]
-    public async Task<bool> CreateTestAddressAndTrip()
+    [TestCase(ExpectedResult = true), Order(4)]
+    public async Task<bool> CreateTestTrip()
     {
         try
         {
-            Address? existingTestAddress = await _unitOfWork.Addresses.FindByIdAsync(-999);
-            if (existingTestAddress != null) return true;
+            Trip? existingTestTrip = await _unitOfWork.Trips.FindByIdAsync(-999);
+            if (existingTestTrip != null) return true;
             
-            User? passenger1 = await _unitOfWork.Users.FindByIdAsync("-998");
-            User? passenger2 = await _unitOfWork.Users.FindByIdAsync("-997");
-            
-            foreach (Address address in _GetAddresses())
-                await _unitOfWork.Addresses.InsertAsync(address);
-            
-            foreach (Trip trip in _GetTrips(passenger1, passenger2))
+            foreach (Trip trip in _GetTrips())
                 await _unitOfWork.Trips.InsertAsync(trip);
 
+            foreach (TripPassenger tripPassenger in _GetTripPassengers())
+                await _unitOfWork.TripPassengers.InsertAsync(tripPassenger);
+            
+            foreach (TripStop tripStop in _GetTripStops())
+                await _unitOfWork.TripStops.InsertAsync(tripStop);
+            
             return true;
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Address and Trip creation failed: {e}");
+            Console.WriteLine($"Trip creation failed: {e}");
             return false;
         }
     }
 
-    [Test (ExpectedResult = true)]
-    [Order(4)]
+    [Test (ExpectedResult = true), Order(5)]
     public async Task<bool> CreateTestTripRequest()
     {
         try
@@ -174,6 +187,15 @@ public class CreateDataTest : BaseUnitTest
             foreach (Preferences preferences in _GetPreferences())
                 await _unitOfWork.Preferences.InsertAsync(preferences);
             
+            foreach (MusicPreference musicPreference in _GetMusicPreferences())
+                await _unitOfWork.MusicPreferences.InsertAsync(musicPreference);
+            
+            foreach (InterestPreference interestPreference in _GetInterestPreferences())
+                await _unitOfWork.InterestPreferences.InsertAsync(interestPreference);
+
+            foreach (TravelPreference travelPreference in _GetTravelPreferences())
+                await _unitOfWork.TravelPreferences.InsertAsync(travelPreference);
+            
             return true;
         }
         catch (Exception e)
@@ -184,146 +206,142 @@ public class CreateDataTest : BaseUnitTest
     }
     
     [Test (ExpectedResult = true)]
-    public async Task<bool> CreateTestChatAndMessages()
+    public async Task<bool> CreateTestPersonalChatAndMessages()
     {
         try
         {
-            Chat? existingChat = await _unitOfWork.Chats.FindByIdAsync(-999);
+            PersonalChat? existingChat = await _unitOfWork.PersonalChats.FindByIdAsync(-999);
             if (existingChat != null) return true;
             
-            foreach (Chat chat in _GetChat())
-                await _unitOfWork.Chats.InsertAsync(chat);
+            foreach (PersonalChat chat in _getPersonalChats())
+                await _unitOfWork.PersonalChats.InsertAsync(chat);
             
-            foreach (Message message in _GetMessage())
-                await _unitOfWork.Messages.InsertAsync(message);
+            foreach (PersonalMessage message in _getPersonalMessages())
+                await _unitOfWork.PersonalMessages.InsertAsync(message);
             
             return true;
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Chat and Message creation failed: {e}");
+            Console.WriteLine($"Chat and PersonalMessage creation failed: {e}");
             return false;
         }
     }
+    
+    [Test (ExpectedResult = true)]
+    public async Task<bool> CreateTestGroupChatAndMessages()
+    {
+        try
+        {
+            GroupChat? existingChat = await _unitOfWork.GroupChats.FindByIdAsync(-999);
+            if (existingChat != null) return true;
+            
+            foreach (GroupChat chat in _getGroupChats())
+                await _unitOfWork.GroupChats.InsertAsync(chat);
 
-
+            foreach (GroupChatUser chatUser in _getGroupChatUsers())
+                await _unitOfWork.GroupChatUsers.InsertAsync(chatUser);
+            
+            foreach (GroupMessage message in _getGroupMessages())
+                await _unitOfWork.GroupMessages.InsertAsync(message);
+            
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Chat and PersonalMessage creation failed: {e}");
+            return false;
+        }
+    }
+    
     #region Data
 
+    private static Address[] _GetAddresses()
+    {
+        Address testAddress1 = new()
+        {
+            ID = -999,
+            Street = "Admin Street 1",
+            Number = 1,
+            ZIP = 1111,
+            Place = "Admin Place",
+            Longitude = "0°",
+            Latitude = "0°"
+        };
+        
+        Address testAddress2 = new()
+        {
+            ID = -998,
+            Street = "Alte Poststraße 149",
+            Number = 149,
+            ZIP = 8020,
+            Place = "Graz",
+            Longitude = "47.0691°",
+            Latitude = "15.4099°"
+        };
+        
+        Address testAddress3 = new()
+        {
+            ID = -997,
+            Street = "Ostbahnstraße 3",
+            Number = 3,
+            ZIP = 8041,
+            Place = "Graz",
+            Longitude = "47.0408°",
+            Latitude = "15.4630°"
+        };
+        
+        Address testAddress4 = new()
+        {
+            ID = -996,
+            Street = "Friedrich-Schmidt-Platz 1",
+            Number = 1,
+            ZIP = 1010,
+            Place = "Wien",
+            Longitude = "48.2109°",
+            Latitude = "16.3565°"
+        };
+
+        return [testAddress1, testAddress2, testAddress3, testAddress4];
+    }
     private static Carlos[] _GetCarlos()
     {
         Carlos testCarlos1 = new()
         {
             ID = -999,
             Message = "RIP Carlos",
-            Image = []
+            ImageSrc = "/src/assets/c1.jpg"
         };
 
         Carlos testCarlos2 = new()
         {
             ID = -998,
-            Message = "Car-los",
-            Image = []
+            Message = "Carlos-los",
+            ImageSrc = "/src/assets/c2.jpg"
         };
 
         Carlos testCarlos3 = new()
         {
             ID = -997,
             Message = "Carlos ist los",
-            Image = []
+            ImageSrc = "/src/assets/c3.jpg"
         };
 
         Carlos testCarlos4 = new()
         {
             ID = -996,
+            Message = "Carlos?",
+            ImageSrc = "/src/assets/c4.jpg"
+        };
+        
+        Carlos testCarlos5 = new()
+        {
+            ID = -995,
             Message = "Was ist mit dem Carlos?",
-            Image = []
+            ImageSrc = "/src/assets/c5.jpg"
         };
 
-        return [testCarlos1, testCarlos2, testCarlos3, testCarlos4];
-    }
-    private static Stats[] _GetStats()
-    {
-        Stats testStatsAdmin = new()
-        {
-            ID = -999,
-            NrTrips = 1,
-            CO2Savings = 0.0f,
-            DriverRating = 0,
-            PassengerRating = 0.0f
-        };
-
-        Stats testStatsPassenger1 = new()
-        {
-            ID = -998,
-            NrTrips = 2,
-            CO2Savings = 4.2f,
-            DriverRating = 0,
-            PassengerRating = 3.5f
-        };
-
-        Stats testStatsPassenger2 = new()
-        {
-            ID = -997,
-            NrTrips = 2,
-            CO2Savings = 6.9f,
-            DriverRating = 0,
-            PassengerRating = 5f
-        };
-
-        Stats testStatsDriver = new()
-        {
-            ID = -996,
-            NrTrips = 3,
-            CO2Savings = 42.0f,
-            DriverRating = 2,
-            PassengerRating = 2.0f
-        };
-
-        return [testStatsAdmin, testStatsPassenger1, testStatsPassenger2, testStatsDriver];
-    }
-    private static User[] _GetUsers()
-    {
-        User testUserAdmin = new()
-        {
-            Id = "-999",
-            FirstName = "Admin",
-            LastName = "Test",
-            Picture = [],
-            Email = "admin.test@academi.car",
-            FK_Stats = -999
-        };
-
-        User testUserPassenger1 = new()
-        {
-            Id = "-998",
-            FirstName = "Passenger1",
-            LastName = "Test",
-            Picture = [],
-            Email = "passenger1.test@academi.car",
-            FK_Stats = -998
-        };
-
-        User testUserPassenger2 = new()
-        {
-            Id = "-997",
-            FirstName = "Passenger2",
-            LastName = "Test",
-            Picture = [],
-            Email = "passenger2.test@academi.car",
-            FK_Stats = -997
-        };
-
-        User testUserDriver = new()
-        {
-            Id = "-996",
-            FirstName = "Driver",
-            LastName = "Test",
-            Picture = [],
-            Email = "driver.test@academi.car",
-            FK_Stats = -996
-        };
-
-        return [testUserAdmin, testUserPassenger1, testUserPassenger2, testUserDriver];
+        return [testCarlos1, testCarlos2, testCarlos3, testCarlos4, testCarlos5];
     }
     private static FavoriteUser[] _GetFavoriteUsers()
     {
@@ -357,195 +375,460 @@ public class CreateDataTest : BaseUnitTest
 
         return [testFavUserEntry1, testFavUserEntry2, testFavUserEntry3, testFavUserEntry4];
     }
-    private static Vehicle[] _GetVehicles()
+    private static InterestPreference[] _GetInterestPreferences()
     {
-        Vehicle testVehicleAdmin = new()
+        InterestPreference testInterestPreference1 = new()
         {
             ID = -999,
-            Type = "Admin",
-            Seats = 4,
-            Color = "Yellow",
-            Picture = [],
-            Features = "Admin console",
-            IsElectric = true,
+            FK_Preferences = -999,
+            Interest = "Reisen",
+        };
+        
+        InterestPreference testInterestPreference2 = new()
+        {
+            ID = -998,
+            FK_Preferences = -999,
+            Interest = "Technik"
+        };
+        
+        InterestPreference testInterestPreference3 = new()
+        {
+            ID = -997,
+            FK_Preferences = -998,
+            Interest = "Singen"
+        };
+        
+        InterestPreference testInterestPreference4 = new()
+        {
+            ID = -996,
+            FK_Preferences = -997,
+            Interest = "Kochen"
+        };
+
+        return [testInterestPreference1, testInterestPreference2, testInterestPreference3, testInterestPreference4];
+    }
+    private static GroupChat[] _getGroupChats()
+    {
+        GroupChat testChat1 = new()
+        {
+            ID = -999,
+            FK_Trip = -999,
+            TripTitle = "Test Drive",
+            LastMessageContent = "Test Message",
+            UpdatedAt = DateTime.UtcNow.AddHours(-2).AddMinutes(-24)
+        };
+        
+        GroupChat testChat2 = new()
+        {
+            ID = -998,
+            FK_Trip = -998,
+            TripTitle = "Graz -> Graz",
+            LastMessageContent = "Hello World",
+            UpdatedAt = DateTime.UtcNow.AddHours(-2).AddMinutes(-24)
+        };
+
+        return [testChat1, testChat2];
+    }
+    private static GroupChatUser[] _getGroupChatUsers()
+    {
+        GroupChatUser testChatUser1 = new()
+        {
+            ID = -999,
+            FK_GroupChat = -999,
             FK_User = "-999"
         };
         
-        Vehicle testVehicleDriver = new()
+        GroupChatUser testChatUser2 = new()
         {
             ID = -998,
-            Type = "Mitsubishi",
-            Seats = 5,
-            Color = "Red",
-            Picture = [],
-            Features = "Mitsubishi ;)",
-            IsElectric = false,
-            FK_User = "-996"
-        };
-        
-        Vehicle testVehiclePassenger2 = new()
-        {
-            ID = -997,
-            Type = "Vespa",
-            Seats = 2,
-            Color = "Silver",
-            Picture = [],
-            Features = "Compact",
-            IsElectric = false,
-            FK_User = "-997"
+            FK_GroupChat = -998,
+            FK_User = "-998"
         };
 
-        return [testVehicleAdmin, testVehicleDriver, testVehiclePassenger2];
+        return [testChatUser1, testChatUser2];
     }
-    private static Address[] _GetAddresses()
+    private static GroupMessage[] _getGroupMessages()
     {
-        Address testAddressAdmin = new()
+        GroupMessage testMessage1 = new()
         {
             ID = -999,
-            Street = "Admin Street",
-            Number = 1,
-            ZIP = 1111,
-            Place = "Admin Place",
-            Longitude = "0°",
-            Latitude = "0°"
+            FK_SenderUser = "-999",
+            FK_GroupChat = -999,
+            Content = "Test Admin",
+            SentAt = DateTime.UtcNow.AddHours(-2).AddMinutes(-24),
         };
         
-        Address testAddressPassenger1 = new()
+        GroupMessage testMessage2 = new()
         {
             ID = -998,
-            Street = "Alte Poststraße",
-            Number = 149,
-            ZIP = 8020,
-            Place = "Graz",
-            Longitude = "47.0691°",
-            Latitude = "15.4099°"
-        };
-        
-        Address testAddressPassenger2 = new()
-        {
-            ID = -997,
-            Street = "Ostbahnstraße",
-            Number = 3,
-            ZIP = 8041,
-            Place = "Graz",
-            Longitude = "47.0408°",
-            Latitude = "15.4630°"
-        };
-        
-        Address testAddressDriver = new()
-        {
-            ID = -996,
-            Street = "Friedrich-Schmidt-Platz",
-            Number = 1,
-            ZIP = 1010,
-            Place = "Wien",
-            Longitude = "48.2109°",
-            Latitude = "16.3565°"
+            FK_SenderUser = "-998",
+            FK_GroupChat = -998,
+            Content = "Test Eins",
+            SentAt = DateTime.UtcNow.AddHours(-1).AddMinutes(-43),
         };
 
-        return [testAddressAdmin, testAddressPassenger1, testAddressPassenger2, testAddressDriver];
+        return [testMessage1, testMessage2];
     }
-    private static Trip[] _GetTrips(User? passenger1, User? passenger2)
+    private static MusicPreference[] _GetMusicPreferences()
     {
-        Trip testTripAdmin = new()
+        MusicPreference testMusicPreference1 = new()
+        {
+            ID = -999,
+            FK_Preferences = -999,
+            Genre = "Pop",
+        };
+        
+        MusicPreference testMusicPreference2 = new()
+        {
+            ID = -998,
+            FK_Preferences = -999,
+            Genre = "Rock"
+        };
+        
+        MusicPreference testMusicPreference3 = new()
+        {
+            ID = -997,
+            FK_Preferences = -998,
+            Genre = "Podcasts"
+        };
+        
+        MusicPreference testMusicPreference4 = new()
+        {
+            ID = -996,
+            FK_Preferences = -997,
+            Genre = "Schlager"
+        };
+
+        return [testMusicPreference1, testMusicPreference2, testMusicPreference3, testMusicPreference4];
+    }
+    private static PersonalChat[] _getPersonalChats()
+    {
+        PersonalChat testChat1 = new()
+        {
+            ID = -999,
+            FK_Trip = -999,
+            FK_PassengerUser = "-998",
+            FK_DriverUser = "-999",
+            UpdatedAt = DateTime.UtcNow.AddHours(-2).AddMinutes(-24)
+        };
+        
+        PersonalChat testChat2 = new()
+        {
+            ID = -998,
+            FK_Trip = -998,
+            FK_PassengerUser = "-997",
+            FK_DriverUser = "-996",
+            UpdatedAt = DateTime.UtcNow.AddHours(-2).AddMinutes(-24)
+        };
+
+        return [testChat1, testChat2];
+    }
+    private static PersonalMessage[] _getPersonalMessages()
+    {
+        PersonalMessage testMessage1 = new()
+        {
+            ID = -999,
+            FK_SenderUser = "-999",
+            FK_PersonalChat = -999,
+            Content = "Test Admin",
+            SentAt = DateTime.UtcNow.AddHours(-2).AddMinutes(-24),
+        };
+        
+        PersonalMessage testMessage2 = new()
+        {
+            ID = -998,
+            FK_SenderUser = "-998",
+            FK_PersonalChat = -998,
+            Content = "Test Eins",
+            SentAt = DateTime.UtcNow.AddHours(-1).AddMinutes(-43),
+        };
+
+        return [testMessage1, testMessage2];
+    }
+    private static Preferences[] _GetPreferences()
+    {
+        Preferences testPreferences1 = new()
+        {
+            ID = -999,
+            FK_User = "-999"
+        };
+        
+        Preferences testPreferences2 = new()
+        {
+            ID = -998,
+            FK_User = "-998"
+        };
+        
+        Preferences testPreferences3 = new()
+        {
+            ID = -997,
+            FK_User = "-997"
+        };
+        
+        Preferences testPreferences4 = new()
+        {
+            ID = -996,
+            FK_User = "-996"
+        };
+
+        return [testPreferences1, testPreferences2, testPreferences3, testPreferences4];
+    }
+    private static Rating[] _GetRatings()
+    {
+        Rating testRating1 = new()
+        {
+            ID = -999,
+            FK_RatingUser = "-999",
+            FK_RatedUser = "-998",
+            IsDriver = true,
+            IsPassenger = false,
+            Score = 0,
+            Comment = "Meh"
+        };
+        
+        Rating testRating2 = new()
+        {
+            ID = -998,
+            FK_RatingUser = "-998",
+            FK_RatedUser = "-999",
+            IsDriver = false,
+            IsPassenger = true,
+            Score = 0,
+            Comment = "Hat nicht bezahlt"
+        };
+        
+        Rating testRating3 = new()
+        {
+            ID = -997,
+            FK_RatingUser = "-998",
+            FK_RatedUser = "-997",
+            IsDriver = false,
+            IsPassenger = true,
+            Score = 5,
+            Comment = ""
+        };
+        
+        Rating testRating4 = new()
+        {
+            ID = -996,
+            FK_RatingUser = "-997",
+            FK_RatedUser = "-999",
+            IsDriver = false,
+            IsPassenger = true,
+            Score = 5,
+            Comment = "Perfekt!"
+        };
+        
+        Rating testRating5 = new()
+        {
+            ID = -995,
+            FK_RatingUser = "-996",
+            FK_RatedUser = "-997",
+            IsDriver = true,
+            IsPassenger = false,
+            Score = 3,
+            Comment = ""
+        };
+
+        return [testRating1, testRating2, testRating3, testRating4, testRating5];
+    }
+    private static Stats[] _GetStats()
+    {
+        Stats testStats1 = new()
+        {
+            ID = -999,
+            DriverKilometres = 10,
+            PassengerKilometres = 4,
+            NrTrips = 1,
+            CO2Savings = 10.0f,
+        };
+
+        Stats testStats2 = new()
+        {
+            ID = -998,
+            DriverKilometres = 2,
+            PassengerKilometres = 4,
+            NrTrips = 2,
+            CO2Savings = 4.2f,
+        };
+
+        Stats testStats3 = new()
+        {
+            ID = -997,
+            DriverKilometres = 0,
+            PassengerKilometres = 4,
+            NrTrips = 2,
+            CO2Savings = 6.9f,
+        };
+
+        Stats testStats4 = new()
+        {
+            ID = -996,
+            DriverKilometres = 30,
+            PassengerKilometres = 4,
+            NrTrips = 3,
+            CO2Savings = 42.0f,
+        };
+
+        return [testStats1, testStats2, testStats3, testStats4];
+    }
+    private static TravelPreference[] _GetTravelPreferences()
+    {
+        TravelPreference testTravelPreference1 = new()
+        {
+            ID = -999,
+            FK_Preferences = -999,
+            PreferenceText = "Kein Rauchen",
+            IconType = "No",
+        };
+        
+        TravelPreference testTravelPreference2 = new()
+        {
+            ID = -998,
+            FK_Preferences = -999,
+            PreferenceText = "Gesprächig",
+            IconType = "Talk",
+        };
+        
+        TravelPreference testTravelPreference3 = new()
+        {
+            ID = -997,
+            FK_Preferences = -998,
+            PreferenceText = "Gesprächig",
+            IconType = "Talk",
+        };
+        
+        TravelPreference testTravelPreference4 = new()
+        {
+            ID = -996,
+            FK_Preferences = -997,
+            PreferenceText = "Gesprächig",
+            IconType = "Talk",
+        };
+
+        return [testTravelPreference1, testTravelPreference2, testTravelPreference3, testTravelPreference4];
+    }
+    private static Trip[] _GetTrips()
+    {
+        Trip testTrip1 = new()
         {
             ID = -999,
             Title = "AdminTrip",
             FK_Driver = "-999",
             FK_Vehicle = -999,
-            Passengers = [],
             FK_StartAddress = -999,
             FK_EndAddress = -998,
             StartTime = DateTime.UtcNow.AddDays(-1),
             EndTime = DateTime.UtcNow,
-            Duration = 0,
             AvailableSeats = 0,
             Price = 0,
-            PaymentMethod = "",
+            PaymentMethod = "None",
             Status = "Done"
         };
-        testTripAdmin.Passengers.Add(passenger1);
         
-        Trip testTrip1 = new()
+        Trip testTrip2 = new()
         {
             ID = -998,
             Title = "Jako -> FH",
             FK_Driver = "-996",
             FK_Vehicle = -998,
-            Passengers = [],
             FK_StartAddress = -997,
             FK_EndAddress = -998,
             StartTime = DateTime.UtcNow.AddDays(-1).AddHours(-1.5),
             EndTime = DateTime.UtcNow.AddDays(-1),
-            Duration = 1.5m,
             AvailableSeats = 2,
             Price = 0,
-            PaymentMethod = "No cost",
+            PaymentMethod = "None",
             Status = "Done"
         };
-        testTripAdmin.Passengers.Add(passenger2);
         
-        Trip testTrip2 = new()
+        Trip testTrip3 = new()
         {
             ID = -997,
             Title = "Jako -> FH",
             FK_Driver = "-996",
             FK_Vehicle = -998,
-            Passengers = [],
             FK_StartAddress = -997,
             FK_EndAddress = -998,
             StartTime = DateTime.UtcNow.AddHours(-1.5),
             EndTime = DateTime.UtcNow,
-            Duration = 1.5m,
             AvailableSeats = 2,
             Price = 0,
-            PaymentMethod = "No cost",
+            PaymentMethod = "None",
             Status = "Open"
         };
-        testTripAdmin.Passengers.Add(passenger2);
         
-        Trip testTrip3 = new()
+        Trip testTrip4 = new()
         {
             ID = -996,
             Title = "FH -> Vienna",
             FK_Driver = "-996",
             FK_Vehicle = -998,
-            Passengers = [],
             FK_StartAddress = -998,
             FK_EndAddress = -996,
             StartTime = DateTime.UtcNow.AddDays(-2),
             EndTime = DateTime.UtcNow.AddDays(-2).AddHours(6),
-            Duration = 6.0m,
             AvailableSeats = 2,
-            Price = 20.0m,
+            Price = 20.0f,
             PaymentMethod = "Cash",
             Status = "Done"
         };
-        testTripAdmin.Passengers.Add(passenger1);
         
-        return [testTripAdmin, testTrip1, testTrip2, testTrip3];
+        return [testTrip1, testTrip2, testTrip3, testTrip4];
+    }
+    private static TripPassenger[] _GetTripPassengers()
+    {
+        TripPassenger testTripPassenger1 = new()
+        {
+            ID = -999,
+            FK_Trip = -999,
+            FK_PassengerUser = "-998"
+        };
+
+        TripPassenger testTripPassenger2 = new()
+        {
+            ID = -998,
+            FK_Trip = -998,
+            FK_PassengerUser = "-999"
+        };
+
+        TripPassenger testTripPassenger3 = new()
+        {
+            ID = -997,
+            FK_Trip = -998,
+            FK_PassengerUser = "-997"
+        };
+
+        TripPassenger testTripPassenger4 = new()
+        {
+            ID = -996,
+            FK_Trip = -996,
+            FK_PassengerUser = "-998"
+        };
+
+        return [testTripPassenger1, testTripPassenger2, testTripPassenger3, testTripPassenger4];
     }
     private static TripRequest[] _GetTripRequests()
     {
-        TripRequest testTripRequestAdmin = new()
+        TripRequest testTripRequest1 = new()
         {
             ID = -999,
             FK_Trip = -999,
             FK_PotentialPassenger = "-998",
             Comment = "Test",
-            Status = "Accepted"
+            Status = "Open"
         };
         
-        TripRequest testTripRequest1 = new()
+        TripRequest testTripRequest2 = new()
         {
             ID = -998,
             FK_Trip = -998,
             FK_PotentialPassenger = "-997",
             Comment = "Hey...",
-            Status = "Accepted"
+            Status = "Open"
         };
         
-        TripRequest testTripRequest2 = new()
+        TripRequest testTripRequest3 = new()
         {
             ID = -997,
             FK_Trip = -997,
@@ -554,179 +837,198 @@ public class CreateDataTest : BaseUnitTest
             Status = "Open"
         };
         
-        TripRequest testTripRequest3 = new()
+        TripRequest testTripRequest4 = new()
         {
             ID = -996,
             FK_Trip = -996,
             FK_PotentialPassenger = "-998",
             Comment = "Hello!",
-            Status = "Accepted"
+            Status = "Open"
         };
 
-        return [testTripRequestAdmin, testTripRequest1, testTripRequest2, testTripRequest3];
+        return [testTripRequest1, testTripRequest2, testTripRequest3, testTripRequest4];
     }
-    private static Rating[] _GetRatings()
+    private static TripStop[] _GetTripStops()
     {
-        Rating testRatingAdmin = new()
-        {
-            ID = -999,
-            FK_User = "-999",
-            IsDriver = true,
-            IsPassenger = false,
-            Score = 0
-        };
-        
-        Rating testRating1 = new()
-        {
-            ID = -998,
-            FK_User = "-998",
-            IsDriver = false,
-            IsPassenger = true,
-            Score = 0
-        };
-        
-        Rating testRating2 = new()
-        {
-            ID = -997,
-            FK_User = "-998",
-            IsDriver = false,
-            IsPassenger = true,
-            Score = 5
-        };
-        
-        Rating testRating3 = new()
-        {
-            ID = -996,
-            FK_User = "-997",
-            IsDriver = false,
-            IsPassenger = true,
-            Score = 5
-        };
-        
-        Rating testRating4 = new()
-        {
-            ID = -995,
-            FK_User = "-996",
-            IsDriver = true,
-            IsPassenger = false,
-            Score = 3
-        };
-
-        return [testRatingAdmin, testRating1, testRating2, testRating3, testRating4];
-    }
-    private static Preferences[] _GetPreferences()
-    {
-        Preferences testPrefAdmin = new()
-        {
-            ID = -999,
-            FK_User = "-999"
-        };
-        
-        Preferences testPrefPassenger1 = new()
-        {
-            ID = -998,
-            FK_User = "-998"
-        };
-        
-        Preferences testPrefPassenger2 = new()
-        {
-            ID = -997,
-            FK_User = "-997"
-        };
-        
-        Preferences testPrefDriver = new()
-        {
-            ID = -996,
-            FK_User = "-996"
-        };
-
-        return [testPrefAdmin, testPrefPassenger1, testPrefPassenger2, testPrefDriver];
-    }
-    
-    private static Message[] _GetMessage()
-    {
-        Message testMessageAdmin = new()
-        {
-            ID = -999,
-            FK_User = "-999",
-            FK_Chat = -999,
-            FK_TripRequest = -999,
-            Content = "Test Admin",
-            SentAt = DateTime.UtcNow.AddHours(-2).AddMinutes(-24),
-        };
-        
-        Message testMessage1 = new()
-        {
-            ID = -998,
-            FK_User = "-998",
-            FK_Chat = -998,
-            FK_TripRequest = -998,
-            Content = "Test Eins",
-            SentAt = DateTime.UtcNow.AddHours(-1).AddMinutes(-43),
-        };
-        
-        Message testMessage2 = new()
-        {
-            ID = -997,
-            FK_User = "-997",
-            FK_Chat = -997,
-            FK_TripRequest = -997,
-            Content = "Zweiter Test",
-            SentAt = DateTime.UtcNow.AddMinutes(-7),
-        };
-        
-        Message testMessage3 = new()
-        {
-            ID = -996,
-            FK_User = "-996",
-            FK_Chat = -996,
-            FK_TripRequest = -996,
-            Content = "3. Test",
-            SentAt = DateTime.UtcNow.AddDays(-1).AddHours(17).AddMinutes(-6),
-        };
-
-        return [testMessageAdmin, testMessage1, testMessage2, testMessage3];
-    }
-    
-    private static Chat[] _GetChat()
-    {
-        Chat testChatAdmin = new()
+        TripStop testTripStop1 = new()
         {
             ID = -999,
             FK_Trip = -999,
-            FK_User = "-999",
-            HasMoreThan2 = true,
-            UpdatedAt = DateTime.UtcNow.AddHours(-2).AddMinutes(-24)
+            FK_StopAddress = -997,
+            StopDurationInMinutes = 10
         };
         
-        Chat testChat1 = new()
+        TripStop testTripStop2 = new()
         {
             ID = -998,
             FK_Trip = -998,
-            FK_User = "-998",
-            HasMoreThan2 = false,
-            UpdatedAt = DateTime.UtcNow.AddHours(-1).AddMinutes(-43)
+            FK_StopAddress = -997,
+            StopDurationInMinutes = 5
         };
         
-        Chat testChat2 = new()
+        TripStop testTripStop3 = new()
         {
             ID = -997,
             FK_Trip = -997,
-            FK_User = "-997",
-            HasMoreThan2 = false,
-            UpdatedAt = DateTime.UtcNow.AddMinutes(-7)
+            FK_StopAddress = -997,
+            StopDurationInMinutes = 5
         };
         
-        Chat testChat3 = new()
+        TripStop testTripStop4 = new()
         {
             ID = -996,
             FK_Trip = -996,
-            FK_User = "-996",
-            HasMoreThan2 = true,
-            UpdatedAt = DateTime.UtcNow.AddDays(-1).AddHours(17).AddMinutes(-6)
+            FK_StopAddress = -997,
+            StopDurationInMinutes = 15
         };
 
-        return [testChatAdmin, testChat1, testChat2, testChat3];
+        return [testTripStop1, testTripStop2, testTripStop3, testTripStop4];
+    }
+    private static User[] _GetUsers()
+    {
+        User testUser1 = new()
+        {
+            Id = "-999",
+            FirstName = "Admin",
+            LastName = "Test",
+            PictureSrc = "/src/assets/krucziii.jpg",
+            Email = "admin.test@academi.car",
+            FK_Stats = -999,
+            FK_Address = -999,
+            PhoneNumber = "0650 123 12 12"
+        };
+
+        User testUser2 = new()
+        {
+            Id = "-998",
+            FirstName = "Academi",
+            LastName = "Car",
+            PictureSrc = "/src/assets/c1.jpg",
+            Email = "academi.car@academi.car",
+            FK_Stats = -998,
+            FK_Address = -999,
+            PhoneNumber = "0664 123 34 56"
+        };
+
+        User testUser3 = new()
+        {
+            Id = "-997",
+            FirstName = "Car",
+            LastName = "Los",
+            PictureSrc = "/src/assets/c5.jpg",
+            Email = "car.los@academi.car",
+            FK_Stats = -997,
+            FK_Address = -996,
+            PhoneNumber = "0600 321 21 21"
+        };
+
+        User testUser4 = new()
+        {
+            Id = "-996",
+            FirstName = "Driver",
+            LastName = "Test",
+            PictureSrc = "/src/assets/women_mock.jpg",
+            Email = "driver.test@academi.car",
+            FK_Stats = -996,
+            FK_Address = -999,
+            PhoneNumber = "1234 123 12 12"
+        };
+
+        return [testUser1, testUser2, testUser3, testUser4];
+    }
+    private static Vehicle[] _GetVehicles()
+    {
+        Vehicle testVehicle1 = new()
+        {
+            ID = -999,
+            FK_OwnerUser = "-999",
+            Type = "Admin",
+            Seats = 4,
+            Color = "Yellow",
+            PictureSrc = "/src/assets/c1.jpg",
+            BrandModel = "Admin",
+            FuelConsumption = "3",
+            LicensePlate = "GU - 123 FH",
+            FuelType = "Admin",
+            HasAC = false,
+            HasLed = false,
+            HasVehicleInspection = false,
+            HasAutomatic = true,
+            HasSkiBag = false,
+            HasLeather = false,
+            HasSeatHeating = false,
+            HasCruiseControl = false,
+            HasBikeRack = false,
+            HasHandLuggageSpace = true,
+            HasMountingOnRoof = false,
+            HasAnimalSpace = false,
+            HasSuitcaseSpace = false,
+            HasSkiSpace = false,
+            HasPlantSpace = false,
+            HasOtherSpace = true,
+        };
+        
+        Vehicle testVehicle2 = new()
+        {
+            ID = -998,
+            FK_OwnerUser = "-996",
+            Type = "Mitsubishi",
+            Seats = 5,
+            Color = "Red",
+            PictureSrc = "/src/assets/c1.jpg",
+            BrandModel = "X",
+            FuelConsumption = "3",
+            LicensePlate = "GU - 123 FH",
+            FuelType = "Electric",
+            HasAC = true,
+            HasLed = true,
+            HasVehicleInspection = false,
+            HasAutomatic = true,
+            HasSkiBag = true,
+            HasLeather = true,
+            HasSeatHeating = true,
+            HasCruiseControl = true,
+            HasBikeRack = true,
+            HasHandLuggageSpace = true,
+            HasMountingOnRoof = true,
+            HasAnimalSpace = true,
+            HasSuitcaseSpace = true,
+            HasSkiSpace = true,
+            HasPlantSpace = true,
+            HasOtherSpace = true,
+        };
+        
+        Vehicle testVehicle3 = new()
+        {
+            ID = -997,
+            FK_OwnerUser = "-997",
+            Type = "Vespa",
+            Seats = 2,
+            Color = "Silver",
+            PictureSrc = "/src/assets/c1.jpg",
+            BrandModel = "1 2 3",
+            FuelConsumption = "3",
+            LicensePlate = "GU - 123 FH",
+            FuelType = "Super",
+            HasAC = false,
+            HasLed = false,
+            HasVehicleInspection = false,
+            HasAutomatic = true,
+            HasSkiBag = false,
+            HasLeather = true,
+            HasSeatHeating = false,
+            HasCruiseControl = false,
+            HasBikeRack = false,
+            HasHandLuggageSpace = true,
+            HasMountingOnRoof = false,
+            HasAnimalSpace = false,
+            HasSuitcaseSpace = false,
+            HasSkiSpace = false,
+            HasPlantSpace = false,
+            HasOtherSpace = true,
+        };
+
+        return [testVehicle1, testVehicle2, testVehicle3];
     }
     
     #endregion

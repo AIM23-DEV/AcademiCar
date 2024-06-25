@@ -9,7 +9,9 @@
     "destination": "Ziel",
     "stop": "Zwischenstopp",
     "freeSpots": "freie Plätze",
-    "layover": "Aufenthalt"
+    "layover": "Aufenthalt",
+    "date": "Datum",
+    "time": "Uhrzeit"
   },
   "time": {
     "time": "Uhr",

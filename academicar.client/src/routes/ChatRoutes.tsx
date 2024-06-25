@@ -7,10 +7,10 @@ import { PersonalChatDetailPage } from "../pages/chat/PersonalChatDetailPage.tsx
 
 export default <Route key="chatRoute" path="/chat" element={<Outlet/>}>
 
-    <Route key="chatMainRoute" path="" element={<IndexChatsPage/>} />,
-    <Route key="chatTripRoute" path="trip/:id" element={<TripChatPage/>} />,
-    <Route key="chatTripDetailRoute" path="trip/:id/detail" element={<TripChatDetailPage/>} />,
-    <Route key="chatPersonalRoute" path="personal/:id" element={<PersonalChatPage/>} />,
-    <Route key="chatPersonalDetailRoute" path="personal/:id/detail" element={<PersonalChatDetailPage/>} />,
+    <Route key="chatMainRoute" path=":loggedInUserId" element={<IndexChatsPage/>} />,
+    <Route key="chatTripRoute" path=":loggedInUserId/trip/:chatId" element={<TripChatPage/>} />,
+    <Route key="chatTripDetailRoute" path="trip/:chatId/detail" element={<TripChatDetailPage/>} />,
+    <Route key="chatPersonalRoute" path=":loggedInUserId/personal/:chatId" element={<PersonalChatPage/>} />,
+    <Route key="chatPersonalDetailRoute" path="personal/:chatId/detail" element={<PersonalChatDetailPage/>} />,
 
 </Route>;

@@ -23,7 +23,7 @@ namespace AcademiCar.Server.Controllers
         protected readonly ClaimsPrincipal _claimsPrincipal;
         protected readonly string _userEmail;
         */
-         
+
         public UserController(IGlobalService globals, IHttpContextAccessor accessor, UserManager<User> userManager,
             SignInManager<User> signInManager, PostgresDbContext context)
         {
@@ -31,7 +31,7 @@ namespace AcademiCar.Server.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
-            
+
             /*
             _claimsPrincipal = accessor.HttpContext?.User;
 
@@ -62,7 +62,7 @@ namespace AcademiCar.Server.Controllers
 
             return entry;
         }
-        
+
         [HttpGet]
         public async Task<ActionResult<User>> GetUser()
         {
@@ -72,7 +72,23 @@ namespace AcademiCar.Server.Controllers
                 return Unauthorized("User is not logged in.");
             }
 
+            var roles = await _userManager.GetRolesAsync(user);
+
             return user;
+        }
+        
+        [HttpGet("logout", Name = "Logout")]
+        public async Task<ActionResult<ActionResultResponseModel>> Logout()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Unauthorized("User is not logged in.");
+            }
+
+            await _signInManager.SignOutAsync();
+
+            return Ok(new ActionResultResponseModel { IsSuccess = true, Message = "User logged out successfully." });
         }
 
         [HttpPost("Register")]
@@ -87,7 +103,8 @@ namespace AcademiCar.Server.Controllers
                 Email = model.Email,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
-                FK_Stats = model.FK_Stats
+                FK_Stats = model.FK_Stats,
+                FK_Address = model.FK_Address
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);
@@ -139,7 +156,8 @@ namespace AcademiCar.Server.Controllers
             var user = await _userManager.FindByNameAsync(model.UserName);
             if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
             {
-                var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, isPersistent: false, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password,
+                    isPersistent: false, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     var roles = await _userManager.GetRolesAsync(user);
@@ -147,12 +165,14 @@ namespace AcademiCar.Server.Controllers
                     {
                         UserName = user.UserName,
                         FirstName = user.FirstName,
-                        Roles = roles.ToArray(), // Ensure this is an array
+                        UserID = user.Id,
+                        Roles = roles.ToArray(),
                         Success = true,
                         Message = "Admin logged in successfully"
                     });
                 }
             }
+
             return Unauthorized(new { Success = false, Message = "Invalid username or password" });
         }
 
@@ -160,7 +180,6 @@ namespace AcademiCar.Server.Controllers
         public class RegisterModel
         {
             [Required] [EmailAddress] public string Email { get; set; }
-
             [Required] public string Username { get; set; }
 
             [Required]
@@ -168,10 +187,9 @@ namespace AcademiCar.Server.Controllers
             public string Password { get; set; }
 
             [Required] public string FirstName { get; set; }
-
             [Required] public string LastName { get; set; }
-            
             [Required] public int FK_Stats { get; set; }
+            [Required] public int FK_Address { get; set; }
         }
 
         public class SamlLoginModel
@@ -189,8 +207,7 @@ namespace AcademiCar.Server.Controllers
 
         public class AdminLoginModel
         {
-            [Required]
-            public string UserName { get; set; }
+            [Required] public string UserName { get; set; }
 
             [Required]
             [DataType(DataType.Password)]

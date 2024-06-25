@@ -4,7 +4,7 @@
     "title_update": "Reise aktualisieren"
   },
   
-  "CreateTripPage1": {
+  "CreateTripPage": {
     "label_route": "Reiseweg",
     "label_input_from": "Von",
     "placeholder_input_from": "Startpunkt",
@@ -14,19 +14,13 @@
     "action_add_stop": "Stop hinzufügen",
     "label_input_stop": "Halt {{stopNr}}",
     "label_input_stay": "Aufenthalt",
-    "toggle_enable_stops": "Zwischenstopps sind möglich"
-  },
-  
-  "CreateTripPage2": {
+    "toggle_enable_stops": "Zwischenstopps sind möglich",
     "label_start_time": "Abfahrt",
     "label_input_date": "Datum",
     "label_input_time": "Uhrzeit",
     "label_stop_reached_time": "Ankunft",
     "label_stop_continued_time": "Abfahrt",
-    "label_arrival_time": "Geplante Ankunft"
-  },
-  
-  "CreateTripPage3": {
+    "label_arrival_time": "Geplante Ankunft",
     "label_vehicle": "Fahrzeug",
     "link_create_vehicle": "Neues Fahrzeug",
     "label_seats": "Sitzplätze",
@@ -36,15 +30,13 @@
     "extra_suitcase": "Koffermitnahme",
     "extra_bicycle": "Fahrradmitnahme",
     "extra_ski": "Skimitnahme",
-    "extra_misc": "Sonstige Gegenstände"
-  },
-  
-  "CreateTripPage4": {
+    "extra_misc": "Sonstige Gegenstände",
     "label_pricing": "Preise",
     "radio_no_cost": "Keine Mitfahrkosten",
     "radio_fixed_cost": "Fixpreis",
     "label_recommended_price": "Empfohlener Preis",
-    "label_kilometre_allowance": "Kilometergeld"
+    "label_kilometre_allowance": "Kilometergeld",
+    "button_create": "Erstellen"
   },
   
   "UpdateTripPage": {
@@ -53,5 +45,11 @@
     "tab_vehicle": "Fahrzeug",
     "tab_pricing": "Preis",
     "button_update": "Speichern"
+  },
+  
+  "Pagination": {
+    "page": "Seite",
+    "button_previous": "Zurück",
+    "button_next": "Weiter"
   }
 }

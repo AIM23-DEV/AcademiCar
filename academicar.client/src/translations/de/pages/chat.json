@@ -7,7 +7,8 @@
     "modal_title_no_results": "Keine Ergebnisse",
     "modal_info_no_results": "Es konnten keine Chats zu deiner Suche gefunden werden.",
     "modal_title_no_chats": "Keine Nachrichten",
-    "modal_info_no_chats": "Anfragen oder Chats zu Fahrten erscheinen hier."
+    "modal_info_no_chats": "Anfragen oder Chats zu Fahrten erscheinen hier.",
+    "search_placeholder": "Suche nach einem Namen..."
   },
   
   "TripChatPage": {
@@ -18,7 +19,7 @@
   
   "TripChatDetailPage": {
     "title": "{{driver_name}}'s Fahrt",
-    "button_to_trip": "Zur Fahrt >",
+    "button_to_trip": "Zur Fahrt",
     "label_members": "Personen",
     "label_actions": "Aktionen",
     "action_leave_trip": "Fahrt verlassen",
@@ -37,13 +38,13 @@
   "PersonalChatPage": {
     "placeholder_message": "Nachricht...",
     "label_join_request": "Anfrage zur Mitfahrt",
-    "link_trip": "Fahrt >",
+    "link_trip": "Fahrt",
     "button_deny": "Ablehnen",
     "button_accept": "Annehmen"
   },
   
   "PersonalChatDetailPage": {
-    "button_to_profile": "Zum Profil >",
+    "button_to_profile": "Zum Profil",
     "label_actions": "Aktionen",
     "action_report_user": "Person melden",
     "action_delete_chat": "Chat löschen"

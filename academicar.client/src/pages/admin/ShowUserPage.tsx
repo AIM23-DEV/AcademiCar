@@ -12,8 +12,6 @@ import {Card} from "../../components/Cards.tsx";
 import {FaRegTrashAlt, FaShieldAlt} from "react-icons/fa";
 import {Input} from "../../components/FormFields.tsx";
 
-
-
 export const ShowUserPage = () => {
     // This is how to import the translation function for multiple namespaces.
     const [t] = useTranslation(['common', 'pages/admin/user']);

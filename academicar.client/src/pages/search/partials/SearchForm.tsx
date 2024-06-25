@@ -3,16 +3,42 @@ import {Input} from "../../../components/FormFields.tsx";
 import {Button} from "../../../components/Buttons.tsx";
 import {Card} from "../../../components/Cards.tsx";
 import {useTranslation} from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 export const SearchForm = () => {
     const [t] = useTranslation(['common', 'pages/search']);
+    const startPointPlaceholderText = t("common:trip.start");
+    const destinationPlaceholderText = t("common:trip.destination");
+    const datePlaceholderText = t("common:trip.date");
+    const timePlaceholderText = t("common:trip.time");
+    const searchButtonText = t("common:actions.search")
+    
     const [startPoint, setStartPoint] = useState('');
     const [destination, setDestination] = useState('');
     const [date, setDate] = useState('');
     const [time, setTime] = useState('');
 
+    const navigate = useNavigate();
+
     const handleSearch = () => {
-        // TODO search logic
+        // build searchquery
+        let searchString = "/search/result?";
+        if (startPoint.trim()) {
+            searchString += `start=${encodeURIComponent(startPoint)}&`
+        }
+        if (destination.trim()) {
+            searchString += `end=${encodeURIComponent(destination)}&`
+        }
+        if (date.trim()) {
+            searchString += `date=${encodeURIComponent(date)}&`
+        }
+        if (time.trim()) {
+            searchString += `time=${encodeURIComponent(time)}`
+        }
+        
+        if (searchString.trim()) {
+            navigate(searchString)
+        }
     };
 
     return (
@@ -21,7 +47,7 @@ export const SearchForm = () => {
                 <Input
                     type="text"
                     fullWidth
-                    placeholder="Startpunkt"
+                    placeholder={startPointPlaceholderText}
                     value={startPoint}
                     onChange={(e) => setStartPoint(e.target.value)}
                     className="col-span-full"
@@ -29,7 +55,7 @@ export const SearchForm = () => {
                 <Input
                     type="text"
                     fullWidth
-                    placeholder="Ziel"
+                    placeholder={destinationPlaceholderText}
                     value={destination}
                     onChange={(e) => setDestination(e.target.value)}
                     className="col-span-full"
@@ -37,7 +63,7 @@ export const SearchForm = () => {
                 <Input
                     type="date"
                     fullWidth
-                    placeholder="Datum"
+                    placeholder={datePlaceholderText}
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
                     className="col-span-6"
@@ -45,7 +71,7 @@ export const SearchForm = () => {
                 <Input
                     type="time"
                     fullWidth
-                    placeholder="Uhrzeit"
+                    placeholder={timePlaceholderText}
                     value={time}
                     onChange={(e) => setTime(e.target.value)}
                     className="col-span-6"
@@ -54,7 +80,7 @@ export const SearchForm = () => {
                 <Button
                     variant="primary"
                     fullWidth
-                    text={t("common:actions.search")}
+                    text={searchButtonText}
                     textAlign="center"
                     onClick={handleSearch}
                     className="col-span-full"
