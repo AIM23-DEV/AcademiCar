@@ -52,7 +52,8 @@ builder.Services.AddCors(options =>
         builder.WithOrigins(policyurl)
             .AllowAnyHeader()
             .AllowAnyMethod()
-            .AllowCredentials();
+            .AllowCredentials()
+            .SetIsOriginAllowed((host) => true);
     });
 });
 
@@ -182,6 +183,7 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.UseWebSockets();
 
 app.MapHub<ChatHub>("/chat/chathub");
 
