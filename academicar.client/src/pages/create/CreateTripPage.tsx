@@ -172,7 +172,7 @@ export const CreateTripPage = () => {
             {
                 // finish
                 alert('Trip created successfully!');
-                navigate('/trips/index/' + loggedInUserId);
+                navigate('/trips/' + loggedInUserId);
             }
 
         } catch (error) {
