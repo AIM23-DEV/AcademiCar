@@ -52,7 +52,7 @@ export const ImageUploadForm = () => {
 
                     const blockBlobClient = new BlockBlobClient(sasTokenUrl);
                     const uploadBlobResponse = await blockBlobClient.uploadData(fileArrayBuffer);
-                    console.log(`uploadBlobResponse - status: ${uploadBlobResponse._response.status}`)
+                    console.log(`uploadBlobResponse - status: ${uploadBlobResponse._response.status}`);
                 })
                 .then(() => {
                     //     setUploadStatus('Successfully finished upload');
