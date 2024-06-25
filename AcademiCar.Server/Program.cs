@@ -181,10 +181,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseWebSockets();
+app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-app.UseWebSockets();
 
 app.MapHub<ChatHub>("/chat/chathub");
 
