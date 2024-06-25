@@ -6,12 +6,13 @@ import {Input, RadioCollection} from "../../components/FormFields.tsx";
 import {useState} from "react";
 import {Button} from "../../components/Buttons.tsx";
 import {ITransaction, TransactionSource, TransactionType} from "../../enums.tsx";
+import {useParams} from "react-router-dom";
 
 export const BalanceRechargePage = () => {
     const [t] = useTranslation();
     const pageTitle = t("pages/profile:BalanceRechargePage.title");
     const recharge_btn = t("pages/profile:BalanceRechargePage.recharge_btn");
-    
+    const { loggedInUserId } = useParams();
     const [radioValue, setRadioValue] = useState<number>(1);
     const amounts = [10, 20, 30, 50, 80, 100];
     const values = amounts.map((amount, index) => ({
@@ -23,7 +24,7 @@ export const BalanceRechargePage = () => {
         const amount = amounts[radioValue - 1]; // Convert radioValue to the corresponding amount
         const transaction: ITransaction = {
             id: 0,
-            fK_User: "1", // Replace with the actual user ID
+            fK_User: loggedInUserId,
             transactionType: TransactionType.Charge,
             amount: amount,
             transactionDate: new Date(),

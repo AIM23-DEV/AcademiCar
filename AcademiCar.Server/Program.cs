@@ -8,18 +8,15 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
 using AcademiCar.Server;
+using Azure.Security.KeyVault.Certificates;
 using AcademiCar.Server.DAL.BaseInterfaces;
-using AcademiCar.Server.DAL.Repositories;
 using AcademiCar.Server.Services.ServiceImpl;
 using AcademiCar.Server.DAL.BaseClasses;
-using AcademiCar.Server.DAL.BaseInterfaces;
 using AcademiCar.Server.DAL.Entities;
 using AcademiCar.Server.DAL.Hub;
 using Microsoft.AspNetCore.Identity;
-
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -28,7 +25,6 @@ builder.Services.AddScoped<IGlobalService, GlobalService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<UserService>(); 
-
 builder.Services.AddHttpContextAccessor();
 
 builder.Logging.ClearProviders();
@@ -47,11 +43,13 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.SlidingExpiration = true;
 });
 
+var policyurl = builder.Configuration.GetValue<string>("Policy");
+
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>
     {
-        builder.WithOrigins("https://localhost:5173")
+        builder.WithOrigins(policyurl)
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials();
@@ -61,20 +59,22 @@ builder.Services.AddCors(options =>
 var env = builder.Environment;
 var metadataFilePath = Path.Combine(env.ContentRootPath, "metadata.xml");
 
-// Configure database context
+var vaultUri = new Uri("https://keyvaultacademicar.vault.azure.net/");
+
 if (!builder.Environment.IsDevelopment())
 {
-    var vaultUri = $"https://keyvaultacademicar.vault.azure.net/";
-    builder.Configuration.AddAzureKeyVault(new Uri(vaultUri), new DefaultAzureCredential());
-    
+    builder.Configuration.AddAzureKeyVault(vaultUri, new DefaultAzureCredential());
+
     var secrets = new[] { "DBHOST", "DBPASSWORD", "DBUSER" };
     foreach (var secret in secrets)
     {
         var secretValue = builder.Configuration[secret];
         builder.Configuration[secret] = secretValue;
     }
+
     builder.Services.AddDbContext<PostgresDbContext>(options =>
-        options.UseNpgsql($"Host={builder.Configuration["DBHOST"]};Database={builder.Configuration["DBNAME"]};Username={builder.Configuration["DBUSER"]};Password={builder.Configuration["DBPASSWORD"]}"));
+        options.UseNpgsql(
+            $"Host={builder.Configuration["DBHOST"]};Database={builder.Configuration["DBNAME"]};Username={builder.Configuration["DBUSER"]};Password={builder.Configuration["DBPASSWORD"]}"));
 }
 else
 {
@@ -82,12 +82,12 @@ else
         options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 }
 
+
 builder.Services.AddIdentity<User, IdentityRole>()  // This line registers Identity services
     .AddEntityFrameworkStores<PostgresDbContext>() // This line links Identity to your EF DbContext
     .AddDefaultTokenProviders();
-// Conditional SAML2 Setup
+
 var enableSaml2 = builder.Configuration.GetValue<bool>("EnableSaml2");
-var useSingleIdP = builder.Configuration.GetValue<bool>("UseSingleIdP");
 
 if (enableSaml2)
 {
@@ -99,19 +99,49 @@ if (enableSaml2)
         .AddCookie()
         .AddSaml2(options =>
         {
+            var fhCertName = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:FhCert"];
+            var encryptionCert = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:EncryptionCert"];
+            var certificateClient = new CertificateClient(vaultUri, new DefaultAzureCredential());
+            var fhCertificate = certificateClient.DownloadCertificate(fhCertName);
+            var encryptionCertificate = certificateClient.DownloadCertificate(encryptionCert);
+            
+            
             options.SPOptions.EntityId = new EntityId(builder.Configuration["SustainsysSaml2:Issuer"]);
 
+            var fhCertPath = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:FhFileName"];
+            var spCertPath = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:SpFileName"];
+            var spSignCertPath = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:SpSignFileName"];
+            var certPassword = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:Password"];
+            var signCertPassword = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:SignPassword"];
+//            var spCert = new X509Certificate2(spCertPath, certPassword);
+//            var spSignCert = new X509Certificate2(spSignCertPath, signCertPassword);
+            var fhCert = new X509Certificate2(fhCertificate);
+            var spCert = new X509Certificate2(encryptionCertificate);
+
+            options.SPOptions.ServiceCertificates.Add(spCert);
+            options.SPOptions.WantAssertionsSigned = false;
+/*            
+            options.SPOptions.ServiceCertificates.Add(
+                new ServiceCertificate
+                {
+                    Certificate = spCert,
+                    Use = CertificateUse.Both
+                }
+            );
+*/            
             var idp = new IdentityProvider(
                 new EntityId(builder.Configuration["SustainsysSaml2:Idp:EntityId"]),
                 options.SPOptions)
             {
-                MetadataLocation = metadataFilePath
+                MetadataLocation = metadataFilePath,
             };
 
-            /*var certPath = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:FileName"];
-            var certPassword = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:Password"];
-            idp.SigningKeys.AddConfiguredKey(new X509Certificate2(certPath, certPassword));
-    */
+//            idp.AllowUnsolicitedAuthnResponse = true;
+            idp.AllowUnsolicitedAuthnResponse = false;
+            idp.WantAuthnRequestsSigned = true;
+//            options.SPOptions.OutboundSigningAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256";
+            idp.SigningKeys.AddConfiguredKey(fhCert);
+            
             options.IdentityProviders.Add(idp);
         });
 }
@@ -143,20 +173,14 @@ if (app.Environment.IsDevelopment())
             var user = new ClaimsPrincipal(new ClaimsIdentity());
             context.User = user;
         }
+
         await next();
     });
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
-
-app.UseRouting();
-
-app.UseCors();
-
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.MapHub<ChatHub>("/chat/chathub");
@@ -169,7 +193,5 @@ static void ApplyMigrations(IHost app)
 {
     using IServiceScope scope = app.Services.CreateScope();
     PostgresDbContext db = scope.ServiceProvider.GetRequiredService<PostgresDbContext>();
-    
-    //db.Database.EnsureDeleted();
     db.Database.Migrate();
 }

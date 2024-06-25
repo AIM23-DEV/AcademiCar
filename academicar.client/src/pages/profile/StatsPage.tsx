@@ -23,7 +23,7 @@ export const StatsPage = () => {
     SetPageTitle(pageTitle);
 
     useEffect(() => {
-        fetch(`https://localhost:5173/api/admin/users/${loggedInUserId}`)
+        fetch(`/api/admin/users/${loggedInUserId}`)
             .then(response => response.json())
             .then((data: IUser) => setUser(data))
             .catch(error => {
@@ -36,7 +36,7 @@ export const StatsPage = () => {
     if (!user) return <div>Loading user...</div>;
 
     if (user && !stats) {
-        fetch(`https://localhost:5173/api/admin/users/stats/${user?.fK_Stats}`)
+        fetch(`/api/admin/users/stats/${user?.fK_Stats}`)
             .then(response => response.json())
             .then(data => setStats(data))
             .catch(error => {
@@ -48,7 +48,7 @@ export const StatsPage = () => {
     if (!stats) return <div>Loading stats...</div>;
 
     if (user && !ratingData) {
-        fetch(`https://localhost:5173/api/admin/users/rating/${user.id}`)
+        fetch(`/api/admin/users/rating/${user.id}`)
             .then(response => response.json())
             .then(data => setRatingData(data))
             .catch(error => {

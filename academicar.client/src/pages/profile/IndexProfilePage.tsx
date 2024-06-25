@@ -37,7 +37,7 @@ export const IndexProfilePage = () => {
     const auth = useAuth();
 
     useEffect(() => {
-        fetch(`https://localhost:5173/api/admin/users/${loggedInUserId}`)
+        fetch(`/api/admin/users/${loggedInUserId}`)
             .then(response => response.json())
             .then((data: IUser) => setUser(data))
             .catch(e => {

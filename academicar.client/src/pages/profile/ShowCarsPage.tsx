@@ -16,17 +16,10 @@ export const ShowCarsPage = () => {
     
     const {loggedInUserId} = useParams();
     const [vehicles, setVehicle] = useState<IVehicle[]>();
-    const [createVehicleId, setCreateVehicleId] = useState<number>();
+    const [createVehicleId, setCreateVehicleId] = useState<number | undefined>();
     const navigate = useNavigate();
-    //const {user} = useAuth()
 
     useEffect(() => {
-        //if (!user) {
-        //    console.log("No user is logged in");
-        //    return;
-        //}
-        // /api/vehicle/vehicles/${user.id}
-
         fetch(`/api/profile/vehicles/${loggedInUserId}`)
             .then(response => {
                 if (response.status === 404) {

@@ -2,13 +2,7 @@ import {ChangeEvent, useState} from "react";
 import {Button} from "../../../components/Buttons.tsx";
 import {Card} from "../../../components/Cards.tsx";
 import {BlockBlobClient} from "@azure/storage-blob";
-/*
-import request, {AxiosResponse} from "axios";
 
-type ListResponse = {
-    list: string[];
-};
-*/
 export const ImageUploadForm = () => {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [sasTokenUrl, setSasTokenUrl] = useState<string>('');
@@ -45,32 +39,7 @@ export const ImageUploadForm = () => {
                     const uploadBlobResponse = await blockBlobClient.uploadData(fileArrayBuffer);
                     console.log(`uploadBlobResponse - status: ${uploadBlobResponse._response.status}`);
                 });
-/*                .then(() => {
-                    //     setUploadStatus('Successfully finished upload');
-                    console.log('Successfully finished upload');
-                    return request.get(`/api/list?container=${container}`);
-                })
-                .then((result: AxiosResponse<ListResponse>) => {
-                    // Axios response
-                    const {data} = result;
-                    
-                    const {list} = data;
-                    setList(list);
-                })
-                .catch((error: unknown) => {
-                    if (error instanceof Error) {
-                        const {message, stack} = error;
-                        //   setUploadStatus(
-                        console.log(
-                            `Failed to finish upload with error : ${message} ${stack || ''}`
-                        );
-                    } else {
-                        // setUploadStatus(error as string);
-                        console.log(error as string);
-                    }
-                });
-            console.log(`list = ${list.toString()}`);
-    */    }
+    }
         
         const convertStringToArrayBuffer = (str: string) => {
             const textEncoder = new TextEncoder();

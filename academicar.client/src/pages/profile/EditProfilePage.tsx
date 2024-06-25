@@ -25,7 +25,7 @@ export const EditProfilePage: React.FC = () => {
     const [sex, setSex] = useState<string>("male");
 
     useEffect(() => {
-        fetch(`https://localhost:5173/api/admin/users/${loggedInUserId}`)
+        fetch(`/api/admin/users/${loggedInUserId}`)
             .then(response => response.json())
             .then((data: IUser) => setUser(data))
             .catch(e => {
@@ -35,7 +35,7 @@ export const EditProfilePage: React.FC = () => {
     }, [loggedInUserId]);
 
     if (user && !address) {
-        fetch(`https://localhost:5173/api/admin/users/address/${loggedInUserId}`)
+        fetch(`/api/admin/users/address/${loggedInUserId}`)
             .then(response => response.json())
             .then((data: IAddress) => setAddress(data))
             .catch(e => {
@@ -65,7 +65,7 @@ export const EditProfilePage: React.FC = () => {
     };
 
     const handleSave = () => {
-        fetch(`https://localhost:5173/api/profile/user/update`, {
+        fetch(`/api/profile/user/update`, {
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(user)
@@ -75,7 +75,7 @@ export const EditProfilePage: React.FC = () => {
                 console.error(error);
             });
 
-        fetch(`https://localhost:5173/api/profile/address/update`, {
+        fetch(`/api/profile/address/update`, {
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(address)

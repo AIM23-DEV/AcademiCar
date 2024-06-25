@@ -2,6 +2,7 @@ import {useTranslation} from "react-i18next";
 import {Card} from "../../../components/Cards.tsx";
 import {Divider} from "../../../components/Divider.tsx";
 import {Input} from "../../../components/FormFields.tsx";
+import {BiEuro} from "react-icons/bi";
 
 interface TripPricingCreationFormProps {
     price: number;
@@ -20,29 +21,33 @@ export const TripPricingCreationForm = (props: TripPricingCreationFormProps) => 
     return (
         <div className="w-full flex flex-col items-center">
             <Card label={pricingLabelText}>
-                {/* Todos disabled for now */}
-                <>
-                    {
-                        false ?
-                            <>
-                                <p>TODO Radio Collection, option 1 {noCostRadioText}</p>
-                                <Divider/>
-                                <div>TODO Radio Collection, option 2 {fixedCostRadioText} <Input/></div>
-                            </>
-                            : ''
-                    }
-                </>
+                <div className="w-full flex flex-col space-y-4">
+                    {/* Todos disabled for now */}
+                    <>
+                        {
+                            false ?
+                                <>
+                                    <p>TODO Radio Collection, option 1 {noCostRadioText}</p>
+                                    <Divider/>
+                                    <div>TODO Radio Collection, option 2 {fixedCostRadioText} <Input/></div>
+                                </>
+                                : ''
+                        }
+                    </>
 
-                <div>
                     <Input
                         value={props.price}
                         onChange={(e) => props.setPrice(Number(e.target.value))}
-                        leading="€"
+                        trailing={<BiEuro className="icon-md"/>}
+                        type="number"
+                        fullWidth
                     />
-                </div>
 
-                <p>{recommendedPriceLabelText} 13 €</p>
-                <p>{kilometreAllowanceLabelText} 0.06 €/km</p>
+                    <div className="w-full text-right">
+                        <p>{recommendedPriceLabelText} 13 €</p>
+                        <p>{kilometreAllowanceLabelText} 0.06 €/km</p>
+                    </div>
+                </div>
             </Card>
         </div>
     );

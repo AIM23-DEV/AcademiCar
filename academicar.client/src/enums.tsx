@@ -5,7 +5,7 @@ export interface IBalance {
 
 export interface ITransaction {
     id: number;
-    fK_User: string;
+    fK_User?: string;
     transactionType: TransactionType;
     amount: number;
     transactionDate: Date;

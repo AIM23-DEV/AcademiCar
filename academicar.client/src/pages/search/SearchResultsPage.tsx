@@ -46,7 +46,7 @@ export const SearchResultsPage = () => {
     const [error, setError] = useState<string | null>();
 
     useEffect(() => {
-        fetch(`https://localhost:5173/api/trip/trips/extended`)
+        fetch(`/api/trip/trips/extended`)
             .then(response => response.json())
             .then((data) => {
                 setTrips(data)

@@ -1,22 +1,41 @@
 import {TitleBar} from "../../components/TitleBar.tsx";
 import {BottomNavigationBar} from "../../components/BottomNavigationBar.tsx";
-import {ConfirmationModal} from "../../components/Modal.tsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import SetPageTitle from "../../hooks/set_page_title.tsx";
 import {useTranslation} from "react-i18next";
-import {useNavigate} from "react-router-dom";
-import {BiSolidStar} from "react-icons/bi";
+import {useNavigate, useParams} from "react-router-dom";
+import {BiSolidStar, BiTrash, BiShieldX} from "react-icons/bi";
 import {TextButton} from "../../components/Buttons.tsx";
 import {Divider} from "../../components/Divider.tsx";
 import {Card} from "../../components/Cards.tsx";
-import {FaRegTrashAlt, FaShieldAlt} from "react-icons/fa";
 import {Input} from "../../components/FormFields.tsx";
+import {RxAvatar} from "react-icons/rx";
+import {ConfirmationModal} from "../../components/Modal.tsx";
+
+interface RatingData {
+    totalScore: number;
+    ratingCount: number;
+}
 
 export const ShowUserPage = () => {
-    // This is how to import the translation function for multiple namespaces.
-    const [t] = useTranslation(['common', 'pages/admin/user']);
+    
+    //Const for loading data 
+    const {id} = useParams();
+    const [user, setUser] = useState<IUser | null>();
+    const [adressUser, setAdressUser] = useState<IAddress | null>();
+    const [ratingData, setRatingData] = useState<RatingData | null>();
+    const [review, setReview] = useState<number | null>();
+    const [error, setError] = useState<string | null>();
 
-    // Tranlations
+    //General consts 
+    const navigate = useNavigate();
+    const [showModalBlock, setShowModalBlock] = useState(false);
+    const [showModalDelete, setShowModalDelete] = useState(false);
+
+    //Const translations
+    const [t] = useTranslation(['common', 'pages/admin/user']);
+    
+    // Translations
     const pageTitle = t('pages/admin:ShowUserPage.title');
     const ratings = t('pages/admin:ShowUserPage.ratings');
     const adress = t('pages/admin:ShowUserPage.adress');
@@ -25,176 +44,209 @@ export const ShowUserPage = () => {
     const actions = t('pages/admin:ShowUserPage.actions');
     const blockaccount = t('pages/admin:ShowUserPage.blockaccount');
     const deleteaccount = t('pages/admin:ShowUserPage.deleteaccount');
+    const messageBlock = t('pages/admin:ShowUserPage.messageBlock');
+    const messageDelete = t('pages/admin:ShowUserPage.messageDelete');
+
+
     SetPageTitle(pageTitle);
 
-    // Example-User data
-    const USERDATA = {
-        id: 2,
-        name: 'Samantha Kinsley',
-        rating: 4,
-        reviews: 187,
-        address: 'Musterstraße 123 / Top 456',
-        postalCode: '8010',
-        city: 'Musterstadt',
-        phone: '+43 (0) 664 1234567',
-        email: 'musterEMailadresse@gmail.com',
+    //Loading user from IndexUserPage
+    useEffect(() => {
+        fetch(`/api/admin/users/${id}`)
+            .then(response => response.json())
+            .then((data) => setUser(data))
+            .catch(error => {
+                setError("There was an error fetching the Admin details!");
+                console.error(error);
+            });
+    }, [id]);
+
+    if (error) return <div>{error}</div>;
+    if (!user) return <div>Loading user...</div>;
+
+    //Loading user rating (stars)
+    if (user && !ratingData) {
+        fetch(`/api/admin/users/rating/${user.id}`)
+            .then(response => response.json())
+            .then(data => setRatingData(data))
+            .catch(error => {
+                setError("There was an error fetching the Admin rating!");
+                console.error(error);
+            });
+    }
+    if (!ratingData) return <div>Loading rating...</div>;
+
+    //Loading user review
+    if (user && !review) {
+        fetch(`/api/admin/users/review/${user.id}`)
+            .then(response => response.json())
+            .then(data => setReview(data))
+            .catch(error => {
+                setError("There was an error fetching the Admin review!");
+                console.error(error);
+            });
+    }
+    if (!setReview) return <div>Loading stats...</div>;
+    
+    //Loading user adress
+    if (user && !adressUser) {
+        fetch(`/api/admin/users/address/${user.id}`)
+            .then(response => response.json())
+            .then(data => setAdressUser(data))
+            .catch(error => {
+                setError("There was an error fetching the Admin review!");
+                console.error(error);
+            });
+    }
+    if (!setAdressUser) return <div>Loading stats...</div>;
+    
+    //Block user account
+    const handleBlock = () => {
+        console.log("Button pressed")
+        fetch(`/api/admin/users/blockUser/${user.id}`, {method: 'PUT'})
+            .catch(error => {
+                setError("There was an error fetching the Admin Block user account!");
+                console.error(error);
+            });
+        setShowModalBlock(false);
     };
 
+    //Delete user account
+    const handleDelete = () => {
+        console.log("Button pressed")
+        fetch(`/api/admin/users/deleteUser/${user.id}`, {method: 'DELETE'})
+            .then(() => navigate(`/admin/users`))
+            .catch(error => {
+                setError("There was an error fetching the Admin Delete user account!");
+                console.error(error);
+            });
+    };
 
-    
+    return (
+        <>
+            <TitleBar text={"Account"} hasBackAction/>
 
-        
-
-
-        // This is how to import the navigator with which you can navigate between pages.
-    const navigate = useNavigate();
-    // This is how to work with a component that needs a state
-    const [showModal, setShowModal] = useState(false);
-    
-        SetPageTitle(pageTitle);
-
-        return (
-            <>
-                <TitleBar text={"Account"} hasBackAction/>
-
-                {/* Your custom content can be put in here. */}
-                <div className="w-full grid grid-cols-2 gap-4">
-
-
-                        <div className="flex flex-row gap-4 items-center col-span-2">
-                            <div className="flex justify-center">
-                                <img
-                                    src="/../src/assets/react.svg"
-                                    alt="avatar"
-                                    className="border-gray-600 rounded-full"
-                                />
+            <div className="w-full flex flex-col gap-6 pb-24">
+                <Card>
+                    <div className="flex flex-row gap-4 items-center col-span-2">
+                        <div className="flex justify-center">
+                            {user.pictureSrc ? (<img src={user.pictureSrc} alt="User Picture"
+                                                     className="rounded-full w-14 h-14"/>) : (<RxAvatar/>)}
+                        </div>
+                        <div>
+                            <div>{user.firstName + " " + user.lastName}</div>
+                            <div className="flex items-center">
+                                <span><BiSolidStar className="icon text-yellow-400"/></span>
+                                <span><BiSolidStar className="icon text-yellow-400"/></span>
+                                <span><BiSolidStar className="icon text-gray-300"/></span>
+                                <span><BiSolidStar className="icon text-gray-300"/></span>
+                                <span><BiSolidStar className="icon text-gray-300"/></span>
+                                <span className="ml-2">({ratingData.totalScore})</span>
                             </div>
-                            <div>
-                                <div>{USERDATA.name}</div>
-                                <div className="flex items-center">
-                                    <span><BiSolidStar className="icon text-yellow-400"/></span>
-                                    <span><BiSolidStar className="icon text-yellow-400"/></span>
-                                    <span><BiSolidStar className="icon text-yellow-400"/></span>
-                                    <span><BiSolidStar className="icon text-yellow-400"/></span>
-                                    <span><BiSolidStar className="icon text-gray-300"/></span>
-                                    <span className="ml-2">({USERDATA.rating})</span>
-                                </div>
-                                <div className="mt-2">
-                                    <span>{ratings}: {USERDATA.reviews}</span>
-                                </div>
+                            <div className="mt-2">
+                                <span>{review} {ratings} </span>
                             </div>
                         </div>
-
-
-                    <div className="grid-cols-1  gap-6 my-8">
-                        <Input
-                            id="address"
-                            type="text"
-                            placeholder="Adresse"
-                            required={true}
-                            value={USERDATA.address}
-                            label={adress}
-                            className="col-span-2"
-                        />
-
-                   
-                        <div className="address-info">
-                            <Input
-                                id="postal-code"
-                                type="text"
-                                placeholder="Postleitzahl"
-                                required={true}
-                                value={USERDATA.postalCode}
-                                
-                            />
-                            <Input
-                                id="city"
-                                type="text"
-                                placeholder="Stadt"
-                                required={true}
-                                value={USERDATA.city}
-                                
-                            />
-                        </div>
                     </div>
-                    
-                    <Divider className="my-2" />
-                    
-                    
-                    <div className="user-details-section">
-                        <h3>{phonenumber}</h3>
-                        <Input
-                            id="phone"
-                            type="text"
-                            placeholder="Telefonnummer"
-                            required={true}
-                            value={USERDATA.phone}
-                            
-                        />
-                    </div>
-                    <Divider className="my-2" />
-                    <div className="user-details-section">
-                        <h3>{email}</h3>
-                        <Input
-                            id="email"
-                            type="text"
-                            placeholder="E-Mail"
-                            required={true}
-                            value={USERDATA.email}
-                            
-                        />
-                    </div>
+                </Card>
 
-                    
+                <div className="grid grid-cols-12 gap-6">
+                    <Input
+                        id="address"
+                        type="text"
+                        placeholder="Adresse"
+                        required={true}
+                        value={adressUser?.street + " " + adressUser?.number}
+                        label={adress}
+                        fullWidth={true}
+                        className="col-span-12"
+                    />
 
+                    <Input
+                        id="postal-code"
+                        type="text"
+                        placeholder="Postleitzahl"
+                        required={true}
+                        value={adressUser?.zip}
+                        fullWidth={true}
+                        className="col-span-4"
+                    />
 
+                    <Input
+                        id="city"
+                        type="text"
+                        placeholder="Stadt"
+                        required={true}
+                        value={adressUser?.place}
+                        className="col-span-8"
+                        fullWidth={true}
+                    />
+                </div>
+
+                <Divider/>
+
+                <Input
+                    label={phonenumber}
+                    id="phone"
+                    type="text"
+                    placeholder="Telefonnummer"
+                    required={true}
+                    value={user.phoneNumber}
+                    fullWidth={true}
+                />
+
+                <Divider/>
+
+                <Input
+                    label={email}
+                    id="email"
+                    type="text"
+                    placeholder="E-Mail"
+                    required={true}
+                    value={user.email}
+                    fullWidth={true}
+                />
 
                 <Card
-                    id="lbl_1"
-                    label={actions} //TODO actions
+                    label={actions}
                     labelPosition="outside"
-                    padding="base"
-                    className="mt-8"
                 >
-                    <p>
-
+                    <div className="flex flex-col gap-3">
                         <TextButton
-                            text={blockaccount} 
-                            type="button"
-                            fullWidth
-                            textAlign="center"
-                            variant="outline"
-                            onClick={() => navigate("/auth/login")}
-                            leading={<FaShieldAlt className="icon-md"/>}
-                        />
-
-                        <TextButton
-                            text={deleteaccount} 
-                            type="button"
-                            fullWidth
-                            textAlign="center"
-                            variant="outline"
-                            onClick={() => navigate("/auth/login")}
-                            leading={<FaRegTrashAlt className="icon-md"/>}
+                            text={blockaccount}
+                            leading={<BiShieldX/>}
+                            variant="accent"
+                            onClick={() => {
+                                setShowModalBlock(true);
+                            }}
                         />
                         
-                        
-                    </p>
+                        <TextButton
+                            text={deleteaccount}
+                            leading={<BiTrash/>}
+                            variant="accent"
+                            onClick={() => {
+                                setShowModalDelete(true);
+                            }}
+                        />
+                    </div>
                 </Card>
-                </div>
-                {/* Manually include the BottomNavigation bar and set its props based on your needs. */
-    }
-    <BottomNavigationBar
-
-        selected={"profile"}
-    />
+            </div>
 
 
-    {/* Put absolutely positioned elements like modals here. */}
-                <ConfirmationModal open={showModal} setOpen={setShowModal}
-                                   subtitle="Das ist ein Bestätigungs-Modal. Hier kann man einige Einstellungen mitgeben!"
-                                   onConfirm={() => alert("Confirmed")}/>
-            </>
-        );
+            <BottomNavigationBar
+                selected={"profile"}
+            />
+            <ConfirmationModal open={showModalBlock} setOpen={setShowModalBlock}
+                               subtitle={messageBlock}
+                               onConfirm={() => handleBlock()}
+            />
+            <ConfirmationModal open={showModalDelete} setOpen={setShowModalDelete}
+                               subtitle={messageDelete}
+                               onConfirm={() => handleDelete()}
+            />
+            
+        </>
+    );
 
 };

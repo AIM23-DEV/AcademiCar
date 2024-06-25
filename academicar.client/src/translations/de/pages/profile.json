@@ -115,7 +115,7 @@
     "activities": "Letzte Transaktionen",
     "history": "Archiv",
     "payment": "Aufladung",
-    "trip:": "Reise"
+    "trhaip:": "Reise"
   },
   "BalanceHistoryPage": {
     "title": "Mein Guthaben",
@@ -137,5 +137,18 @@
     "hundred_euro": "100",
     "euro_suffix": " Euro",
     "recharge_btn": "Konto jetzt aufladen"
+  },
+  "AGBPage": {
+    "title": "Allgemeine Geschäftsbedingungen",
+    "paragraph1": "Unsere Website bietet eine Plattform, auf der Nutzer Fahrgemeinschaften organisieren können. Die Nutzer sind verpflichtet, ehrliche und genaue Informationen über ihre Fahrten und Fahrzeuge bereitzustellen. Jede missbräuchliche Nutzung der Website, einschließlich der Erstellung falscher Profile oder der Verbreitung irreführender Informationen, kann zur Sperrung des Zugangs führen. Die Nutzung unserer Plattform für kommerzielle Zwecke ohne unsere ausdrückliche Genehmigung ist untersagt.",
+    "paragraph2": "Wir nehmen den Schutz Ihrer persönlichen Daten sehr ernst. Persönliche Informationen werden ausschließlich zur Vermittlung von Fahrgemeinschaften gesammelt. Dazu gehören Name, Kontaktinformationen und Reisedaten, die notwendig sind, um die Dienstleistung zu erbringen. Ihre Daten werden nicht an Dritte weitergegeben, es sei denn, dies ist zur Erbringung der Dienstleistung notwendig oder gesetzlich vorgeschrieben.",
+    "paragraph3": "Wir haften nicht für direkte oder indirekte Schäden, die aus der Nutzung unserer Plattform entstehen. Insbesondere sind wir nicht verantwortlich für das Verhalten der Nutzer während der Fahrgemeinschaften oder für die Richtigkeit der von den Nutzern bereitgestellten Informationen. Wir bemühen uns, die Sicherheit und Zuverlässigkeit unserer Plattform sicherzustellen, können jedoch nicht garantieren, dass unsere Dienste jederzeit unterbrechungs- und fehlerfrei zur Verfügung stehen.",
+    "paragraph4": "Änderungen an den Nutzungsbedingungen oder der Datenschutzrichtlinie werden Ihnen per E-Mail mitgeteilt und auf unserer Website veröffentlicht. Durch die fortgesetzte Nutzung der Plattform nach solchen Änderungen akzeptieren Sie die angepassten Bedingungen. Es gilt das Recht des Landes, in dem unser Unternehmen seinen Sitz hat. Bei Streitigkeiten ist das zuständige Gericht am Sitz unseres Unternehmens ausschließlich zuständig.",
+    "paragraph5": "Paragraph 5",
+    "heading1": "Nutzungsbedingungen",
+    "heading2": "Datenschutzrichtlinie",
+    "heading3": "Haftungsausschluss",
+    "heading4": "Sonstiges",
+    "heading5": "Überschrift 5"
   }
 }

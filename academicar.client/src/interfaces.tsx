@@ -23,9 +23,9 @@ interface IGroupChat {
 }
 
 interface IGroupChatUser {
-    id: number;
-    fK_GroupChat: number;
-    fK_User: string;
+    id?: number;
+    fK_GroupChat?: number;
+    fK_User?: string;
 }
 
 interface IGroupMessage {
@@ -128,9 +128,9 @@ interface ITrip {
 }
 
 interface ITripPassenger {
-    id: number;
-    fK_Trip: number;
-    fK_PassengerUser: string;
+    id?: number;
+    fK_Trip: number | undefined;
+    fK_PassengerUser: string | undefined;
 }
 
 interface ITripRequest {

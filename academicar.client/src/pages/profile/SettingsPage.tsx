@@ -27,7 +27,7 @@ export const SettingsPage: React.FC = () => {
                     fullWidth
                     textAlign="center"
                     variant="secondary"
-                    onClick={() => navigate("/auth/login")}
+                    onClick={() => navigate("/agb")}
                     className="underline"
                 />
             </div>
