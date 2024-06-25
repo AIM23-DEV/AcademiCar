@@ -4,8 +4,6 @@ import {TitleBar} from "../../components/TitleBar.tsx";
 import {useParams} from 'react-router-dom';
 import {useEffect, useState} from "react";
 import {Chat, MessageProps} from "./partials/Chat.tsx";
-import {TextLink} from "../../components/Buttons.tsx";
-import {BiDotsVerticalRounded} from "react-icons/bi";
 
 export const PersonalChatPage = () => {
     const [t] = useTranslation(["common", "pages/chat"]);
@@ -85,10 +83,6 @@ export const PersonalChatPage = () => {
             <TitleBar hasBackAction={true}
                       text={`${chat?.driverUser?.firstName! ?? ""} ${chat?.driverUser?.lastName! ?? ""}`}
                       className="fixed bg-gray-100 px-4"
-                      trailing={
-                          <TextLink className="mb-3" variant="outline" link={`${chatId}/detail`} leading={
-                              <BiDotsVerticalRounded className="icon-md"/>
-                          }/>}
             />
 
             <div className="w-full flex flex-col items-center mt-24 space-y-4">
