@@ -125,7 +125,7 @@ export const ShowUserPage = () => {
         <>
             <TitleBar text={"Account"} hasBackAction/>
 
-            <div className="w-full flex flex-col gap-6">
+            <div className="w-full flex flex-col gap-6 pb-24">
                 <Card>
                     <div className="flex flex-row gap-4 items-center col-span-2">
                         <div className="flex justify-center">
