@@ -42,7 +42,7 @@ export const UpdateCarPage = () => {
                     body: JSON.stringify(vehicle),
                 });
                 if (response.ok) {
-                    navigate('/profile/cars/');
+                    navigate('/profile/' + userId + '/cars/');
                 } else {
                     console.error('Failed to save vehicle');
                 }
@@ -163,7 +163,7 @@ export const UpdateCarPage = () => {
             <TitleBar text={vehicleId ? pageTitle_update : pageTitle_create} hasBackAction/>
             <div className="flex justify-center my-6">
                 <img
-                    src="/../src/assets/react.svg"
+                    src={vehicle?.pictureSrc}
                     alt="avatar"
                     className="rounded-full icon-2xl"
                 />
