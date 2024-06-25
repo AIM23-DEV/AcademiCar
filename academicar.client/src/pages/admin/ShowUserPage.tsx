@@ -52,7 +52,7 @@ export const ShowUserPage = () => {
 
     //Loading user from IndexUserPage
     useEffect(() => {
-        fetch(`https://localhost:5173/api/admin/users/${id}`)
+        fetch(`/api/admin/users/${id}`)
             .then(response => response.json())
             .then((data) => setUser(data))
             .catch(error => {
@@ -66,7 +66,7 @@ export const ShowUserPage = () => {
 
     //Loading user rating (stars)
     if (user && !ratingData) {
-        fetch(`https://localhost:5173/api/admin/users/rating/${user.id}`)
+        fetch(`/api/admin/users/rating/${user.id}`)
             .then(response => response.json())
             .then(data => setRatingData(data))
             .catch(error => {
@@ -78,7 +78,7 @@ export const ShowUserPage = () => {
 
     //Loading user review
     if (user && !review) {
-        fetch(`https://localhost:5173/api/admin/users/review/${user.id}`)
+        fetch(`/api/admin/users/review/${user.id}`)
             .then(response => response.json())
             .then(data => setReview(data))
             .catch(error => {
@@ -90,7 +90,7 @@ export const ShowUserPage = () => {
     
     //Loading user adress
     if (user && !adressUser) {
-        fetch(`https://localhost:5173/api/admin/users/address/${user.id}`)
+        fetch(`/api/admin/users/address/${user.id}`)
             .then(response => response.json())
             .then(data => setAdressUser(data))
             .catch(error => {
@@ -103,7 +103,7 @@ export const ShowUserPage = () => {
     //Block user account
     const handleBlock = () => {
         console.log("Button pressed")
-        fetch(`https://localhost:5173/api/admin/users/blockUser/${user.id}`, {method: 'PUT'})
+        fetch(`/api/admin/users/blockUser/${user.id}`, {method: 'PUT'})
             .catch(error => {
                 setError("There was an error fetching the Admin Block user account!");
                 console.error(error);
@@ -114,7 +114,7 @@ export const ShowUserPage = () => {
     //Delete user account
     const handleDelete = () => {
         console.log("Button pressed")
-        fetch(`https://localhost:5173/api/admin/users/deleteUser/${user.id}`, {method: 'DELETE'})
+        fetch(`/api/admin/users/deleteUser/${user.id}`, {method: 'DELETE'})
             .then(() => navigate(`/admin/users`))
             .catch(error => {
                 setError("There was an error fetching the Admin Delete user account!");

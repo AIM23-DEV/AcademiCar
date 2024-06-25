@@ -100,7 +100,7 @@ export const UpdateTripPage = () => {
     const [showToast, setShowToast] = useState<boolean>(false);
 
     useEffect(() => {
-        fetch(`https://localhost:5173/api/create/vehicles/${loggedInUserId}`)
+        fetch(`/api/create/vehicles/${loggedInUserId}`)
             .then(response => response.json())
             .then((fetchedVehicles: IVehicle[]) => {
                 const options = fetchedVehicles.reduce((options: VehicleOptions, vehicle) => {
