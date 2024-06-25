@@ -171,7 +171,7 @@ export const TripCard: React.FC<TripCardProps> = (props:TripCardProps) => {
     }, [props.tripId]);
     
     return (
-        <LinkCard key={props.cardIndex} link={`${props.driverId}/${props.tripId}`} className={props.hideShadow ? "overflow-hidden" : ""}>
+        <LinkCard key={props.cardIndex} link={`${props.driverId}/${props.tripId}`} className={props.hideShadow ? "overflow-hidden" : ""} padding="sm" labelPosition="inside">
             <div>
                 <div className="flex justify-between items-center">
                     <div className="flex flex-row gap-4">

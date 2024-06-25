@@ -46,6 +46,7 @@ export const IndexTripsPage = () => {
             
             <div className="w-full flex flex-col items-center pb-24">
                 <Card
+                    padding="none"
                     label={driverTrips ? driverLabel : ""}
                     outsideLinkText={t('pages/trips:IndexTripsPage.archive')}
                     outsideLink={"/trips/history/driver"}

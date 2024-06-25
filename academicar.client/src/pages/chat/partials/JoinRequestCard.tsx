@@ -53,9 +53,9 @@ export const JoinRequestCard = (props: JoinRequestCardProps) => {
         return (
             <Card
                 label={props.labelText}
-                outsideLink="/trips/:id"
+                outsideLink={"/trips/" + props.tripId}
                 outsideLinkText={props.linkText}
-                padding="sm">
+                padding="none">
 
                 <TripCard tripId={props.tripId} cardIndex={0} driverId={props.driverId} price={props.price} hideShadow/>
             </Card>
@@ -66,14 +66,14 @@ export const JoinRequestCard = (props: JoinRequestCardProps) => {
         return (
         <Card
             label={props.labelText}
-            outsideLink="/trips/:id"
+            outsideLink={"/trips/" + props.tripId}
             outsideLinkText={props.linkText}
-            padding="sm">
+            padding="none">
 
             <TripCard tripId={props.tripId} cardIndex={0} driverId={props.driverId} price={props.price} hideShadow/>
-            <div className="flex gap-2 w-full">
-                <Button text={props.denyButtonText} variant={"accent"} onClick={handleUpdateDeclined}/>
-                <Button text={props.acceptButtonText} onClick={handleUpdateAccepted}/>
+            <div className="grid grid-cols-2 gap-2 px-4 pb-4">
+                <Button fullWidth text={props.denyButtonText} variant={"accent"} onClick={handleUpdateDeclined}/>
+                <Button fullWidth text={props.acceptButtonText} onClick={handleUpdateAccepted}/>
             </div>
         </Card>
     )}
