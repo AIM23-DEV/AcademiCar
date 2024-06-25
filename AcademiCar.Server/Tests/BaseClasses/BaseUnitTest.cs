@@ -26,7 +26,7 @@ namespace AcademiCar.Server.Tests.BaseClasses
         [TearDown]
         public virtual async Task TearDown()
         {
-           _serviceProvider.Dispose();
+            _serviceProvider.Dispose();
         }
 
 

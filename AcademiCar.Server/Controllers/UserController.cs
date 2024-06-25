@@ -76,6 +76,20 @@ namespace AcademiCar.Server.Controllers
 
             return user;
         }
+        
+        [HttpGet("logout", Name = "Logout")]
+        public async Task<ActionResult<ActionResultResponseModel>> Logout()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Unauthorized("User is not logged in.");
+            }
+
+            await _signInManager.SignOutAsync();
+
+            return Ok(new ActionResultResponseModel { IsSuccess = true, Message = "User logged out successfully." });
+        }
 
         [HttpPost("Register")]
         [AllowAnonymous]
