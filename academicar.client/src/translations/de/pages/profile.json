@@ -16,7 +16,8 @@
     "newcar": "Neues Fahrzeug"
   },
   "CarPage": {
-    "title": "Fahrzeug erstellen",
+    "title_create": "Fahrzeug erstellen",
+    "title_update": "Fahrzeug updaten",
     "brand_placeholder": "Fahrzeug",
     "brand": "Fahrzeugmarke und Modell",
     "economy_placeholder": "Spritverbrauch l / km",
@@ -49,7 +50,8 @@
     "animals": "Tiere",
     "other": "Sonstige",
     "createcar": "Fahrzeug erstellen",
-    "updatecar": "Änderungen speichern"
+    "update_car": "Änderungen speichern",
+    "delete_car": "Fahrzeug löschen"
   },
   "EditProfilePage": {
     "title": "Mein Profil bearbeiten",
@@ -59,6 +61,7 @@
     "phone_number": "Telefonnummer",
     "email": "E-Mail Adresse",
     "birthdate": "Geburtstag",
+    "gender": "Geschlecht",
     "gender_male": "Männlich",
     "gender_female": "Weiblich",
     "gender_diverse": "Divers",
@@ -84,11 +87,16 @@
     "title": "Meine Belohnungen",
     "parking": {
       "title": "Parkplätze",
-      "text": "Es steht dir <span class=\"text-primary-600\">{{amount}}</span> Tage ein Parkplatz an deiner Ausbildungsstätte zu."
+      "text": "Es steht dir {{amount}} Tage ein Parkplatz an deiner Ausbildungsstätte zu."
     },
     "discount": "Rabatt",
     "discounts": "Rabatte",
-    "booking": "Buchen"
+    "receiveDiscount": "Rabatt erhalten",
+    "booking": "Buchen",
+    "wheel": "Reifentechnik 24",
+    "car": "Autoservice 1234",
+    "tech": "Laptops 485",
+    "discountText": "Zeige diesen Gutschein bei deinem nächsten Besuch vor und du erhälst den unten angegebenen Rabatt!"
   },
   "StatsPage": {
     "title": "Meine Statistiken",
@@ -102,14 +110,16 @@
   },
   "BalancePage": {
     "title": "Mein Guthaben",
-    "balance": "AkademiCar-Guthaben",
+    "balance": "AcademiCar-Guthaben",
     "recharge": "Aufladen",
-    "activities": "Letzte Aktivitäten",
-    "history": "Archiv"
+    "activities": "Letzte Transaktionen",
+    "history": "Archiv",
+    "payment": "Aufladung",
+    "trip:": "Reise"
   },
   "BalanceHistoryPage": {
     "title": "Mein Guthaben",
-    "delete": "Alle Aktivitäten löschen"
+    "delete": "Alle Transaktionen löschen"
   },
   "BalanceRechargePage": {
     "title": "Konto aufladen",

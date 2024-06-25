@@ -6,7 +6,7 @@ interface AuthContextProps {
     login: () => void;
     logout: () => void;
     selectIdP: () => void;
-    adminLogin: (username: string, password: string) => Promise<void>; // Add adminLogin method
+    adminLogin: (username: string, password: string) => Promise<void>;
 }
 
 interface User {
@@ -14,6 +14,7 @@ interface User {
     //roles: string[];
     userName: string
     firstName: string;
+    id: string;
     [key: string]: any;
 }
 
@@ -25,9 +26,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }): ReactElemen
     useEffect(() => {
         const checkAuth = async () => {
             try {
-                // TODO fix 404
-                //const response = await axios.get('/api/user', { withCredentials: true });
-                //setUser(response.data);
+                const response = await axios.get('/api/user', { withCredentials: true });
+                setUser(response.data);
             } catch (error) {
                 setUser(null);
             }
@@ -48,8 +48,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }): ReactElemen
     const adminLogin = async (username: string, password: string) => {
         try {
             const response = await axios.post('/api/User/AdminLogin', { username, password });
-            setUser(response.data); // Ensure this sets UserName and FirstName
-        } catch (error) { 
+            console.log("login: ", response.data)
+            localStorage.setItem('userID', response.data.userID);
+            setUser(response.data);
+        } catch (error) {
             throw new Error('Admin login failed');
         }
     };
@@ -64,6 +66,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }): ReactElemen
             {children}
         </AuthContext.Provider>
     );
+};
+
+
+export const getUserId = (): string => {
+    const userId = localStorage.getItem('userID');
+    return userId !== null ? userId : '-999';
 };
 
 export const useAuth = (): AuthContextProps => {

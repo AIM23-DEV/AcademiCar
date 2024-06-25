@@ -2,4 +2,7 @@
 
 namespace AcademiCar.Server.DAL.BaseInterfaces;
 
-public interface ITripRequestRepository : IPostgresRepository<TripRequest>;
+public interface ITripRequestRepository : IPostgresRepository<TripRequest>
+{
+    Task<List<TripRequest>> GetTripRequestsByTripId(int id);
+}

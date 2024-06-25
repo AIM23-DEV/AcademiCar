@@ -5,9 +5,14 @@ namespace AcademiCar.Server.Services.ServiceImpl;
 
 public class TravelPreferenceService : Service<TravelPreference>
 {
-    public TravelPreferenceService(ITravelPreferenceRepository repo) : base(repo) { }
+    private ITravelPreferenceRepository _repo;
 
+    public TravelPreferenceService(ITravelPreferenceRepository repo) : base(repo)
+    {
+        _repo = repo;
+    }
 
+    
     public override async Task<bool> Validate(TravelPreference entity)
     {
         if (entity == null)
@@ -15,4 +20,7 @@ public class TravelPreferenceService : Service<TravelPreference>
 
         return validationDictionary.IsValid;
     }
+    
+    public async Task<List<TravelPreference>> GetByPreferenceId(int id)
+        => await _repo.GetByPreferencesId(id);
 }

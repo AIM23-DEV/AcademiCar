@@ -8,7 +8,15 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
 using AcademiCar.Server;
-
+using AcademiCar.Server.DAL.BaseInterfaces;
+using AcademiCar.Server.DAL.Repositories;
+using AcademiCar.Server.Services.ServiceImpl;
+using AcademiCar.Server.DAL.BaseClasses;
+using AcademiCar.Server.DAL.BaseInterfaces;
+using AcademiCar.Server.DAL.Entities;
+using AcademiCar.Server.DAL.Hub;
+using Microsoft.AspNetCore.Identity;
+using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -18,11 +26,37 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IGlobalService, GlobalService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddHttpContextAccessor(); 
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<UserService>(); 
+
+builder.Services.AddHttpContextAccessor();
 
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 builder.Logging.AddDebug();
+
+builder.Services.AddSignalR();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Cookie.HttpOnly = true;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    options.Cookie.SameSite = SameSiteMode.Lax;
+    options.Cookie.MaxAge = TimeSpan.FromDays(7); 
+    options.ExpireTimeSpan = TimeSpan.FromDays(7); 
+    options.SlidingExpiration = true;
+});
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.WithOrigins("https://localhost:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
 
 var env = builder.Environment;
 var metadataFilePath = Path.Combine(env.ContentRootPath, "metadata.xml");
@@ -47,6 +81,10 @@ else
     builder.Services.AddDbContext<PostgresDbContext>(options =>
         options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 }
+
+builder.Services.AddIdentity<User, IdentityRole>()  // This line registers Identity services
+    .AddEntityFrameworkStores<PostgresDbContext>() // This line links Identity to your EF DbContext
+    .AddDefaultTokenProviders();
 // Conditional SAML2 Setup
 var enableSaml2 = builder.Configuration.GetValue<bool>("EnableSaml2");
 var useSingleIdP = builder.Configuration.GetValue<bool>("UseSingleIdP");
@@ -114,10 +152,14 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseCors();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<ChatHub>("/chat/chathub");
 
 app.MapFallbackToFile("/index.html");
 

@@ -1,7 +1,7 @@
 ﻿import { Outlet, Route } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from "../AuthContext.tsx";
-import { LoginPage } from "../pages/auth/LoginPage.tsx";
+import { AdminLogin } from "../pages/auth/AdminLogin.tsx"
 import Dashboard from "../pages/auth/Dashboard.tsx";
 
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -12,7 +12,7 @@ const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => 
 const AuthenticationRoutes = (
     <Route key="authRoute" path="/auth" element={<Outlet />}>
         
-        <Route key="authLoginRoute" path="login" element={<LoginPage />} />
+        <Route key="authLoginRoute" path="login" element={<AdminLogin />} />
         <Route key="authDashboardRoute" path="dashboard" element={ <PrivateRoute> <Dashboard /> </PrivateRoute> } />
         
     </Route>

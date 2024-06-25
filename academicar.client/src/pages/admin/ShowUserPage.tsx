@@ -12,8 +12,9 @@ import {Input} from "../../components/FormFields.tsx";
 import {RxAvatar} from "react-icons/rx";
 import {ConfirmationModal} from "../../components/Modal.tsx";
 
-interface TotalRating {
-    rating: number;
+interface RatingData {
+    totalScore: number;
+    ratingCount: number;
 }
 
 export const ShowUserPage = () => {
@@ -22,7 +23,7 @@ export const ShowUserPage = () => {
     const {id} = useParams();
     const [user, setUser] = useState<IUser | null>();
     const [adressUser, setAdressUser] = useState<IAddress | null>();
-    const [rating, setRating] = useState<TotalRating | null>();
+    const [ratingData, setRatingData] = useState<RatingData | null>();
     const [review, setReview] = useState<number | null>();
     const [error, setError] = useState<string | null>();
 
@@ -64,16 +65,16 @@ export const ShowUserPage = () => {
     if (!user) return <div>Loading user...</div>;
 
     //Loading user rating (stars)
-    if (user && !rating) {
+    if (user && !ratingData) {
         fetch(`https://localhost:5173/api/admin/users/rating/${user.id}`)
             .then(response => response.json())
-            .then(data => setRating(data))
+            .then(data => setRatingData(data))
             .catch(error => {
                 setError("There was an error fetching the Admin rating!");
                 console.error(error);
             });
     }
-    if (!rating) return <div>Loading stats...</div>;
+    if (!ratingData) return <div>Loading rating...</div>;
 
     //Loading user review
     if (user && !review) {
@@ -89,7 +90,7 @@ export const ShowUserPage = () => {
     
     //Loading user adress
     if (user && !adressUser) {
-        fetch(`https://localhost:5173/api/admin/address/${user.id}`)
+        fetch(`https://localhost:5173/api/admin/users/address/${user.id}`)
             .then(response => response.json())
             .then(data => setAdressUser(data))
             .catch(error => {
@@ -140,7 +141,7 @@ export const ShowUserPage = () => {
                                 <span><BiSolidStar className="icon text-gray-300"/></span>
                                 <span><BiSolidStar className="icon text-gray-300"/></span>
                                 <span><BiSolidStar className="icon text-gray-300"/></span>
-                                <span className="ml-2">({rating.rating})</span>
+                                <span className="ml-2">({ratingData.totalScore})</span>
                             </div>
                             <div className="mt-2">
                                 <span>{review} {ratings} </span>

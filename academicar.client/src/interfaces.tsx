@@ -1,5 +1,5 @@
-interface IAddress{
-    id: number;
+interface IAddress {
+    id?: number;
     street: string;
     number: number;
     zip: number;
@@ -14,30 +14,60 @@ interface ICarlos {
     imageSrc: string;
 }
 
-interface IChat {
-    id: number;
+interface IGroupChat {
+    id?: number;
     fK_Trip: number;
-    fK_User: string;
-    hasMoreThan2: boolean;
-    updatedAt: string;
+    tripTitle: string;
+    lastMessageContent?: string;
+    updatedAt: Date;
 }
 
-interface IFavoriteUser
-{
+interface IGroupChatUser {
+    id: number;
+    fK_GroupChat: number;
+    fK_User: string;
+}
+
+interface IGroupMessage {
+    id: number;
+    fK_SenderUser: string;
+    fK_GroupChat: number;
+    content: string;
+    sentAt: Date;
+}
+
+interface IPersonalChat {
+    id: number;
+    fK_Trip: number;
+    fK_DriverUser: string;
+    fK_PassengerUser: string;
+    driverUser: IUser | undefined;
+    passengerUser: IUser | undefined;
+    lastMessageContent?: string;
+    updatedAt: Date;
+}
+
+interface IPersonalMessage {
+    id: number;
+    fK_SenderUser: string;
+    fK_PersonalChat: number;
+    content: string;
+    sentAt: Date;
+}
+
+interface IFavoriteUser {
     id: number;
     fK_Userid: string;
     fK_FavUserId: string;
 }
 
-interface IInterestPreference
-{
+interface IInterestPreference {
     id: number;
     fK_Preferences: number;
     interest: string;
 }
 
-interface IMessage
-{
+interface IMessage {
     id: number;
     fK_User: string;
     fK_Chat: number;
@@ -46,8 +76,7 @@ interface IMessage
     sentAt: string;
 }
 
-interface IMusicPreference
-{
+interface IMusicPreference {
     id: number;
     fK_Preferences: number;
     genre: string;
@@ -73,11 +102,10 @@ interface IStats {
     driverKilometres: number;
     passengerKilometres: number;
     nrTrips: number;
-    co2Savings: number;
+    cO2Savings: number;
 }
 
-interface ITravelPreference
-{
+interface ITravelPreference {
     id: number;
     fK_Preferences: number;
     preferenceText: string;
@@ -85,12 +113,12 @@ interface ITravelPreference
 }
 
 interface ITrip {
-    id: number;
+    id?: number;
     title: string;
-    fK_Driver: string;
-    fK_Vehicle: number;
-    fK_StartAddress: number;
-    fK_EndAddress: number;
+    fK_Driver?: string;
+    fK_Vehicle?: number;
+    fK_StartAddress?: number;
+    fK_EndAddress?: number;
     startTime: Date;
     endTime: Date;
     availableSeats: number;
@@ -122,9 +150,9 @@ interface ITripStop {
 
 interface IUser {
     id: string;
-    email: string; 
+    email: string;
     firstName: string;
-    lastName: string; 
+    lastName: string;
     pictureSrc: string;
     fK_Address: number;
     fK_Stats: number;
@@ -132,12 +160,30 @@ interface IUser {
 }
 
 interface IVehicle {
-    id: number;
+    id?: number;
     type: string;
     seats: number;
     color: string;
-    pictureSrc: any[];
-    features: string;
-    isElectric: boolean;
-    fK_User: string;
+    pictureSrc: string;
+    fK_OwnerUser?: string;
+    brandModel: string;
+    fuelConsumption: string;
+    licensePlate: string;
+    fuelType: string;
+    hasAC: boolean;
+    hasLed: boolean;
+    hasVehicleInspection: boolean;
+    hasAutomatic: boolean;
+    hasSkiBag: boolean;
+    hasLeather: boolean;
+    hasSeatHeating: boolean;
+    hasCruiseControl: boolean;
+    hasBikeRack: boolean;
+    hasHandLuggageSpace: boolean;
+    hasMountingOnRoof: boolean;
+    hasAnimalSpace: boolean;
+    hasSuitcaseSpace: boolean;
+    hasSkiSpace: boolean;
+    hasPlantSpace: boolean;
+    hasOtherSpace: boolean;
 }

@@ -7,5 +7,13 @@ namespace AcademiCar.Server.DAL.Repositories;
 
 public class TripPassengerRepository : PostgresRepository<TripPassenger>, ITripPassengerRepository
 {
-    public TripPassengerRepository(PostgresDbContext dbContext) : base(dbContext) {}
+    private readonly PostgresDbContext _dbContext;
+    public TripPassengerRepository(PostgresDbContext dbContext) : base(dbContext)
+    {
+        _dbContext = dbContext;
+    }
+    
+    
+    public async Task<List<TripPassenger>> GetConnectionByPassengerID(string id)
+        => _dbContext.TripPassengers.Where(v => v.FK_PassengerUser == id).ToList();
 }

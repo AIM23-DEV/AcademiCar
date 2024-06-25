@@ -7,5 +7,14 @@ namespace AcademiCar.Server.DAL.Repositories;
 
 public class TravelPreferenceRepository : PostgresRepository<TravelPreference>, ITravelPreferenceRepository
 {
-    public TravelPreferenceRepository(PostgresDbContext dbContext) : base(dbContext) {}
+    private readonly PostgresDbContext _dbContext;
+
+    public TravelPreferenceRepository(PostgresDbContext dbContext) : base(dbContext)
+    {
+        _dbContext = dbContext;
+    }
+    
+    
+    public async Task<List<TravelPreference>> GetByPreferencesId(int id)
+        => _dbContext.TravelPreferences.Where(v => v.FK_Preferences == id).ToList();
 }

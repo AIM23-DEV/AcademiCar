@@ -73,12 +73,12 @@ export const IndexUsersPage = () => {
         <>
             <TitleBar text={"Account"} hasBackAction />
 
-            <div className="grid grid-cols-2 gap-6 my-8">
+            <div className="grid grid-cols-2 gap-6 my-6">
                 <Input
                     id="search"
                     type="text"
                     placeholder={search}
-                    leading={<IoIosSearch />}
+                    leading={<IoIosSearch className="icon-md" />}
                     required={true}
                     label={search}
                     value={searchQuery}
@@ -100,7 +100,7 @@ export const IndexUsersPage = () => {
                 />
             </div>
 
-            <div className="w-full flex flex-col items-center">
+            <div className="w-full flex flex-col items-center mb-24">
                 <Card
                     id="1"
                     label={persons}
@@ -108,7 +108,7 @@ export const IndexUsersPage = () => {
                     padding="base"
                     className="mt-1"
                 >
-                    {filteredUsers.map((user) => (
+                    {filteredUsers.map((user, index) => (
                         <div key={user.id}>
                             <Button
                                 variant="outline"
@@ -123,7 +123,8 @@ export const IndexUsersPage = () => {
                                 className="mt-1"
                                 onClick={() => navigate(`/admin/users/${user.id}`)}
                             />
-                            <Divider className="my-2" />
+                            {index !== filteredUsers.length - 1 ? <Divider className="my-2" /> : <></>}
+                            
                         </div>
                     ))}
                 </Card>

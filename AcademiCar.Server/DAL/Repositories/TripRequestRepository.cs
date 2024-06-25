@@ -7,5 +7,12 @@ namespace AcademiCar.Server.DAL.Repositories;
 
 public class TripRequestRepository : PostgresRepository<TripRequest>, ITripRequestRepository
 {
-    public TripRequestRepository(PostgresDbContext dbContext) : base(dbContext) {}
+    private readonly PostgresDbContext _dbContext;
+    public TripRequestRepository(PostgresDbContext dbContext) : base(dbContext) 
+    {
+        _dbContext = dbContext;
+    }
+    
+    public async Task<List<TripRequest>> GetTripRequestsByTripId(int id)
+        => _dbContext.TripRequests.Where(v => v.FK_Trip == id).ToList();
 }

@@ -1,67 +1,71 @@
-import {useState} from "react";
 import {Input, RadioCollection} from "../../../components/FormFields.tsx";
 import {Card} from "../../../components/Cards.tsx";
 import {useTranslation} from "react-i18next";
 import {Divider} from "../../../components/Divider.tsx";
 import {TextLink} from "../../../components/Buttons.tsx";
-import { BiFilter, BiSortAlt2 } from "react-icons/bi";
+import { BiSortAlt2 } from "react-icons/bi";
 import { Menu, MenuButton, MenuItems } from '@headlessui/react'
 
-/*const SEARCHDATA = {
-    startPoint: "Graz Hauptbahnhof",
-    endPoint: "Wien Flughafen",
-    date: "2024-05-16",
-    time: "7:38",
-}*/
+type SearchResultFormProps = {
+    radioValue: string;
+    setRadioValue: (value: any) => void;
+    startPoint: string;
+    destination: string;
+    date: string;
+    time: string;
+};
 
-export const SearchResultForm = () => {
+export const SearchResultForm: React.FC<SearchResultFormProps> = ({ radioValue, setRadioValue, startPoint, destination, date, time }) => {
     const [t] = useTranslation();
-    const [startPoint, setStartPoint] = useState('');
-    const [date, setDate] = useState('');
-    const [time, setTime] = useState('');
-    const [radioValue, setRadioValue] = useState();
+    //const [radioValue, setRadioValue] = useState();
     
     return (
         <Card label="Suche" className="mt-6">
             <div>
                 <div className="w-full grid grid-cols-12 gap-4">
                     <Input
+                        readonly
                         type="text"
                         fullWidth
                         placeholder="Strecke"
-                        value={startPoint}
-                        onChange={(e) => {
-                            setStartPoint(e.target.value)
-                        }}
+                        value={
+                        startPoint && destination
+                            ? `${startPoint} - ${destination}`
+                            : startPoint
+                            ? startPoint
+                            : destination
+                            ? destination
+                            : ''
+                        }
                         className="col-span-full"
                     />
                     <Input
+                        readonly
                         type="date"
                         fullWidth
                         placeholder="Datum"
                         value={date}
-                        onChange={(e) => setDate(e.target.value)}
                         className="col-span-6"
                     />
                     <Input
+                        readonly
                         type="time"
                         fullWidth
                         placeholder="Uhrzeit"
                         value={time}
-                        onChange={(e) => setTime(e.target.value)}
                         className="col-span-6"
                     />
                 </div>
                 
                 <Divider className="my-5" />
                 
-                <div className="grid grid-cols-2 justify-center items-center">
-                    <TextLink
+                <div className="flex justify-center">
+                    {/*<TextLink
                         link="/search/filter"
                         leading={<BiFilter className="icon"/>}
                         text={t('pages/search:SearchResultsForm.filter')}
                         className="w-full"
-                    />
+                    />*/}
 
                     <Menu>
                         <MenuButton className="text-secondary-600">
@@ -76,10 +80,10 @@ export const SearchResultForm = () => {
                                 value={radioValue}
                                 setValue={setRadioValue}
                                 items={[
-                                    {value: 1, label: t('pages/search:SearchResultsForm.sort.price')},
-                                    {value: 2, label: t('pages/search:SearchResultsForm.sort.fast')},
-                                    {value: 3, label: t('pages/search:SearchResultsForm.sort.best')},
-                                    {value: 4, label: t('pages/search:SearchResultsForm.sort.stopps')}
+                                    {value: "price", label: t('pages/search:SearchResultsForm.sort.price')},
+                                    {value: "fastest", label: t('pages/search:SearchResultsForm.sort.fast')},
+                                    {value: "best", label: t('pages/search:SearchResultsForm.sort.best')},
+                                    /*{value: "stops", label: t('pages/search:SearchResultsForm.sort.stops')}*/
                                 ]}
                             />
                         </MenuItems>

@@ -7,5 +7,14 @@ namespace AcademiCar.Server.DAL.Repositories;
 
 public class MusicPreferenceRepository : PostgresRepository<MusicPreference>, IMusicPreferenceRepository
 {
-    public MusicPreferenceRepository(PostgresDbContext dbContext) : base(dbContext) {}
+    private readonly PostgresDbContext _dbContext;
+
+    public MusicPreferenceRepository(PostgresDbContext dbContext) : base(dbContext)
+    {
+        _dbContext = dbContext;
+    }
+    
+    
+    public async Task<List<MusicPreference>> GetByPreferencesId(int id)
+        => _dbContext.MusicPreferences.Where(v => v.FK_Preferences == id).ToList();
 }

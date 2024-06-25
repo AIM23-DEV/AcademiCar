@@ -8,10 +8,13 @@ namespace AcademiCar.Server.DAL.UnitOfWork
 
         IAddressRepository Addresses { get; }
         ICarlosRepository Carlos { get;  }
-        IChatRepository Chats { get; }
+        IGroupChatRepository GroupChats { get; }
+        IGroupChatUserRepository GroupChatUsers { get; }
+        IGroupMessageRepository GroupMessages { get; }
         IFavoriteUserRepository FavoriteUsers { get; }
         IInterestPreferenceRepository InterestPreferences { get; }
-        IMessageRepository Messages { get; }
+        IPersonalChatRepository PersonalChats { get; }
+        IPersonalMessageRepository PersonalMessages { get; }
         IMusicPreferenceRepository MusicPreferences { get; }
         IPreferencesRepository Preferences { get; }
         IRatingRepository Ratings { get; }
@@ -23,6 +26,8 @@ namespace AcademiCar.Server.DAL.UnitOfWork
         ITripStopRepository TripStops { get; }
         IUserRepository Users { get; }
         IVehicleRepository Vehicles { get; }
+        IBalanceRepository Balances { get; }
+        ITransactionRepository Transactions { get; }
 
         Task<int> SaveChangesAsync();
     }
