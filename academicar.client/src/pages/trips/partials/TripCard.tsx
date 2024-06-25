@@ -179,7 +179,7 @@ export const TripCard: React.FC<TripCardProps> = (props:TripCardProps) => {
                             <img
                                 src={driver?.pictureSrc}
                                 alt="avatar"
-                                className="border-gray-600 rounded-full w-14 h-14"
+                                className="border-gray-600 rounded-full w-14 h-14 object-cover"
                             />
                         </div>
                         <div>

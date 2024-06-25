@@ -9,6 +9,7 @@ import {useState} from "react";
 import {useEffect} from "react";
 import {TripCard} from "./partials/TripCard.tsx";
 import {Card} from "../../components/Cards.tsx";
+import {EmptyState} from "../../components/EmptyState.tsx";
 // TODO add list of trips for the current user
 
 export const IndexTripsPage = () => {
@@ -44,7 +45,8 @@ export const IndexTripsPage = () => {
         <>
             <TitleBar text={pageTitle} />
             
-            <div className="w-full flex flex-col items-center pb-24">
+            <div className="w-full flex flex-col items-center mt-6 mb-24">
+                {driverTrips.length == 0 ? <EmptyState asCard title="Keine Fahrten" subtitle="Du bietest aktuell keine Fahrt an." /> :
                 <Card
                     padding="none"
                     label={driverTrips ? driverLabel : ""}
@@ -62,11 +64,13 @@ export const IndexTripsPage = () => {
                             hideShadow
                         /> : <></>
                     ))}
-                </Card>
+                </Card>}
                 
                 <div className="mt-8" />
-                
+
+                {passengersTrips.length == 0 ? <EmptyState asCard title="Keine Mitfahrten" subtitle="Du fährst aktuell bei keiner Fahrt mit." /> :
                 <Card
+                    padding="none"
                     label={passengersTrips ? passengerLabel : ""}
                     outsideLinkText={t('pages/trips:IndexTripsPage.archive')}
                     outsideLink={"/trips/history/passenger"}
@@ -79,9 +83,10 @@ export const IndexTripsPage = () => {
                             cardIndex={index}
                             driverId={trip.fK_Driver}
                             price={trip.price}
+                            hideShadow
                         /> : <></>
                     ))}
-                </Card>
+                </Card>}
             </div>
             
             <div className="fixed bottom-20 flex flex-row items-center justify-end w-full z-50 max-w-5xl px-6">
