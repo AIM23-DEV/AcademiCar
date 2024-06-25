@@ -10,14 +10,11 @@ using System.Security.Cryptography.X509Certificates;
 using AcademiCar.Server;
 using Azure.Security.KeyVault.Certificates;
 using AcademiCar.Server.DAL.BaseInterfaces;
-using AcademiCar.Server.DAL.Repositories;
 using AcademiCar.Server.Services.ServiceImpl;
 using AcademiCar.Server.DAL.BaseClasses;
-using AcademiCar.Server.DAL.BaseInterfaces;
 using AcademiCar.Server.DAL.Entities;
 using AcademiCar.Server.DAL.Hub;
 using Microsoft.AspNetCore.Identity;
-using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
@@ -46,11 +43,13 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.SlidingExpiration = true;
 });
 
+var policyurl = builder.Configuration.GetValue<string>("Policy");
+
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>
     {
-        builder.WithOrigins("https://localhost:5173")
+        builder.WithOrigins(policyurl)
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials();
