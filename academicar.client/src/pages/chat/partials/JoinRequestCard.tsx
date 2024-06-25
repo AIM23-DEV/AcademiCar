@@ -51,7 +51,8 @@ export const JoinRequestCard = (props: JoinRequestCardProps) => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newGroupChatUser)
             }).then(()=> console.log(newGroupChatUser));
-        
+            
+        setIsRequestHandled(true);
     }
 
     const getIsTripRequestHandled = async () => {
@@ -81,6 +82,7 @@ export const JoinRequestCard = (props: JoinRequestCardProps) => {
                 setError(`There was an error saving the user details: ${e}`);
                 console.error(error);
             });
+        setIsRequestHandled(true);
     }
 
     if (props.driverId != props.loggedInUserId) {
