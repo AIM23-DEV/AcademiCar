@@ -80,7 +80,7 @@ export const CreateTripPage = () => {
             .then((fetchedVehicles: IVehicle[]) => {
                 const options = fetchedVehicles.reduce((options: VehicleOptions, vehicle) => {
                     const key = vehicle.id ?? -999
-                    options[key] = vehicle.type;
+                    options[key] = vehicle.brandModel + " | " + vehicle.licensePlate;
                     return options;
                 }, {});
                 setVehicleOptions(options);

@@ -8,8 +8,6 @@ interface BottomNavigationBarProps {
     className?: string
 }
 
-// Todo proper routes
-// TODO replace -999 with loggedInUserId
 export const BottomNavigationBar = (props: BottomNavigationBarProps) => {
     const userId = getUserId();
     return (
@@ -27,10 +25,10 @@ export const BottomNavigationBar = (props: BottomNavigationBarProps) => {
                 <BottomNavigationBarItem link={`/create/${userId}`} active={props.selected == 'create'}
                                          icon={<BiPlus className="icon-lg"/>}/>
                 
-                <BottomNavigationBarItem link={`chat/${userId}`} active={props.selected == 'chat'}
+                <BottomNavigationBarItem link={`/chat/${userId}`} active={props.selected == 'chat'}
                                          icon={<BiChat className="icon-lg"/>}/>
 
-                <BottomNavigationBarItem link={`profile/${userId}`} active={props.selected == 'profile'}
+                <BottomNavigationBarItem link={`/profile/${userId}`} active={props.selected == 'profile'}
                                          icon={<BiUser className="icon-lg"/>}/>
                 
             </ul>

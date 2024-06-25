@@ -149,7 +149,7 @@ export const SearchResultsPage = () => {
                                                     <img
                                                         src={item.driver.pictureSrc}
                                                         alt="avatar"
-                                                        className="border-gray-600 rounded-full h-14 w-14"
+                                                        className="border-gray-600 rounded-full h-14 w-14 object-cover"
                                                     />
                                                 </div>
                                                 <div>
