@@ -32,8 +32,10 @@ export const ImageUploadForm = () => {
         setSasTokenUrl(`${blobUrl}/${container}/${target?.files[0].name}?${sasToken}`);
     };
         const handleFileUpload = () => {
+            console.log('handleFileUpload');
             if (sasTokenUrl === '') return;
-        
+            console.log(`sasTokenUrl: ${sasTokenUrl}`);
+            
             convertFileToArrayBuffer(selectedFile as File)
                 .then(async (fileArrayBuffer) => {
                     if (
