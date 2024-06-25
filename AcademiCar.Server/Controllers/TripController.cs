@@ -228,4 +228,3 @@ class Stop()
     public string Time { get; set; }
     public string FreeSeats { get; set; }
 }
-

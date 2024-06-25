@@ -1,9 +1,9 @@
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Routes } from 'react-router-dom';
 import { I18nextProvider } from "react-i18next";
 import i18next from "i18next";
 import { AuthProvider  } from './AuthContext';
-import { HomePage } from './pages/HomePage';
+// import { HomePage } from './pages/HomePage';
 import AuthenticationRoutes from "./routes/AuthenticationRoutes.tsx";
 import SearchRoutes from "./routes/SearchRoutes.tsx";
 import TripRoutes from "./routes/TripRoutes.tsx";
@@ -13,13 +13,12 @@ import AdditionalRoutes from "./routes/AdditionalRoutes.tsx";
 import AdminRoutes from "./routes/AdminRoutes.tsx";
 import CreateRoutes from "./routes/CreateRoutes.tsx";
 
-// Todo remove "homeRoute" when obsolete
 const App: React.FC = () => {
     return (
         <AuthProvider>
             <I18nextProvider i18n={i18next}>
                     <Routes>
-                        <Route index key="homeRoute" element={<HomePage />} />
+                        {/*<Route key="homeRoute" element={<HomePage />} />*/}
                         
                         {AuthenticationRoutes}
                         {SearchRoutes}
