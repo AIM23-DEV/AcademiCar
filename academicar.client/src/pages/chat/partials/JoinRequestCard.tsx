@@ -46,7 +46,7 @@ export const JoinRequestCard = (props: JoinRequestCardProps) => {
                 fK_GroupChat: props.tripId
             };
             
-            fetch(`https://localhost:5173/api/create/groupchatUser`, {
+            fetch(`/api/create/groupchatUser`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newGroupChatUser)
@@ -59,7 +59,7 @@ export const JoinRequestCard = (props: JoinRequestCardProps) => {
         if (!props.tripRequest) return;
 
         try {
-            const response = await fetch(`https://localhost:5173/api/chat/GetTripRequestById/${props.tripRequest.id}`)
+            const response = await fetch(`/api/chat/GetTripRequestById/${props.tripRequest.id}`)
             //console.log(response)
             const data: ITripRequest = await response.json();
             setIsRequestHandled(data.status !== "Open");

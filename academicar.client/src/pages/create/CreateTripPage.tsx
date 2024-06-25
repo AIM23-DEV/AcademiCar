@@ -75,7 +75,7 @@ export const CreateTripPage = () => {
     const [vehicleOptions, setVehicleOptions] = useState<VehicleOptions>({});
 
     useEffect(() => {
-        fetch(`https://localhost:5173/api/create/vehicles/${loggedInUserId}`)
+        fetch(`/api/create/vehicles/${loggedInUserId}`)
             .then(response => response.json())
             .then((fetchedVehicles: IVehicle[]) => {
                 const options = fetchedVehicles.reduce((options: VehicleOptions, vehicle) => {
@@ -162,7 +162,7 @@ export const CreateTripPage = () => {
                 fK_GroupChat: createdGroupChat.id
             };
 
-            await fetch(`https://localhost:5173/api/create/groupchatUser`, {
+            await fetch(`/api/create/groupchatUser`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newGroupChatUser)
