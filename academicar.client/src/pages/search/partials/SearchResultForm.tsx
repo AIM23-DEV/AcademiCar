@@ -28,7 +28,15 @@ export const SearchResultForm: React.FC<SearchResultFormProps> = ({ radioValue, 
                         type="text"
                         fullWidth
                         placeholder="Strecke"
-                        value={startPoint + " - " + destination}
+                        value={
+                        startPoint && destination
+                            ? `${startPoint} - ${destination}`
+                            : startPoint
+                            ? startPoint
+                            : destination
+                            ? destination
+                            : ''
+                        }
                         className="col-span-full"
                     />
                     <Input
