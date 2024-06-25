@@ -52,6 +52,15 @@ interface RouteProps {
 
 const Route: React.FC<RouteProps> = ({startPoint, endPoint, stops, duration, distance, price}) => {
     const [t] = useTranslation(["common", "pages/trips"]);
+    const startText = t('common:trip.start');
+    const timeText = t('common:time.time');
+    const freespotsText = t('common:trip.freeSpots');
+    const stopText = t('common:trip.stop');
+    const destinationText = t('common:trip.destination');
+    const durationText = t('pages/trips:ShowTripPage.duration');
+    const kmText = t('pages/trips:ShowTripPage.km');
+    const distanceText = t('pages/trips:ShowTripPage.distance');
+    const priceText = t('pages/trips:ShowTripPage.price');
     
     return (
         <div>
@@ -70,10 +79,10 @@ const Route: React.FC<RouteProps> = ({startPoint, endPoint, stops, duration, dis
                 <div className="w-full flex flex-col gap-4">
                     <div className="flex flex-row justify-between items-center">
                         <div>
-                            <div className="text-gray-400 text-xs">{t('common:trip.start')}</div>
+                            <div className="text-gray-400 text-xs">{startText}</div>
                             <div className="body-1">{startPoint.location}</div>
                         </div>
-                        <div className="body-2 text-sm">{startPoint.time} {t('common:time.time')}</div>
+                        <div className="body-2 text-sm">{startPoint.time} {timeText}</div>
                     </div>
                     <div className="flex flex-row items-center gap-2">
                     <span className="flex">
@@ -85,16 +94,16 @@ const Route: React.FC<RouteProps> = ({startPoint, endPoint, stops, duration, dis
                         ))}
                     </span>
                         <span
-                            className="text-gray-400 text-xs">{startPoint.freeSeats} {t('common:trip.freeSpots')}</span>
+                            className="text-gray-400 text-xs">{startPoint.freeSeats} {freespotsText}</span>
                     </div>
                     {stops.map((stop, index) => (
                         <React.Fragment key={index}>
                             <div className="flex flex-row justify-between items-center">
                                 <div>
-                                    <div className="text-gray-400 text-xs">{t('common:trip.stop')}</div>
+                                    <div className="text-gray-400 text-xs">{stopText}</div>
                                     <div className="body-1">{stop.location}</div>
                                 </div>
-                                <div className="body-2 text-sm">{stop.time} {t('common:time.time')}</div>
+                                <div className="body-2 text-sm">{stop.time} {timeText}</div>
                             </div>
                             <div className="flex flex-row items-center gap-2">
                             <span className="flex">
@@ -106,16 +115,16 @@ const Route: React.FC<RouteProps> = ({startPoint, endPoint, stops, duration, dis
                                 ))}
                             </span>
                                 <span
-                                    className="text-gray-400 text-xs">{stop.freeSeats} {t('common:trip.freeSpots')}</span>
+                                    className="text-gray-400 text-xs">{stop.freeSeats} {freespotsText}</span>
                             </div>
                         </React.Fragment>
                     ))}
                     <div className="flex flex-row justify-between items-center">
                         <div>
-                            <div className="text-gray-400 text-xs">{t('common:trip.destination')}</div>
+                            <div className="text-gray-400 text-xs">{destinationText}</div>
                             <div className="body-1">{endPoint.location}</div>
                         </div>
-                        <div className="body-2 text-sm">{endPoint.time} {t('common:time.time')}</div>
+                        <div className="body-2 text-sm">{endPoint.time} {timeText}</div>
                     </div>
                 </div>
             </div>
@@ -126,19 +135,19 @@ const Route: React.FC<RouteProps> = ({startPoint, endPoint, stops, duration, dis
                 <div>
                     {duration}
                     <div className="text-gray-400 text-xs">
-                        {t('pages/trips:ShowTripPage.duration')}
+                        {durationText}
                     </div>
                 </div>
                 <div>
-                    {distance} {t('pages/trips:ShowTripPage.km')}
+                    {distance} {kmText}
                     <div className="text-gray-400 text-xs">
-                        {t('pages/trips:ShowTripPage.distance')}
+                        {distanceText}
                     </div>
                 </div>
                 <div>
                     {price} €
                     <div className="text-gray-400 text-xs">
-                        {t('pages/trips:ShowTripPage.price')}
+                        {priceText}
                     </div>
                 </div>
             </div>
@@ -148,18 +157,22 @@ const Route: React.FC<RouteProps> = ({startPoint, endPoint, stops, duration, dis
 
 const Req: React.FC<RequestProps> = ({requests}) => {
     const [t] = useTranslation(["common", "pages/trips"]);
-    
+    const requestedText = t('pages/trips:RequestCard.requested');
+    const timeText = t('common:time.time');
+    const cancelText = t('pages/trips:RequestCard.cancel');
+    const acceptText = t('pages/trips:RequestCard.accept');
+
     return (
         <div>
             {requests.map((request, index) => (
                 <React.Fragment key={index}>
                     {index != 0 ? (
-                        <Divider className="my-4"/>
+                        <Divider className="my-4" />
                     ) : (
                         <></>
                     )}
                     <div className="mb-4">
-                        <b>{t('pages/trips:RequestCard.requested')}</b> {request.time} {t('common:time.time')}
+                        <b>{requestedText}</b> {request.time} {timeText}
                     </div>
                     <a href={"/Users/" + index}>
                         <div className="flex flex-row gap-4">
@@ -196,7 +209,7 @@ const Req: React.FC<RequestProps> = ({requests}) => {
                                 <TextButton
                                     variant="accent"
                                     fullWidth
-                                    text={t('pages/trips:RequestCard.cancel')}
+                                    text={cancelText}
                                     textAlign="left"
                                     textFullWidth
                                     leading={<BiMessageX className="icon"/>}
@@ -214,7 +227,7 @@ const Req: React.FC<RequestProps> = ({requests}) => {
                             <TextButton
                                 variant="primary"
                                 fullWidth
-                                text={t('pages/trips:RequestCard.accept')}
+                                text={acceptText}
                                 textAlign="left"
                                 textFullWidth
                                 leading={<BiMessageCheck className="icon"/>}
@@ -275,10 +288,23 @@ export const ShowTripPage = () => {
     const [t] = useTranslation(["common", "pages/trips"]);
     const { loggedInUserId, tripId } = useParams();
     const pageTitle = t("pages/trips:ShowTripPage.title", {id: tripId});
+    const driveText = t("pages/trips:ShowTripPage.drive");
+    const requestsText = t("pages/trips:ShowTripPage.requests");
+    const passengersText = t("pages/trips:ShowTripPage.passengers");
+    const vehicleDetailsText = t("pages/trips:ShowTripPage.vehicleDetails");
+    const seatsLabelText = t("pages/trips:ShowTripPage.label_seats");
+    const extraSuitcaseText = t("pages/trips:ShowTripPage.extra_suitcase");
+    const preferencesText = t("pages/trips:ShowTripPage.preferences");
+    const actionsLabelText = t("pages/trips:ShowTripPage.actions");
+    const editDriveButtonText = t("pages/trips:ShowTripPage.editDrive");
+    const shareDriveButtonText = t("pages/trips:ShowTripPage.shareDrive");
+    const cancelDriveButtonText = t("pages/trips:ShowTripPage.cancelDrive");
     SetPageTitle(pageTitle);
-
+    
     const navigate = useNavigate();
 
+    
+    
     const requests = [
         {time: "30.12.2023, 14:13", user: "Fred Windsor", score: 5.0},
         {time: "30.12.2023, 14:13", user: "Fred Windsor", score: 4.0},
@@ -306,7 +332,7 @@ export const ShowTripPage = () => {
             <TitleBar text={pageTitle} hasBackAction/>
             <Card
                 id="eine-id"
-                label={t("pages/trips:ShowTripPage.drive")}
+                label={driveText}
                 labelPosition="outside"
                 padding="base"
                 className="mt-8"
@@ -316,7 +342,7 @@ export const ShowTripPage = () => {
             </Card>
             <Card
                 id="eine-id"
-                label={t("pages/trips:ShowTripPage.requests")}
+                label={requestsText}
                 labelPosition="outside"
                 padding="base"
                 className="mt-8"
@@ -325,7 +351,7 @@ export const ShowTripPage = () => {
             </Card>
             <Card
                 id="eine-id"
-                label={t("pages/trips:ShowTripPage.passengers")}
+                label={passengersText}
                 labelPosition="outside"
                 padding="base"
                 className="mt-8"
@@ -334,7 +360,7 @@ export const ShowTripPage = () => {
             </Card>
             <Card
                 id="eine-id"
-                label={t("pages/trips:ShowTripPage.vehicleDetails")}
+                label={vehicleDetailsText}
                 labelPosition="outside"
                 padding="base"
                 className="mt-8"
@@ -362,11 +388,11 @@ export const ShowTripPage = () => {
                             <div>
                                 <div className="flex gap-4">
                                     <BiGroup className="icon"/>
-                                    {details.seats} {t("pages/trips:ShowTripPage.label_seats")}
+                                    {details.seats} {seatsLabelText}
                                 </div>
                                 <div className="flex gap-4">
                                     <BiShoppingBag className="icon"/>
-                                    {details.suitcases} {t("pages/trips:ShowTripPage.extra_suitcase")}
+                                    {details.suitcases} {extraSuitcaseText}
                                 </div>
                             </div>
                         </div>
@@ -375,7 +401,7 @@ export const ShowTripPage = () => {
             </Card>
             <Card
                 id="eine-id"
-                label={t("pages/trips:ShowTripPage.preferences")}
+                label={preferencesText}
                 labelPosition="outside"
                 padding="base"
                 className="mt-8"
@@ -394,7 +420,7 @@ export const ShowTripPage = () => {
 
             <Card
                 id="eine-id"
-                label={t("pages/trips:ShowTripPage.actions")}
+                label={actionsLabelText}
                 labelPosition="outside"
                 padding="base"
                 className="mt-8 mb-24"
@@ -404,7 +430,7 @@ export const ShowTripPage = () => {
                 <TextButton
                     variant="secondary"
                     fullWidth
-                    text={t("pages/trips:ShowTripPage.editDrive")}
+                    text={editDriveButtonText}
                     textAlign="left"
                     textFullWidth
                     leading={<BiEdit className="icon"/>}
@@ -415,7 +441,7 @@ export const ShowTripPage = () => {
                 <TextButton
                     variant="secondary"
                     fullWidth
-                    text={t("pages/trips:ShowTripPage.shareDrive")}
+                    text={shareDriveButtonText}
                     textAlign="left"
                     textFullWidth
                     leading={<BiShare className="icon"/>}
@@ -427,7 +453,7 @@ export const ShowTripPage = () => {
                 <TextButton
                     variant="accent"
                     fullWidth
-                    text={t("pages/trips:ShowTripPage.cancelDrive")}
+                    text={cancelDriveButtonText}
                     textAlign="left"
                     textFullWidth
                     leading={<BiShieldX className="icon"/>}
