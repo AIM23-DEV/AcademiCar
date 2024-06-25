@@ -4,8 +4,6 @@ import {TitleBar} from "../../components/TitleBar.tsx";
 import {useParams} from 'react-router-dom';
 import {useEffect, useState} from "react";
 import {Chat, MessageProps} from "./partials/Chat.tsx";
-import {TextLink} from "../../components/Buttons.tsx";
-import {BiDotsVerticalRounded} from "react-icons/bi";
 
 export const TripChatPage = () => {
     // const [t] = useTranslation(["common", "pages/chat"]);
@@ -17,6 +15,7 @@ export const TripChatPage = () => {
     const [messages, setMessages] = useState<IGroupMessage[]>([]);
     const [filteredMessages, setFilteredMessages] = useState<MessageProps[]>([]);
     const [chat, setChat] = useState<IGroupChat>();
+    const {loggedInUserId} = useParams();
 
     // Fetch chat
     useEffect(() => {
@@ -60,14 +59,10 @@ export const TripChatPage = () => {
             <TitleBar hasBackAction={true}
                       text={chat?.tripTitle ?? ""}
                       className="fixed bg-gray-100 px-4"
-                      trailing={
-                          <TextLink className="mb-3" variant="outline" link={`${chatId}/detail`} leading={
-                              <BiDotsVerticalRounded className="icon-md"/>
-                          }/>}
             />
 
             <div className="w-full flex flex-col items-center mt-24">
-                <Chat userId="-999" chatId={chatId} messages={filteredMessages} type="group"/>
+                <Chat userId={loggedInUserId} chatId={chatId} messages={filteredMessages} type="group"/>
             </div>
         </>
     );
