@@ -55,9 +55,9 @@ export const JoinRequestCard = (props: JoinRequestCardProps) => {
                 label={props.labelText}
                 outsideLink="/trips/:id"
                 outsideLinkText={props.linkText}
-                className="mt-8">
+                padding="sm">
 
-                <TripCard tripId={props.tripId} cardIndex={0} driverId={props.driverId} price={props.price}/>
+                <TripCard tripId={props.tripId} cardIndex={0} driverId={props.driverId} price={props.price} hideShadow/>
             </Card>
         )
     } else
@@ -68,9 +68,9 @@ export const JoinRequestCard = (props: JoinRequestCardProps) => {
             label={props.labelText}
             outsideLink="/trips/:id"
             outsideLinkText={props.linkText}
-            className="mt-8">
+            padding="sm">
 
-            <TripCard tripId={props.tripId} cardIndex={0} driverId={props.driverId} price={props.price}/>
+            <TripCard tripId={props.tripId} cardIndex={0} driverId={props.driverId} price={props.price} hideShadow/>
             <div className="flex gap-2 w-full">
                 <Button text={props.denyButtonText} variant={"accent"} onClick={handleUpdateDeclined}/>
                 <Button text={props.acceptButtonText} onClick={handleUpdateAccepted}/>

@@ -58,6 +58,7 @@ export const IndexTripsPage = () => {
                             cardIndex={index}
                             driverId={trip.fK_Driver}
                             price={trip.price}
+                            hideShadow
                         /> : <></>
                     ))}
                 </Card>

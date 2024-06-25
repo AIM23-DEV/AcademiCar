@@ -4,7 +4,7 @@ import {useTranslation} from "react-i18next";
 
 interface StateProps {
     type: 'searchResult' | 'chatResult'
-    className: string
+    className?: string
 }
 
 export const EmptyChat = (props: StateProps) => {

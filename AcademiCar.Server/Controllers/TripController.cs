@@ -152,7 +152,7 @@ public class TripController : ControllerBase
         {
             Stop newStop = new();
             newStop.Location = address.Street;
-            newStop.Time = trip.StartTime.ToString();
+            newStop.Time = trip.StartTime.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
             newStop.FreeSeats = trip.AvailableSeats.ToString();
         }
         return Ok(stops);
@@ -167,7 +167,7 @@ public class TripController : ControllerBase
 
         Stop newStop = new();
         newStop.Location = startAddress.Street;
-        newStop.Time = trip.StartTime.ToString();
+        newStop.Time = trip.StartTime.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
         newStop.FreeSeats = trip.AvailableSeats.ToString();
         
         return Ok(newStop);
@@ -182,7 +182,7 @@ public class TripController : ControllerBase
 
         Stop newStop = new();
         newStop.Location = endAddress.Street;
-        newStop.Time = trip.StartTime.ToString();
+        newStop.Time = trip.StartTime.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
         newStop.FreeSeats = trip.AvailableSeats.ToString();
         
         return Ok(newStop);

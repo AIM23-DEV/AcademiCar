@@ -7,7 +7,7 @@ import {Divider} from "../../../components/Divider.tsx";
 interface ChatsListProps {
     chats: (IPersonalChat | IGroupChat)[],
     searchActive: boolean
-    className: string
+    className?: string
     loggedInUserId: string | undefined
 }
 

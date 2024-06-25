@@ -66,7 +66,7 @@ export const TripChatPage = () => {
                           }/>}
             />
 
-            <div className="w-full flex flex-col items-center mt-20">
+            <div className="w-full flex flex-col items-center mt-24">
                 <Chat userId="-999" chatId={chatId} messages={filteredMessages} type="group"/>
             </div>
         </>
