@@ -11,6 +11,7 @@ import {TripVehicleCreationForm} from "./partials/TripVehicleCreationForm.tsx";
 import {TripPricingCreationForm} from "./partials/TripPricingCreationForm.tsx";
 import {TripTimeCreationForm} from "./partials/TripTimeCreationForm.tsx";
 import {VehicleOptions} from "./CreateTripPage.tsx";
+import {Toast} from "../../components/Toast.tsx";
 
 function getAddressString(address: IAddress): string {
     return `${address.street} ${address.number} ${address.zip} ${address.place}`;
@@ -57,14 +58,14 @@ function getAddress(addressStr: string): IAddress {
     };
 }
 function getDate(dateStr: string, timeStr: string): Date {
-    const dateFields = dateStr.split('/');
+    const dateFields = dateStr.split('-');
     const timeFields = timeStr.split(':');
     if (dateFields.length != 3 || timeFields.length != 2)
         return new Date(2020, 1, 1, 12, 0,0)
 
-    const day = Number(dateFields[0])
+    const year = Number(dateFields[0])
     const month = Number(dateFields[1])
-    const year = Number(dateFields[2])
+    const day = Number(dateFields[2])
     const hours = Number(timeFields[0])
     const minutes = Number(timeFields[1])
 
@@ -96,6 +97,7 @@ export const UpdateTripPage = () => {
     const [price, setPrice] = useState(0);
     const [error, setError] = useState<string | null>();
     const [vehicleOptions, setVehicleOptions] = useState<VehicleOptions>({});
+    const [showToast, setShowToast] = useState<boolean>(false);
 
     useEffect(() => {
         fetch(`https://localhost:5173/api/create/vehicles/${loggedInUserId}`)
@@ -117,15 +119,14 @@ export const UpdateTripPage = () => {
             .then(response => response.json())
             .then(data => {
                 setTrip(data);
-                if (trip)
-                {
-                    setStartDate(getDateString(trip.startTime))
-                    setStartTime(getTimeString(trip.startTime))
-                    setEndDate(getDateString(trip.endTime))
-                    setEndTime(getTimeString(trip.endTime))
-                    setTripVehicleId(trip.fK_Vehicle);
-                    setAvailableSeats(trip.availableSeats);
-                    setPrice(trip.price);
+                if (data) {
+                    setStartDate(getDateString(data.startTime))
+                    setStartTime(getTimeString(data.startTime))
+                    setEndDate(getDateString(data.endTime))
+                    setEndTime(getTimeString(data.endTime))
+                    setTripVehicleId(data.fK_Vehicle);
+                    setAvailableSeats(data.availableSeats);
+                    setPrice(data.price);
                 }
             })
             .catch(error => {
@@ -211,8 +212,8 @@ export const UpdateTripPage = () => {
         const updatedTripJson = await tripResponse.json();
         if (updatedTripJson.id == trip.id)
         {
-            alert('Trip updated successfully!');
-            history.back();
+            setShowToast(true);
+            setTimeout(() => setShowToast(false), 3000);
         }
     };
 
@@ -270,7 +271,6 @@ export const UpdateTripPage = () => {
                             <TabPanel>
                                 <TripPricingCreationForm
                                     price={price}
-
                                     setPrice={setPrice}
                                 />
                             </TabPanel>
@@ -279,13 +279,16 @@ export const UpdateTripPage = () => {
                 />
             </div>
 
-            <div className="fixed bottom-6 inset-x-6 space-y-2">
-                <Button type="submit"
-                        disabled={!isDataReady()}
-                        variant="primary" 
-                        text={updateButtonText} 
-                        onClick={updateTrip} 
-                        fullWidth/>
+            <div className="fixed bottom-6 inset-x-6 space-y-2 max-w-4xl mx-auto">
+                {showToast ?
+                    <Toast variant="info" message="Deine Fahrt wurde gespeichert."/>
+                    : <Button type="submit"
+                              disabled={!isDataReady()}
+                              variant="primary"
+                              text={updateButtonText}
+                              onClick={updateTrip}
+                              fullWidth/>
+                }
             </div>
         </>
     );

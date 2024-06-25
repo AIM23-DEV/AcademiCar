@@ -3,12 +3,13 @@ import {Card} from "../../../components/Cards.tsx";
 import {Input} from "../../../components/FormFields.tsx";
 import {StopsTimeInputCardList} from "./StopsTimeInputCardList.tsx";
 import {BiCalendar, BiTime} from "react-icons/bi";
+import {useState} from "react";
 
 interface TripTimeCreationFormProps {
-    startDate?: string;
-    startTime?: string;
-    endDate?: string;
-    endTime?: string;
+    startDate: string;
+    startTime: string;
+    endDate: string;
+    endTime: string;
 
     setStartDate: (dateStr: string) => void;
     setStartTime: (timeStr: string) => void;
@@ -25,6 +26,11 @@ export const TripTimeCreationForm = (props: TripTimeCreationFormProps) => {
     const stopContinueInputLabelText = t("pages/create:CreateTripPage.label_stop_continued_time");
     const arrivalTimeLabelText = t("pages/create:CreateTripPage.label_arrival_time");
 
+    const [startDate, setStartDate] = useState<string>(props.startDate);
+    const [startTime, setStartTime] = useState<string>(props.startTime);
+    const [endDate, setEndDate] = useState<string>(props.endDate);
+    const [endTime, setEndTime] = useState<string>(props.endTime);
+
     return (
         <div className="w-full flex flex-col items-center space-y-6">
             <Card label={startTimeLabelText}>
@@ -32,19 +38,27 @@ export const TripTimeCreationForm = (props: TripTimeCreationFormProps) => {
                     <Input
                         type="date"
                         label={dateInputLabelText}
-                        value={props.startDate}
+                        value={startDate}
                         leading={<BiCalendar className="icon-md"/>}
                         fullWidth
-                        onChange={(e) => props.setStartDate(e.target.value)}
+                        onChange={(e) => {
+                            let value: string = e.target.value;
+                            props.setStartDate(value);
+                            setStartDate(value);
+                        }}
                     />
 
                     <Input
                         type="time"
                         label={timeInputLabelText}
-                        value={props.startTime}
+                        value={startTime}
                         leading={<BiTime className="icon-md"/>}
                         fullWidth
-                        onChange={(e) => props.setStartTime(e.target.value)}
+                        onChange={(e) => {
+                            let value: string = e.target.value;
+                            props.setStartTime(value);
+                            setStartTime(value);
+                        }}
                     />
                 </div>
             </Card>
@@ -67,19 +81,27 @@ export const TripTimeCreationForm = (props: TripTimeCreationFormProps) => {
                     <Input
                         type="date"
                         label={dateInputLabelText}
-                        value={props.endDate}
+                        value={endDate}
                         leading={<BiCalendar className="icon-md"/>}
                         fullWidth
-                        onChange={(e) => props.setEndDate(e.target.value)}
+                        onChange={(e) => {
+                            let value: string = e.target.value;
+                            props.setEndDate(value);
+                            setEndDate(value);
+                        }}
                     />
 
                     <Input
                         type="time"
                         label={timeInputLabelText}
-                        value={props.endTime}
+                        value={endTime}
                         leading={<BiTime className="icon-md"/>}
                         fullWidth
-                        onChange={(e) => props.setEndTime(e.target.value)}
+                        onChange={(e) => {
+                            let value: string = e.target.value;
+                            props.setEndTime(value);
+                            setEndTime(value);
+                        }}
                     />
                 </div>
             </Card>

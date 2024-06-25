@@ -4,8 +4,8 @@ import { StopsList } from "./StopsList.tsx";
 import {Dispatch, SetStateAction} from "react";
 
 interface TripRouteCreationFormProps {
-    startAddress?: string;
-    endAddress?: string;
+    startAddress: string;
+    endAddress: string;
 
     setStartAddress: Dispatch<SetStateAction<string>>;
     setEndAddress: Dispatch<SetStateAction<string>>;

@@ -27,6 +27,7 @@ export const TripVehicleCreationForm = (props: TripVehicleCreationFormProps) => 
     const skiExtraText = t("pages/create:CreateTripPage.extra_ski");
     const miscExtraText = t("pages/create:CreateTripPage.extra_misc");
     const [thisVehicleId, setThisVehicleId] = useState<number | undefined>(props.vehicleId);
+    const [thisAvailableSeats, setThisAvailableSeats] = useState<number | undefined>(props.availableSeats);
 
     return (
         <div className="w-full flex flex-col items-center">
@@ -48,11 +49,16 @@ export const TripVehicleCreationForm = (props: TripVehicleCreationFormProps) => 
                         }}
                     />
                     <Input
-                        value={`${props.availableSeats}`}
+                        value={`${thisAvailableSeats}`}
                         fullWidth
                         type="number"
                         label={seatsLabelText}
-                        onChange={(e) => props.setAvailableSeats(Number(e.target.value))}
+                        onChange={(e) => {
+                            let value: number = Number.parseInt(e.target.value);
+                            if (Number.isNaN(value)) value = 0;
+                            props.setAvailableSeats(value);
+                            setThisAvailableSeats(value);
+                        }}
                     />
                 </div>
             </Card>
