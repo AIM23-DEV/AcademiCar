@@ -21,6 +21,7 @@ export const EditProfilePage: React.FC = () => {
     const {loggedInUserId} = useParams();
     const [user, setUser] = useState<IUser>();
     const [address, setAddress] = useState<IAddress>();
+    const [stats, setStats] = useState<IStats>();
     const [error, setError] = useState<string | null>();
     /*const [sex, setSex] = useState<string>("male");*/
 
@@ -39,7 +40,17 @@ export const EditProfilePage: React.FC = () => {
             .then(response => response.json())
             .then((data: IAddress) => setAddress(data))
             .catch(e => {
-                setError(`There was an error fetching the user details: ${e}`);
+                setError(`There was an error fetching the user address: ${e}`);
+                console.error(error);
+            });
+    }
+
+    if (user && !stats) {
+        fetch(`/api/admin/users/stats/${loggedInUserId}`)
+            .then(response => response.json())
+            .then((data: IStats) => setStats(data))
+            .catch(e => {
+                setError(`There was an error fetching the user stats: ${e}`);
                 console.error(error);
             });
     }
@@ -47,6 +58,7 @@ export const EditProfilePage: React.FC = () => {
     if (error) return <div>{error}</div>;
     if (!user) return <div>Loading user...</div>;
     if (!address) return <div>Loading address...</div>;
+    if (!stats) return <div>Loading stats...</div>;
 
     const handleUserInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         const {id, value} = e.target;
@@ -64,18 +76,21 @@ export const EditProfilePage: React.FC = () => {
         }) : undefined);
     };
 
-    const handleSave = () => {
-        fetch(`/api/profile/user/update`, {
+    const handleSave = async (event: any) => {
+        event.preventDefault();
+        // hacky way to get address and stats into user so the request is not denied.
+        let data = {...user, address: address, stats: stats};
+        await fetch(`/api/profile/user/update`, {
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(user)
+            body: JSON.stringify(data)
         })
             .catch(e => {
                 setError(`There was an error saving the user details: ${e}`);
                 console.error(error);
             });
 
-        fetch(`/api/profile/address/update`, {
+        await fetch(`/api/profile/address/update`, {
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(address)
