@@ -4,8 +4,6 @@ import {TitleBar} from "../../components/TitleBar.tsx";
 import {useParams} from 'react-router-dom';
 import {useEffect, useState} from "react";
 import {Chat, MessageProps} from "./partials/Chat.tsx";
-import {TextLink} from "../../components/Buttons.tsx";
-import {BiDotsVerticalRounded} from "react-icons/bi";
 
 export const PersonalChatPage = () => {
     const [t] = useTranslation(["common", "pages/chat"]);
@@ -36,11 +34,6 @@ export const PersonalChatPage = () => {
                     
                     const fetchedTripRequestsResponse = await fetch('/api/chat/GetOpenRequestForTrip/' + chatData.fK_Trip);
                     const fetchedTripRequests: ITripRequest[] = await fetchedTripRequestsResponse.json();
-
-                    console.log("Chatdata: " + chatData)
-                    console.log(chatData)
-                    console.log("reqeust: " + fetchedTripRequests)
-                    console.log(fetchedTripRequests)
 
                     const matchingTripRequest = fetchedTripRequests.find(request => request.fK_PotentialPassenger === chatData.fK_PassengerUser);
                     setTripRequest(matchingTripRequest);
@@ -90,10 +83,6 @@ export const PersonalChatPage = () => {
             <TitleBar hasBackAction={true}
                       text={`${chat?.driverUser?.firstName! ?? ""} ${chat?.driverUser?.lastName! ?? ""}`}
                       className="fixed bg-gray-100 px-4"
-                      trailing={
-                          <TextLink className="mb-3" variant="outline" link={`${chatId}/detail`} leading={
-                              <BiDotsVerticalRounded className="icon-md"/>
-                          }/>}
             />
 
             <div className="w-full flex flex-col items-center mt-24 space-y-4">
@@ -107,6 +96,7 @@ export const PersonalChatPage = () => {
                     price={trip?.price != null ? trip?.price : 0}
                     loggedInUserId={loggedInUserId}
                     tripRequest={tripRequest}
+                    chatId={chatId}
                 />
                 <Chat userId={loggedInUserId} chatId={chatId} messages={filteredMessages} type="personal"/>
             </div>

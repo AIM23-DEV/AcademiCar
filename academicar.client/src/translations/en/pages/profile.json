@@ -137,5 +137,18 @@
     "hundred_euro": "100",
     "euro_suffix": " Euro",
     "recharge_btn": "Top up account now"
+  },
+  "AGBPage": {
+    "title": "General terms and conditions",
+    "paragraph1": "Our website provides a platform where users can organize carpooling. Users are required to provide honest and accurate information about their trips and vehicles. Any misuse of the website, including creating false profiles or spreading misleading information, may lead to access being blocked. The use of our platform for commercial purposes without our express permission is prohibited.",
+    "paragraph2": "We take the protection of your personal data very seriously. Personal information is collected solely for the purpose of facilitating carpooling. This includes names, contact information, and travel details necessary to provide the service. Your data will not be shared with third parties unless it is necessary to provide the service or required by law.",
+    "paragraph3": "We are not liable for any direct or indirect damages resulting from the use of our platform. In particular, we are not responsible for the behavior of users during carpools or for the accuracy of the information provided by users. We strive to ensure the security and reliability of our platform but cannot guarantee that our services will be available without interruption and error-free at all times.",
+    "paragraph4": "Changes to the terms of use or privacy policy will be communicated to you via email and published on our website. By continuing to use the platform after such changes, you accept the modified conditions. The laws of the country in which our company is based apply. In case of disputes, the competent court at the location of our company's headquarters has exclusive jurisdiction.",
+    "paragraph5": "Paragraph 5",
+    "heading1": "Terms of use",
+    "heading2": "Privacy Policy",
+    "heading3": "Disclaimer",
+    "heading4": "Miscellaneous",
+    "heading5": "Heading 5"
   }
 }

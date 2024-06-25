@@ -144,6 +144,18 @@ public class CreateController : ControllerBase
         return Ok(insertedGroupChat);
     }
     
+    [HttpPost("groupchatUser")]
+    public async Task<IActionResult> CreateGroupChatUser([FromBody] GroupChatUser groupChatUser)
+    {
+        ActionResultResponseModel result = await _globalService.GroupChatUserService.Create(groupChatUser);
+        if (!result.IsSuccess) return Conflict(groupChatUser);
+        
+        GroupChat? insertedGroupChat = await _globalService.GroupChatService.Get(groupChatUser.ID);
+        if (insertedGroupChat == null) return Forbid();
+        
+        return Ok(insertedGroupChat);
+    }
+    
     [HttpPut ("{id}")]
     public async Task<IActionResult> UpdateTrip(string id, [FromBody] Trip updatedTrip)
     {

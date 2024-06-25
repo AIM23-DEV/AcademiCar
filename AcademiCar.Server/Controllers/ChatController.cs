@@ -134,6 +134,13 @@ public class ChatController : ControllerBase
         return NoContent();
     }
     
+    [HttpPost("CreateTripRequest")]
+    public async Task<IActionResult> CreateTripRequest([FromBody] TripRequest tripRequest)
+    {
+        await _globalService.TripRequestService.Create(tripRequest);
+        return NoContent();
+    }
+    
     [HttpGet("GetPersonalChatById")]
     public async Task<IActionResult> GetPersonalChatById(string id)
     {
@@ -278,5 +285,13 @@ public class ChatController : ControllerBase
 
         result.Message = "Request updated successfully";
         return Ok(result);
+    }
+    
+    [HttpGet("GetTripRequestById/{id}")]
+    public async Task<IActionResult> GetTripRequestById(int id)
+    {
+        TripRequest? tripRequest = await _globalService.TripRequestService.Get(id);
+        
+        return Ok(tripRequest);
     }
 }

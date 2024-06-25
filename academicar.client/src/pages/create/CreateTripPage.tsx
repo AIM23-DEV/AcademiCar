@@ -1,4 +1,4 @@
-﻿import {useState} from 'react';
+﻿import {useEffect, useState} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
 import {useTranslation} from "react-i18next";
 import SetPageTitle from "../../hooks/set_page_title.tsx";
@@ -10,6 +10,10 @@ import {TripPricingCreationForm} from "./partials/TripPricingCreationForm.tsx";
 import {TripTimeCreationForm} from "./partials/TripTimeCreationForm.tsx";
 import {BottomNavigationBar} from "../../components/BottomNavigationBar.tsx";
 import {Pagination} from "../../components/Pagination.tsx";
+
+export type VehicleOptions = {
+    [key: number]: string;
+}
 
 function getAddress(addressStr: string): IAddress {
     const addressFields = addressStr.split(' ');
@@ -29,20 +33,21 @@ function getAddress(addressStr: string): IAddress {
         latitude: "",
     };
 }
+
 function getDate(dateStr: string, timeStr: string): Date {
     const dateFields = dateStr.split('-');
     const timeFields = timeStr.split(':');
 
     if (dateFields.length != 3 || timeFields.length != 2)
-        return new Date(2020, 1, 1, 12, 0,0)
+        return new Date(2020, 1, 1, 12, 0, 0)
 
     const year = Number(dateFields[0])
     const month = Number(dateFields[1])
     const day = Number(dateFields[2])
     const hours = Number(timeFields[0])
     const minutes = Number(timeFields[1])
-    
-    return new Date(year, month-1, day, hours, minutes, 0);
+
+    return new Date(year, month - 1, day, hours, minutes, 0);
 }
 
 export const CreateTripPage = () => {
@@ -54,19 +59,34 @@ export const CreateTripPage = () => {
     const paginationNextButtonText = t("pages/create:Pagination.button_next");
     SetPageTitle(pageTitle);
 
-    const { loggedInUserId } = useParams();
+    const {loggedInUserId} = useParams();
     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(1);
-    const [startAddress, setStartAddress] = useState<string>();
-    const [endAddress, setEndAddress] = useState<string>();
-    const [startDate, setStartDate] = useState<string>();
-    const [startTime, setStartTime] = useState<string>();
-    const [endDate, setEndDate] = useState<string>();
-    const [endTime, setEndTime] = useState<string>();
-    const [tripVehicleId, setTripVehicleId] = useState<number>();
-    const [availableSeats, setAvailableSeats] = useState(0);
-    const [price, setPrice] = useState(0);
+    const [startAddress, setStartAddress] = useState<string>("");
+    const [endAddress, setEndAddress] = useState<string>("");
+    const [startDate, setStartDate] = useState<string>("");
+    const [startTime, setStartTime] = useState<string>("");
+    const [endDate, setEndDate] = useState<string>("");
+    const [endTime, setEndTime] = useState<string>("");
+    const [tripVehicleId, setTripVehicleId] = useState<number | undefined>();
+    const [availableSeats, setAvailableSeats] = useState<number>(0);
+    const [price, setPrice] = useState<number>(0);
     const [error, setError] = useState<string | null>();
+    const [vehicleOptions, setVehicleOptions] = useState<VehicleOptions>({});
+
+    useEffect(() => {
+        fetch(`https://localhost:5173/api/create/vehicles/${loggedInUserId}`)
+            .then(response => response.json())
+            .then((fetchedVehicles: IVehicle[]) => {
+                const options = fetchedVehicles.reduce((options: VehicleOptions, vehicle) => {
+                    const key = vehicle.id ?? -999
+                    options[key] = vehicle.type;
+                    return options;
+                }, {});
+                setVehicleOptions(options);
+            })
+            .catch(error => console.error(error));
+    }, []);
 
     // Buttons
     function isDataReady(): boolean {
@@ -76,7 +96,7 @@ export const CreateTripPage = () => {
     const createAddress = async (address: IAddress): Promise<IAddress> => {
         const response = await fetch(`/api/create/address`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(address)
         });
 
@@ -115,10 +135,10 @@ export const CreateTripPage = () => {
 
             const tripResponse = await fetch(`/api/create/trip`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(newTrip)
             });
-            
+
             // Create GroupChat
             const createdTrip = await tripResponse.json();
             const newGroupChat: IGroupChat = {
@@ -131,38 +151,41 @@ export const CreateTripPage = () => {
 
             const groupChatResponse = await fetch(`/api/create/groupchat`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(newGroupChat)
             });
             const createdGroupChat = await groupChatResponse.json();
+            
+            // Create GroupChatUser
+            const newGroupChatUser: IGroupChatUser = {
+                fK_User: loggedInUserId,
+                fK_GroupChat: createdGroupChat.id
+            };
+
+            await fetch(`https://localhost:5173/api/create/groupchatUser`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newGroupChatUser)
+            });
+
             if (createdGroupChat.id == createdTrip.id)
             {
                 // finish
                 alert('Trip created successfully!');
                 navigate('/trips/index/' + loggedInUserId);
             }
-            
+
         } catch (error) {
             setError(`There was an error: ${error}`);
             console.error("Error:", error);
         }
     };
-    
+
     if (error) return <div>{`There was an error: ${error}`}</div>
     if (!loggedInUserId || (loggedInUserId && loggedInUserId == "undefined")) return <div>Invalid user!</div>
-    
+
     const renderCurrentSection = () => {
         switch (currentPage) {
-            case 1:
-                return (
-                    <TripRouteCreationForm
-                        startAddress={startAddress}
-                        endAddress={endAddress}
-    
-                        setStartAddress={setStartAddress}
-                        setEndAddress={setEndAddress}
-                    />
-                )                
             case 2:
                 return (
                     <TripTimeCreationForm
@@ -182,6 +205,7 @@ export const CreateTripPage = () => {
                     <TripVehicleCreationForm
                         driverId={loggedInUserId}
                         vehicleId={tripVehicleId}
+                        vehicleOptions={vehicleOptions}
                         availableSeats={availableSeats}
 
                         setVehicleId={setTripVehicleId}
@@ -194,14 +218,6 @@ export const CreateTripPage = () => {
                         <TripPricingCreationForm
                             price={price}
                             setPrice={setPrice}
-                        />
-
-                        <Button
-                            disabled={!isDataReady()}
-                            type="submit"
-                            variant="primary"
-                            text={createButtonText}
-                            onClick={createTrip}
                         />
                     </>
                 );
@@ -217,26 +233,42 @@ export const CreateTripPage = () => {
                 )
         }
     };
-    
+
     // Render
     return (
         <>
             <TitleBar text={pageTitle} hasBackAction={true}/>
 
-            {renderCurrentSection()}
+            <div className="w-full flex flex-col space-y-6 mt-6 mb-24">
+                {renderCurrentSection()}
+            </div>
 
-            <Pagination
-                page={currentPage}
-                setPage={setCurrentPage}
-                totalPages={4}
-                showPages={true}
-                
-                textPage={paginationPageText}
-                textPrev={paginationPreviousButtonText}
-                textNext={paginationNextButtonText}
-            />
+            <div className="fixed bottom-20 inset-x-6 space-y-2">
+                <Pagination
+                    page={currentPage}
+                    setPage={setCurrentPage}
+                    totalPages={4}
+                    showPages={true}
+
+                    textPage={paginationPageText}
+                    textPrev={paginationPreviousButtonText}
+                    textNext={paginationNextButtonText}
+                    button={currentPage === 4 ?
+                        <Button
+                            disabled={!isDataReady()}
+                            type="submit"
+                            variant="primary"
+                            text={createButtonText}
+                            onClick={createTrip}
+                            fullWidth
+                            className="p-3"
+                        />
+                        : undefined}
+                />
+            </div>
 
             <BottomNavigationBar selected="create"/>
         </>
-    );
+    )
+        ;
 };
