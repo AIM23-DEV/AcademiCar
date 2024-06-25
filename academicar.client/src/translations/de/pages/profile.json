@@ -92,7 +92,11 @@
     "discount": "Rabatt",
     "discounts": "Rabatte",
     "receiveDiscount": "Rabatt erhalten",
-    "booking": "Buchen"
+    "booking": "Buchen",
+    "wheel": "Reifentechnik 24",
+    "car": "Autoservice 1234",
+    "tech": "Laptops 485",
+    "discountText": "Zeige diesen Gutschein bei deinem nächsten Besuch vor und du erhälst den unten angegebenen Rabatt!"
   },
   "StatsPage": {
     "title": "Meine Statistiken",
