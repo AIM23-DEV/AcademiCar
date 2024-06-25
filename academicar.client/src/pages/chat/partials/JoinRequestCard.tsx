@@ -46,12 +46,24 @@ export const JoinRequestCard = (props: JoinRequestCardProps) => {
                 fK_GroupChat: props.tripId
             };
             
-            fetch(`https://localhost:5173/api/create/groupchatUser`, {
+            fetch(`/api/create/groupchatUser`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newGroupChatUser)
             }).then(()=> console.log(newGroupChatUser));
-            
+
+        // Create GroupChatUser
+        const newTripPassenger: ITripPassenger = {
+            fK_Trip: props?.tripId,
+            fK_PassengerUser: props.tripRequest?.fK_PotentialPassenger
+        };
+
+        fetch(`/api/create/tripPassenger`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newTripPassenger)
+        }).then(()=> console.log(newTripPassenger));
+        
         setIsRequestHandled(true);
     }
 
@@ -59,7 +71,7 @@ export const JoinRequestCard = (props: JoinRequestCardProps) => {
         if (!props.tripRequest) return;
 
         try {
-            const response = await fetch(`https://localhost:5173/api/chat/GetTripRequestById/${props.tripRequest.id}`)
+            const response = await fetch(`/api/chat/GetTripRequestById/${props.tripRequest.id}`)
             //console.log(response)
             const data: ITripRequest = await response.json();
             setIsRequestHandled(data.status !== "Open");
