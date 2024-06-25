@@ -120,7 +120,7 @@ export const Chat = (props: ChatProps) => {
         // Todo get actual users from db once UserManager is fixed
         // props.messages.forEach(async (m) => {
         //     if (userList.find((u: IUser) => u.id == m.senderId) === undefined) {
-        //         fetch('https://localhost:5173/api/user/GetUserbyId?id=' + m.senderId)
+        //         fetch('/api/user/GetUserbyId?id=' + m.senderId)
         //             .then(response => console.log(response))
         //             // .then(response => response.json())
         //             // .then((user: IUser) => {

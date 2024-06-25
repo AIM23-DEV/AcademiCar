@@ -29,7 +29,7 @@ export const FaceSheetPage = () => {
 
     useEffect(() => {
         if (auth.user?.id ?? null) {
-            fetch(`https://localhost:5173/api/admin/prefs/${auth.user?.id}`)
+            fetch(`/api/admin/prefs/${auth.user?.id}`)
                 .then(response => response.json())
                 .then((fetchedPrefs: PrefsData) => {
                     setMPrefs(fetchedPrefs?.musicPrefs ?? "");
@@ -53,7 +53,7 @@ export const FaceSheetPage = () => {
             travelPrefs: tPrefs
         }
 
-        fetch(`https://localhost:5173/api/admin/prefs/update/${auth.user?.id}`, {
+        fetch(`/api/admin/prefs/update/${auth.user?.id}`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(newPrefs)

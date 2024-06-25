@@ -5,7 +5,7 @@ export const CarlosPage = () => {
     const [carlos, setCarlos] = useState<ICarlos>();
 
     useEffect(() => {
-        fetch('https://localhost:5173/api/carlos')
+        fetch('/api/carlos')
         .then(response => response.json())
         .then((c: ICarlos) => setCarlos(c));
     }, []);

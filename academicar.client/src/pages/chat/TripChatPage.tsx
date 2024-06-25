@@ -20,7 +20,7 @@ export const TripChatPage = () => {
 
     // Fetch chat
     useEffect(() => {
-        fetch('https://localhost:5173/api/chat/GetGroupChatById?id=' + chatId)
+        fetch('/api/chat/GetGroupChatById?id=' + chatId)
             .then(response => response.json())
             .then((c: IGroupChat) => {
                 setChat(c);
@@ -29,7 +29,7 @@ export const TripChatPage = () => {
 
     // Fetch messages
     useEffect(() => {
-        fetch('https://localhost:5173/api/chat/GetGroupMessages')
+        fetch('/api/chat/GetGroupMessages')
             .then(response => response.json())
             .then((fetchedMessages: IGroupMessage[]) => {
                 setMessages(fetchedMessages);

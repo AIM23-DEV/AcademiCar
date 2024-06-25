@@ -25,16 +25,16 @@ export const PersonalChatPage = () => {
     useEffect(() => {
         const fetchChatAndTrip = async () => {
             try {
-                const chatResponse = await fetch('https://localhost:5173/api/chat/GetPersonalChatById?id=' + chatId);
+                const chatResponse = await fetch('/api/chat/GetPersonalChatById?id=' + chatId);
                 const chatData: IPersonalChat = await chatResponse.json();
                 setChat(chatData);
 
                 if (chatData.fK_Trip) {
-                    const tripResponse = await fetch('https://localhost:5173/api/create/' + chatData.fK_Trip);
+                    const tripResponse = await fetch('/api/create/' + chatData.fK_Trip);
                     const tripData: ITrip = await tripResponse.json();
                     setTrip(tripData);
                     
-                    const fetchedTripRequestsResponse = await fetch('https://localhost:5173/api/chat/GetOpenRequestForTrip/' + chatData.fK_Trip);
+                    const fetchedTripRequestsResponse = await fetch('/api/chat/GetOpenRequestForTrip/' + chatData.fK_Trip);
                     const fetchedTripRequests: ITripRequest[] = await fetchedTripRequestsResponse.json();
 
                     console.log("Chatdata: " + chatData)
@@ -56,7 +56,7 @@ export const PersonalChatPage = () => {
 
     // Fetch messages
     useEffect(() => {
-        fetch('https://localhost:5173/api/chat/GetPersonalMessages')
+        fetch('/api/chat/GetPersonalMessages')
             .then(response => response.json())
             .then((fetchedMessages: IPersonalMessage[]) => {
                 setMessages(fetchedMessages);

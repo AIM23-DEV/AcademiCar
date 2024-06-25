@@ -32,7 +32,7 @@ export const IndexUsersPage = () => {
 
     // Fetch users from API
     useEffect(() => {
-        fetch('https://localhost:5173/api/admin/users')
+        fetch('/api/admin/users')
             .then(response => response.json())
             .then((fetchedUsers: IUser[]) => {
                 setUsers(fetchedUsers);
