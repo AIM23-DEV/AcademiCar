@@ -16,7 +16,7 @@ export const ImageUploadForm = () => {
    
     const blobUrl = "https://academicar.blob.core.windows.net";
     const container = "profile-images";
-    const sasToken = "sv=2022-11-02&ss=bfqt&srt=co&sp=rwdlacupiytfx&se=2024-06-23T01:55:32Z&st=2024-06-22T17:55:32Z&spr=https&sig=OO9AQsjqev0DyZwwWtvfPlLoe77m%2BBtSICIqsLOtVZA%3D";
+    const sasToken = "si=profile-images-permissions&sv=2022-11-02&sr=c&sig=hFROEUqanwqG3SSUn%2BxZb0HtCaTeokFCo7PdsaKy%2F0k%3D";
     
     const handleFileSelection = (event: ChangeEvent<HTMLInputElement>) => {
         console.log('handleFileSelection');
