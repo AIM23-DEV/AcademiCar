@@ -4,7 +4,7 @@ import SetPageTitle from "../../hooks/set_page_title";
 import {useTranslation} from "react-i18next";
 import {ImageUploadForm} from "./partials/ImageUploadForm.tsx";
 import {useParams} from "react-router-dom";
-import {Input, RadioCollection, Select} from "../../components/FormFields.tsx";
+import {Input/*/!*, RadioCollection*!/, Select*/} from "../../components/FormFields.tsx";
 import {ChangeEvent, useEffect, useState} from "react";
 
 export const EditProfilePage: React.FC = () => {
@@ -22,7 +22,7 @@ export const EditProfilePage: React.FC = () => {
     const [user, setUser] = useState<IUser>();
     const [address, setAddress] = useState<IAddress>();
     const [error, setError] = useState<string | null>();
-    const [sex, setSex] = useState<string>("male");
+    /*const [sex, setSex] = useState<string>("male");*/
 
     useEffect(() => {
         fetch(`/api/admin/users/${loggedInUserId}`)
@@ -107,6 +107,7 @@ export const EditProfilePage: React.FC = () => {
                     type="text"
                     value={user.firstName}
                     onChange={handleUserInputChange}
+                    id="firstName"
                     fullWidth
                     className="col-span-full"
                 />
@@ -116,6 +117,7 @@ export const EditProfilePage: React.FC = () => {
                     type="text"
                     value={user.lastName}
                     onChange={handleUserInputChange}
+                    id="lastName"
                     fullWidth
                     className="col-span-full"
                 />
@@ -125,6 +127,7 @@ export const EditProfilePage: React.FC = () => {
                     type="text"
                     value={address.street}
                     onChange={handleAddressInputChange}
+                    id="street"
                     fullWidth
                     className="col-span-full"
                 />
@@ -133,6 +136,7 @@ export const EditProfilePage: React.FC = () => {
                     type="text"
                     value={address.zip}
                     onChange={handleAddressInputChange}
+                    id="zip"
                     fullWidth
                     className="col-span-4"
                 />
@@ -141,6 +145,7 @@ export const EditProfilePage: React.FC = () => {
                     type="text"
                     value={address.place}
                     onChange={handleAddressInputChange}
+                    id="place"
                     fullWidth
                     className="col-span-8"
                 />
@@ -150,6 +155,7 @@ export const EditProfilePage: React.FC = () => {
                     type="text"
                     value={user.phoneNumber}
                     onChange={handleUserInputChange}
+                    id="phoneNumber"
                     fullWidth
                     className="col-span-full"
                 />
@@ -159,21 +165,22 @@ export const EditProfilePage: React.FC = () => {
                     type="text"
                     value={user.email}
                     onChange={handleUserInputChange}
+                    id="email"
                     fullWidth
                     className="col-span-full"
                 />
 
                 {/*TODO expand user entity and interface to support birthdate, gender, nationality (new table), language (new table), study, driver license since*/}
-                <Input
+                {/*<Input
                     label={t('pages/profile:EditProfilePage.birthdate')}
                     type="date"
                     // value={DateTime.now().getTime()}
                     onChange={handleUserInputChange}
                     fullWidth
                     className="col-span-full"
-                />
+                />*/}
 
-                <div className="col-span-full w-full space-y-3">
+                {/*<div className="col-span-full w-full space-y-3">
                     <RadioCollection value={sex} setValue={setSex} label={t('pages/profile:EditProfilePage.gender')}
                                      items={[
                                          {value: "male", label: t('pages/profile:EditProfilePage.gender_male')},
@@ -182,31 +189,31 @@ export const EditProfilePage: React.FC = () => {
                                      ]}
                                      columns={3} className="place-items-center"
                     />
-                </div>
+                </div>*/}
 
                 {/* Todo: ddd options */}
-                <Select label={t('pages/profile:EditProfilePage.nationality')} fullWidth className="col-span-full"/>
+                {/*<Select label={t('pages/profile:EditProfilePage.nationality')} fullWidth className="col-span-full"/>*/}
 
                 {/* Todo: ddd options */}
-                <Select label={t('pages/profile:EditProfilePage.languages')} fullWidth className="col-span-full"/>
+                {/*<Select label={t('pages/profile:EditProfilePage.languages')} fullWidth className="col-span-full"/>*/}
 
-                <Input
+                {/*<Input
                     label={t('pages/profile:EditProfilePage.study_program')}
                     type="text"
                     value="Wirtschaftsinformatik Master"
                     onChange={handleUserInputChange}
                     fullWidth
                     className="col-span-full"
-                />
+                />*/}
 
-                <Input
+                {/*<Input
                     label={t('pages/profile:EditProfilePage.drivers_license_since')}
                     type="date"
                     value="2019-10-27"
                     onChange={handleUserInputChange}
                     fullWidth
                     className="col-span-full"
-                />
+                />*/}
 
                 <Button
                     variant="primary"
