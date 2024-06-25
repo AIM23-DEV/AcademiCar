@@ -2,7 +2,7 @@ import {useTranslation} from "react-i18next";
 //import { Link } from 'react-router-dom';
 import {Card} from "../../../components/Cards.tsx";
 import {Divider} from "../../../components/Divider.tsx";
-import { BiChevronRight, BiRightArrowAlt, BiCalendar, BiTimeFive } from "react-icons/bi";
+import { BiRightArrowAlt, BiCalendar, BiTimeFive } from "react-icons/bi";
 
 const DATA = [
     {
@@ -32,7 +32,7 @@ export const SearchHistory = () => {
             <div key="search-history-card-container" className="w-full grid grid-cols-1 gap-5">
                 {DATA.map((entry, index) =>
                     <div key={`search-history-card-${index}`}>
-                        <a href="" key={`a-center-flex-${index}`} className="flex justify-between items-center">
+                        <div key={`a-center-flex-${index}`} className="flex justify-between items-center">
                             <div key={`gap2-${index}`} className="flex flex-col gap-2">
                                 <div key={`center-items-${index}`} className="flex items-center gap-2">
                                     {entry.startPoint} <BiRightArrowAlt key={`RightArrow-${index}`} className="icon-md"/> {entry.endPoint}
@@ -46,11 +46,7 @@ export const SearchHistory = () => {
                                     </span>
                                 </div>
                             </div>
-
-                            <div>
-                                <BiChevronRight className="icon"/>
-                            </div>
-                        </a>
+                        </div>
 
                         {index != DATA.length - 1 ? (
                             <Divider/>

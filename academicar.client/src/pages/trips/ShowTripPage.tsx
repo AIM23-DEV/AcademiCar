@@ -213,7 +213,7 @@ export const Req = (props: RequestProps) => {
                                 <img
                                     src={requestUser.pictureSrc}
                                     alt="avatar"
-                                    className="border-gray-600 rounded-full"
+                                    className="border-gray-600 rounded-full icon-2xl object-cover"
                                 />
                             </div>
                             
@@ -279,7 +279,7 @@ export const Pas = (props: PassengerProps) => {
                             <img
                                 src={passenger.pictureSrc}
                                 alt="avatar"
-                                className="rounded-full w-11 h-11"
+                                className="rounded-full icon-2xl object-cover"
                             />
                         </div>
                         
@@ -316,7 +316,7 @@ function calculateDuration(startDate: Date, endDate: Date): string {
 export const ShowTripPage = () => {
     const [t] = useTranslation(["common", "pages/trips"]);
     const { loggedInUserId, tripId } = useParams();
-    const pageTitle = t("pages/trips:ShowTripPage.title", {id: tripId});
+    const pageTitle = t("pages/trips:ShowTripPage.title", {id: ''});
     const driveText = t("pages/trips:ShowTripPage.drive");
     const requestsText = t("pages/trips:ShowTripPage.requests");
     const passengersText = t("pages/trips:ShowTripPage.passengers");
@@ -509,7 +509,7 @@ export const ShowTripPage = () => {
                             <img
                                 src={vehicle?.pictureSrc}
                                 alt="avatar"
-                                className="border-gray-600 rounded-full"
+                                className="border-gray-600 rounded-full icon-2xl object-cover"
                             />
                         </div>
                         
