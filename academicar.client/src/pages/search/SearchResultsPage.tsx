@@ -118,10 +118,6 @@ export const SearchResultsPage = () => {
         }*/
     }
     
-    extendedTrips.map((a) =>  {
-        console.log(a)
-    })
-    
     sortTrips();
     
     return(
@@ -135,12 +131,12 @@ export const SearchResultsPage = () => {
                     {extendedTrips.map((item) =>
                         <>
                             {(!startPoint && !destination && !time && !date) ||
-                            item.startPoint.street === startPoint ||
-                            item.startPoint.place === startPoint ||
+                            item.startPoint.street.toLowerCase().includes(startPoint.toLowerCase()) ||
+                            item.startPoint.place.toLowerCase().includes(startPoint.toLowerCase()) ||
                             formatTime(item.startTime) === time ||
                             formatDate(item.startTime) === date ||
-                            item.endPoint.street === destination ||
-                            item.endPoint.place === destination ||
+                            item.endPoint.street.toLowerCase().includes(destination.toLowerCase()) ||
+                            item.endPoint.place.toLowerCase().includes(destination.toLowerCase()) ||
                             formatTime(item.endTime) === time ||
                             formatDate(item.endTime) === date ? (
                                 <LinkCard
