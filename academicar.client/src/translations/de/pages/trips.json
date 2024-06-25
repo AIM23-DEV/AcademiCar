@@ -26,6 +26,8 @@
     "vehicleDetails": "Fahrzeug Details",
     "preferences": "Präferenzen",
     "actions": "Aktionen",
+    "bookTrip": "Fahrt buchen",
+    "tripRequestWasSent": "Anfrage wurde gesendet!",
     "editDrive": "Fahrt bearbeiten",
     "shareDrive": "Fahrt teilen",
     "cancelDrive": "Fahrt absagen",

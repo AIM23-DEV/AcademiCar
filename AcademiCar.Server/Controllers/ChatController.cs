@@ -10,12 +10,38 @@ namespace AcademiCar.Server.Controllers;
 public class ChatController : ControllerBase
 {
     private IGlobalService _globalService;
+    private readonly Random _random;
+    
     public ChatController(IGlobalService globals)
     {
         _globalService = globals;
+        _random = new Random();
     }
 
+    
+    #region Helper Functions
 
+    private async Task<int> _GetNewPersonalChatID()
+    {
+        int newId = _random.Next(1, 999999999);
+        PersonalChat? pc = await _globalService.PersonalChatService.Get(newId);
+        if (pc == null) return newId;
+        
+        return await _GetNewPersonalChatID();
+    }
+    
+    private async Task<int> _GetNewTripRequestID()
+    {
+        int newId = _random.Next(1, 999999999);
+        TripRequest? tr = await _globalService.TripRequestService.Get(newId);
+        if (tr == null) return newId;
+        
+        return await _GetNewTripRequestID();
+    }
+    
+    #endregion
+
+    
     [HttpPost("CreatePersonalMessage")]
     public async Task<IActionResult> CreatePersonalMessage([FromBody] PersonalMessage personalMessage)
     {
@@ -265,9 +291,7 @@ public class ChatController : ControllerBase
     }
     
     [HttpPut("chat/updateRequest")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResultResponseModel))]
-    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-    public async Task<IActionResult> UpdateUser([Required] [FromBody] TripRequest tripRequest)
+    public async Task<IActionResult> UpdateUser([FromBody] TripRequest tripRequest)
     {
         if (!ModelState.IsValid) return ValidationProblem(ModelState);
 
@@ -275,12 +299,26 @@ public class ChatController : ControllerBase
         if (!result.IsSuccess)
         {
             result.Message = "Failed to update request";
-            return BadRequest(result);
+            return Ok(result);
         }
         
         if (tripRequest.Status == "Accepted")
         {
+            PersonalChat? existingPersonalChat = _globalService.PersonalChatService.GetByCorrelation(tripRequest.FK_PotentialPassenger, tripRequest.FK_Trip);
+            if (existingPersonalChat != null) return Ok(result);
             
+            PersonalChat newPersonalChat = new();
+            newPersonalChat.ID = await _GetNewPersonalChatID();
+            newPersonalChat.FK_Trip = tripRequest.FK_Trip;
+            newPersonalChat.Trip = await _globalService.TripService.Get(newPersonalChat.FK_Trip);
+            newPersonalChat.DriverUser = await _globalService.UserService.Get(newPersonalChat.Trip.FK_Driver);
+            newPersonalChat.FK_DriverUser = newPersonalChat.DriverUser.Id;
+            newPersonalChat.FK_PassengerUser = tripRequest.FK_PotentialPassenger;
+            newPersonalChat.PassengerUser = await _globalService.UserService.Get(tripRequest.FK_PotentialPassenger);
+            newPersonalChat.UpdatedAt = DateTime.UtcNow;
+            newPersonalChat.LastMessageContent = "";
+
+            await _globalService.PersonalChatService.Create(newPersonalChat);
         }
 
         result.Message = "Request updated successfully";
@@ -291,7 +329,32 @@ public class ChatController : ControllerBase
     public async Task<IActionResult> GetTripRequestById(int id)
     {
         TripRequest? tripRequest = await _globalService.TripRequestService.Get(id);
-        
         return Ok(tripRequest);
+    }
+    
+    [HttpGet("GetTripRequest/{passengerId}/{tripId}")]
+    public async Task<IActionResult> GetTripRequestById(string passengerId, string tripId)
+    {
+        int tripIdAsInt = int.Parse(tripId);
+        TripRequest? tripRequest = _globalService.TripRequestService.GetByCorrelation(passengerId, tripIdAsInt);
+        return Ok(tripRequest);
+    }
+    
+    [HttpPost("CreateTripRequest/{passengerId}/{tripId}")]
+    public async Task<IActionResult> CreateTripRequestByIds(string passengerId, string tripId)
+    {
+        int tripIdAsInt = int.Parse(tripId);
+        TripRequest? tripRequest = _globalService.TripRequestService.GetByCorrelation(passengerId, tripIdAsInt);
+        if (tripRequest != null) return Ok(tripRequest);
+
+        TripRequest newTripRequest = new();
+        newTripRequest.ID = await _GetNewTripRequestID();
+        newTripRequest.FK_Trip = tripIdAsInt;
+        newTripRequest.FK_PotentialPassenger = passengerId;
+        newTripRequest.Comment = "";
+        newTripRequest.Status = "Open";
+
+        await _globalService.TripRequestService.Create(newTripRequest);
+        return Ok();
     }
 }
