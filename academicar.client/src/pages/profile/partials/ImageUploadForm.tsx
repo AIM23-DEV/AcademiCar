@@ -38,11 +38,11 @@ export const ImageUploadForm = () => {
     };
 
     
-        const handleFileUpload = () => {
+        async function handleFileUpload() {
             if (sasTokenUrl === '') return;
         
             convertFileToArrayBuffer(selectedFile as File)
-                .then((fileArrayBuffer) => {
+                .then(async (fileArrayBuffer) => {
                     if (
                         fileArrayBuffer === null ||
                         fileArrayBuffer.byteLength < 1 ||
@@ -51,7 +51,8 @@ export const ImageUploadForm = () => {
                         return;
 
                     const blockBlobClient = new BlockBlobClient(sasTokenUrl);
-                    return blockBlobClient.uploadData(fileArrayBuffer);
+                    const uploadBlobResponse = await blockBlobClient.uploadData(fileArrayBuffer);
+                    console.log(`uploadBlobResponse - status: ${uploadBlobResponse._response.status}`)
                 })
                 .then(() => {
                     //     setUploadStatus('Successfully finished upload');
@@ -61,6 +62,7 @@ export const ImageUploadForm = () => {
                 .then((result: AxiosResponse<ListResponse>) => {
                     // Axios response
                     const {data} = result;
+                    
                     const {list} = data;
                     setList(list);
                 })
@@ -77,7 +79,7 @@ export const ImageUploadForm = () => {
                     }
                 });
             console.log(`list = ${list.toString()}`);
-        };
+        }
 
 
         const convertStringToArrayBuffer = (str: string) => {
