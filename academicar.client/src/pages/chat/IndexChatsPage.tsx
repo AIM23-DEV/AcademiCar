@@ -64,7 +64,7 @@ export const IndexChatsPage = () => {
     const [connection, setConnection] = useState<signalR.HubConnection | null>(null);
     useEffect(() => {
         const newConnection = new signalR.HubConnectionBuilder()
-            .withUrl("https://localhost:7194/chat/chathub")
+            .withUrl("/chat/chathub")
             .withAutomaticReconnect()
             .build();
 

@@ -15,6 +15,7 @@ using AcademiCar.Server.DAL.BaseClasses;
 using AcademiCar.Server.DAL.Entities;
 using AcademiCar.Server.DAL.Hub;
 using Microsoft.AspNetCore.Identity;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
@@ -24,7 +25,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IGlobalService, GlobalService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<UserService>(); 
+builder.Services.AddScoped<UserService>();
 builder.Services.AddHttpContextAccessor();
 
 builder.Logging.ClearProviders();
@@ -38,8 +39,8 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
     options.Cookie.SameSite = SameSiteMode.Lax;
-    options.Cookie.MaxAge = TimeSpan.FromDays(7); 
-    options.ExpireTimeSpan = TimeSpan.FromDays(7); 
+    options.Cookie.MaxAge = TimeSpan.FromDays(7);
+    options.ExpireTimeSpan = TimeSpan.FromDays(7);
     options.SlidingExpiration = true;
 });
 
@@ -52,7 +53,8 @@ builder.Services.AddCors(options =>
         builder.WithOrigins(policyurl)
             .AllowAnyHeader()
             .AllowAnyMethod()
-            .AllowCredentials();
+            .AllowCredentials()
+            .SetIsOriginAllowed((host) => true);
     });
 });
 
@@ -83,7 +85,7 @@ else
 }
 
 
-builder.Services.AddIdentity<User, IdentityRole>()  // This line registers Identity services
+builder.Services.AddIdentity<User, IdentityRole>() // This line registers Identity services
     .AddEntityFrameworkStores<PostgresDbContext>() // This line links Identity to your EF DbContext
     .AddDefaultTokenProviders();
 
@@ -104,8 +106,8 @@ if (enableSaml2)
             var certificateClient = new CertificateClient(vaultUri, new DefaultAzureCredential());
             var fhCertificate = certificateClient.DownloadCertificate(fhCertName);
             var encryptionCertificate = certificateClient.DownloadCertificate(encryptionCert);
-            
-            
+
+
             options.SPOptions.EntityId = new EntityId(builder.Configuration["SustainsysSaml2:Issuer"]);
 
             var fhCertPath = builder.Configuration["SustainsysSaml2:ServiceCertificates:0:FhFileName"];
@@ -120,7 +122,7 @@ if (enableSaml2)
 
             options.SPOptions.ServiceCertificates.Add(spCert);
             options.SPOptions.WantAssertionsSigned = false;
-/*            
+/*
             options.SPOptions.ServiceCertificates.Add(
                 new ServiceCertificate
                 {
@@ -128,7 +130,7 @@ if (enableSaml2)
                     Use = CertificateUse.Both
                 }
             );
-*/            
+*/
             var idp = new IdentityProvider(
                 new EntityId(builder.Configuration["SustainsysSaml2:Idp:EntityId"]),
                 options.SPOptions)
@@ -141,7 +143,7 @@ if (enableSaml2)
             idp.WantAuthnRequestsSigned = true;
 //            options.SPOptions.OutboundSigningAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256";
             idp.SigningKeys.AddConfiguredKey(fhCert);
-            
+
             options.IdentityProviders.Add(idp);
         });
 }
@@ -179,6 +181,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseWebSockets();
+app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

@@ -1,10 +1,10 @@
-import { fileURLToPath, URL } from 'node:url';
-import { defineConfig } from 'vite';
+import {fileURLToPath, URL} from 'node:url';
+import {defineConfig} from 'vite';
 import react from '@vitejs/plugin-react';
 import fs from 'fs';
 import path from 'path';
 import child_process from 'child_process';
-import { env } from 'process';
+import {env} from 'process';
 
 const baseFolder = env.APPDATA ? `${env.APPDATA}/ASP.NET/https` : `${env.HOME}/.aspnet/https`;
 const certificateName = "academicar.client";
@@ -22,7 +22,7 @@ try {
             '--format',
             'Pem',
             '--no-password',
-        ], { stdio: 'inherit' });
+        ], {stdio: 'inherit'});
 
         if (result.status !== 0) {
             throw new Error("Could not create certificate.");
@@ -55,6 +55,12 @@ export default defineConfig({
             },
             '/Saml2': {
                 target,
+                changeOrigin: true,
+                secure: false
+            },
+            '/chat/chathub': {
+                target,
+                ws: true,
                 changeOrigin: true,
                 secure: false
             }
