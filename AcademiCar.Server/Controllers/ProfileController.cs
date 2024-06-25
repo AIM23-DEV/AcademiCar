@@ -10,7 +10,7 @@ namespace AcademiCar.Server.Controllers;
 public class ProfileController : ControllerBase
 {
     private readonly IGlobalService _globalService;
-    
+
     public ProfileController(IGlobalService globals)
     {
         _globalService = globals;
@@ -34,7 +34,7 @@ public class ProfileController : ControllerBase
         result.Message = "User updated successfully";
         return Ok(result);
     }
-    
+
     [HttpPut("address/update")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResultResponseModel))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
@@ -52,7 +52,7 @@ public class ProfileController : ControllerBase
         result.Message = "Address updated successfully";
         return Ok(result);
     }
-    
+
     // Vehicle Page
     [HttpGet("vehicle/{vehicleId}")]
     public async Task<IActionResult> GetVehicleById(string vehicleId)
@@ -63,7 +63,7 @@ public class ProfileController : ControllerBase
 
         return Ok(vehicle);
     }
-    
+
     [HttpGet("vehicles/{userId}")]
     public async Task<IActionResult> GetVehiclesByUserId(string userId)
     {
@@ -72,13 +72,42 @@ public class ProfileController : ControllerBase
 
         return Ok(vehicles);
     }
-    
+
     [HttpPost("vehicles/add")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResultResponseModel))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-    public async Task<IActionResult> AddVehicle([Required] [FromBody] Vehicle vehicle)
+    public async Task<IActionResult> AddVehicle([Required] [FromBody] VehicleDto vehicleDto)
     {
         if (!ModelState.IsValid) return ValidationProblem(ModelState);
+
+        var vehicle = new Vehicle
+        {
+            FK_OwnerUser = vehicleDto.FK_OwnerUser,
+            Type = vehicleDto.Type,
+            Seats = vehicleDto.Seats,
+            Color = vehicleDto.Color,
+            PictureSrc = vehicleDto.PictureSrc,
+            BrandModel = vehicleDto.BrandModel,
+            FuelConsumption = vehicleDto.FuelConsumption,
+            LicensePlate = vehicleDto.LicensePlate,
+            FuelType = vehicleDto.FuelType,
+            HasAC = vehicleDto.HasAC,
+            HasLed = vehicleDto.HasLed,
+            HasVehicleInspection = vehicleDto.HasVehicleInspection,
+            HasAutomatic = vehicleDto.HasAutomatic,
+            HasSkiBag = vehicleDto.HasSkiBag,
+            HasLeather = vehicleDto.HasLeather,
+            HasSeatHeating = vehicleDto.HasSeatHeating,
+            HasCruiseControl = vehicleDto.HasCruiseControl,
+            HasBikeRack = vehicleDto.HasBikeRack,
+            HasHandLuggageSpace = vehicleDto.HasHandLuggageSpace,
+            HasMountingOnRoof = vehicleDto.HasMountingOnRoof,
+            HasAnimalSpace = vehicleDto.HasAnimalSpace,
+            HasSuitcaseSpace = vehicleDto.HasSuitcaseSpace,
+            HasSkiSpace = vehicleDto.HasSkiSpace,
+            HasPlantSpace = vehicleDto.HasPlantSpace,
+            HasOtherSpace = vehicleDto.HasOtherSpace
+        };
 
         ActionResultResponseModel result = await _globalService.VehicleService.Create(vehicle);
         if (!result.IsSuccess)
@@ -90,13 +119,44 @@ public class ProfileController : ControllerBase
         result.Message = "Vehicle added successfully";
         return Ok(result);
     }
-    
+
+
     [HttpPut("vehicles/update")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResultResponseModel))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-    public async Task<IActionResult> UpdateVehicle([Required] [FromBody] Vehicle vehicle)
+    public async Task<IActionResult> UpdateVehicle([Required] [FromBody] UpdateVehicleDto vehicleDto)
     {
         if (!ModelState.IsValid) return ValidationProblem(ModelState);
+
+        var vehicle = new Vehicle
+        {
+            ID = vehicleDto.ID,
+            FK_OwnerUser = vehicleDto.FK_OwnerUser,
+            Type = vehicleDto.Type,
+            Seats = vehicleDto.Seats,
+            Color = vehicleDto.Color,
+            PictureSrc = vehicleDto.PictureSrc,
+            BrandModel = vehicleDto.BrandModel,
+            FuelConsumption = vehicleDto.FuelConsumption,
+            LicensePlate = vehicleDto.LicensePlate,
+            FuelType = vehicleDto.FuelType,
+            HasAC = vehicleDto.HasAC,
+            HasLed = vehicleDto.HasLed,
+            HasVehicleInspection = vehicleDto.HasVehicleInspection,
+            HasAutomatic = vehicleDto.HasAutomatic,
+            HasSkiBag = vehicleDto.HasSkiBag,
+            HasLeather = vehicleDto.HasLeather,
+            HasSeatHeating = vehicleDto.HasSeatHeating,
+            HasCruiseControl = vehicleDto.HasCruiseControl,
+            HasBikeRack = vehicleDto.HasBikeRack,
+            HasHandLuggageSpace = vehicleDto.HasHandLuggageSpace,
+            HasMountingOnRoof = vehicleDto.HasMountingOnRoof,
+            HasAnimalSpace = vehicleDto.HasAnimalSpace,
+            HasSuitcaseSpace = vehicleDto.HasSuitcaseSpace,
+            HasSkiSpace = vehicleDto.HasSkiSpace,
+            HasPlantSpace = vehicleDto.HasPlantSpace,
+            HasOtherSpace = vehicleDto.HasOtherSpace
+        };
 
         ActionResultResponseModel result = await _globalService.VehicleService.Update(vehicle);
         if (!result.IsSuccess)
@@ -108,7 +168,9 @@ public class ProfileController : ControllerBase
         result.Message = "Vehicle updated successfully";
         return Ok(result);
     }
-    
+
+
+
     [HttpDelete("vehicles/{vehicleId}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResultResponseModel))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
@@ -120,7 +182,7 @@ public class ProfileController : ControllerBase
             result.Message = "Failed to delete vehicle";
             return BadRequest(result);
         }
-        
+
         result.Message = "Vehicle deleted successfully";
         return Ok(result);
     }

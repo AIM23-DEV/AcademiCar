@@ -1,16 +1,11 @@
-﻿using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations.Schema;
-using AcademiCar.Server.DAL.BaseClasses;
+using System.ComponentModel.DataAnnotations;
 
-namespace AcademiCar.Server.DAL.Entities;
-
-public class Vehicle : Entity
+public class UpdateVehicleDto
 {
-    [ForeignKey("FK_OwnerUser")]
-    [JsonProperty(Required = Required.Default)]
-    [JsonIgnore]
-    public User OwnerUser { get; set; }
+    [Required]
+    public int ID { get; set; }
 
+    [Required]
     public string FK_OwnerUser { get; set; }
 
     public string Type { get; set; }
