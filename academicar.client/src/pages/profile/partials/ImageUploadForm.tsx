@@ -1,18 +1,19 @@
 import {ChangeEvent, useState} from "react";
 import {Button} from "../../../components/Buttons.tsx";
 import {Card} from "../../../components/Cards.tsx";
-import request, {AxiosResponse} from "axios";
 import {BlockBlobClient} from "@azure/storage-blob";
+/*
+import request, {AxiosResponse} from "axios";
 
 type ListResponse = {
     list: string[];
 };
-
+*/
 export const ImageUploadForm = () => {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [sasTokenUrl, setSasTokenUrl] = useState<string>('');
  //   const [uploadStatus, setUploadStatus] = useState<string>('');
-    const [list, setList] = useState<string[]>([]);
+   // const [list, setList] = useState<string[]>([]);
    
     const blobUrl = "https://academicar.blob.core.windows.net";
     const container = "profile-images";
@@ -20,24 +21,16 @@ export const ImageUploadForm = () => {
     
     const handleFileSelection = (event: ChangeEvent<HTMLInputElement>) => {
         console.log('handleFileSelection');
-
         const {target} = event;
 
         if (!(target instanceof HTMLInputElement)) return;
-        if (
-            target?.files === null ||
-            target?.files?.length === 0 ||
-            target?.files[0] === null
-        )
+        if (target?.files === null || target?.files?.length === 0 || target?.files[0] === null)
             return;
 
         setSelectedFile(target?.files[0]);
-
         // resetstring
         setSasTokenUrl(`${blobUrl}/${container}/${target?.files[0].name}?${sasToken}`);
     };
-
-    
         const handleFileUpload = () => {
             if (sasTokenUrl === '') return;
         
@@ -53,8 +46,8 @@ export const ImageUploadForm = () => {
                     const blockBlobClient = new BlockBlobClient(sasTokenUrl);
                     const uploadBlobResponse = await blockBlobClient.uploadData(fileArrayBuffer);
                     console.log(`uploadBlobResponse - status: ${uploadBlobResponse._response.status}`);
-                })
-                .then(() => {
+                });
+/*                .then(() => {
                     //     setUploadStatus('Successfully finished upload');
                     console.log('Successfully finished upload');
                     return request.get(`/api/list?container=${container}`);
@@ -79,7 +72,7 @@ export const ImageUploadForm = () => {
                     }
                 });
             console.log(`list = ${list.toString()}`);
-        }
+    */    }
         
         const convertStringToArrayBuffer = (str: string) => {
             const textEncoder = new TextEncoder();

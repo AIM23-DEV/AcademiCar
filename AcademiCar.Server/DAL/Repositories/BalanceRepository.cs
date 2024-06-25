@@ -20,4 +20,3 @@ public class BalanceRepository : PostgresRepository<Balance>, IBalanceRepository
         return await _dbContext.Balances.FirstOrDefaultAsync(v => v.FK_User == userId);
     }
 }
-
