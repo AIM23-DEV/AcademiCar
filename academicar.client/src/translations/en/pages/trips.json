@@ -26,6 +26,8 @@
     "vehicleDetails": "Vehicle Details",
     "preferences": "Preferences",
     "actions": "Actions",
+    "bookTrip": "Book Trip",
+    "tripRequestWasSent": "Trip Request was sent!",
     "editDrive": "Edit Drive",
     "shareDrive": "Share Drive",
     "cancelDrive": "Cancel Drive",

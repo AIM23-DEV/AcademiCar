@@ -323,6 +323,8 @@ export const ShowTripPage = () => {
     const seatsLabelText = t("pages/trips:ShowTripPage.label_seats");
     const preferencesText = t("pages/trips:ShowTripPage.preferences");
     const actionsLabelText = t("pages/trips:ShowTripPage.actions");
+    const bookTripButtonText = t("pages/trips:ShowTripPage.bookTrip");
+    const tripBookedButtonText = t("pages/trips:ShowTripPage.tripRequestWasSent");
     const editDriveButtonText = t("pages/trips:ShowTripPage.editDrive");
     const shareDriveButtonText = t("pages/trips:ShowTripPage.shareDrive");
     const cancelDriveButtonText = t("pages/trips:ShowTripPage.cancelDrive");
@@ -418,6 +420,14 @@ export const ShowTripPage = () => {
                 console.error(error);
             });
     }
+
+    const sendTripRequest = () => {
+        fetch(`/api/chat/CreateTripRequest/${loggedInUserId}/${tripId}`, {method: 'POST'})
+            .then(response => {
+                if (response)
+                    alert(tripBookedButtonText);
+        });
+    }
     
     return (
         <>
@@ -454,21 +464,36 @@ export const ShowTripPage = () => {
                         </Card>
                     </>
                     : <>
-                        {/* TODO Fahrt buchen button */}
+                        <TextButton
+                            variant="primary"
+                            fullWidth
+                            text={bookTripButtonText}
+                            textAlign="center"
+                            textFullWidth
+                            type="button"
+                            disabled={false}
+                            className="mt-2"
+                            onClick={sendTripRequest}
+                        />
+                        
                         {/* TODO Driver info card */}
                     </>
             }
 
-            <Card
-                id="showTripPage_passengersCard"
-                label={passengersText}
-                labelPosition="outside"
-                padding="base"
-                className="mt-8"
-            >
-                <Pas passengers={passengers} />
-            </Card>
-            
+            {
+                false
+                    ? <Card
+                        id="showTripPage_passengersCard"
+                        label={passengersText}
+                        labelPosition="outside"
+                        padding="base"
+                        className="mt-8"
+                    >
+                        <Pas passengers={passengers} />
+                    </Card>
+                    : <></>
+            }
+
             <Card
                 id="showTripPage_vehicleDetailsCard"
                 label={vehicleDetailsText}

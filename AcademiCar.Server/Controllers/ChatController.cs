@@ -30,6 +30,15 @@ public class ChatController : ControllerBase
         return await _GetNewPersonalChatID();
     }
     
+    private async Task<int> _GetNewTripRequestID()
+    {
+        int newId = _random.Next(1, 999999999);
+        TripRequest? tr = await _globalService.TripRequestService.Get(newId);
+        if (tr == null) return newId;
+        
+        return await _GetNewTripRequestID();
+    }
+    
     #endregion
 
     
@@ -329,5 +338,23 @@ public class ChatController : ControllerBase
         int tripIdAsInt = int.Parse(tripId);
         TripRequest? tripRequest = _globalService.TripRequestService.GetByCorrelation(passengerId, tripIdAsInt);
         return Ok(tripRequest);
+    }
+    
+    [HttpPost("CreateTripRequest/{passengerId}/{tripId}")]
+    public async Task<IActionResult> CreateTripRequestByIds(string passengerId, string tripId)
+    {
+        int tripIdAsInt = int.Parse(tripId);
+        TripRequest? tripRequest = _globalService.TripRequestService.GetByCorrelation(passengerId, tripIdAsInt);
+        if (tripRequest != null) return Ok(tripRequest);
+
+        TripRequest newTripRequest = new();
+        newTripRequest.ID = await _GetNewTripRequestID();
+        newTripRequest.FK_Trip = tripIdAsInt;
+        newTripRequest.FK_PotentialPassenger = passengerId;
+        newTripRequest.Comment = "";
+        newTripRequest.Status = "Open";
+
+        await _globalService.TripRequestService.Create(newTripRequest);
+        return Ok();
     }
 }
