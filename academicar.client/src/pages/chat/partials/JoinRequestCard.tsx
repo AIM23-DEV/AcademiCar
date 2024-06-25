@@ -1,8 +1,8 @@
 import {Card} from "../../../components/Cards.tsx";
 import {Button} from "../../../components/Buttons.tsx";
 import {TripCard} from "../../trips/partials/TripCard.tsx";
-import {useState} from "react";
-
+import {useEffect, useState} from "react";
+import {useParams} from "react-router-dom";
 interface JoinRequestCardProps {
     labelText: string,
     linkText: string,
@@ -18,6 +18,12 @@ interface JoinRequestCardProps {
 export const JoinRequestCard = (props: JoinRequestCardProps) => {
 
     const [error, setError] = useState<string | null>();
+    const [isRequestHandled, setIsRequestHandled] = useState<boolean>(false);
+    const {loggedInUserId} = useParams();
+
+    useEffect(() => {
+        getIsTripRequestHandled();
+    }, []);
 
     const handleUpdateAccepted = () => {
         if (props.tripRequest)
@@ -33,6 +39,20 @@ export const JoinRequestCard = (props: JoinRequestCardProps) => {
                 console.error(error);
             });
     }
+
+    const getIsTripRequestHandled = async () => {
+        if (!props.tripRequest) return;
+
+        try {
+            const response = await fetch(`https://localhost:5173/api/chat/GetTripRequestById/${props.tripRequest.id}`)
+            //console.log(response)
+            const data: ITripRequest = await response.json();
+            setIsRequestHandled(data.status !== "Open");
+        } catch (error) {
+            setError(`Failed to fetch trip request status: ${error}`);
+            console.error(error);
+        }
+    };
 
     const handleUpdateDeclined = () => {
         if (props.tripRequest)
@@ -53,7 +73,7 @@ export const JoinRequestCard = (props: JoinRequestCardProps) => {
         return (
             <Card
                 label={props.labelText}
-                outsideLink={"/trips/" + props.tripId}
+                outsideLink={"/trips/" + loggedInUserId + "/" + props.tripId}
                 outsideLinkText={props.linkText}
                 padding="none">
 
@@ -66,15 +86,17 @@ export const JoinRequestCard = (props: JoinRequestCardProps) => {
         return (
         <Card
             label={props.labelText}
-            outsideLink={"/trips/" + props.tripId}
+            outsideLink={"/trips/" + loggedInUserId + "/" + props.tripId}
             outsideLinkText={props.linkText}
             padding="none">
 
             <TripCard tripId={props.tripId} cardIndex={0} driverId={props.driverId} price={props.price} hideShadow/>
-            <div className="grid grid-cols-2 gap-2 px-4 pb-4">
-                <Button fullWidth text={props.denyButtonText} variant={"accent"} onClick={handleUpdateDeclined}/>
-                <Button fullWidth text={props.acceptButtonText} onClick={handleUpdateAccepted}/>
-            </div>
+            {!isRequestHandled && (
+                <div className="grid grid-cols-2 gap-2 px-4 pb-4">
+                    <Button fullWidth text={props.denyButtonText} variant={"accent"} onClick={handleUpdateDeclined} />
+                    <Button fullWidth text={props.acceptButtonText} onClick={handleUpdateAccepted} />
+                </div>
+            )}
         </Card>
     )}
 }

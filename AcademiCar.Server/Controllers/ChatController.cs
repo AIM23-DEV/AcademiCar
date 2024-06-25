@@ -274,4 +274,12 @@ public class ChatController : ControllerBase
         result.Message = "Request updated successfully";
         return Ok(result);
     }
+    
+    [HttpGet("GetTripRequestById/{id}")]
+    public async Task<IActionResult> GetTripRequestById(int id)
+    {
+        TripRequest? tripRequest = await _globalService.TripRequestService.Get(id);
+        
+        return Ok(tripRequest);
+    }
 }

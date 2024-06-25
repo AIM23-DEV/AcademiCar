@@ -37,11 +37,6 @@ export const PersonalChatPage = () => {
                     const fetchedTripRequestsResponse = await fetch('https://localhost:5173/api/chat/GetOpenRequestForTrip/' + chatData.fK_Trip);
                     const fetchedTripRequests: ITripRequest[] = await fetchedTripRequestsResponse.json();
 
-                    console.log("Chatdata: " + chatData)
-                    console.log(chatData)
-                    console.log("reqeust: " + fetchedTripRequests)
-                    console.log(fetchedTripRequests)
-
                     const matchingTripRequest = fetchedTripRequests.find(request => request.fK_PotentialPassenger === chatData.fK_PassengerUser);
                     setTripRequest(matchingTripRequest);
                 }
