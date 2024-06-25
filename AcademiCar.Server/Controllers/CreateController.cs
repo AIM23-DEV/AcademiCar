@@ -156,6 +156,15 @@ public class CreateController : ControllerBase
         return Ok(insertedGroupChat);
     }
     
+    [HttpPost("tripPassenger")]
+    public async Task<IActionResult> CreateTripPassenger([FromBody] TripPassenger tripPassenger)
+    {
+        ActionResultResponseModel result = await _globalService.TripPassengerService.Create(tripPassenger);
+        if (!result.IsSuccess) return Conflict(tripPassenger);
+        
+        return Ok(result);
+    }
+    
     [HttpPut ("{id}")]
     public async Task<IActionResult> UpdateTrip(string id, [FromBody] Trip updatedTrip)
     {

@@ -128,9 +128,9 @@ interface ITrip {
 }
 
 interface ITripPassenger {
-    id: number;
-    fK_Trip: number;
-    fK_PassengerUser: string;
+    id?: number;
+    fK_Trip: number | undefined;
+    fK_PassengerUser: string | undefined;
 }
 
 interface ITripRequest {
