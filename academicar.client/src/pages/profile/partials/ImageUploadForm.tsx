@@ -38,11 +38,7 @@ export const ImageUploadForm = () => {
             
             convertFileToArrayBuffer(selectedFile as File)
                 .then(async (fileArrayBuffer) => {
-                    if (
-                        fileArrayBuffer === null ||
-                        fileArrayBuffer.byteLength < 1 ||
-                        fileArrayBuffer.byteLength > 256000
-                    )
+                    if (fileArrayBuffer === null || fileArrayBuffer.byteLength < 1 || fileArrayBuffer.byteLength > 256000)
                         return;
 
                     const blockBlobClient = new BlockBlobClient(sasTokenUrl);
@@ -115,7 +111,7 @@ export const ImageUploadForm = () => {
         <div>
             <Card  className="mt-6">
                 <form aria-label="Suche" className="w-full grid grid-cols-12 gap-4" encType="multipart/form-data"
-                    method={"POST"} onSubmit={handleFileUpload}>
+                    method={"PUT"} onSubmit={handleFileUpload}>
                     <input type="file" className={"col-span-full"} onChange={handleFileSelection}/>
                     <Button variant={"primary"} text={"Upload Image"} type={"submit"} className={"col-span-full"}/>
                 </form>
