@@ -42,7 +42,9 @@ export const Tabs = (props: TabsProps) => {
 
             </TabList>
 
-            {props.children}
+            <div className="mt-6">
+                {props.children}
+            </div>
 
             {/* This is an example of how the content of the different pages can be set up. Pass the following as children:*/}
             {/*<TabPanels>*/}

@@ -1,19 +1,17 @@
 import {useTranslation} from "react-i18next";
 import {Card} from "../../../components/Cards.tsx";
 import {Checkmark, Input, Select} from "../../../components/FormFields.tsx";
-import {useEffect, useState} from "react";
+import {VehicleOptions} from "../CreateTripPage.tsx";
+import {useState} from "react";
 
 interface TripVehicleCreationFormProps {
     driverId: string;
     vehicleId?: number;
+    vehicleOptions?: VehicleOptions;
     availableSeats?: number;
 
-    setVehicleId: (vehicleId: number) => void;
+    setVehicleId: (vehicleId: number | undefined) => void;
     setAvailableSeats: (value: number) => void;
-}
-
-type VehicleOptions = {
-    [key: number]: string;
 }
 
 export const TripVehicleCreationForm = (props: TripVehicleCreationFormProps) => {
@@ -28,21 +26,8 @@ export const TripVehicleCreationForm = (props: TripVehicleCreationFormProps) => 
     const bicycleExtraText = t("pages/create:CreateTripPage.extra_bicycle");
     const skiExtraText = t("pages/create:CreateTripPage.extra_ski");
     const miscExtraText = t("pages/create:CreateTripPage.extra_misc");
-
-    const [vehicleOptions, setVehicleOptions] = useState<VehicleOptions>({});
-
-    useEffect(() => {
-        fetch(`/api/create/vehicles/${props.driverId}`)
-            .then(response => response.json())
-            .then((fetchedVehicles: IVehicle[]) => {
-                const options = fetchedVehicles.reduce((options: VehicleOptions, vehicle) => {
-                    const key = vehicle.id ?? -999
-                    options[key] = vehicle.type;
-                    return options;
-                }, {});
-                setVehicleOptions(options);
-            });
-    }, [props.driverId]);
+    const [thisVehicleId, setThisVehicleId] = useState<number | undefined>(props.vehicleId);
+    const [thisAvailableSeats, setThisAvailableSeats] = useState<number | undefined>(props.availableSeats);
 
     return (
         <div className="w-full flex flex-col items-center">
@@ -51,17 +36,31 @@ export const TripVehicleCreationForm = (props: TripVehicleCreationFormProps) => 
                 outsideLinkText={createVehicleLinkText}
                 outsideLink={`/profile/${props.driverId}/cars/${props.vehicleId}`}
             >
-                <Select
-                    options={vehicleOptions}
-                    onChange={(e) => props.setVehicleId(Number(e.target.value))}
-                />
-                <span>
-                    {seatsLabelText}
-                    <Input
-                        value={`${props.availableSeats}`}
-                        onChange={(e) => props.setAvailableSeats(Number(e.target.value))}
+                <div className="w-full flex flex-col space-y-4">
+                    <Select
+                        value={thisVehicleId}
+                        options={props.vehicleOptions}
+                        fullWidth
+                        onChange={(e) => {
+                            let value: number | undefined = Number.parseInt(e.target.value);
+                            if (Number.isNaN(value)) value = undefined;
+                            props.setVehicleId(value);
+                            setThisVehicleId(value);
+                        }}
                     />
-                </span>
+                    <Input
+                        value={`${thisAvailableSeats}`}
+                        fullWidth
+                        type="number"
+                        label={seatsLabelText}
+                        onChange={(e) => {
+                            let value: number = Number.parseInt(e.target.value);
+                            if (Number.isNaN(value)) value = 0;
+                            props.setAvailableSeats(value);
+                            setThisAvailableSeats(value);
+                        }}
+                    />
+                </div>
             </Card>
 
             {/* Extras disabled for now */}
